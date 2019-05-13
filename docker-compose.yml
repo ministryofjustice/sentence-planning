@@ -1,0 +1,48 @@
+version: '3.1'
+services:
+  sentence-planning:
+    image: mojdigitalstudio/sentence-planning:latest
+    networks:
+    - hmpps
+    depends_on:
+    - sentence-planning-db
+    - nomis-oauth2-server
+    ports:
+    - "3000:3000"
+    environment:
+    - PORT=3000
+    - DB_USER=sentence-planning
+    - DB_PASS=sentence-planning
+    - DB_SERVER=sentence-planning-db
+    - DB_NAME=sentence-planning
+    - DB_SSL_ENABLED=no
+    - NOMIS_AUTH_URL=http://nomis-oauth2-server:8080/auth
+    - NOMIS_AUTH_EXTERNAL_URL=http://localhost:8080/auth
+
+  sentence-planning-db:
+    image: postgres
+    networks:
+    - hmpps
+    container_name: sentence-planning-db
+    restart: always
+    ports:
+    - "5432:5432"
+    environment:
+    - POSTGRES_PASSWORD=sentence-planning
+    - POSTGRES_USER=sentence-planning
+    - POSTGRES_DB=sentence-planning
+
+  nomis-oauth2-server:
+    image: mojdigitalstudio/nomis-oauth2-server:latest
+    networks:
+    - hmpps
+    container_name: nomis-oauth2-server
+    ports:
+    - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
+    environment:
+    - SPRING_PROFILES_ACTIVE=dev
+
+networks:
+  hmpps:

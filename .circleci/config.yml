@@ -1,0 +1,96 @@
+defaults: &defaults
+  working_directory: ~/mojdigitalstudio/sentence-planning
+  docker:
+  - image: circleci/node:8
+
+version: 2
+jobs:
+  build:
+    <<: *defaults
+    steps:
+    - checkout
+    - run:
+        name: Update npm
+        command: 'sudo npm install -g npm@latest'
+    - restore_cache:
+        key: dependency-cache-{{ checksum "package-lock.json" }}
+    - run:
+        name: Install Dependencies
+        command: npm ci
+    - save_cache:
+        key: dependency-cache-{{ checksum "package-lock.json" }}
+        paths:
+        - node_modules
+    - run:
+        name: Linter check
+        command: npm run lint
+    - run:
+        command: |
+          npm run build
+          DATE=$(date '+%Y-%m-%d')
+          export BUILD_NUMBER=${DATE}.${CIRCLE_BUILD_NUM}
+          export GIT_REF="$CIRCLE_SHA1"
+          npm run record-build-info
+    - persist_to_workspace:
+        root: .
+        paths:
+        - node_modules
+        - build-info.json
+        - assets/stylesheets
+
+  test:
+    <<: *defaults
+    steps:
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "package-lock.json" }}
+    - run:
+        name: unit tests
+        command: npm run test
+    - store_test_results:
+        path: ./reports
+
+  build_docker:
+    <<: *defaults
+    steps:
+    - checkout
+    - attach_workspace:
+        at: ~/mojdigitalstudio/sentence-planning
+    - setup_remote_docker:
+        exclusive: true
+    - run:
+        name: Build container and publish to docker hub (master only)
+        command: |
+          VERSION=$(egrep buildNumber build-info.json  | awk -F"\"" '{print $4}')
+          GIT_REF=$(egrep gitRef build-info.json  | awk -F"\"" '{print $8}')
+          BUILD_VERSION=${VERSION}
+
+          docker build --rm=false . \
+              --build-arg BUILD_NUMBER=$VERSION \
+              --build-arg GIT_REF=$GIT_REF \
+              --tag "mojdigitalstudio/sentence-planning:$BUILD_VERSION" \
+              --label "maintainer=oasys@digital.justice.gov.uk" \
+              --label "build.number=$CIRCLE_BUILD_NUM" \
+              --label "build.url=$CIRCLE_BUILD_URL" \
+              --label "build.gitref=$GIT_REF"
+
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker tag mojdigitalstudio/sentence-planning:$BUILD_VERSION mojdigitalstudio/sentence-planning:latest
+          docker push mojdigitalstudio/sentence-planning:$BUILD_VERSION
+          docker push mojdigitalstudio/sentence-planning:latest
+
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+    - build
+    - test:
+        requires:
+        - build
+    - build_docker:
+        requires:
+        - test
+        filters:
+          branches:
+            only:
+            - master
