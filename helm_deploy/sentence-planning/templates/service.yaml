@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "sentence-planning.fullname" . }}
+  labels:
+    app: {{ template "sentence-planning.name" . }}
+    chart: {{ template "sentence-planning.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      name: http
+  selector:
+    app: {{ template "sentence-planning.name" . }}
+    release: {{ .Release.Name }}

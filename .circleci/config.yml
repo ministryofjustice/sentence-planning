@@ -1,7 +1,24 @@
 defaults: &defaults
   working_directory: ~/mojdigitalstudio/sentence-planning
   docker:
-  - image: circleci/node:8
+  - image: circleci/node:10.15.3-browsers
+
+deploy_container_config: &deploy_container_config
+  docker:
+    - image: ${ECR_ENDPOINT}/cloud-platform/tools:circleci
+      environment:
+        GITHUB_TEAM_NAME_SLUG: digital-prison-services
+        APPLICATON_DEPLOY_NAME: sentence-planning
+        REPONAME: sentence-planning
+
+install_aws_cli: &install_aws_cli
+  run:
+    name: Set up aws
+    command: |
+      sudo apt-get update
+      sudo apt-get --assume-yes install python3-pip
+      sudo pip3 install awscli
+      $(aws ecr get-login --region eu-west-1 --no-include-email)
 
 version: 2
 jobs:
@@ -79,6 +96,55 @@ jobs:
           docker push mojdigitalstudio/sentence-planning:$BUILD_VERSION
           docker push mojdigitalstudio/sentence-planning:latest
 
+  copy_image_to_ecs:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/app
+      - setup_remote_docker
+      - *install_aws_cli
+      - run:
+          name: publish image to ecs
+          command: |
+            APP_VERSION=$(egrep buildNumber build-info.json  | awk -F"\"" '{print $4}')
+
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker pull mojdigitalstudio/categorisation-tool:$APP_VERSION
+
+            docker tag mojdigitalstudio/sentence-planning:$APP_VERSION "${ECR_ENDPOINT}/digital-prison-services/sentence-planning:${APP_VERSION}"
+            docker tag "${ECR_ENDPOINT}/digital-prison-services/sentence-planning:${APP_VERSION}" "${ECR_ENDPOINT}/digital-prison-services/sentence-planning:latest"
+            login="$(aws ecr get-login --region eu-west-1 --no-include-email)"
+            ${login}
+            docker push "${ECR_ENDPOINT}/digital-prison-services/sentence-planning:${APP_VERSION}"
+            docker push "${ECR_ENDPOINT}/digital-prison-services/sentence-planning:latest"
+
+  deploy_dev:
+    <<: *deploy_container_config
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Kubectl deployment dev setup
+          command: |
+            $(aws ecr get-login --region eu-west-1 --no-include-email)
+            setup-kube-auth
+            kubectl config use-context development
+      - deploy:
+          name: Deploy to Dev
+          command: |
+            APP_VERSION=$(egrep buildNumber ~/app/build-info.json  | awk -F"\"" '{print $4}')
+            helm upgrade sentence-planning ./helm_deploy/sentence-planning/. \
+              --install --wait \
+              --tiller-namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
+              --namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
+              --values ./helm_deploy/sentence-planning/values-development.yaml \
+              --set image.repository="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPO_NAME}" \
+              --set image.tag="${APP_VERSION}"
+
 workflows:
   version: 2
   build_test_deploy:
@@ -94,3 +160,9 @@ workflows:
           branches:
             only:
             - master
+    - copy_image_to_ecs:
+        requires:
+          - build_docker
+    - deploy_dev:
+        requires:
+          - copy_image_to_ecs
