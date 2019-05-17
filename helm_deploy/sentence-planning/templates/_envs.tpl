@@ -27,13 +27,13 @@ env:
   - name: API_CLIENT_ID
     valueFrom:
       secretKeyRef:
-        name: sentence-planning-secrets
-        key: api_client_id
+        name: sentence-planning
+        key: API_CLIENT_ID
   - name: API_CLIENT_SECRET
     valueFrom:
       secretKeyRef:
-        name: sentence-planning-secrets
-        key: api_client_secret
+        name: sentence-planning
+        key: API_CLIENT_SECRET
   - name: NOMIS_AUTH_URL
     value: {{ .Values.deploy.NOMIS_AUTH_URL | quote }}
   - name: NOMIS_OAUTH_PUBLIC_KEY

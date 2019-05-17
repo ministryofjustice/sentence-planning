@@ -141,11 +141,11 @@ jobs:
           name: Deploy to Dev
           command: |
             APP_VERSION=$(egrep buildNumber ~/mojdigitalstudio/sentence-planning/build-info.json  | awk -F"\"" '{print $4}')
-            helm upgrade ${APPLICATON_DEPLOY_NAME} ./helm_deploy/sentence-planning/. \
+            aws secretsmanager get-secret-value --secret-id sentence-planning-development | jq -r .SecretString | helm upgrade helm_deploy/sentence-planning --name ${APPLICATON_DEPLOY_NAME} ./helm_deploy/sentence-planning/. \
               --install --wait \
               --tiller-namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
               --namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
-              --values ./helm_deploy/sentence-planning/values-development.yaml \
+              --values ./helm_deploy/values-development.yaml \
               --set image.repository="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPO_NAME}" \
               --set image.tag="${APP_VERSION}"
 
