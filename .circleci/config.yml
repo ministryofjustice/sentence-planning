@@ -116,12 +116,12 @@ jobs:
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker pull mojdigitalstudio/${REPONAME}:$APP_VERSION
 
-            docker tag mojdigitalstudio/${REPONAME}:$APP_VERSION "${ECR_ENDPOINT}:${APP_VERSION}"
-            docker tag "${ECR_ENDPOINT}:${APP_VERSION}" "${ECR_ENDPOINT}:latest"
+            docker tag mojdigitalstudio/${REPONAME}:$APP_VERSION "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:${APP_VERSION}"
+            docker tag "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:${APP_VERSION}" "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:latest"
             login="$(aws ecr get-login --region eu-west-2 --no-include-email)"
             ${login}
-            docker push "${ECR_ENDPOINT}:${APP_VERSION}"
-            docker push "${ECR_ENDPOINT}:latest"
+            docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:${APP_VERSION}"
+            docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:latest"
 
   deploy_dev:
     <<: *deploy_container_config
@@ -146,7 +146,7 @@ jobs:
               --tiller-namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
               --namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
               --values ./helm_deploy/sentence-planning/values-development.yaml \
-              --set image.repository="${ECR_ENDPOINT}" \
+              --set image.repository="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPO_NAME}" \
               --set image.tag="${APP_VERSION}"
 
 workflows:
