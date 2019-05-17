@@ -101,7 +101,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/app
+          at: ~/mojdigitalstudio/sentence-planning
       - setup_remote_docker
       - *install_aws_cli
       - run:
@@ -126,7 +126,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - attach_workspace:
-          at: ~/app
+          at: ~/mojdigitalstudio/sentence-planning
       - run:
           name: Kubectl deployment dev setup
           command: |
