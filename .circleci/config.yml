@@ -136,7 +136,7 @@ jobs:
       - deploy:
           name: Deploy to Dev
           command: |
-            APP_VERSION=$(egrep buildNumber ~/app/build-info.json  | awk -F"\"" '{print $4}')
+            APP_VERSION=$(egrep buildNumber ~/mojdigitalstudio/sentence-planning/build-info.json  | awk -F"\"" '{print $4}')
             helm upgrade sentence-planning ./helm_deploy/sentence-planning/. \
               --install --wait \
               --tiller-namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
