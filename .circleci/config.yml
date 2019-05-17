@@ -2,6 +2,10 @@ defaults: &defaults
   working_directory: ~/mojdigitalstudio/sentence-planning
   docker:
   - image: circleci/node:10.15.3-browsers
+    environment:
+      GITHUB_TEAM_NAME_SLUG: digital-prison-services
+      APPLICATON_DEPLOY_NAME: sentence-planning
+      REPONAME: sentence-planning
 
 deploy_container_config: &deploy_container_config
   docker:
@@ -85,16 +89,16 @@ jobs:
           docker build --rm=false . \
               --build-arg BUILD_NUMBER=$VERSION \
               --build-arg GIT_REF=$GIT_REF \
-              --tag "mojdigitalstudio/sentence-planning:$BUILD_VERSION" \
+              --tag "mojdigitalstudio/${REPONAME}:$BUILD_VERSION" \
               --label "maintainer=oasys@digital.justice.gov.uk" \
               --label "build.number=$CIRCLE_BUILD_NUM" \
               --label "build.url=$CIRCLE_BUILD_URL" \
               --label "build.gitref=$GIT_REF"
 
           docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker tag mojdigitalstudio/sentence-planning:$BUILD_VERSION mojdigitalstudio/sentence-planning:latest
-          docker push mojdigitalstudio/sentence-planning:$BUILD_VERSION
-          docker push mojdigitalstudio/sentence-planning:latest
+          docker tag mojdigitalstudio/${REPONAME}:$BUILD_VERSION mojdigitalstudio/${REPONAME}:latest
+          docker push mojdigitalstudio/${REPONAME}:$BUILD_VERSION
+          docker push mojdigitalstudio/${REPONAME}:latest
 
   copy_image_to_ecs:
     <<: *defaults
@@ -110,14 +114,14 @@ jobs:
             APP_VERSION=$(egrep buildNumber build-info.json  | awk -F"\"" '{print $4}')
 
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker pull mojdigitalstudio/categorisation-tool:$APP_VERSION
+            docker pull mojdigitalstudio/${REPONAME}:$APP_VERSION
 
-            docker tag mojdigitalstudio/sentence-planning:$APP_VERSION "${ECR_ENDPOINT}/digital-prison-services/sentence-planning:${APP_VERSION}"
-            docker tag "${ECR_ENDPOINT}/digital-prison-services/sentence-planning:${APP_VERSION}" "${ECR_ENDPOINT}/digital-prison-services/sentence-planning:latest"
+            docker tag mojdigitalstudio/${REPONAME}:$APP_VERSION "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:${APP_VERSION}"
+            docker tag "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:${APP_VERSION}" "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:latest"
             login="$(aws ecr get-login --region eu-west-2 --no-include-email)"
             ${login}
-            docker push "${ECR_ENDPOINT}/digital-prison-services/sentence-planning:${APP_VERSION}"
-            docker push "${ECR_ENDPOINT}/digital-prison-services/sentence-planning:latest"
+            docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:${APP_VERSION}"
+            docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:latest"
 
   deploy_dev:
     <<: *deploy_container_config
@@ -137,7 +141,7 @@ jobs:
           name: Deploy to Dev
           command: |
             APP_VERSION=$(egrep buildNumber ~/mojdigitalstudio/sentence-planning/build-info.json  | awk -F"\"" '{print $4}')
-            helm upgrade sentence-planning ./helm_deploy/sentence-planning/. \
+            helm upgrade ${APPLICATON_DEPLOY_NAME} ./helm_deploy/sentence-planning/. \
               --install --wait \
               --tiller-namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
               --namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
