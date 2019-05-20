@@ -141,6 +141,7 @@ jobs:
           name: Deploy to Dev
           command: |
             APP_VERSION=$(egrep buildNumber ~/mojdigitalstudio/sentence-planning/build-info.json  | awk -F"\"" '{print $4}')
+            AWS_ACCESS_KEY_ID=${SM_AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${SM_AWS_SECRET_ACCESS_KEY} aws secretsmanager --region ${AWS_DEFAULT_REGION} get-secret-value --secret-id sentence-planning-development | jq -r .SecretString | \
             helm upgrade sentence-planning helm_deploy/sentence-planning/. \
               --install --wait \
               --tiller-namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
