@@ -141,7 +141,7 @@ jobs:
           name: Deploy to Dev
           command: |
             APP_VERSION=$(egrep buildNumber ~/mojdigitalstudio/sentence-planning/build-info.json  | awk -F"\"" '{print $4}')
-            aws secretsmanager get-secret-value --secret-id sentence-planning-development | jq -r .SecretString | helm upgrade helm_deploy/sentence-planning --name ${APPLICATON_DEPLOY_NAME} ./helm_deploy/sentence-planning/. \
+            AWS_ACCESS_KEY_ID=${SM_AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${SM_AWS_SECRET_ACCESS_KEY} aws secretsmanager get-secret-value --secret-id sentence-planning-development | jq -r .SecretString | helm upgrade helm_deploy/sentence-planning ./helm_deploy/sentence-planning/. \
               --install --wait \
               --tiller-namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
               --namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
