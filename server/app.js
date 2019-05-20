@@ -5,6 +5,7 @@ const csurf = require('csurf')
 const compression = require('compression')
 const passport = require('passport')
 const auth = require('./authentication/auth')
+const healthcheck = require('./services/healthcheck')
 
 const { authenticationMiddleware } = auth
 const bodyParser = require('body-parser')
@@ -114,6 +115,20 @@ module.exports = function createApp({ signInService, formService }) {
   })
   ;['../node_modules/govuk_frontend_toolkit/images'].forEach(dir => {
     app.use('/assets/images/icons', express.static(path.join(__dirname, dir), cacheControl))
+  })
+
+  // Express Routing Configuration
+  app.get('/health', (req, res, next) => {
+    healthcheck((err, result) => {
+      if (err) {
+        return next(err)
+      }
+      if (!result.healthy) {
+        res.status(503)
+      }
+      res.json(result)
+      return result
+    })
   })
 
   // GovUK Template Configuration
