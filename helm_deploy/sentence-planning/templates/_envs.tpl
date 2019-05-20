@@ -38,7 +38,7 @@ env:
     value: {{ .Values.deploy.NOMIS_AUTH_URL | quote }}
   - name: NOMIS_OAUTH_PUBLIC_KEY
     value: {{ .Values.deploy.NOMIS_OAUTH_PUBLIC_KEY | quote }}
-   - name: INGRESS_URL
-     value: {{ .Values.deploy.INGRESS_URL | quote }}
+  - name: INGRESS_URL
+    value: {{ .Values.deploy.INGRESS_URL | quote }}
 
 {{- end -}}
