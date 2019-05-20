@@ -22,7 +22,7 @@ install_aws_cli: &install_aws_cli
       sudo apt-get update
       sudo apt-get --assume-yes install python3-pip
       sudo pip3 install awscli
-      $(aws ecr get-login --region eu-west-2 --no-include-email)
+      $(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)
 
 version: 2
 jobs:
@@ -118,7 +118,7 @@ jobs:
 
             docker tag mojdigitalstudio/${REPONAME}:$APP_VERSION "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:${APP_VERSION}"
             docker tag "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:${APP_VERSION}" "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:latest"
-            login="$(aws ecr get-login --region eu-west-2 --no-include-email)"
+            login="$(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)"
             ${login}
             docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:${APP_VERSION}"
             docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:latest"
@@ -134,17 +134,19 @@ jobs:
       - run:
           name: Kubectl deployment dev setup
           command: |
-            $(aws ecr get-login --region eu-west-2 --no-include-email)
+            $(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)
             setup-kube-auth
             kubectl config use-context development
       - deploy:
           name: Deploy to Dev
           command: |
             APP_VERSION=$(egrep buildNumber ~/mojdigitalstudio/sentence-planning/build-info.json  | awk -F"\"" '{print $4}')
-            AWS_ACCESS_KEY_ID=${SM_AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${SM_AWS_SECRET_ACCESS_KEY} aws secretsmanager get-secret-value --secret-id sentence-planning-development | jq -r .SecretString | helm upgrade helm_deploy/sentence-planning ./helm_deploy/sentence-planning/. \
+            AWS_ACCESS_KEY_ID=${SM_AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${SM_AWS_SECRET_ACCESS_KEY} aws secretsmanager --region ${AWS_DEFAULT_REGION} get-secret-value --secret-id sentence-planning-development | jq -r .SecretString | \
+            helm upgrade sentence-planning helm_deploy/sentence-planning/. \
               --install --wait \
               --tiller-namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
               --namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
+              --values - \
               --values ./helm_deploy/values-development.yaml \
               --set image.repository="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPO_NAME}" \
               --set image.tag="${APP_VERSION}"
