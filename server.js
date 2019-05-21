@@ -3,6 +3,16 @@ const knexfile = require('./knexfile')
 const app = require('./server/index')
 const log = require('./log')
 
+const selectSql = message => {
+  if (message.sql) {
+    return message.sql
+  }
+  if (message.length && message.length >= 1) {
+    return message[0].sql
+  }
+  return { knex: message }
+}
+
 const init = {
   ...knexfile,
   log: {
