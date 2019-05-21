@@ -1,4 +1,4 @@
-FROM node:8.11.3-slim
+FROM node:10.15-slim
 MAINTAINER HMPPS Digital Studio <info@digital.justice.gov.uk>
 ARG BUILD_NUMBER
 ARG GIT_REF
@@ -17,8 +17,7 @@ ADD . .
 # Install AWS RDS Root cert
 RUN curl https://s3.amazonaws.com/rds-downloads/rds-ca-2015-root.pem > /app/root.cert
 
-RUN npm install -g npm@latest && \
-    npm ci && \
+RUN npm install && \
     npm run build && \
     export BUILD_NUMBER=${BUILD_NUMBER} && \
     export GIT_REF=${GIT_REF} && \
