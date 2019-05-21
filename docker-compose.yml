@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   sentence-planning:
-    image: mojdigitalstudio/sentence-planning:latest
+    build: .
     networks:
     - hmpps
     depends_on:
