@@ -148,7 +148,7 @@ jobs:
               --namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
               --values - \
               --values ./helm_deploy/values-development.yaml \
-              --set image.repository="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPO_NAME}" \
+              --set image.repository="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}" \
               --set image.tag="${APP_VERSION}"
 
 workflows:
