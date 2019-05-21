@@ -1,4 +1,4 @@
-FROM node:10.15-slim
+FROM node:10.15.3-slim
 MAINTAINER HMPPS Digital Studio <info@digital.justice.gov.uk>
 ARG BUILD_NUMBER
 ARG GIT_REF
