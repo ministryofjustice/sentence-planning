@@ -21,7 +21,3 @@ knex1.migrate.latest().then(() => {
     log.info(`Server listening on port ${app.get('port')}`)
   })
 })
-
-app.listen(app.get('port'), () => {
-  log.info(`Server listening on port ${app.get('port')}`)
-})
