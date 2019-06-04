@@ -1,0 +1,81 @@
+{% extends "../partials/layout.html" %}
+
+{% from "breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "button/macro.njk" import govukButton %}
+{% from "details/macro.njk" import govukDetails %}
+{% from "table/macro.njk" import govukTable %}
+
+{% block beforeContent %}
+{{ govukBreadcrumbs({
+  items: [
+    {
+      text: "Home",
+      href: "#"
+    }
+  ]
+}) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container govuk-body">
+  <section class="govuk-grid-row">
+    <div class="govuk-grid-column-one-quarter">
+      <img src="/assets/images/blank-portrait.png" alt="photograph of {{forename1}} {{familyName}}" class='offender-summary-avatar'>
+    </div>
+    <div class="govuk-grid-column-three-quarter">
+      <div class="govuk-heading-l">{{forename1}}{% if forename2 %} {{forename2}}{% endif %} {{familyName}}</div>
+      <div class="govuk-caption-m">CRN number</div>
+      <div class="govuk-heading-s">{{identifiers.crn}}</div>
+      <div class="govuk-caption-m">NOMS number</div>
+      <div class="govuk-heading-s"><em>place holder</em></div>
+    </div>
+  </section>
+  <section class="govuk-grid-row">
+    <h2 class="govuk-heading-m">Registers and warnings</h2>
+    {{ govukTable({
+      firstCellIsHeader: false,
+      head: [
+        {text: "Type"}, 
+        {text: "Status"}, 
+        {text: "Description"}, 
+        {text: "Date"}
+      ],
+      rows: []
+    }) }}
+  </section>
+  <section class="govuk-grid-row">
+    <h2 class="govuk-heading-m">Offence and sentence</h2>
+    {{ govukTable({
+      firstCellIsHeader: true,
+      rows: [
+        [{text: "Main offence"}, {text: "place holder"}],
+        [{text: "Sentence length"}, {text: "place holder"}],
+        [{text: "Start Date"}, {text: "place holder"}],
+        [{text: "End Date"}, {text: "place holder"}]
+      ]
+    }) }}
+  </section>
+  <section class="govuk-grid-row">
+    {{ govukDetails({
+      summaryText: "Requirements",
+      text: "place holder"
+    }) }}
+  </section>
+  <section class="govuk-grid-row">
+    {{ govukDetails({
+      summaryText: "NS summary",
+      text: "place holder"
+    }) }}
+  </section>
+  <section class="govuk-grid-row">
+    <h2 class="govuk-heading-m">Sentence Plan</h2>
+    {{ govukTable({
+      firstCellIsHeader: true,
+      rows: [
+        [{text: "Date plan started"}, {text: "place holder"}]
+      ]
+    }) }}
+  </section>
+</div>
+{% endblock %}
+

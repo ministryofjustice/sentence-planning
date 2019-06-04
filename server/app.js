@@ -12,6 +12,7 @@ const cookieSession = require('cookie-session')
 const sassMiddleware = require('node-sass-middleware')
 
 const healthcheck = require('./services/healthcheck')
+const { offenderSummaryData } = require('./services/offenderSummaryService')
 const createFormRouter = require('./routes/form')
 const createTasklistRouter = require('./routes/tasklist')
 const logger = require('../log.js')
@@ -191,8 +192,17 @@ module.exports = function createApp({ signInService, formService }) {
     }
     res.redirect(authLogoutUrl)
   })
-
-  app.get('/', (req, res) => res.render('pages/index'))
+  app.use(authenticationMiddleware())
+  app.get('/', (req, res) => res.render('formPages/crn_search'))
+  app.get('/offender_summary/:crn(x\\d{6})', (req, res) => {
+    const {
+      params: { crn },
+    } = req
+    offenderSummaryData(crn, (err, summaryData = {}) => {
+      if (err) return res.render('pages/unknown_record', { crn })
+      return res.render('pages/offender_summary', summaryData)
+    })
+  })
   app.use('/tasklist/', createTasklistRouter({ formService, authenticationMiddleware }))
   app.use('/form/', createFormRouter({ formService, authenticationMiddleware }))
 
