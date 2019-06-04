@@ -31,5 +31,12 @@ module.exports = {
     apiClientId: get('API_CLIENT_ID', 'licences'),
     apiClientSecret: get('API_CLIENT_SECRET', 'clientsecret'),
   },
+  oasys: {
+    url: get('OASYSAPI_ENDPOINT_URL', 'http://localhost:18080', true),
+    timeout: {
+      response: get('OASYSAPII_ENDPOINT_TIMEOUT_RESPONSE', 30000, true),
+      deadline: get('OASYSAPI_ENDPOINT_TIMEOUT_DEADLINE', 35000, true),
+    },
+  },
   domain: `${get('INGRESS_URL', 'http://localhost:3000', true)}`,
 }
