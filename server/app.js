@@ -14,7 +14,6 @@ const sassMiddleware = require('node-sass-middleware')
 const healthcheck = require('./services/healthcheck')
 const { offenderSummaryData } = require('./services/offenderSummaryService')
 const createFormRouter = require('./routes/form')
-const createTasklistRouter = require('./routes/tasklist')
 const logger = require('../log.js')
 const nunjucksSetup = require('./utils/nunjucksSetup')
 const auth = require('./authentication/auth')
@@ -193,17 +192,22 @@ module.exports = function createApp({ signInService, formService }) {
     res.redirect(authLogoutUrl)
   })
   app.use(authenticationMiddleware())
-  app.get('/', (req, res) => res.render('formPages/crn_search'))
-  app.get('/offender_summary/:crn(x\\d{6})', (req, res) => {
+  app.get('/', (req, res) => res.render('formPages/crnSearch'))
+  app.get('/offender-summary/crn/:crn(x\\d{6})', (req, res) => {
     const {
       params: { crn },
     } = req
     offenderSummaryData(crn, (err, summaryData = {}) => {
-      if (err) return res.render('pages/unknown_record', { crn })
-      return res.render('pages/offender_summary', summaryData)
+      if (err) return res.render('pages/unknownRecord', { crn })
+      return res.render('pages/offenderSummary', summaryData)
     })
   })
-  app.use('/tasklist/', createTasklistRouter({ formService, authenticationMiddleware }))
+  app.get('/sentence-plan/crn/:crn(x\\d{6})', (req, res) => {
+    const {
+      params: { crn },
+    } = req
+    res.render('formPages/sentencePlan', { crn })
+  })
   app.use('/form/', createFormRouter({ formService, authenticationMiddleware }))
 
   app.use((req, res, next) => {
