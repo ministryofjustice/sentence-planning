@@ -68,13 +68,28 @@
     }) }}
   </section>
   <section class="govuk-grid-row">
-    <h2 class="govuk-heading-m">Sentence Plan</h2>
-    {{ govukTable({
+    <h2 class="govuk-heading-m">Sentence plan</h2>
+    {% if sentencePlan %}
+      {{ govukTable({
       firstCellIsHeader: true,
       rows: [
-        [{text: "Date plan started"}, {text: "place holder"}]
+        [{text: "Date plan started"}, {text: sentencePlan.createdDate}]
       ]
     }) }}
+    
+    {% endif %}
+    {{ govukButton({
+      text: "Create sentence plan",
+      href: "/sentencePlan/crn/"+identifiers.crn,
+      classes: "govuk-!-margin-right-1 govuk-grid-column-one-half"
+    }) }}
+    {% if sentencePlan %} 
+      {{ govukButton({
+        text: "View/edit last sentence plan",
+        href: "/sentencePlan/crn/"+identifiers.crn,
+        classes: "govuk-grid-column-one-half"
+      }) }}
+    {% endif %}
   </section>
 </div>
 {% endblock %}
