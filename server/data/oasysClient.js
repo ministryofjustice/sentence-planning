@@ -9,7 +9,15 @@ const timeoutSpec = {
 
 const oasysapiUrl = config.oasys.url
 
-const getOffenderData = crn => {
+const getIdPath = (idType, id) => {
+  const path = `${idType}/${id}`
+  if (/^oasysOffenderId\/\d{5}$/.test(path) || /^crn\/x\d{6}$/.test(path)) {
+    return path
+  }
+  throw new Error(`Invalid idType: ${idType} id: ${id}`)
+}
+
+const getOffenderData = (idType, id) => {
   return (async path => {
     logger.info(`getOffenderData: calling oasysapi: ${path}`)
     try {
@@ -22,7 +30,7 @@ const getOffenderData = crn => {
       logger.warn(error)
       throw error
     }
-  })(`${oasysapiUrl}/offenders/crn/${crn}`)
+  })(`${oasysapiUrl}/offenders/${getIdPath(idType, id)}`)
 }
 
 const getSentencePlan = (idType, id) => {
@@ -38,7 +46,7 @@ const getSentencePlan = (idType, id) => {
       logger.warn(error)
       throw error
     }
-  })(`${oasysapiUrl}/offenders/${idType}/${id}/sentencePlans/latest`)
+  })(`${oasysapiUrl}/offenders/${getIdPath(idType, id)}/sentencePlans/latest`)
 }
 
 module.exports = { getOffenderData, getSentencePlan }

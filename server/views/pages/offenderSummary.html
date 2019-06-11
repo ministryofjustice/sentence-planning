@@ -80,13 +80,13 @@
     {% endif %}
     {{ govukButton({
       text: "Create sentence plan",
-      href: "/sentencePlan/crn/"+identifiers.crn,
+      href: "/sentence-plan/oasys-offender-id/"+oasysOffenderId,
       classes: "govuk-!-margin-right-1 govuk-grid-column-one-half"
     }) }}
     {% if sentencePlan %} 
       {{ govukButton({
         text: "View/edit last sentence plan",
-        href: "/sentencePlan/crn/"+identifiers.crn,
+        href: "/sentence-plan/oasys-offender-id/"+oasysOffenderId,
         classes: "govuk-grid-column-one-half"
       }) }}
     {% endif %}
