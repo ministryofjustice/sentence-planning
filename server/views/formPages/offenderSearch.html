@@ -24,7 +24,7 @@
 <script>
   function goToCrnPage(event){
     var crn = document.getElementById("crnNumber").value
-    if(crn.match(/^\d{6}$/)) document.location = '/offenderSummary/crn/x'+crn
+    if(crn.match(/^\d{6}$/)) document.location = '/offender-summary/crn/x'+crn
     event.preventDefault()
   }
 </script>

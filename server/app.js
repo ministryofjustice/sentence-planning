@@ -192,21 +192,24 @@ module.exports = function createApp({ signInService, formService }) {
     res.redirect(authLogoutUrl)
   })
   app.use(authenticationMiddleware())
-  app.get('/', (req, res) => res.render('formPages/crnSearch'))
-  app.get('/offender-summary/crn/:crn(x\\d{6})', (req, res) => {
+  app.get('/', (req, res) => res.render('formPages/offenderSearch'))
+  const offenderSummaryCallback = (req, res) => {
     const {
-      params: { crn },
+      params: { idType, id },
     } = req
-    offenderSummaryData(crn, (err, summaryData = {}) => {
-      if (err) return res.render('pages/unknownRecord', { crn })
+    offenderSummaryData(idType, id, (err, summaryData = {}) => {
+      if (err) return res.render('pages/unknownRecord', { id })
       return res.render('pages/offenderSummary', summaryData)
     })
-  })
-  app.get('/sentence-plan/crn/:crn(x\\d{6})', (req, res) => {
+  }
+  app.get('/offender-summary/:idType(oasys-offender-id)/:id(\\d{5})', offenderSummaryCallback)
+  app.get('/offender-summary/:idType(crn)/:id(x\\d{6})', offenderSummaryCallback)
+
+  app.get('/sentence-plan/:idType(oasys-offender-id)/:id(\\d{5})', (req, res) => {
     const {
-      params: { crn },
+      params: { id },
     } = req
-    res.render('formPages/sentencePlan', { crn })
+    res.render('formPages/sentencePlan', { id })
   })
   app.use('/form/', createFormRouter({ formService, authenticationMiddleware }))
 

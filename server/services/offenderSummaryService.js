@@ -1,14 +1,14 @@
 const { getOffenderData, getSentencePlan } = require('../data/oasysClient')
 const logger = require('../../log.js')
 
-const offenderSummaryData = async (crn, callback) => {
-  logger.info(`Calling getOffenderData(${crn})`)
+const offenderSummaryData = async (idType, id, callback) => {
+  logger.info(`Calling getOffenderData(${idType}, ${id})`)
   try {
-    const result = await getOffenderData(crn)
+    const result = await getOffenderData(idType, id)
 
     try {
-      if (result.identifiers.nomisId) {
-        result.sentencePlan = await getSentencePlan('nomisId', result.identifiers.nomisId)
+      if (result.oasysOffenderId) {
+        result.sentencePlan = await getSentencePlan('oasysOffenderId', result.oasysOffenderId)
       }
     } catch (error) {
       logger.info('No sentence plan returned.')
