@@ -10,8 +10,10 @@ const timeoutSpec = {
 const oasysapiUrl = config.oasys.url
 
 const getIdPath = (idType, id) => {
-  const path = `${idType}/${id}`
+  const oasysIdType = idType === 'oasys-offender-id' ? 'oasysOffenderId' : idType
+  const path = `${oasysIdType}/${id}`
   if (/^oasysOffenderId\/\d{5}$/.test(path) || /^crn\/x\d{6}$/.test(path)) {
+    logger.info(`Path is valid ${path}`)
     return path
   }
   throw new Error(`Invalid idType: ${idType} id: ${id}`)

@@ -198,7 +198,7 @@ module.exports = function createApp({ signInService, formService }) {
       params: { idType, id },
     } = req
     offenderSummaryData(idType, id, (err, summaryData = {}) => {
-      if (err) return res.render('pages/unknownRecord', { id })
+      if (err) return res.render('pages/unknownRecord', { id, idType })
       return res.render('pages/offenderSummary', summaryData)
     })
   }
