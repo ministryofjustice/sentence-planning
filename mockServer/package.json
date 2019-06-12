@@ -1,0 +1,14 @@
+{
+  "name": "sentence-planner-mock-node",
+  "version": "1.0.0",
+  "description": "Simple Node Express mock API for sentence-planner FE app.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jhindle",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.0"
+  }
+}
