@@ -1,0 +1,40 @@
+{
+    "oasysOffenderId": 17177,
+    "familyName": "MACINTOSH",
+    "forename1": "MICHAEL",
+    "forename2": "JOHN",
+    "identifiers": {
+        "pnc": "96/314054Y",
+        "crn": "X000340",
+        "nomisId": "A1234XY"
+    },
+    "dateOfBirth": "1984-05-24",
+    "deceased": false,
+    "limitedAccessOffender": "N",
+    "address": {
+        "addressLine1": "NEW BRIDGE STREET",
+        "addressLine4": "Stoke Prior",
+        "addressLine5": "Bromsgrove",
+        "addressLine6": "Worcestershire",
+        "addressPostcode": "NE1 2SW",
+        "telephoneNumber": "0191 2617117"
+    },
+    "offenderManaged": false,
+    "remand": false,
+    "ethnicCategory": "White - British/English/Welsh/Scottish/Northern Irish",
+    "gender": "MALE",
+    "offenderHistoric": "Current",
+    "nfa": false,
+    "custody": false,
+    "merged": false,
+    "cmsEventNumber": 6,
+    "lifer": false,
+    "aliases": [
+        {
+            "offenderAliasPk": 17015,
+            "familyName": "GREENE              ",
+            "forename1": "DEAN           ",
+            "forename2": "               "
+        }
+    ]
+}

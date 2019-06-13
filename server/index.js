@@ -1,4 +1,5 @@
 const createApp = require('./app')
+const createMockAPI = require('../mockServer/app')
 
 const formClient = require('./data/formClient')
 
@@ -12,5 +13,7 @@ const app = createApp({
   formService,
   signInService: createSignInService(),
 })
+
+createMockAPI()
 
 module.exports = app
