@@ -18,5 +18,5 @@ module.exports = function createMockAPI() {
       return err ? res.status(404).send('Invalid nomisId') : res.send(JSON.parse(sentencePlan))
     })
   })
-  app.listen(process.env.PORT || 18080)
+  app.listen(18080)
 }
