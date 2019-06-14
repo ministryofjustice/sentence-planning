@@ -1,20 +1,16 @@
 const passport = require('passport')
 const { Strategy } = require('passport-oauth2')
-const { URLSearchParams } = require('url')
 const config = require('../config')
 const { generateOauthClientToken } = require('./oauth')
 
 function authenticationMiddleware() {
-  // eslint-disable-next-line
   return (req, res, next) => {
     if (req.isAuthenticated()) {
       return next()
     }
 
-    const redirectPath = '/login'
-    const query = req.get('referrer') ? new URLSearchParams({ target: req.originalUrl }) : null
-    const redirectUrl = query ? `${redirectPath}?${query}` : redirectPath
-    return res.redirect(redirectUrl)
+    req.session.returnTo = req.originalUrl
+    return res.redirect('/login')
   }
 }
 
