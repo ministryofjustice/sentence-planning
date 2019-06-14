@@ -12,8 +12,8 @@ const cookieSession = require('cookie-session')
 const sassMiddleware = require('node-sass-middleware')
 
 const healthcheck = require('./services/healthcheck')
-const { offenderSummaryData } = require('./services/offenderSummaryService')
-const createFormRouter = require('./routes/form')
+const createOffenderSummaryRouter = require('./routes/offenderSummary')
+const createSentencePlanRouter = require('./routes/sentencePlan')
 const logger = require('../log.js')
 const nunjucksSetup = require('./utils/nunjucksSetup')
 const auth = require('./authentication/auth')
@@ -24,7 +24,7 @@ const version = moment.now().toString()
 const production = process.env.NODE_ENV === 'production'
 const testMode = process.env.NODE_ENV === 'test'
 
-module.exports = function createApp({ signInService, formService }) {
+module.exports = function createApp({ signInService }) {
   const app = express()
 
   auth.init(signInService)
@@ -180,9 +180,11 @@ module.exports = function createApp({ signInService, formService }) {
 
   app.get('/login', passport.authenticate('oauth2'))
 
-  app.get(
-    '/login/callback',
-    passport.authenticate('oauth2', { successReturnToOrRedirect: '/', failureRedirect: '/autherror' })
+  app.get('/login/callback', (req, res, next) =>
+    passport.authenticate('oauth2', {
+      successReturnToOrRedirect: req.session.returnTo || '/',
+      failureRedirect: '/autherror',
+    })(req, res, next)
   )
 
   app.use('/logout', (req, res) => {
@@ -192,27 +194,11 @@ module.exports = function createApp({ signInService, formService }) {
     res.redirect(authLogoutUrl)
   })
   app.use(authenticationMiddleware())
-  app.get('/', (req, res) => res.render('formPages/offenderSearch'))
-  const offenderSummaryCallback = (req, res) => {
-    const {
-      params: { idType, id },
-    } = req
-    offenderSummaryData(idType, id, (err, summaryData = {}) => {
-      if (err) return res.render('pages/unknownRecord', { id, idType })
-      return res.render('pages/offenderSummary', summaryData)
-    })
-  }
-  app.get('/offender-summary/:idType(oasys-offender-id)/:id(\\d{5})', offenderSummaryCallback)
-  app.get('/offender-summary/:idType(crn)/:id(x\\d{6})', offenderSummaryCallback)
-
-  app.get('/sentence-plan/:idType(oasys-offender-id)/:id(\\d{5})', (req, res) => {
-    const {
-      params: { id },
-    } = req
-    res.render('formPages/sentencePlan', { id })
+  app.get('/', (req, res) => {
+    res.render('formPages/offenderSearch', { user: req.user })
   })
-  app.use('/form/', createFormRouter({ formService, authenticationMiddleware }))
-
+  app.use('/offender-summary/', createOffenderSummaryRouter())
+  app.use('/sentence-plan/', createSentencePlanRouter())
   app.use((req, res, next) => {
     next(new Error('Not found'))
   })
