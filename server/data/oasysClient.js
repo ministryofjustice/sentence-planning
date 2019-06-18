@@ -12,7 +12,7 @@ const oasysapiUrl = config.oasys.url
 const getIdPath = (idType, id) => {
   const oasysIdType = idType === 'oasys-offender-id' ? 'oasysOffenderId' : idType
   const path = `${oasysIdType}/${id}`
-  if (/^oasysOffenderId\/\d{5}$/.test(path) || /^crn\/x\d{6}$/.test(path)) {
+  if (/^oasysOffenderId\/\d{3,}$/.test(path) || /^crn\/x\d{6}$/.test(path)) {
     logger.info(`Path is valid ${path}`)
     return path
   }

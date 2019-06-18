@@ -15,7 +15,7 @@ module.exports = () => {
     })
   })
 
-  router.get('/:idType(oasys-offender-id)/:id(\\d{5})', offenderSummaryCallback)
+  router.get('/:idType(oasys-offender-id)/:id(\\d{3,})', offenderSummaryCallback)
   router.get('/:idType(crn)/:id(x\\d{6})', offenderSummaryCallback)
 
   return router

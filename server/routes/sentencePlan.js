@@ -5,7 +5,7 @@ module.exports = () => {
   const router = express.Router()
 
   router.get(
-    '/:idType(oasys-offender-id)/:id(\\d{5})',
+    '/:idType(oasys-offender-id)/:id(\\d{3,})',
     asyncMiddleware(async (req, res) => {
       const {
         params: { id },
