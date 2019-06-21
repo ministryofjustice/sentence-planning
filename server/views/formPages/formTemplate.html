@@ -5,25 +5,10 @@
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 
 {% block beforeContent %}
-  {{ govukBreadcrumbs({
-    items: [
-      {
-        text: "Home",
-        href: "/"
-      },
-      {
-        text: "Task list",
-        href: "/tasklist"
-      },
-      {
-        text: formName | capitalize
-      }
-    ]
-  }) }}
 
   {{ govukBackLink({
     text: "Back",
-    href: backLink or '/tasklist'
+    href: backLink
   }) }}
 {% endblock %}
 

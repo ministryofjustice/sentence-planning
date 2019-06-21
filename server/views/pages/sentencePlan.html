@@ -1,0 +1,28 @@
+{% extends "../partials/offenderDetailsLayout.html" %}
+
+{% from "breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "button/macro.njk" import govukButton %}
+
+{% block beforeContent %}
+{{ govukBreadcrumbs({
+  items: [
+    {
+      text: "Search",
+      href: "/"
+    },
+    {
+      text: "Offender summary",
+      href: "/offender-summary/oasys-offender-id/" + oasysOffenderId
+    }
+  ]
+}) }}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-xl">Sentence plan for {{oasysOffenderId}}</h1>
+  </div>
+</div>
+{% endblock %}
