@@ -1,27 +1,34 @@
-{% extends "../partials/layout.html" %}
+{% extends "../partials/offenderDetailsLayout.html" %}
 
 {% from "breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {% from "button/macro.njk" import govukButton %}
+{% from "checkboxes/macro.njk" import govukCheckboxes %}
 
 {% block beforeContent %}
 {{ govukBreadcrumbs({
   items: [
     {
-      text: "Home",
-      href: "#"
+      text: "Search",
+      href: "/"
     },
     {
       text: "Offender summary",
       href: "/offender-summary/oasys-offender-id/" + oasysOffenderId
+    },
+    {
+      text: "Sentence plan",
+      href: "/sentence-plan/oasys-offender-id/" + oasysOffenderId + "/sentence-plan-id/" + sentencePlanId
     }
   ]
 }) }}
+{{ super() }}
 {% endblock %}
 
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    <h1 class="govuk-heading-xl">Sentence plan for {{oasysOffenderId}}</h1>
+    <h1 class="govuk-heading-xl">Add an Action</h1>
+    <h2>Select {{forename1}}'s risks for your first action</h2>
   </div>
 </div>
 {% endblock %}
