@@ -2,6 +2,8 @@
 
 {% from "breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {% from "button/macro.njk" import govukButton %}
+{% from "table/macro.njk" import govukTable %}
+
 
 {% block beforeContent %}
 {{ govukBreadcrumbs({
@@ -24,5 +26,14 @@
   <div class="govuk-grid-column-full">
     <h1 class="govuk-heading-xl">Sentence plan for {{oasysOffenderId}}</h1>
   </div>
+      {{ govukTable({
+      firstCellIsHeader: true,
+      rows: actions 
+    }) }}
+    {{ govukButton({
+      text: "Add new action",
+      classes: "govuk-!-margin-right-1 govuk-grid-column-one-half",
+      href: "/sentence-plan/oasys-offender-id/" + oasysOffenderId + "/sentence-plan-id/" + sentencePlanId + "/action-id/" + nextActionId
+    }) }}
 </div>
 {% endblock %}

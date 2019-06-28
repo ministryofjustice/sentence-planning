@@ -3,6 +3,10 @@
 {% from "breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {% from "button/macro.njk" import govukButton %}
 {% from "checkboxes/macro.njk" import govukCheckboxes %}
+{% from "select/macro.njk" import govukSelect %}
+{% from "textarea/macro.njk" import govukTextarea %}
+{% from "radios/macro.njk" import govukRadios %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
 
 {% block beforeContent %}
 {{ govukBreadcrumbs({
@@ -25,10 +29,114 @@
 {% endblock %}
 
 {% block content %}
+{% if errors.length > 0 %}
+  {{ govukErrorSummary({
+    titleText: "There is a problem",
+    errorList: errors
+  }) }}
+{% endif %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
     <h1 class="govuk-heading-xl">Add an Action</h1>
-    <h2>Select {{forename1}}'s risks for your first action</h2>
+    <h3 class="govuk-heading-l">Select {{forename1}}'s risks for your first action</h3>
+    <form method="post">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        {{ govukCheckboxes({
+          idPrefix: "needs",
+          name: "needs",
+          fieldset: {
+            legend: {
+              text: "Needs",
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: needs
+        }) }}
+      {{ govukSelect({
+        id: "intervention",
+        name: "intervention",
+        label: {
+          text: "Is this an intervention",
+          classes: "govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold"
+        },
+        items: [
+          {
+            value: "none",
+            text: "none",
+            selected: true
+          },
+          {
+            selected: formObject.intervention === "intervention value number one",
+            text: "intervention value number one",
+            value: "intervention value number one"
+          },
+          {
+            selected: formObject.intervention === "intervention value number two",
+            text: "intervention value number two",
+            value: "intervention value number two"
+          },
+          {
+            selected: formObject.intervention === "intervention value number three",
+            text: "intervention value number three",
+            value: "intervention value number three"
+          }
+        ]
+      }) }}
+      {{ govukTextarea({
+        name: "strength",
+        id: "strength",
+        rows: "3",
+        label: {
+          text: "Strength",
+          classes: "govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold"
+        },
+        value: formObject.strength
+      }) }}
+      {{ govukTextarea({
+        name: "action",
+        id: "action",
+        rows: "8",
+        label: {
+          text: "Action",
+          classes: "govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold"
+        },
+        value: formObject.action
+      }) }}
+      {{ govukRadios({
+        classes: "govuk-radios--inline",
+        idPrefix: "owner",
+        name: "owner",
+        fieldset: {
+          legend: {
+            text: "Who is the owner?",
+            isPageHeading: false,
+            classes: "govuk-fieldset__legend--m"
+          }
+        },
+        items: [
+          {
+            value: "Responsible officer",
+            text: "Responsible officer",
+            checked: formObject.owner === "Responsible officer"
+          },
+          {
+            value: "Service user",
+            text: "Service user",
+            checked: formObject.owner === "Service user"
+          },
+          {
+            value: "Other",
+            text: "Other",
+            checked: formObject.owner === "Other"
+          }
+        ]
+      }) }}
+      {{ govukButton({
+        text: "Save action",
+        classes: "govuk-!-margin-right-1 govuk-grid-column-one-half"
+      }) }}
+    </form>
   </div>
 </div>
 {% endblock %}
