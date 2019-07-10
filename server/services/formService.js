@@ -1,6 +1,5 @@
 const { equals } = require('../utils/functionalHelpers')
 const { validate } = require('../utils/fieldValidation')
-const logger = require('../../log')
 
 module.exports = function createSomeService(formClient) {
   async function getFormResponse(userId) {
@@ -9,29 +8,25 @@ module.exports = function createSomeService(formClient) {
     return data.rows[0] || {}
   }
 
-  async function updateAction({ oaSysId, sentencePlanId, actionId, existingData, newData, formId }) {
+  async function updateAction({ oaSysId, sentencePlanId, stepId, existingData, newData, formId }) {
     const updatedFormObject = existingData
-    logger.debug(`^^^ ${sentencePlanId} ${actionId}`)
     if (!updatedFormObject.sentencePlans) updatedFormObject.sentencePlans = []
     let sentencePlan = updatedFormObject.sentencePlans.find(({ sentencePlanId: id }) => {
       return id === sentencePlanId
     })
     if (!sentencePlan) {
-      sentencePlan = { sentencePlanId, actions: [] }
+      sentencePlan = { sentencePlanId, steps: [], dateCreated: new Date().toISOString() }
       updatedFormObject.sentencePlans.push(sentencePlan)
-      logger.debug(`^^^ sentence plan not found creating ${JSON.stringify(updatedFormObject.sentencePlans)}`)
     }
-    const actionIndex = sentencePlan.actions.findIndex(({ actionId: id }) => {
-      return id === actionId
+    const stepIndex = sentencePlan.steps.findIndex(({ stepId: id }) => {
+      return id === stepId
     })
-    const newAction = { ...newData, actionId }
-    logger.debug(`^^^ new action ${JSON.stringify(newAction)}`)
-    if (actionIndex === -1) {
-      sentencePlan.actions.push(newAction)
+    const newAction = { ...newData, stepId }
+    if (stepIndex === -1) {
+      sentencePlan.steps.push(newAction)
     } else {
-      sentencePlan.actions[actionIndex] = newAction
+      sentencePlan.steps[stepIndex] = newAction
     }
-    logger.debug(`^^^ updatedFormObject ${JSON.stringify(updatedFormObject)}`)
     await formClient.update(formId, updatedFormObject, oaSysId)
     return updatedFormObject
   }

@@ -60,8 +60,7 @@ const getOffenderNeeds = (idType, id) => {
         .timeout(timeoutSpec)
         .then(({ body }) => body)
     } catch (error) {
-      logger.warn('Error calling oasysapi')
-      logger.warn(error)
+      logger.warn(`Error calling oasysapi ${error}`)
       throw error
     }
   })(`${oasysapiUrl}/offenders/${getIdPath(idType, id)}/assessments/latest/needs`)

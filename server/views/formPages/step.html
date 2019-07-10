@@ -1,32 +1,11 @@
 {% extends "../partials/offenderDetailsLayout.html" %}
 
-{% from "breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {% from "button/macro.njk" import govukButton %}
 {% from "checkboxes/macro.njk" import govukCheckboxes %}
 {% from "select/macro.njk" import govukSelect %}
 {% from "textarea/macro.njk" import govukTextarea %}
 {% from "radios/macro.njk" import govukRadios %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
-
-{% block beforeContent %}
-{{ govukBreadcrumbs({
-  items: [
-    {
-      text: "Search",
-      href: "/"
-    },
-    {
-      text: "Offender summary",
-      href: "/offender-summary/oasys-offender-id/" + oasysOffenderId
-    },
-    {
-      text: "Sentence plan",
-      href: "/sentence-plan/oasys-offender-id/" + oasysOffenderId + "/sentence-plan-id/" + sentencePlanId
-    }
-  ]
-}) }}
-{{ super() }}
-{% endblock %}
 
 {% block content %}
 {% if errors.length > 0 %}
@@ -37,8 +16,8 @@
 {% endif %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    <h1 class="govuk-heading-xl">Add an Action</h1>
-    <h3 class="govuk-heading-l">Select {{forename1}}'s risks for your first action</h3>
+    <h1 class="govuk-heading-xl">Add a step</h1>
+    <h3 class="govuk-heading-l">Select {{forename1}}'s needs</h3>
     <form method="post">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
         {{ govukCheckboxes({
@@ -57,7 +36,7 @@
         id: "intervention",
         name: "intervention",
         label: {
-          text: "Is this an intervention",
+          text: "Is this an intervention?",
           classes: "govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold"
         },
         items: [
@@ -88,20 +67,20 @@
         id: "strength",
         rows: "3",
         label: {
-          text: "Strength",
+          text: "Does "+ forename1 +" have a strength that will help?",
           classes: "govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold"
         },
         value: formObject.strength
       }) }}
       {{ govukTextarea({
-        name: "action",
-        id: "action",
+        name: "step",
+        id: "step",
         rows: "8",
         label: {
-          text: "Action",
+          text: "Describe the step",
           classes: "govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold"
         },
-        value: formObject.action
+        value: formObject.step
       }) }}
       {{ govukRadios({
         classes: "govuk-radios--inline",
@@ -109,7 +88,7 @@
         name: "owner",
         fieldset: {
           legend: {
-            text: "Who is the owner?",
+            text: "Who will make sure it’s done?",
             isPageHeading: false,
             classes: "govuk-fieldset__legend--m"
           }
@@ -121,9 +100,9 @@
             checked: formObject.owner === "Responsible officer"
           },
           {
-            value: "Service user",
-            text: "Service user",
-            checked: formObject.owner === "Service user"
+            value: "Individual",
+            text: "Individual",
+            checked: formObject.owner === "Individual"
           },
           {
             value: "Other",
@@ -133,7 +112,7 @@
         ]
       }) }}
       {{ govukButton({
-        text: "Save action",
+        text: "Save step",
         classes: "govuk-!-margin-right-1 govuk-grid-column-one-half"
       }) }}
     </form>

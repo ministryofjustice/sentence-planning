@@ -1,5 +1,5 @@
 module.exports = {
-  action: {
+  step: {
     fields: [
       {
         needs: {
@@ -18,7 +18,7 @@ module.exports = {
         },
       },
       {
-        action: {
+        step: {
           responseType: 'requiredString',
           validationMessage: 'Add a description of the action',
         },
