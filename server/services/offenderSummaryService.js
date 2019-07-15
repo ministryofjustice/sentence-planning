@@ -11,8 +11,7 @@ const offenderSummaryData = async (idType, id, callback) => {
         result.sentencePlan = await getSentencePlan('oasysOffenderId', result.oasysOffenderId)
       }
     } catch (error) {
-      logger.info('No sentence plan returned.')
-      logger.info(error)
+      logger.info(`No sentence plan returned. ${error}`)
     }
     callback(null, result)
   } catch (error) {

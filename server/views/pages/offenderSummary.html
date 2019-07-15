@@ -4,6 +4,8 @@
 {% from "button/macro.njk" import govukButton %}
 {% from "details/macro.njk" import govukDetails %}
 {% from "table/macro.njk" import govukTable %}
+{% from "summary-list/macro.njk" import govukSummaryList %}
+
 
 {% block beforeContent %}
 {{ govukBreadcrumbs({
@@ -25,7 +27,7 @@
     <div class="govuk-grid-column-three-quarter">
       <div class="govuk-heading-l">{{forename1}}{% if forename2 %} {{forename2}}{% endif %} {{familyName}}</div>
       <div class="govuk-caption-m">CRN number</div>
-      <div class="govuk-heading-s">{{identifiers.crn}}</div>
+      <div class="govuk-heading-s">{{crn}}</div>
       <div class="govuk-caption-m">NOMS number</div>
       <div class="govuk-heading-s"><em>place holder</em></div>
     </div>
@@ -69,12 +71,10 @@
   </section>
   <section class="govuk-grid-row">
     <h2 class="govuk-heading-m">Sentence plan</h2>
-    {% if sentencePlan %}
-      {{ govukTable({
+    {% if sentencePlans %}
+      {{ govukSummaryList({
       firstCellIsHeader: true,
-      rows: [
-        [{text: "Date plan started"}, {text: sentencePlan.createdDate}]
-      ]
+      rows: sentencePlans
     }) }}
     
     {% endif %}
@@ -83,10 +83,10 @@
       href: "/sentence-plan/oasys-offender-id/"+oasysOffenderId+"/sentence-plan/new/step/new",
       classes: "govuk-!-margin-right-1 govuk-grid-column-one-half"
     }) }}
-    {% if sentencePlan %} 
+    {% if sentencePlans %} 
       {{ govukButton({
         text: "View/edit last sentence plan",
-        href: "/sentence-plan/oasys-offender-id/"+oasysOffenderId,
+        href: "/sentence-plan/oasys-offender-id/"+oasysOffenderId+"/sentence-plan/"+latestSentencePlanId,
         classes: "govuk-grid-column-one-half"
       }) }}
     {% endif %}
