@@ -51,4 +51,19 @@ const getSentencePlan = (idType, id) => {
   })(`${oasysapiUrl}/offenders/${getIdPath(idType, id)}/sentencePlans/latest`)
 }
 
-module.exports = { getOffenderData, getSentencePlan }
+const getOffenderNeeds = (idType, id) => {
+  return (async path => {
+    logger.info(`getOffenderNeeds: calling oasysapi: ${path}`)
+    try {
+      return await superagent
+        .get(path)
+        .timeout(timeoutSpec)
+        .then(({ body }) => body)
+    } catch (error) {
+      logger.warn(`Error calling oasysapi ${error}`)
+      throw error
+    }
+  })(`${oasysapiUrl}/offenders/${getIdPath(idType, id)}/assessments/latest/needs`)
+}
+
+module.exports = { getOffenderData, getSentencePlan, getOffenderNeeds }

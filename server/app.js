@@ -24,7 +24,7 @@ const version = moment.now().toString()
 const production = process.env.NODE_ENV === 'production'
 const testMode = process.env.NODE_ENV === 'test'
 
-module.exports = function createApp({ signInService }) {
+module.exports = function createApp({ signInService, formService }) {
   const app = express()
 
   auth.init(signInService)
@@ -198,7 +198,7 @@ module.exports = function createApp({ signInService }) {
     res.render('formPages/offenderSearch', { user: req.user })
   })
   app.use('/offender-summary/', createOffenderSummaryRouter())
-  app.use('/sentence-plan/', createSentencePlanRouter())
+  app.use('/sentence-plan/', createSentencePlanRouter(formService))
   app.use((req, res, next) => {
     next(new Error('Not found'))
   })

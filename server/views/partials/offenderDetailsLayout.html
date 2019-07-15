@@ -1,30 +1,6 @@
 {% extends "../partials/layout.html" %}
-{% from "summary-list/macro.njk" import govukSummaryList %}
-
+{% from "breadcrumbs/macro.njk" import govukBreadcrumbs %}
 
 {% block beforeContent %}
-  <dl class="govuk-summary-list govuk-!-margin-bottom-1">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key govuk-!-width-one-quarter no-wrap-title">Name:</dt>
-      <dd class="govuk-summary-list__value">{{forename1}}{% if forename2 %} {{forename2}}{% endif %} {{familyName}}<dd>
-      <dt class="govuk-summary-list__key govuk-!-width-one-quarter no-wrap-title">DOB:</dt>
-      <dd class="govuk-summary-list__value">{{dateOfBirth}}</dd>
-    </div>
-  </dl>
-  <dl class="govuk-summary-list govuk-!-margin-bottom-1">
-    <div class="govuk-summary-list__row">
-      {% if oasysOffenderId %}
-        <dt class="govuk-summary-list__key no-wrap-title">Oasys:</dt> 
-        <dd class="govuk-summary-list__value">{{oasysOffenderId}}</dd>
-      {% endif %}
-      {% if crn %}
-        <dt class="govuk-summary-list__key no-wrap-title">CRN:</dt> 
-        <dd class="govuk-summary-list__value">{{crn}}</dd>
-      {% endif %}
-      {% if nomisId %}
-        <dt class="govuk-summary-list__key no-wrap-title">Nomis:</dt> 
-        <dd class="govuk-summary-list__value">{{nomisId}}</dd>
-      {% endif %}
-    </div>
-  </dl>
+  {{ govukBreadcrumbs({items: breadcrumbs}) }}
 {% endblock %}

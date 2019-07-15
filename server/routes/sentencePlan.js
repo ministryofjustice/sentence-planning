@@ -1,55 +1,74 @@
 const express = require('express')
-const { offenderSummaryData } = require('../services/offenderSummaryService')
-const { getTimeStringFromISO8601 } = require('../../server/utils/displayHelpers')
+const flash = require('connect-flash')
+const getFormData = require('../middleware/getFormData')
+const getStep = require('../middleware/getStep')
+const persistStep = require('../middleware/persistStep')
+const getOffenderSummaryData = require('../middleware/getOffenderSummaryData')
+const getOffenderNeeds = require('../middleware/getOffenderNeeds')
+const { getTimeStringFromISO8601 } = require('../utils/displayHelpers')
+const logger = require('../../log')
 
-const getOasysOffenderId = (req, res, next) => {
-  const {
-    params: { idType, id: oasysOffenderId },
-  } = req
-  offenderSummaryData(idType, oasysOffenderId, (err, summaryData = {}) => {
-    if (err) return res.render('../views/pages/unknownRecord', { oasysOffenderId, idType })
-    const {
-      forename1,
-      forename2 = '',
-      familyName,
-      dateOfBirth,
-      identifiers: { crn = '', nomisId = '' },
-    } = summaryData
-    res.locals = {
-      ...res.locals,
-      oasysOffenderId,
-      forename1,
-      forename2,
-      familyName,
-      crn,
-      nomisId,
-      dateOfBirth: getTimeStringFromISO8601(dateOfBirth),
-    }
-    return next()
-  })
+const getSentencePlanSteps = (oasysOffenderId, sentencePlanId, sentencePlans) => {
+  const linkRoot = `/sentence-plan/oasys-offender-id/${oasysOffenderId}/sentence-plan/${sentencePlanId}/step/`
+  return sentencePlans
+    .find(({ sentencePlanId: id }) => {
+      return id === sentencePlanId
+    })
+    .steps.map(({ step = '', intervention = '', stepId, dateCreated }) => {
+      return {
+        key: {
+          text: step || intervention,
+        },
+        value: {
+          text: getTimeStringFromISO8601(dateCreated),
+        },
+        actions: {
+          items: [
+            {
+              href: `${linkRoot}${stepId}`,
+              text: 'Change',
+              visuallyHiddenText: `Action ${stepId}`,
+            },
+          ],
+        },
+      }
+    })
 }
 
-module.exports = () => {
+module.exports = formService => {
   const router = express.Router()
 
   const userIdPath = '/:idType(oasys-offender-id)/:id(\\d{3,})'
-  const sentencePlanPath = `${userIdPath}/sentence-plan-id/:sentencePlanId(\\d+)`
-  const actionPath = `${sentencePlanPath}/action-id/:actionId(\\d+)`
+  const sentencePlanPath = `${userIdPath}/sentence-plan/:sentencePlanId(\\d+)`
+  const stepPath = `${sentencePlanPath}/step/:stepId(\\d+)`
+  const newStepPath = `${userIdPath}/sentence-plan/:sentencePlanId(new)/step/:stepId(new)`
+  const newStepPath2 = `${userIdPath}/sentence-plan/:sentencePlanId(\\d+)/step/:stepId(new)`
 
-  router.get(sentencePlanPath, getOasysOffenderId, (req, res) => {
-    const {
-      params: { sentencePlanId },
-    } = req
-    res.locals.sentencePlanId = sentencePlanId
-    res.render('../views/pages/sentencePlan', res.locals)
+  router.use(flash())
+  router.use((req, res, next) => {
+    if (typeof req.csrfToken === 'function') {
+      res.locals.csrfToken = req.csrfToken()
+    }
+    next()
   })
-  router.get(actionPath, getOasysOffenderId, (req, res) => {
+  router.use(userIdPath, getOffenderSummaryData)
+
+  router.get(sentencePlanPath, getFormData(formService), (req, res) => {
     const {
-      params: { sentencePlanId },
+      params: { id: oasysOffenderId, sentencePlanId },
     } = req
-    res.locals.sentencePlanId = sentencePlanId
-    res.render('../views/formPages/action', res.locals)
+    try {
+      const { locals } = res
+      locals.steps = getSentencePlanSteps(oasysOffenderId, sentencePlanId, locals.formObject.sentencePlans)
+      locals.sentencePlanId = sentencePlanId
+      return res.render('../views/pages/sentencePlan', locals)
+    } catch (err) {
+      logger.warn(`Could not find sentence plan: ${sentencePlanId}`)
+      return res.redirect('/')
+    }
   })
+  router.get([stepPath, newStepPath, newStepPath2], getFormData(formService), getOffenderNeeds(), getStep())
+  router.post([stepPath, newStepPath, newStepPath2], getFormData(formService), persistStep(formService))
 
   return router
 }

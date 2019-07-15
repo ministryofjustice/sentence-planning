@@ -6,6 +6,11 @@ const { getFieldName, getFieldDetail, mergeWithRight, getIn, isNilOrEmpty } = re
 const joi = baseJoi.extend(dateExtend).extend(postcodeExtend)
 
 const fieldOptions = {
+  requiredArrayOfStrings: joi
+    .array()
+    .min(1)
+    .items(joi.string())
+    .required(),
   requiredString: joi.string().required(),
   optionalString: joi
     .string()

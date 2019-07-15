@@ -1,28 +1,21 @@
 {% extends "../partials/offenderDetailsLayout.html" %}
 
-{% from "breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {% from "button/macro.njk" import govukButton %}
-
-{% block beforeContent %}
-{{ govukBreadcrumbs({
-  items: [
-    {
-      text: "Search",
-      href: "/"
-    },
-    {
-      text: "Offender summary",
-      href: "/offender-summary/oasys-offender-id/" + oasysOffenderId
-    }
-  ]
-}) }}
-{{ super() }}
-{% endblock %}
+{% from "summary-list/macro.njk" import govukSummaryList %}
 
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    <h1 class="govuk-heading-xl">Sentence plan for {{oasysOffenderId}}</h1>
+    <h1 class="govuk-heading-xl">Development overview</h1>
   </div>
+      {{ govukSummaryList({
+      firstCellIsHeader: true,
+      rows: steps 
+    }) }}
+    {{ govukButton({
+      text: "Add new step",
+      classes: "govuk-!-margin-right-1 govuk-grid-column-one-half",
+      href: "/sentence-plan/oasys-offender-id/" + oasysOffenderId + "/sentence-plan/" + sentencePlanId + "/step/new"
+    }) }}
 </div>
 {% endblock %}

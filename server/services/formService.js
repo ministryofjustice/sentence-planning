@@ -8,6 +8,29 @@ module.exports = function createSomeService(formClient) {
     return data.rows[0] || {}
   }
 
+  async function updateAction({ oaSysId, sentencePlanId, stepId, existingData, newData, formId }) {
+    const updatedFormObject = existingData
+    if (!updatedFormObject.sentencePlans) updatedFormObject.sentencePlans = []
+    let sentencePlan = updatedFormObject.sentencePlans.find(({ sentencePlanId: id }) => {
+      return id === sentencePlanId
+    })
+    if (!sentencePlan) {
+      sentencePlan = { sentencePlanId, steps: [], dateCreated: new Date().toISOString() }
+      updatedFormObject.sentencePlans.push(sentencePlan)
+    }
+    const stepIndex = sentencePlan.steps.findIndex(({ stepId: id }) => {
+      return id === stepId
+    })
+    const newAction = { ...newData, stepId }
+    if (stepIndex === -1) {
+      sentencePlan.steps.push(newAction)
+    } else {
+      sentencePlan.steps[stepIndex] = newAction
+    }
+    await formClient.update(formId, updatedFormObject, oaSysId)
+    return updatedFormObject
+  }
+
   async function update({ userId, formId, formObject, config, userInput, formSection, formName }) {
     const updatedFormObject = getUpdatedFormObject({
       formObject,
@@ -64,6 +87,7 @@ module.exports = function createSomeService(formClient) {
   }
 
   return {
+    updateAction,
     getFormResponse,
     update,
     getValidationErrors: validate,
