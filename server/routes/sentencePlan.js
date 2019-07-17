@@ -6,7 +6,7 @@ const persistStep = require('../middleware/persistStep')
 const getOffenderSummaryData = require('../middleware/getOffenderSummaryData')
 const getOffenderNeeds = require('../middleware/getOffenderNeeds')
 const getSentencePlan = require('../middleware/getSentencePlan')
-const { getTimeStringFromISO8601 } = require('../utils/displayHelpers')
+const getOasysSentencePlan = require('../middleware/getOasysSentencePlan')
 
 module.exports = formService => {
   const router = express.Router()
@@ -28,10 +28,7 @@ module.exports = formService => {
   router.use(userIdPath, getOffenderSummaryData())
 
   router.get(sentencePlanPath, getFormData(formService), getSentencePlan())
-  router.get(oasysSentencePlanPath, (req, res) => {
-    res.locals.oasysSentencePlan.createdDate = getTimeStringFromISO8601(res.locals.oasysSentencePlan.createdDate)
-    res.render('../views/pages/oaSysSentencePlan', res.locals.oasysSentencePlan)
-  })
+  router.get(oasysSentencePlanPath, getOasysSentencePlan())
   router.get([stepPath, newStepPath, newStepPath2], getFormData(formService), getOffenderNeeds(), getStep())
   router.post([stepPath, newStepPath, newStepPath2], getFormData(formService), persistStep(formService))
 
