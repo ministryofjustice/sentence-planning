@@ -1,15 +1,6 @@
 const logger = require('../../log')
 const { getTimeStringFromISO8601 } = require('../utils/displayHelpers')
-
-const generateSentencePlanBreadcrumb = (oasysOffenderId, sentencePlanId, sentencePlanDateCreated, breadcrumbs = []) => {
-  return [
-    ...breadcrumbs,
-    {
-      text: `Sentence plan ${sentencePlanDateCreated}`,
-      href: `/sentence-plan/oasys-offender-id/${oasysOffenderId}/sentence-plan/${sentencePlanId}`,
-    },
-  ]
-}
+const { searchBreadcrumb, summaryBreadcrumb, sentencePlanBreadcrumb } = require('./breadcrumbHelpers')
 
 const processNeeds = (rawNeeds, checkedNeeds = []) => {
   return rawNeeds
@@ -48,18 +39,17 @@ module.exports = () => async (req, res) => {
       params: { sentencePlanId, stepId, id: oasysOffenderId = '' },
     } = req
     const { locals } = res
-    const { breadcrumbs = [], needs } = locals
+    const { forename1, familyName, needs } = locals
     const {
       formObject: { sentencePlans },
     } = locals
     const newLocals = Object.assign(locals, processFormData(sentencePlanId, stepId, sentencePlans, needs))
-    if (sentencePlanId !== 'new')
-      newLocals.breadcrumbs = generateSentencePlanBreadcrumb(
-        oasysOffenderId,
-        sentencePlanId,
-        newLocals.sentencePlanDateCreated,
-        breadcrumbs
+    newLocals.breadcrumbs = [searchBreadcrumb(), summaryBreadcrumb(oasysOffenderId, forename1, familyName)]
+    if (sentencePlanId !== 'new') {
+      newLocals.breadcrumbs.push(
+        sentencePlanBreadcrumb(oasysOffenderId, sentencePlanId, newLocals.sentencePlanDateCreated)
       )
+    }
     return res.render('../views/formPages/step', newLocals)
   } catch (error) {
     logger.warn(`Could not render step ERROR: ${error}`)

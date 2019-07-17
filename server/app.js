@@ -197,7 +197,7 @@ module.exports = function createApp({ signInService, formService }) {
   app.get('/', (req, res) => {
     res.render('formPages/offenderSearch', { user: req.user })
   })
-  app.use('/offender-summary/', createOffenderSummaryRouter())
+  app.use('/offender-summary/', createOffenderSummaryRouter(formService))
   app.use('/sentence-plan/', createSentencePlanRouter(formService))
   app.use((req, res, next) => {
     next(new Error('Not found'))

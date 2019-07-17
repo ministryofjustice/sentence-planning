@@ -1,6 +1,6 @@
 module.exports = formService => async (req, res, next) => {
   try {
-    const formData = await formService.getFormResponse(req.params.id)
+    const formData = await formService.getFormResponse(res.locals.oasysOffenderId || req.params.id)
 
     res.locals.formObject = formData.form_response || {}
     res.locals.formId = formData.id

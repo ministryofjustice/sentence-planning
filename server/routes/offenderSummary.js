@@ -1,22 +1,17 @@
 const express = require('express')
-const asyncMiddleware = require('../middleware/asyncMiddleware')
-const { offenderSummaryData } = require('../services/offenderSummaryService')
+const getFormData = require('../middleware/getFormData')
+const getOffenderSummaryData = require('../middleware/getOffenderSummaryData')
+const getOffenderSummary = require('../middleware/getOffenderSummary')
 
-module.exports = () => {
+module.exports = formService => {
   const router = express.Router()
 
-  const offenderSummaryCallback = asyncMiddleware(async (req, res) => {
-    const {
-      params: { idType, id },
-    } = req
-    offenderSummaryData(idType, id, (err, summaryData = {}) => {
-      if (err) return res.render('pages/unknownRecord', { id, idType })
-      return res.render('pages/offenderSummary', summaryData)
-    })
-  })
-
-  router.get('/:idType(oasys-offender-id)/:id(\\d{3,})', offenderSummaryCallback)
-  router.get('/:idType(crn)/:id(x\\d{6})', offenderSummaryCallback)
+  router.get(
+    ['/:idType(oasys-offender-id)/:id(\\d{3,})', '/:idType(crn)/:id(x\\d{6})'],
+    getOffenderSummaryData(),
+    getFormData(formService),
+    getOffenderSummary()
+  )
 
   return router
 }
