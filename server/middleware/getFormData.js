@@ -1,3 +1,5 @@
+const logger = require('../../log')
+
 module.exports = formService => async (req, res, next) => {
   try {
     const formData = await formService.getFormResponse(res.locals.oasysOffenderId || req.params.id)
@@ -7,7 +9,7 @@ module.exports = formService => async (req, res, next) => {
 
     next()
   } catch (error) {
-    // TODO proper error handling
+    logger.warn(`Cannot retrieve form data. ${error}`)
     res.redirect('/')
   }
 }
