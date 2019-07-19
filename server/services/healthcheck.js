@@ -12,16 +12,17 @@ function auth() {
     .catch(err => ({ name: 'auth', status: 'ERROR', message: err }))
 }
 
-module.exports = function healthcheck(callback) {
+function healthcheck(callback) {
   const checks = [db, auth]
 
   return Promise.all(checks.map(fn => fn())).then(checkResults => {
     const allOk = checkResults.every(item => item.status === 'ok')
-    const result = {
+    callback(null, {
       healthy: allOk,
+      status: allOk ? 'UP' : 'DOWN',
       checks: checkResults.reduce(gatherCheckInfo, {}),
-    }
-    callback(null, addAppInfo(result))
+      build: info(),
+    })
   })
 }
 
@@ -29,15 +30,13 @@ function gatherCheckInfo(total, currentValue) {
   return Object.assign({}, total, { [currentValue.name]: currentValue.message })
 }
 
-function addAppInfo(result) {
+function info() {
   const buildInformation = getBuild()
-  const buildInfo = {
+  return {
     uptime: process.uptime(),
     build: buildInformation,
     version: buildInformation && buildInformation.buildNumber,
   }
-
-  return Object.assign({}, result, buildInfo)
 }
 
 function getBuild() {
@@ -48,3 +47,5 @@ function getBuild() {
     return null
   }
 }
+
+module.exports = { healthcheck }

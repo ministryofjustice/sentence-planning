@@ -1,319 +1,84 @@
 {
-  "createdDate": "2012-11-17",
-  "objectives": [
-    {
-      "criminogenicNeeds": [
-        {
-          "code": "I7B",
-          "description": "Gambling",
-          "priority": 1
-        },
-        {
-          "code": "I5A",
-          "description": "Money management",
-          "priority": 2
-        }
-      ],
-      "interventions": [
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "SIXTEEN_WEEKS",
-            "description": "Sixteen Weeks"
+  "sentencePlanId": 2214578,
+  "createdDate": "2019-01-26",
+  "basicSentencePlanItemItems": [
+      {
+          "basicSentPlanObjId": 81252,
+          "includeInPlan": "Y",
+          "offenceBehaviourLink": {
+              "code": "ATTITUDES",
+              "description": "Attitudes"
           },
-          "interventionCode": "V3",
-          "interventionDescription": "Finance advocacy"
-        },
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "SIXTEEN_WEEKS",
-            "description": "Sixteen Weeks"
-          },
-          "interventionCode": "VIII2",
-          "interventionDescription": "Budgetary/financial management"
-        }
-      ],
-      "objectiveType": {
-        "code": "CURRENT",
-        "description": "Current"
+          "objectiveText": "To complete hours in a pro-social manner.",
+          "measureText": "Feedback from UPW supervisors.\r\n\r\nDirect observation in interviews.",
+          "whatWorkText": "Information on pro-social behaviour given on Pre-Placement Work Session.\r\n\r\nPro-social behaviour modelled to offender.",
+          "whoWillDoWorkText": "Offender.\r\n\r\nUPW Supervisors.\r\n\r\nPlacement Manager.",
+          "timescalesText": "Pre-placement Work Session within 10 days of Order being made.\r\n\r\nReview at 16 weeks and at end of the Requirement."
       },
-      "howMeasured": "Meeting with Mr Sentenceplan on a regular basis"
-    },
-    {
-      "criminogenicNeeds": [
-        {
-          "code": "I2A",
-          "description": "Attitude to victim",
-          "priority": 1
-        }
-      ],
-      "interventions": [
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "SIX_MONTHS",
-            "description": "Six Months"
+      {
+          "basicSentPlanObjId": 81253,
+          "includeInPlan": "Y",
+          "offenceBehaviourLink": {
+              "code": "EDUCATION_TRAINING_AND_EMPLOYABILITY",
+              "description": "ETE"
           },
-          "interventionCode": "VI8",
-          "interventionDescription": "Alcohol counselling"
-        }
-      ],
-      "objectiveType": {
-        "code": "CURRENT",
-        "description": "Current"
+          "objectiveText": "To improve his/her literacy/numeracy skills.",
+          "measureText": "Completion of Skills for Life assessment.\r\n\r\nFeedback from provider.",
+          "whatWorkText": "Provision of relevant training.",
+          "whoWillDoWorkText": "Offender.\r\n\r\nOffender Manager.\r\n\r\nPartner Agency.\r\n\r\nEducation provider.",
+          "timescalesText": "Assessment completed within 10 days of Order commencing.\r\n\r\nReview at 16 weeks.\r\n\r\nProvision can continue on voluntary basis after expiry of Order."
       },
-      "howMeasured": "not sure yet"
-    },
-    {
-      "criminogenicNeeds": [
-        {
-          "code": "I5",
-          "description": "FINANCIAL MANAGEMENT",
-          "priority": 1
-        }
-      ],
-      "interventions": [
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "THREE_MONTHS",
-            "description": "Three Months"
+      {
+          "basicSentPlanObjId": 81254,
+          "includeInPlan": "Y",
+          "offenceBehaviourLink": {
+              "code": "EDUCATION_TRAINING_AND_EMPLOYABILITY",
+              "description": "ETE"
           },
-          "interventionCode": "VIII2",
-          "interventionDescription": "Budgetary/financial management"
-        }
-      ],
-      "objectiveType": {
-        "code": "CURRENT",
-        "description": "Current"
+          "objectiveText": "To improve his/her level of employability.",
+          "measureText": "Offender undertakes VSL opportunities.\r\n\r\nFeedback from VSL Tutors.\r\n\r\nObtaining a qualification.",
+          "whatWorkText": "Achieve VSL award.\r\n\r\nEmployment interview with partner agency.",
+          "whoWillDoWorkText": "Offender.\r\n\r\nVSL tutor.\r\n\r\nCase Manager.\r\n\r\nPartner agency.",
+          "timescalesText": "Review at 16 weeks and at end of the Requirement."
       },
-      "howMeasured": "check with people running course"
-    },
-    {
-      "criminogenicNeeds": [
-        {
-          "code": "IHF",
-          "description": "Bullying (as perpetrator)",
-          "priority": 1
-        }
-      ],
-      "interventions": [
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "ONE_YEAR",
-            "description": "One Year"
+      {
+          "basicSentPlanObjId": 81255,
+          "includeInPlan": "Y",
+          "offenceBehaviourLink": {
+              "code": "RISK_MANAGEMENT",
+              "description": "Risk Management"
           },
-          "interventionCode": "IV3",
-          "interventionDescription": "Controlling Anger & Learning how to Manage it (CALM)"
-        }
-      ],
-      "objectiveType": {
-        "code": "CURRENT",
-        "description": "Current"
+          "objectiveText": "To assess and reduce risk of reoffending and harm.",
+          "measureText": "Reduction in number of convictions / no further convictions during currency of order.\r\n\r\nFeedback from others / other agencies\r\n\r\nEvidence of positive changes.",
+          "whatWorkText": "Ongoing assessment of changes in circumstances, thinking and behaviour and how this links to offending / harm.",
+          "whoWillDoWorkText": "Offender Manager.\r\n\r\nUPW Supervisors.",
+          "timescalesText": "Review upon significant changes in circumstances / at 16 weeks / at Termination."
       },
-      "howMeasured": "Not known yet"
-    },
-    {
-      "criminogenicNeeds": [
-        {
-          "code": "I7C",
-          "description": "Recklessness/risk taking behaviour",
-          "priority": 1
-        }
-      ],
-      "interventions": [
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "SIX_MONTHS",
-            "description": "Six Months"
+      {
+          "basicSentPlanObjId": 81256,
+          "includeInPlan": "Y",
+          "offenceBehaviourLink": {
+              "code": "THINKING_AND_BEHAVIOUR",
+              "description": "Thinking/Behaviour"
           },
-          "interventionCode": "IV1",
-          "interventionDescription": "Aggression Replacement Training (ART)"
-        }
-      ],
-      "objectiveType": {
-        "code": "CURRENT",
-        "description": "Current"
+          "objectiveText": "To improve his/her problem solving skills.",
+          "measureText": "Reduction in number of convictions / no further convictions during currency of Order.\r\n\r\nFeedback from UPW Supervisors.",
+          "whatWorkText": "Problem Solving modelled to offender.",
+          "whoWillDoWorkText": "Offender.\r\n\r\nUPW Supervisors.",
+          "timescalesText": "Review at 16 weeks and at end of the Requirement."
       },
-      "howMeasured": "Not known yet"
-    },
-    {
-      "criminogenicNeeds": [
-        {
-          "code": "IHD",
-          "description": "Risk to public",
-          "priority": 1
-        }
-      ],
-      "interventions": [
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "ONE_WEEK",
-            "description": "One Week"
+      {
+          "basicSentPlanObjId": 81251,
+          "includeInPlan": "Y",
+          "offenceBehaviourLink": {
+              "code": "ATTITUDES",
+              "description": "Attitudes"
           },
-          "interventionCode": "VIII3",
-          "interventionDescription": "Lifeskills"
-        }
-      ],
-      "objectiveType": {
-        "code": "CURRENT",
-        "description": "Current"
-      },
-      "howMeasured": "UAT Final Regression"
-    },
-    {
-      "criminogenicNeeds": [
-        {
-          "code": "IHD",
-          "description": "Risk to public",
-          "priority": 1
-        }
-      ],
-      "interventions": [
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "ONE_MONTH",
-            "description": "One Month"
-          },
-          "interventionCode": "ARV",
-          "interventionDescription": "Alcohol Related Violence Programme"
-        }
-      ],
-      "objectiveType": {
-        "code": "CURRENT",
-        "description": "Current"
-      },
-      "howMeasured": "UAT Final Regression Tests"
-    },
-    {
-      "criminogenicNeeds": [
-        {
-          "code": "IHG",
-          "description": "Partner abuse",
-          "priority": 1
-        }
-      ],
-      "interventions": [
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "SIXTEEN_WEEKS",
-            "description": "Sixteen Weeks"
-          },
-          "interventionCode": "IV50",
-          "interventionDescription": "Choices Actions Relationships Emotions (CARE)"
-        }
-      ],
-      "objectiveType": {
-        "code": "CURRENT",
-        "description": "Current"
-      },
-      "howMeasured": "not sure yet but will figure something out"
-    },
-    {
-      "criminogenicNeeds": [
-        {
-          "code": "I3",
-          "description": "ACCOMMODATION",
-          "priority": 1
-        }
-      ],
-      "interventions": [
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "SIX_MONTHS",
-            "description": "Six Months"
-          },
-          "interventionCode": "V1",
-          "interventionDescription": "Accommodation advocacy"
-        }
-      ],
-      "objectiveType": {
-        "code": "CURRENT",
-        "description": "Current"
-      },
-      "howMeasured": "I'll think of summat"
-    },
-    {
-      "criminogenicNeeds": [
-        {
-          "code": "IHA",
-          "description": "Risk to children",
-          "priority": 1
-        }
-      ],
-      "interventions": [
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "ONE_WEEK",
-            "description": "One Week"
-          },
-          "interventionCode": "V6",
-          "interventionDescription": "Family Issues advocacy"
-        }
-      ],
-      "objectiveType": {
-        "code": "CURRENT",
-        "description": "Current"
-      },
-      "howMeasured": "tricky this one"
-    },
-    {
-      "criminogenicNeeds": [
-        {
-          "code": "I7",
-          "description": "LIFESTYLE & ASSOCIATES",
-          "priority": 1
-        }
-      ],
-      "interventions": [
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "ONE_YEAR",
-            "description": "One Year"
-          },
-          "interventionCode": "VI6",
-          "interventionDescription": "Other family relationships counselling"
-        }
-      ],
-      "objectiveType": {
-        "code": "CURRENT",
-        "description": "Current"
-      },
-      "howMeasured": "Don't know"
-    },
-    {
-      "criminogenicNeeds": [
-        {
-          "code": "I4C",
-          "description": "Attitude/motivation",
-          "priority": 1
-        }
-      ],
-      "interventions": [
-        {
-          "copiedForward": false,
-          "timescale": {
-            "code": "SIX_MONTHS",
-            "description": "Six Months"
-          },
-          "interventionCode": "V2",
-          "interventionDescription": "Employment advocacy"
-        }
-      ],
-      "objectiveType": {
-        "code": "CURRENT",
-        "description": "Current"
-      },
-      "howMeasured": "Not really sure"
-    }
+          "objectiveText": "To make indirect reparation to the community for his/her offending.",
+          "measureText": "UPW hours undertaken.\r\n\r\nFeedback from UPW Supervisors.",
+          "whatWorkText": "Completion of UPW hours.",
+          "whoWillDoWorkText": "Offender.\r\n\r\nUPW Supervisors.",
+          "timescalesText": "Undertake a minimum of 6 hours per week.  Complete UPW hours within 12 months.\r\n\r\nReview at 16 weeks and at end of the Requirement."
+      }
   ]
 }
