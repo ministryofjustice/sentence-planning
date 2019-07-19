@@ -5,33 +5,33 @@ const { getTimeStringFromISO8601 } = require('../utils/displayHelpers')
 module.exports = () => async (req, res) => {
   try {
     const { locals } = res
-    const { oasysOffenderId } = locals
+    const { oasysOffenderId, formObject } = locals
     const linkRoot = `/sentence-plan/oasys-offender-id/${oasysOffenderId}/`
 
-    const sentencePlans = locals.formObject.sentencePlans
-      .filter(({ dateCreated = '', sentencePlanId = '' }) => dateCreated && sentencePlanId)
-      .sort(({ dateCreated: a }, { dateCreated: b }) => a < b)
-    if (sentencePlans) {
-      locals.sentencePlans = sentencePlans.map(({ dateCreated, sentencePlanId }) => {
-        return {
-          key: {
-            text: getTimeStringFromISO8601(dateCreated),
-          },
-          actions: {
-            items: [
-              {
-                href: `${linkRoot}sentence-plan/${sentencePlanId}`,
-                text: 'View',
-                visuallyHiddenText: `Action ${sentencePlanId}`,
-              },
-            ],
-          },
-        }
-      })
+    if (formObject.sentencePlans) {
+      locals.sentencePlans = formObject.sentencePlans
+        .filter(({ dateCreated = '', sentencePlanId = '' }) => dateCreated && sentencePlanId)
+        .sort(({ dateCreated: a }, { dateCreated: b }) => a < b)
+        .map(({ dateCreated, sentencePlanId }) => {
+          return {
+            key: {
+              text: getTimeStringFromISO8601(dateCreated),
+            },
+            actions: {
+              items: [
+                {
+                  href: `${linkRoot}sentence-plan/${sentencePlanId}`,
+                  text: 'View',
+                  visuallyHiddenText: `Action ${sentencePlanId}`,
+                },
+              ],
+            },
+          }
+        })
     } else {
       locals.sentencePlans = []
     }
-    if (sentencePlans.length > 0) locals.latestSentencePlanId = sentencePlans[0].sentencePlanId
+    if (locals.sentencePlans.length > 0) locals.latestSentencePlanId = locals.sentencePlans[0].sentencePlanId
     if (locals.oasysSentencePlan) {
       const { sentencePlanId, createdDate } = locals.oasysSentencePlan
       locals.sentencePlans.push({
