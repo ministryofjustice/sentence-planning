@@ -11,7 +11,7 @@ const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 const sassMiddleware = require('node-sass-middleware')
 
-const healthcheck = require('./services/healthcheck')
+const { healthcheck } = require('./services/healthcheck')
 const createOffenderSummaryRouter = require('./routes/offenderSummary')
 const createSentencePlanRouter = require('./routes/sentencePlan')
 const logger = require('../log.js')
@@ -117,7 +117,7 @@ module.exports = function createApp({ signInService, formService }) {
   })
 
   // Express Routing Configuration
-  app.get('/health', (req, res, next) => {
+  app.get(['/health', '/info'], (req, res, next) => {
     healthcheck((err, result) => {
       if (err) {
         return next(err)
