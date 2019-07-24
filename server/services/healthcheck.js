@@ -17,12 +17,17 @@ function healthcheck(callback) {
 
   return Promise.all(checks.map(fn => fn())).then(checkResults => {
     const allOk = checkResults.every(item => item.status === 'ok')
-    callback(null, {
-      healthy: allOk,
-      status: allOk ? 'UP' : 'DOWN',
-      checks: checkResults.reduce(gatherCheckInfo, {}),
-      build: info(),
-    })
+    callback(
+      null,
+      Object.assign(
+        {
+          healthy: allOk,
+          status: allOk ? 'UP' : 'DOWN',
+          checks: checkResults.reduce(gatherCheckInfo, {}),
+        },
+        info()
+      )
+    )
   })
 }
 
