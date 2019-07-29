@@ -7,6 +7,8 @@ const getOffenderSummaryData = require('../middleware/getOffenderSummaryData')
 const getOffenderNeeds = require('../middleware/getOffenderNeeds')
 const getSentencePlan = require('../middleware/getSentencePlan')
 const getOasysSentencePlan = require('../middleware/getOasysSentencePlan')
+const logger = require('../../log')
+const { stepBreadcrumbs } = require('../middleware/breadcrumbHelpers')
 
 module.exports = formService => {
   const router = express.Router()
@@ -29,7 +31,19 @@ module.exports = formService => {
 
   router.get(sentencePlanPath, getFormData(formService), getSentencePlan())
   router.get(oasysSentencePlanPath, getOasysSentencePlan())
-  router.get([stepPath, newStepPath, newStepPath2], getFormData(formService), getOffenderNeeds(), getStep())
+  router.get(
+    `${stepPath}/progress`,
+    getFormData(formService),
+    getOffenderNeeds(),
+    getStep('../views/formPages/stepProgress')
+  )
+  router.get(`${stepPath}/view`, getFormData(formService), getOffenderNeeds(), getStep('../views/pages/stepView'))
+  router.get(
+    [stepPath, newStepPath, newStepPath2],
+    getFormData(formService),
+    getOffenderNeeds(),
+    getStep('../views/formPages/step')
+  )
   router.post([stepPath, newStepPath, newStepPath2], getFormData(formService), persistStep(formService))
 
   return router
