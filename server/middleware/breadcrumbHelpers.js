@@ -17,8 +17,23 @@ const sentencePlanBreadcrumb = (oasysOffenderId, sentencePlanId, sentencePlanDat
   }
 }
 
+const sentencePlanChildrenBreadcrumbs = (
+  oasysOffenderId,
+  forename1,
+  familyName,
+  sentencePlanId,
+  sentencePlanDateCreated
+) => {
+  const breadcrumbs = [searchBreadcrumb(), summaryBreadcrumb(oasysOffenderId, forename1, familyName)]
+  if (sentencePlanId !== 'new') {
+    breadcrumbs.push(sentencePlanBreadcrumb(oasysOffenderId, sentencePlanId, sentencePlanDateCreated))
+  }
+  return breadcrumbs
+}
+
 module.exports = {
   searchBreadcrumb,
   summaryBreadcrumb,
   sentencePlanBreadcrumb,
+  sentencePlanChildrenBreadcrumbs,
 }

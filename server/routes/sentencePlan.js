@@ -6,6 +6,7 @@ const persistStep = require('../middleware/persistStep')
 const getOffenderSummaryData = require('../middleware/getOffenderSummaryData')
 const getOffenderNeeds = require('../middleware/getOffenderNeeds')
 const getSentencePlan = require('../middleware/getSentencePlan')
+const getSentencePlanSummary = require('../middleware/getSentencePlanSummary')
 const getOasysSentencePlan = require('../middleware/getOasysSentencePlan')
 
 module.exports = formService => {
@@ -27,6 +28,7 @@ module.exports = formService => {
   })
   router.use(userIdPath, getOffenderSummaryData())
 
+  router.get(`${sentencePlanPath}/summary`, getFormData(formService), getOffenderNeeds(), getSentencePlanSummary())
   router.get(sentencePlanPath, getFormData(formService), getSentencePlan())
   router.get(oasysSentencePlanPath, getOasysSentencePlan())
   router.get(
