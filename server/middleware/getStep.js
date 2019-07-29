@@ -1,6 +1,6 @@
 const logger = require('../../log')
 const { getTimeStringFromISO8601 } = require('../utils/displayHelpers')
-const { searchBreadcrumb, summaryBreadcrumb, sentencePlanBreadcrumb } = require('./breadcrumbHelpers')
+const { sentencePlanChildrenBreadcrumbs } = require('./breadcrumbHelpers')
 
 const processNeeds = (rawNeeds, checkedNeeds = []) => {
   return rawNeeds
@@ -39,17 +39,20 @@ module.exports = redirectPath => async (req, res) => {
       params: { sentencePlanId, stepId, id: oasysOffenderId = '' },
     } = req
     const { locals } = res
-    const { forename1, familyName, needs } = locals
     const {
+      forename1,
+      familyName,
+      needs,
       formObject: { sentencePlans },
     } = locals
     const newLocals = Object.assign(locals, processFormData(sentencePlanId, stepId, sentencePlans, needs))
-    newLocals.breadcrumbs = [searchBreadcrumb(), summaryBreadcrumb(oasysOffenderId, forename1, familyName)]
-    if (sentencePlanId !== 'new') {
-      newLocals.breadcrumbs.push(
-        sentencePlanBreadcrumb(oasysOffenderId, sentencePlanId, newLocals.sentencePlanDateCreated)
-      )
-    }
+    newLocals.breadcrumbs = sentencePlanChildrenBreadcrumbs(
+      oasysOffenderId,
+      forename1,
+      familyName,
+      sentencePlanId,
+      locals.sentencePlanDateCreated
+    )
     return res.render(redirectPath, newLocals)
   } catch (error) {
     logger.warn(`Could not render step ERROR: ${error}`)
