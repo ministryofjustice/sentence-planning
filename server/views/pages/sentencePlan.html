@@ -1,17 +1,71 @@
 {% extends "../partials/offenderDetailsLayout.html" %}
 
 {% from "button/macro.njk" import govukButton %}
-{% from "summary-list/macro.njk" import govukSummaryList %}
 
 {% block content %}
+<script>
+  const changeOrder = function(stepId, by){
+    step = document.getElementById(`step${stepId}`)
+    if(by < 0) return step.parentNode.insertBefore(step.nextElementSibling, step)
+    return step.parentNode.insertBefore(step, step.previousElementSibling)
+
+  }
+  const bob = function () {
+    console.log(`sausages sausages sausaages`)
+  }
+</script>
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
     <h1 class="govuk-heading-xl">Development overview</h1>
   </div>
-      {{ govukSummaryList({
-      firstCellIsHeader: true,
-      rows: steps 
-    }) }}
+
+    <table class="govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header" scope="col">Step</th>
+          <th class="govuk-table__header" scope="col">Status</th>
+          <th class="govuk-table__header" scope="col">Last Update</th>
+          <th class="govuk-table__header"></th>
+          <th class="govuk-table__header" scope="col">Move</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        {% for step in steps %}
+          <tr class="govuk-table__row" id="step{{step.stepId}}">
+            <td class="govuk-table__cell">{{step.step}}</td>
+            <td class="govuk-table__cell">{{step.status}}</td>
+            <td class="govuk-table__cell">{{step.lastUpdate}}</td>
+            <td class="govuk-table__cell">
+                {% set rootUrl %}/sentence-plan/oasys-offender-id/{{oasysOffenderId}}/sentence-plan/{{sentencePlanId}}/step/{{step.stepId}}{% endset %}
+                {{ govukButton({
+                  text: "Edit",
+                  classes: "govuk-!-margin-right-1 govuk-!-margin-bottom-0",
+                  href: rootUrl
+                }) }} 
+                {{ govukButton({
+                  text: "Progress",
+                  classes: "govuk-!-margin-right-1 govuk-!-margin-bottom-0",
+                  href: rootUrl+"/progress"
+                }) }}
+                {{ govukButton({
+                  text: "View",
+                  classes: "govuk-!-margin-right-1 govuk-!-margin-bottom-0",
+                  href: rootUrl+"/view"
+                }) }}
+              </span>
+            </td>
+            <td class="govuk-table__cell govuk-ordered-table-buttons">
+              <button type="button" class="govuk-ordered-table-icon" onclick="changeOrder({{step.stepId}}, 1)">
+                <span class="govuk-ordered-table-icon__up"></span>
+              </button>
+              <button type="button" class="govuk-ordered-table-icon" onclick="changeOrder({{step.stepId}}, -1)">
+                <span class="govuk-ordered-table-icon__down"></span>
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
     {{ govukButton({
       text: "Add new step",
       classes: "govuk-!-margin-right-1 govuk-grid-column-one-half",

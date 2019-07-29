@@ -6,3 +6,34 @@
 .no-wrap-title{
   white-space: nowrap
 }
+
+tr:first-of-type .govuk-ordered-table-buttons button:first-of-type {
+  visibility: hidden;
+}
+
+tr:last-of-type .govuk-ordered-table-buttons button:last-of-type {
+  visibility: hidden;
+}
+
+.govuk-ordered-table-icon {
+  margin: 0 5px;
+  border: 0;
+  background-color: transparent;
+}
+
+.govuk-ordered-table-icon__up, .govuk-ordered-table-icon__down {
+  border: solid black;
+  border-width: 0 5px 5px 0;
+  display: inline-block;
+  padding: 5px;
+}
+
+.govuk-ordered-table-icon__up {
+  transform: translateY(6px) rotate(-135deg);
+  -webkit-transform: translateY(6px) rotate(-135deg);
+}
+
+.govuk-ordered-table-icon__down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}

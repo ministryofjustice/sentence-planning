@@ -29,7 +29,19 @@ module.exports = formService => {
 
   router.get(sentencePlanPath, getFormData(formService), getSentencePlan())
   router.get(oasysSentencePlanPath, getOasysSentencePlan())
-  router.get([stepPath, newStepPath, newStepPath2], getFormData(formService), getOffenderNeeds(), getStep())
+  router.get(
+    `${stepPath}/progress`,
+    getFormData(formService),
+    getOffenderNeeds(),
+    getStep('../views/formPages/stepProgress')
+  )
+  router.get(`${stepPath}/view`, getFormData(formService), getOffenderNeeds(), getStep('../views/pages/stepView'))
+  router.get(
+    [stepPath, newStepPath, newStepPath2],
+    getFormData(formService),
+    getOffenderNeeds(),
+    getStep('../views/formPages/step')
+  )
   router.post([stepPath, newStepPath, newStepPath2], getFormData(formService), persistStep(formService))
 
   return router

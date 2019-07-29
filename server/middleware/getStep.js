@@ -33,7 +33,7 @@ const processFormData = (sentencePlanId, stepId, sentencePlans, rawNeeds) => {
   return { sentencePlanId, stepId, sentencePlanDateCreated, formObject, needs: processNeeds(rawNeeds, checkedNeeds) }
 }
 
-module.exports = () => async (req, res) => {
+module.exports = redirectPath => async (req, res) => {
   try {
     const {
       params: { sentencePlanId, stepId, id: oasysOffenderId = '' },
@@ -50,7 +50,7 @@ module.exports = () => async (req, res) => {
         sentencePlanBreadcrumb(oasysOffenderId, sentencePlanId, newLocals.sentencePlanDateCreated)
       )
     }
-    return res.render('../views/formPages/step', newLocals)
+    return res.render(redirectPath, newLocals)
   } catch (error) {
     logger.warn(`Could not render step ERROR: ${error}`)
     return res.redirect('/')
