@@ -36,7 +36,7 @@ Python script method to get secrets from AWS secretmanager, the script using the
 
 staging
 ```
-AWS_PROFILE=dev_admin ./get_secrets.py sentence-planning-development  | helm install sentence-planning --namespace sentence-planning-development --tiller-namespace sentence-planning-development  --values - --values=values-development.yaml
+AWS_PROFILE=dev_admin ./get_secrets.py sentence-planning-development  | helm install sentence-planning --namespace sentence-planning-development --tiller-namespace sentence-planning-development  --values - --values=values-development.yaml --value=values-whitelist.yaml
 ```
 
 
@@ -44,7 +44,7 @@ Using the AWS CLI method for retreiving secrets from secret manager:
 
 staging
 ```
-AWS_PROFILE=dev_admin aws secretsmanager get-secret-value --secret-id sentence-planning-development | jq -r .SecretString | helm install sentence-planning  --namespace sentence-planning-development. --tiller-namespace sentence-planning-development  --values - --values=values-development.yaml
+AWS_PROFILE=dev_admin aws secretsmanager get-secret-value --secret-id sentence-planning-development | jq -r .SecretString | helm install sentence-planning  --namespace sentence-planning-development. --tiller-namespace sentence-planning-development  --values - --values=values-development.yaml --values=values-whitelist.yaml
 ```
 
 
@@ -79,7 +79,7 @@ kubectl -n sentence-planning-development get secret sentence-planning-developmen
 
 Run a simple port forward pod
 ```
-kubectl -n sentence-planning-development run port-forward --generator=run-pod/v1 --image=umaar/simple-port-forward --port=5432 --env="REMOTE_HOST=cloud-platform-3be904e3e369a543.cdwm328dlye6.eu-west-2.rds.amazonaws.com" --env="REMOTE_PORT=5432"
+kubectl -n [namespace] run port-forward --generator=run-pod/v1 --image=ministryofjustice/port-forward --env="REMOTE_HOST=cloud-platform-307a469dea55139c.cdwm328dlye6.eu-west-2.rds.amazonaws.com" --env="REMOTE_PORT=5432" --env="LOCAL_PORT=5432"
 ```
 
 Port forward

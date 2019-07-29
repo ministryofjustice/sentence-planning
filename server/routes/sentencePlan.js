@@ -7,8 +7,6 @@ const getOffenderSummaryData = require('../middleware/getOffenderSummaryData')
 const getOffenderNeeds = require('../middleware/getOffenderNeeds')
 const getSentencePlan = require('../middleware/getSentencePlan')
 const getOasysSentencePlan = require('../middleware/getOasysSentencePlan')
-const logger = require('../../log')
-const { stepBreadcrumbs } = require('../middleware/breadcrumbHelpers')
 
 module.exports = formService => {
   const router = express.Router()
