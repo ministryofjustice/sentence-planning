@@ -19,7 +19,7 @@ module.exports = {
       },
       {
         step: {
-          responseType: 'requiredString',
+          responseType: 'optionalString',
           validationMessage: 'Add a description of the action',
         },
       },
