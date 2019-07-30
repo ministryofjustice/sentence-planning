@@ -39,8 +39,7 @@ function info() {
   const buildInformation = getBuild()
   return {
     uptime: process.uptime(),
-    build: buildInformation,
-    version: buildInformation && buildInformation.buildNumber,
+    build: { ...buildInformation, version: buildInformation && buildInformation.buildNumber },
   }
 }
 
