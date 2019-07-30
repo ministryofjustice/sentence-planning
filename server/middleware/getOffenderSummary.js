@@ -9,29 +9,29 @@ module.exports = () => async (req, res) => {
     const linkRoot = `/sentence-plan/oasys-offender-id/${oasysOffenderId}/`
 
     if (formObject.sentencePlans) {
-      locals.sentencePlans = formObject.sentencePlans
+      const sortedSentencePlans = formObject.sentencePlans
         .filter(({ dateCreated = '', sentencePlanId = '' }) => dateCreated && sentencePlanId)
         .sort(({ dateCreated: a }, { dateCreated: b }) => a < b)
-        .map(({ dateCreated, sentencePlanId }) => {
-          return {
-            key: {
-              text: getTimeStringFromISO8601(dateCreated),
-            },
-            actions: {
-              items: [
-                {
-                  href: `${linkRoot}sentence-plan/${sentencePlanId}`,
-                  text: 'View',
-                  visuallyHiddenText: `Action ${sentencePlanId}`,
-                },
-              ],
-            },
-          }
-        })
+      locals.sentencePlans = sortedSentencePlans.map(({ dateCreated, sentencePlanId }) => {
+        return {
+          key: {
+            text: getTimeStringFromISO8601(dateCreated),
+          },
+          actions: {
+            items: [
+              {
+                href: `${linkRoot}sentence-plan/${sentencePlanId}`,
+                text: 'View',
+                visuallyHiddenText: `Action ${sentencePlanId}`,
+              },
+            ],
+          },
+        }
+      })
+      if (sortedSentencePlans.length > 0) locals.latestSentencePlanId = sortedSentencePlans[0].sentencePlanId
     } else {
       locals.sentencePlans = []
     }
-    if (locals.sentencePlans.length > 0) locals.latestSentencePlanId = locals.sentencePlans[0].sentencePlanId
     if (locals.oasysSentencePlan) {
       const { sentencePlanId, createdDate } = locals.oasysSentencePlan
       locals.sentencePlans.push({
