@@ -46,6 +46,8 @@ module.exports = redirectPath => async (req, res) => {
       formObject: { sentencePlans },
     } = locals
     const newLocals = Object.assign(locals, processFormData(sentencePlanId, stepId, sentencePlans, needs))
+    newLocals.lastUpdate = newLocals.sentencePlanDateCreated
+    newLocals.currentStatus = 'In Progress'
     newLocals.breadcrumbs = sentencePlanChildrenBreadcrumbs(
       oasysOffenderId,
       forename1,
