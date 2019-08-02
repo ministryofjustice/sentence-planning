@@ -9,5 +9,36 @@
     errorList: errors
   }) }}
 {% endif %}
-Record progress against a step
+<div class="govuk-body">
+  <div class="govuk-grid-row">
+    {% if formObject.step %}
+      {% set stepTitle="Step" %}
+      {% set stepDescription %}{{formObject.step}}{% endset %}
+    {% else %}
+      {% set stepTitle="Intervention" %}
+      {% set stepDescription %}{{formObject.intervention}}{% endset %}
+    {% endif %}
+    <div class="govuk-grid-column-two-thirds">
+      <h2 class="govuk-heading-s">{{stepTitle}}</h2>
+      <p>{{stepDescription}}</p>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <div>
+        <p>
+          {{currentStatus}}
+          <span class="govuk-!-font-weight-bold">Last update: </span>
+          {{lastUpdate}}
+        </p>
+      </div>
+      <p><span class="govuk-!-font-weight-bold">Owner: </span>{{formObject.owner}}</p>
+    </div>
+  </div>
+  <hr class="govuk-section-break govuk-section-break--visible">
+  <p>
+    PLACE HOLDER PROGRESS
+  </p>
+</div>
+
+
+
 {% endblock %}
