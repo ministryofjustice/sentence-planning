@@ -8,7 +8,22 @@ module.exports = function createSomeService(formClient) {
     return data.rows[0] || {}
   }
 
-  async function updateAction({ oaSysId, sentencePlanId, stepId, existingData, newData, formId }) {
+  async function addProgress({ oaSysId, sentencePlanId, stepId, existingData, progress, formId }) {
+    const updatedFormObject = existingData
+    try {
+      const step = updatedFormObject.sentencePlans
+        .find(({ sentencePlanId: spId }) => spId === sentencePlanId)
+        .steps.find(({ stepId: sId }) => sId === stepId)
+      if (!step.progress) step.progress = []
+      step.progress.push(progress)
+      await formClient.update(formId, updatedFormObject, oaSysId)
+      return updatedFormObject
+    } catch (error) {
+      return `Cannot add progress. ERROR: ${error}`
+    }
+  }
+
+  async function updateStep({ oaSysId, sentencePlanId, stepId, existingData, newData, formId }) {
     const updatedFormObject = existingData
     if (!updatedFormObject.sentencePlans) updatedFormObject.sentencePlans = []
     let sentencePlan = updatedFormObject.sentencePlans.find(({ sentencePlanId: id }) => {
@@ -21,11 +36,11 @@ module.exports = function createSomeService(formClient) {
     const stepIndex = sentencePlan.steps.findIndex(({ stepId: id }) => {
       return id === stepId
     })
-    const newAction = { ...newData, stepId }
+    const newStep = { ...newData, stepId }
     if (stepIndex === -1) {
-      sentencePlan.steps.push(newAction)
+      sentencePlan.steps.push(newStep)
     } else {
-      sentencePlan.steps[stepIndex] = newAction
+      sentencePlan.steps[stepIndex] = newStep
     }
     await formClient.update(formId, updatedFormObject, oaSysId)
     return updatedFormObject
@@ -87,7 +102,8 @@ module.exports = function createSomeService(formClient) {
   }
 
   return {
-    updateAction,
+    updateStep,
+    addProgress,
     getFormResponse,
     update,
     getValidationErrors: validate,

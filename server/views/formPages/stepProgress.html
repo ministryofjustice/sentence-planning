@@ -39,6 +39,7 @@
   <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
   <div class="govuk-body govuk-grid-row">
     <form method="post">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
       {{ govukRadios({
         classes: "govuk-radios--inline",
         idPrefix: "progressStep",

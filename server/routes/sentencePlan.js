@@ -2,6 +2,7 @@ const express = require('express')
 const flash = require('connect-flash')
 const getFormData = require('../middleware/getFormData')
 const getStep = require('../middleware/getStep')
+const persistProgress = require('../middleware/persistProgress')
 const persistStep = require('../middleware/persistStep')
 const getOffenderSummaryData = require('../middleware/getOffenderSummaryData')
 const getOffenderNeeds = require('../middleware/getOffenderNeeds')
@@ -37,6 +38,7 @@ module.exports = formService => {
     getOffenderNeeds(),
     getStep('../views/formPages/stepProgress')
   )
+  router.post(`${stepPath}/progress`, getFormData(formService), persistProgress(formService))
   router.get(`${stepPath}/view`, getFormData(formService), getOffenderNeeds(), getStep('../views/pages/stepView'))
   router.get(
     [stepPath, newStepPath, newStepPath2],
