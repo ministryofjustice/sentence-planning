@@ -1,3 +1,6 @@
+{% from "button/macro.njk" import govukButton %}
+{% from "textarea/macro.njk" import govukTextarea %}
+{% from "radios/macro.njk" import govukRadios %}
 {% extends "../partials/offenderDetailsLayout.html" %}
 
 {% from "error-summary/macro.njk" import govukErrorSummary %}
@@ -33,12 +36,56 @@
       <p><span class="govuk-!-font-weight-bold">Owner: </span>{{formObject.owner}}</p>
     </div>
   </div>
-  <hr class="govuk-section-break govuk-section-break--visible">
-  <p>
-    PLACE HOLDER PROGRESS
-  </p>
+  <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+  <div class="govuk-body govuk-grid-row">
+    <form method="post">
+      {{ govukRadios({
+        classes: "govuk-radios--inline",
+        idPrefix: "progressStep",
+        name: "progressStep",
+        items: [
+          {
+            value: "IN_PROGRESS",
+            text: "In progress"
+          },
+          {
+            value: "PAUSED",
+            text: "Paused"
+          },
+          {
+            value: "COMPLETED",
+            text: "Completed"
+          },
+          {
+            value: "PARTLY_COMPLETED",
+            text: "Partly completed"
+          },
+          {
+            value: "ABANDONED",
+            text: "Abandoned"
+          }
+        ]
+      }) }}
+      {{ govukTextarea({
+        name: "comments",
+        id: "comments",
+        rows: "3",
+        label: {
+          text: "Comments",
+          classes: "govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold"
+        },
+        value: formObject.comments
+      }) }}
+      {{ govukButton({
+          text: "Save and return to plan overview",
+          classes: "govuk-!-margin-right-1 govuk-grid-column-one-half"
+      }) }}
+      {{ govukButton({
+        text: "Exit without saving",
+        href: "/sentence-plan/oasys-offender-id/" + oasysOffenderId + "/sentence-plan/" + sentencePlanId,
+        classes: "govuk-!-margin-right-1 govuk-grid-column-one-half"
+      }) }}
+    </form>
+  </div>
 </div>
-
-
-
 {% endblock %}
