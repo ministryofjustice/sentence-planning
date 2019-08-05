@@ -28,6 +28,15 @@ const processFormData = (sentencePlanId, stepId, sentencePlans, rawNeeds) => {
   const formObject = sentencePlan.steps.find(({ stepId: id }) => {
     return id === stepId
   })
+  if (formObject.progress) {
+    formObject.progress = formObject.progress.map(({ progressStep, dateCreated, comments }) => {
+      const progressStepString = `${progressStep.substring(0, 1)}${progressStep.substring(1).toLowerCase()}`.replace(
+        '_',
+        ' '
+      )
+      return { progressStep: progressStepString, comments, dateCreated: getTimeStringFromISO8601(dateCreated) }
+    })
+  }
   if (!formObject && stepId !== 'new') throw new Error(`Cannot find step ${stepId} in sentence plan ${sentencePlanId}.`)
   const checkedNeeds = formObject && formObject.needs ? formObject.needs : []
   return { sentencePlanId, stepId, sentencePlanDateCreated, formObject, needs: processNeeds(rawNeeds, checkedNeeds) }
