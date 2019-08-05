@@ -61,7 +61,7 @@ module.exports = formService => async (req, res) => {
     inputForExpectedFields.dateCreated = res.locals.formObject.dateCreated || currentTimeIsoString
     inputForExpectedFields.dateUpdated = currentTimeIsoString
 
-    await formService.updateAction({
+    await formService.updateStep({
       oaSysId: req.params.id,
       existingData: res.locals.formObject,
       sentencePlanId,
