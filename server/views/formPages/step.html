@@ -31,7 +31,8 @@
             }
           },
           items: needs
-        }) }}
+        }) 
+      }}
       {{ govukSelect({
         id: "intervention",
         name: "intervention",
@@ -39,28 +40,7 @@
           text: "Is this an intervention?",
           classes: "govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold"
         },
-        items: [
-          {
-            value: "none",
-            text: "none",
-            selected: true
-          },
-          {
-            selected: formObject.intervention === "intervention value number one",
-            text: "intervention value number one",
-            value: "intervention value number one"
-          },
-          {
-            selected: formObject.intervention === "intervention value number two",
-            text: "intervention value number two",
-            value: "intervention value number two"
-          },
-          {
-            selected: formObject.intervention === "intervention value number three",
-            text: "intervention value number three",
-            value: "intervention value number three"
-          }
-        ]
+        items: interventionOptions
       }) }}
       {{ govukTextarea({
         name: "strength",

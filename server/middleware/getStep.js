@@ -17,6 +17,34 @@ const processNeeds = (rawNeeds, checkedNeeds = []) => {
     })
 }
 
+const getInterventionTypes = currentIntervention => {
+  return [
+    'none',
+    'A – Z',
+    'Motivation & Engagement (M&E) Standalone',
+    'Thinking Skills Programme (TSP)',
+    'Kaizen',
+    'Becoming New Me Plus (BNM+)',
+    'New Me Strengths (NMS)',
+    'Alcohol Related Violence (ARV)',
+    'Building Skills for Recovery (BSR)',
+    'Drink Impaired Drivers Programme (DIDP)',
+    'Building Better Relationships (BBR)',
+    'Resolve',
+    'Choices, Actions, Relationships, Emotions (CARE)',
+    'Horizon',
+    'iHorizon',
+    'Healthy Sex Programme (HSP)',
+    'Healthy Identity Intervention (HII)',
+    'Developing Dialogues (DD)',
+    'Identity Matters (IM)',
+    'New Me MOT',
+    'Living as New Me (LNM)',
+  ].map(val => {
+    return { value: val, text: val, selected: val === currentIntervention }
+  })
+}
+
 const processFormData = (sentencePlanId, stepId, sentencePlans, rawNeeds) => {
   if (sentencePlanId === 'new') {
     return { sentencePlanId, stepId, formObject: {}, needs: processNeeds(rawNeeds) }
@@ -59,6 +87,7 @@ module.exports = redirectPath => async (req, res) => {
     const newLocals = Object.assign(locals, processFormData(sentencePlanId, stepId, sentencePlans, needs))
     newLocals.lastUpdate = newLocals.sentencePlanDateCreated
     newLocals.currentStatus = 'In Progress'
+    newLocals.interventionOptions = getInterventionTypes(newLocals.intervention || 'none')
     newLocals.breadcrumbs = sentencePlanChildrenBreadcrumbs(
       oasysOffenderId,
       forename1,
