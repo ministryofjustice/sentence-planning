@@ -146,6 +146,7 @@ jobs:
               --install --wait \
               --tiller-namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
               --namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
+              --description="${APP_VERSION} - ${CIRCLE_BUILD_URL}" \
               --values - \
               --values ./helm_deploy/values-development.yaml \
               --set image.repository="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}" \
