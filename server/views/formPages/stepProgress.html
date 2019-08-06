@@ -1,6 +1,7 @@
 {% from "button/macro.njk" import govukButton %}
 {% from "textarea/macro.njk" import govukTextarea %}
 {% from "radios/macro.njk" import govukRadios %}
+{% from "details/macro.njk" import govukDetails %}
 {% extends "../partials/offenderDetailsLayout.html" %}
 
 {% from "error-summary/macro.njk" import govukErrorSummary %}
@@ -37,7 +38,7 @@
     </div>
   </div>
   <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-  <div class="govuk-body govuk-grid-row">
+  <div class="govuk-grid-row">
     <form method="post">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
       {{ govukRadios({
@@ -87,6 +88,15 @@
         classes: "govuk-!-margin-right-1 govuk-grid-column-one-half"
       }) }}
     </form>
+  </div>
+  <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+  <div class="govuk-grid-row">
+    {% for progress in formObject.progress%}
+      {{ govukDetails({
+        summaryText: progress.progressStep + " " + progress.dateCreated,
+        text: progress.comments
+      }) }}
+    {% endfor %}
   </div>
 </div>
 {% endblock %}

@@ -9,7 +9,8 @@ module.exports = {
       },
       {
         comments: {
-          responseType: 'optionalString',
+          responseType: 'requiredString',
+          validationMessage: 'Justification of progress.',
         },
       },
     ],
