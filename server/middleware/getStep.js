@@ -87,7 +87,7 @@ module.exports = redirectPath => async (req, res) => {
     const newLocals = Object.assign(locals, processFormData(sentencePlanId, stepId, sentencePlans, needs))
     newLocals.lastUpdate = newLocals.sentencePlanDateCreated
     newLocals.currentStatus = 'In Progress'
-    newLocals.interventionOptions = getInterventionTypes(newLocals.intervention || 'none')
+    newLocals.interventionOptions = getInterventionTypes(newLocals.formObject.intervention || 'none')
     newLocals.breadcrumbs = sentencePlanChildrenBreadcrumbs(
       oasysOffenderId,
       forename1,
