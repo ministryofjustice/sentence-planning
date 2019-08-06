@@ -2,6 +2,8 @@
 {% from "textarea/macro.njk" import govukTextarea %}
 {% from "radios/macro.njk" import govukRadios %}
 {% from "details/macro.njk" import govukDetails %}
+{% from "summary-list/macro.njk" import govukSummaryList %}
+
 {% extends "../partials/offenderDetailsLayout.html" %}
 
 {% from "error-summary/macro.njk" import govukErrorSummary %}
@@ -22,19 +24,57 @@
       {% set stepTitle="Intervention" %}
       {% set stepDescription %}{{formObject.intervention}}{% endset %}
     {% endif %}
-    <div class="govuk-grid-column-two-thirds">
-      <h2 class="govuk-heading-s">{{stepTitle}}</h2>
-      <p>{{stepDescription}}</p>
+    <div class="govuk-grid-column-one-half">
+      {{ govukSummaryList({
+        rows: [
+          {
+            key: {
+              text: stepTitle
+            },
+            value: {
+              text: stepDescription
+            }
+          },
+          {
+            key: {
+              text: "Needs"
+            },
+            value: {
+              text: formObject.needs
+            }
+          },
+          {
+            key: {
+              text: "Owner"
+            },
+            value: {
+              text: formObject.owner
+            }
+          }
+        ]})
+      }}
     </div>
-    <div class="govuk-grid-column-one-third">
-      <div>
-        <p>
-          {{currentStatus}}
-          <span class="govuk-!-font-weight-bold">Last update: </span>
-          {{lastUpdate}}
-        </p>
-      </div>
-      <p><span class="govuk-!-font-weight-bold">Owner: </span>{{formObject.owner}}</p>
+    <div class="govuk-grid-column-one-half">
+      {{ govukSummaryList({
+        rows: [
+          {
+            key: {
+              text: "Current status"
+            },
+            value: {
+              text: currentStatus
+            }
+          },
+          {
+            key: {
+              text: "Last update"
+            },
+            value: {
+              text: lastUpdate
+            }
+          }
+        ]})
+      }}
     </div>
   </div>
   <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
@@ -92,10 +132,16 @@
   <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
   <div class="govuk-grid-row">
     {% for progress in formObject.progress%}
-      {{ govukDetails({
-        summaryText: progress.progressStep + " " + progress.dateCreated,
-        text: progress.comments
-      }) }}
+      <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">
+            {{progress.progressStep + " " + progress.dateCreated}}
+          </span>
+        </summary>
+        <div class="govuk-details__text">
+          {{progress.comments}}
+        </div>
+      </details>
     {% endfor %}
   </div>
 </div>
