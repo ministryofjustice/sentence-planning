@@ -17,5 +17,14 @@
   "nfa": false,
   "custody": false,
   "merged": false,
-  "lifer": false
+  "lifer": false,
+  "offence": {
+    "mainOffence": "Robbery",
+    "sentenceType": "Extended Determinate Sentence",
+    "sentenceLength": 138,
+    "startDate": "2019-02-27",
+    "dateISPDue": "2019-03-13",
+    "paromEligibilityDate": "2023-12-20",
+    "expectedHDCReleaseDate": "2026-06-19"
+  }
 }
