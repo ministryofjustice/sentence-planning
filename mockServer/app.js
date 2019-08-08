@@ -3,7 +3,8 @@ const app = require('express')()
 const logger = require('../log.js')
 
 const getFile = (directory, file, res) => {
-  const path = `mockServer/${directory}/${file}.json`
+  const isTemplate = file.match(/^(111|222|333)/)
+  const path = `mockServer/${directory}/${isTemplate ? isTemplate[0] : file}.json`
   logger.info(`apiMockServer requesting ${path}`)
   fs.readFile(path, (err, sentencePlan) => {
     return err ? res.status(404).send(`Invalid path ${path}`) : res.send(JSON.parse(sentencePlan))

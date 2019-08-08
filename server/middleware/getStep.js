@@ -4,15 +4,13 @@ const { sentencePlanChildrenBreadcrumbs } = require('./breadcrumbHelpers')
 
 const processNeeds = (rawNeeds, checkedNeeds = []) => {
   return rawNeeds
-    .sort(({ riskOfHarm }) => {
-      return riskOfHarm ? 1 : -1
-    })
+    .sort(({ riskOfHarm }) => (riskOfHarm ? -1 : 1))
     .map(({ name, riskOfHarm }) => {
       return {
         text: name,
         value: name,
         checked: checkedNeeds.includes(name),
-        hint: { text: riskOfHarm ? '' : ' Risk of serious harm' },
+        hint: { text: riskOfHarm ? ' Risk of serious harm' : '' },
       }
     })
 }
