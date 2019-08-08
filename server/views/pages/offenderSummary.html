@@ -20,53 +20,37 @@
 
 {% block content %}
 <div class="govuk-width-container govuk-body">
-  <section class="govuk-grid-row">
+  <section class="govuk-grid-row govuk-!-margin-bottom-2">
     <div class="govuk-grid-column-one-quarter">
-      <img src="/assets/images/blank-portrait.png" alt="photograph of {{forename1}} {{familyName}}" class='offender-summary-avatar'>
+      <img src="{{avatar}}" alt="photograph of {{forename1}} {{familyName}}" class='offender-summary-avatar'>
     </div>
     <div class="govuk-grid-column-three-quarter">
       <div class="govuk-heading-l">{{forename1}}{% if forename2 %} {{forename2}}{% endif %} {{familyName}}</div>
       <div class="govuk-caption-m">CRN number</div>
       <div class="govuk-heading-s">{{crn}}</div>
-      <div class="govuk-caption-m">NOMS number</div>
-      <div class="govuk-heading-s"><em>place holder</em></div>
+      {% if noms %}
+        <div class="govuk-caption-m">NOMS number</div>
+        <div class="govuk-heading-s">{{noms}}</div>
+      {% endif %}
+      {% if keyWorker %}
+        <div class="govuk-caption-m">Key worker</div>
+        <div class="govuk-heading-s">{{keyWorker}}</div>
+      {% endif %}
     </div>
   </section>
   <section class="govuk-grid-row">
-    <h2 class="govuk-heading-m">Registers and warnings</h2>
-    {{ govukTable({
-      firstCellIsHeader: false,
-      head: [
-        {text: "Type"}, 
-        {text: "Status"}, 
-        {text: "Description"}, 
-        {text: "Date"}
-      ],
-      rows: []
-    }) }}
-  </section>
-  <section class="govuk-grid-row">
-    <h2 class="govuk-heading-m">Offence and sentence</h2>
+    <h2 class="govuk-heading-m">Summary</h2>
     {{ govukTable({
       firstCellIsHeader: true,
       rows: [
-        [{text: "Main offence"}, {text: "place holder"}],
-        [{text: "Sentence length"}, {text: "place holder"}],
-        [{text: "Start Date"}, {text: "place holder"}],
-        [{text: "End Date"}, {text: "place holder"}]
+        [{text: "Main offence(s)"}, {text: mainOffence}],
+        [{text: "Sentence type"}, {text: sentenceType}],
+        [{text: "Sentence length"}, {text: sentenceLength}],
+        [{text: "Start date"}, {text: startDate}],
+        [{text: "Date ISP due"}, {text: dateISPDue}],
+        [{text: "PAROM eligibility due"}, {text: paromEligibilityDate}],
+        [{text: "Expected HDC/release date"}, {text: expectedHDCReleaseDate}]
       ]
-    }) }}
-  </section>
-  <section class="govuk-grid-row">
-    {{ govukDetails({
-      summaryText: "Requirements",
-      text: "place holder"
-    }) }}
-  </section>
-  <section class="govuk-grid-row">
-    {{ govukDetails({
-      summaryText: "NS summary",
-      text: "place holder"
     }) }}
   </section>
   <section class="govuk-grid-row">
@@ -83,7 +67,7 @@
       href: "/sentence-plan/oasys-offender-id/"+oasysOffenderId+"/sentence-plan/new/step/new",
       classes: "govuk-!-margin-right-1 govuk-grid-column-one-half"
     }) }}
-    {% if sentencePlans %} 
+    {% if latestSentencePlanId %} 
       {{ govukButton({
         text: "View/edit last sentence plan",
         href: "/sentence-plan/oasys-offender-id/"+oasysOffenderId+"/sentence-plan/"+latestSentencePlanId,
