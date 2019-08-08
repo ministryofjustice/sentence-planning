@@ -2,7 +2,6 @@
 {% from "textarea/macro.njk" import govukTextarea %}
 {% from "radios/macro.njk" import govukRadios %}
 {% from "details/macro.njk" import govukDetails %}
-{% from "summary-list/macro.njk" import govukSummaryList %}
 
 {% extends "../partials/offenderDetailsLayout.html" %}
 
@@ -16,68 +15,10 @@
   }) }}
 {% endif %}
 <div class="govuk-body">
-  <div class="govuk-grid-row">
-    {% if formObject.step %}
-      {% set stepTitle="Step" %}
-      {% set stepDescription %}{{formObject.step}}{% endset %}
-    {% else %}
-      {% set stepTitle="Intervention" %}
-      {% set stepDescription %}{{formObject.intervention}}{% endset %}
-    {% endif %}
-    <div class="govuk-grid-column-one-half">
-      {{ govukSummaryList({
-        rows: [
-          {
-            key: {
-              text: stepTitle
-            },
-            value: {
-              text: stepDescription
-            }
-          },
-          {
-            key: {
-              text: "Needs"
-            },
-            value: {
-              text: formObject.needs
-            }
-          },
-          {
-            key: {
-              text: "Owner"
-            },
-            value: {
-              text: formObject.owner
-            }
-          }
-        ]})
-      }}
-    </div>
-    <div class="govuk-grid-column-one-half">
-      {{ govukSummaryList({
-        rows: [
-          {
-            key: {
-              text: "Current status"
-            },
-            value: {
-              text: currentStatus
-            }
-          },
-          {
-            key: {
-              text: "Last update"
-            },
-            value: {
-              text: lastUpdate
-            }
-          }
-        ]})
-      }}
-    </div>
+  <h1 class="govuk-heading-xl govuk-grid-row">Update a step</h1>
+  {% include "../partials/stepSummary.html" %}
   </div>
-  <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+  <hr class="govuk-section-break--xl govuk-section-break--visible govuk-grid-row">
   <div class="govuk-grid-row">
     <form method="post">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
@@ -129,10 +70,10 @@
       }) }}
     </form>
   </div>
-  <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
   <div class="govuk-grid-row">
     {% for progress in formObject.progress%}
-      <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
+      <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details" {% if progress.open %} open {% endif %}>
         <summary class="govuk-details__summary">
           <span class="govuk-details__summary-text">
             {{progress.progressStep + " " + progress.dateCreated}}
