@@ -51,9 +51,12 @@ const processFormData = (sentencePlanId, stepId, sentencePlans, rawNeeds) => {
     return id === sentencePlanId
   })
   const sentencePlanDateCreated = getTimeStringFromISO8601(sentencePlan.dateCreated)
+  if (stepId === 'new')
+    return { sentencePlanId, stepId, sentencePlanDateCreated, formObject: {}, needs: processNeeds(rawNeeds, []) }
   const formObject = sentencePlan.steps.find(({ stepId: id }) => {
     return id === stepId
   })
+  if (!formObject) throw new Error(`Cannot find step ${stepId} in sentence plan ${sentencePlanId}.`)
   if (formObject.progress) {
     formObject.progress = formObject.progress
       .sort(({ dateCreated: dateCreatedAlt }, { dateCreated }) => dateCreated > dateCreatedAlt)
@@ -70,8 +73,7 @@ const processFormData = (sentencePlanId, stepId, sentencePlans, rawNeeds) => {
         }
       })
   }
-  if (!formObject && stepId !== 'new') throw new Error(`Cannot find step ${stepId} in sentence plan ${sentencePlanId}.`)
-  const checkedNeeds = formObject && formObject.needs ? formObject.needs : []
+  const checkedNeeds = formObject.needs ? formObject.needs : []
   return { sentencePlanId, stepId, sentencePlanDateCreated, formObject, needs: processNeeds(rawNeeds, checkedNeeds) }
 }
 
@@ -89,7 +91,9 @@ module.exports = redirectPath => async (req, res) => {
     } = locals
     const newLocals = Object.assign(locals, processFormData(sentencePlanId, stepId, sentencePlans, needs))
     newLocals.lastUpdate = newLocals.sentencePlanDateCreated
-    newLocals.currentStatus = 'In Progress'
+    newLocals.currentStatus = newLocals.formObject.progress
+      ? newLocals.formObject.progress[0].progressStep
+      : 'In progress'
     newLocals.interventionOptions = getInterventionTypes(newLocals.formObject.intervention || 'none')
     newLocals.breadcrumbs = sentencePlanChildrenBreadcrumbs(
       oasysOffenderId,

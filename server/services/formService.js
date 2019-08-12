@@ -40,7 +40,7 @@ module.exports = function createSomeService(formClient) {
     if (stepIndex === -1) {
       sentencePlan.steps.push(newStep)
     } else {
-      sentencePlan.steps[stepIndex] = newStep
+      Object.assign(sentencePlan.steps[stepIndex], newStep)
     }
     await formClient.update(formId, updatedFormObject, oaSysId)
     return updatedFormObject
