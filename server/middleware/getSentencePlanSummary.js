@@ -1,26 +1,32 @@
+const logger = require('../../log')
+const { addFriendlyStepProgress, getSentencePlanSteps, getSentencePlanPastSteps } = require('./sentencePlanHelpers')
 const { sentencePlanChildrenBreadcrumbs } = require('../middleware/breadcrumbHelpers')
-const { getTimeStringFromISO8601 } = require('../utils/displayHelpers')
 
 module.exports = () => async (req, res) => {
   const {
-    params: { sentencePlanId, id: oasysOffenderId = '' },
+    params: { id: oasysOffenderId, sentencePlanId },
   } = req
-  const { locals } = res
-  const {
-    forename1,
-    familyName,
-    formObject: { sentencePlans },
-  } = locals
-  const breadcrumbs = sentencePlanChildrenBreadcrumbs(
-    oasysOffenderId,
-    forename1,
-    familyName,
-    sentencePlanId,
-    getTimeStringFromISO8601(
-      sentencePlans.find(({ sentencePlanId: id }) => {
-        return id === sentencePlanId
-      }).dateCreated
+  try {
+    const { locals } = res
+    const { forename1, familyName } = locals
+    locals.steps = addFriendlyStepProgress(
+      getSentencePlanSteps(oasysOffenderId, sentencePlanId, locals.formObject.sentencePlans)
     )
-  )
-  return res.render('../views/pages/sentencePlanSummary', { breadcrumbs })
+    locals.pastSteps = addFriendlyStepProgress(
+      getSentencePlanPastSteps(oasysOffenderId, sentencePlanId, locals.formObject.sentencePlans)
+    )
+    locals.sentencePlanId = sentencePlanId
+    locals.breadcrumbs = sentencePlanChildrenBreadcrumbs(
+      oasysOffenderId,
+      forename1,
+      familyName,
+      sentencePlanId,
+      locals.steps[0].dateCreated
+    )
+    locals.linkRoot = `/sentence-plan/oasys-offender-id/${oasysOffenderId}/sentence-plan/${sentencePlanId}/step/`
+    return res.render('../views/pages/sentencePlanSummary', locals)
+  } catch (err) {
+    logger.warn(`Could not find sentence plan: ${sentencePlanId}`)
+    return res.redirect('/')
+  }
 }
