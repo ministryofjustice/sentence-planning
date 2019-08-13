@@ -1,6 +1,12 @@
 const logger = require('../../log')
-const { addFriendlyStepProgress, getSentencePlanSteps, getSentencePlanPastSteps } = require('./sentencePlanHelpers')
+const {
+  getSentencePlan,
+  addFriendlyStepProgress,
+  getSentencePlanSteps,
+  getSentencePlanPastSteps,
+} = require('./sentencePlanHelpers')
 const { sentencePlanChildrenBreadcrumbs } = require('../middleware/breadcrumbHelpers')
+const { getTimeStringFromISO8601 } = require('../utils/displayHelpers')
 
 module.exports = () => async (req, res) => {
   const {
@@ -9,19 +15,16 @@ module.exports = () => async (req, res) => {
   try {
     const { locals } = res
     const { forename1, familyName } = locals
-    locals.steps = addFriendlyStepProgress(
-      getSentencePlanSteps(oasysOffenderId, sentencePlanId, locals.formObject.sentencePlans)
-    )
-    locals.pastSteps = addFriendlyStepProgress(
-      getSentencePlanPastSteps(oasysOffenderId, sentencePlanId, locals.formObject.sentencePlans)
-    )
+    locals.sentencePlan = getSentencePlan(sentencePlanId, locals.formObject.sentencePlans)
+    locals.steps = addFriendlyStepProgress(getSentencePlanSteps(locals.sentencePlan))
+    locals.pastSteps = addFriendlyStepProgress(getSentencePlanPastSteps(locals.sentencePlan))
     locals.sentencePlanId = sentencePlanId
     locals.breadcrumbs = sentencePlanChildrenBreadcrumbs(
       oasysOffenderId,
       forename1,
       familyName,
       sentencePlanId,
-      locals.steps[0].dateCreated
+      getTimeStringFromISO8601(locals.sentencePlan.dateCreated)
     )
     locals.linkRoot = `/sentence-plan/oasys-offender-id/${oasysOffenderId}/sentence-plan/${sentencePlanId}/step/`
     return res.render('../views/pages/sentencePlanSummary', locals)
