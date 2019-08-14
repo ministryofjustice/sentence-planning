@@ -6,13 +6,15 @@ const getProgress = (progress, defaultProgress = 'In progress') => {
     .progressStep
   return `${currentProgress.substring(0, 1)}${currentProgress.substring(1).toLowerCase()}`.replace('_', ' ')
 }
+const getSentencePlan = (sentencePlanId, sentencePlans) => {
+  return sentencePlans.find(({ sentencePlanId: id }) => {
+    return id === sentencePlanId
+  })
+}
 
-const getSentencePlanSteps = (oasysOffenderId, sentencePlanId, sentencePlans) => {
-  return sentencePlans
-    .find(({ sentencePlanId: id }) => {
-      return id === sentencePlanId
-    })
-    .steps.map(({ step = '', intervention = '', stepId, dateCreated, progress = [] }) => {
+const getSentencePlanSteps = sentencePlan => {
+  try {
+    return sentencePlan.steps.map(({ step = '', intervention = '', stepId, dateCreated, progress = [] }) => {
       return {
         step: step || intervention,
         status: getProgress(progress),
@@ -20,22 +22,21 @@ const getSentencePlanSteps = (oasysOffenderId, sentencePlanId, sentencePlans) =>
         stepId,
       }
     })
+  } catch (error) {
+    return []
+  }
 }
 
-const getSentencePlanPastSteps = (oasysOffenderId, sentencePlanId, sentencePlans) => {
+const getSentencePlanPastSteps = sentencePlan => {
   try {
-    return sentencePlans
-      .find(({ sentencePlanId: id }) => {
-        return id === sentencePlanId
-      })
-      .pastSteps.map(({ step = '', intervention = '', stepId, dateCreated, progress = [] }) => {
-        return {
-          step: step || intervention,
-          status: getProgress(progress, 'completed'),
-          lastUpdate: getTimeStringFromISO8601(dateCreated),
-          stepId,
-        }
-      })
+    return sentencePlan.pastSteps.map(({ step = '', intervention = '', stepId, dateCreated, progress = [] }) => {
+      return {
+        step: step || intervention,
+        status: getProgress(progress, 'completed'),
+        lastUpdate: getTimeStringFromISO8601(dateCreated),
+        stepId,
+      }
+    })
   } catch (error) {
     return []
   }
@@ -55,6 +56,7 @@ const addFriendlyStepProgress = steps => {
 
 module.exports = {
   getProgress,
+  getSentencePlan,
   getSentencePlanSteps,
   getSentencePlanPastSteps,
   addFriendlyStepProgress,
