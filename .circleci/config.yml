@@ -168,8 +168,6 @@ workflows:
           requires:
             - build
       - build_docker:
-          requires:
-            - integration_test
           filters:
             branches:
               only: master
