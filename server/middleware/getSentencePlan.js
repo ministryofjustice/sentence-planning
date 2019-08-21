@@ -1,6 +1,6 @@
 const logger = require('../../log')
 const { searchBreadcrumb, summaryBreadcrumb } = require('./breadcrumbHelpers')
-const { getSentencePlan, getSentencePlanSteps, getSentencePlanPastSteps } = require('./sentencePlanHelpers')
+const { getSentencePlan, getSentencePlanSteps } = require('./sentencePlanHelpers')
 
 module.exports = () => async (req, res) => {
   const {
@@ -8,10 +8,10 @@ module.exports = () => async (req, res) => {
   } = req
   try {
     const { locals } = res
-    const { forename1, familyName } = locals
     locals.sentencePlan = getSentencePlan(sentencePlanId, locals.formObject.sentencePlans)
-    locals.steps = getSentencePlanSteps(locals.sentencePlan)
-    locals.pastSteps = getSentencePlanPastSteps(locals.sentencePlan)
+    const { forename1, familyName, sentencePlan } = locals
+    locals.steps = getSentencePlanSteps(sentencePlan.steps)
+    locals.pastSteps = getSentencePlanSteps(sentencePlan.pastSteps)
     locals.sentencePlanId = sentencePlanId
     locals.breadcrumbs = [searchBreadcrumb(), summaryBreadcrumb(oasysOffenderId, forename1, familyName)]
     locals.linkRoot = `/sentence-plan/oasys-offender-id/${oasysOffenderId}/sentence-plan/${sentencePlanId}/step/`

@@ -67,11 +67,17 @@ module.exports = function createSomeService(formClient) {
   async function addProgress({ oaSysId, sentencePlanId, stepId, existingData, progress, formId }) {
     const updatedFormObject = existingData
     try {
-      const step = updatedFormObject.sentencePlans
-        .find(({ sentencePlanId: spId }) => spId === sentencePlanId)
-        .steps.find(({ stepId: sId }) => sId === stepId)
+      const sentencePlan = updatedFormObject.sentencePlans.find(({ sentencePlanId: spId }) => spId === sentencePlanId)
+      const stepIndex = sentencePlan.steps.findIndex(({ stepId: sId }) => sId === stepId)
+      const step = sentencePlan.steps[stepIndex]
       if (!step.progress) step.progress = []
       step.progress.push(progress)
+      const { progressStep } = progress
+      if (progressStep === 'COMPLETED' || progressStep === 'PARTLY_COMPLETED' || progressStep === 'ABANDONED') {
+        sentencePlan.steps.splice(stepIndex, 1)
+        if (!sentencePlan.pastSteps) sentencePlan.pastSteps = []
+        sentencePlan.pastSteps.push(step)
+      }
       logger.info(`Updating progress for offender ${oaSysId}, sentencePlanId ${sentencePlanId}`)
       await formClient.update(formId, updatedFormObject, oaSysId)
       return updatedFormObject

@@ -1,39 +1,25 @@
 const { getTimeStringFromISO8601 } = require('../utils/displayHelpers')
 
+const getPrintableProgress = status => `${status.substring(0, 1)}${status.substring(1).toLowerCase()}`.replace('_', ' ')
+
 const getProgress = (progress, defaultProgress = 'In progress') => {
-  if (!progress || progress.length === 0) return defaultProgress
+  if (!progress || progress.length === 0) return { printableProgress: defaultProgress }
   const currentProgress = progress.reduce((next, last) => (next.dateCreated > last.dateCreated ? next : last))
-    .progressStep
-  return `${currentProgress.substring(0, 1)}${currentProgress.substring(1).toLowerCase()}`.replace('_', ' ')
+  return Object.assign({ printableProgress: getPrintableProgress(currentProgress.progressStep) }, currentProgress)
 }
 const getSentencePlan = (sentencePlanId, sentencePlans) => {
   return sentencePlans.find(({ sentencePlanId: id }) => {
     return id === sentencePlanId
   })
 }
-
-const getSentencePlanSteps = sentencePlan => {
+const getSentencePlanSteps = sentencePlanSteps => {
   try {
-    return sentencePlan.steps.map(({ step = '', intervention = '', stepId, dateCreated, progress = [] }) => {
+    return sentencePlanSteps.map(({ step = '', intervention = '', stepId, dateCreated, progress = [] }) => {
+      const { printableProgress, dateCreated: progressDateCreated = null } = getProgress(progress)
       return {
         step: step || intervention,
-        status: getProgress(progress),
-        lastUpdate: getTimeStringFromISO8601(dateCreated),
-        stepId,
-      }
-    })
-  } catch (error) {
-    return []
-  }
-}
-
-const getSentencePlanPastSteps = sentencePlan => {
-  try {
-    return sentencePlan.pastSteps.map(({ step = '', intervention = '', stepId, dateCreated, progress = [] }) => {
-      return {
-        step: step || intervention,
-        status: getProgress(progress, 'completed'),
-        lastUpdate: getTimeStringFromISO8601(dateCreated),
+        status: printableProgress,
+        lastUpdate: getTimeStringFromISO8601(progressDateCreated || dateCreated),
         stepId,
       }
     })
@@ -58,6 +44,5 @@ module.exports = {
   getProgress,
   getSentencePlan,
   getSentencePlanSteps,
-  getSentencePlanPastSteps,
   addFriendlyStepProgress,
 }

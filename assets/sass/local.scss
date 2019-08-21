@@ -16,7 +16,7 @@ tr:last-of-type .govuk-ordered-table-buttons button:last-of-type {
 }
 
 .govuk-ordered-table-icon {
-  margin: 0 5px;
+  margin: 0;
   border: 0;
   background-color: transparent;
 }
@@ -36,4 +36,47 @@ tr:last-of-type .govuk-ordered-table-buttons button:last-of-type {
 .govuk-ordered-table-icon__down {
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
+}
+
+.table-layout-fixed {
+  table-layout:fixed;
+}
+
+.table-column-clip-text {
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.align-center {
+  text-align:center; 
+}
+
+.align-right {
+  text-align:right;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+@media (max-width: 641px) {
+  .sentence-plan-step-table .nowrap {
+    white-space: normal;
+  }
+}
+
+
+.sentence-plan-table-step {  
+  width:35%;
+}
+
+@media (min-width: 769px) {
+  .sentence-plan-table-step {  
+    width:45%;
+  }
+}
+
+.sentence-plan-table-move {  
+  width:10%;
 }

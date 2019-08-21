@@ -53,10 +53,17 @@ const processFormData = (sentencePlanId, stepId, sentencePlans, rawNeeds) => {
   const sentencePlanDateCreated = getTimeStringFromISO8601(sentencePlan.dateCreated)
   if (stepId === 'new')
     return { sentencePlanId, stepId, sentencePlanDateCreated, formObject: {}, needs: processNeeds(rawNeeds, []) }
-  const formObject = sentencePlan.steps.find(({ stepId: id }) => {
+  let formObject = sentencePlan.steps.find(({ stepId: id }) => {
     return id === stepId
   })
-  if (!formObject) throw new Error(`Cannot find step ${stepId} in sentence plan ${sentencePlanId}.`)
+  if (!formObject) {
+    formObject = sentencePlan.pastSteps.find(({ stepId: id }) => {
+      return id === stepId
+    })
+    if (!formObject) throw new Error(`Cannot find step ${stepId} in sentence plan ${sentencePlanId}.`)
+    formObject.completed = true
+  }
+
   if (formObject.progress) {
     formObject.progress = formObject.progress
       .sort(({ dateCreated: dateCreatedAlt }, { dateCreated }) => dateCreated > dateCreatedAlt)
@@ -77,7 +84,7 @@ const processFormData = (sentencePlanId, stepId, sentencePlans, rawNeeds) => {
   return { sentencePlanId, stepId, sentencePlanDateCreated, formObject, needs: processNeeds(rawNeeds, checkedNeeds) }
 }
 
-module.exports = redirectPath => async (req, res) => {
+module.exports = (redirectPath, redirectCompletedPath) => async (req, res) => {
   try {
     const {
       params: { sentencePlanId, stepId, id: oasysOffenderId = '' },
@@ -102,7 +109,9 @@ module.exports = redirectPath => async (req, res) => {
       sentencePlanId,
       locals.sentencePlanDateCreated
     )
-    return res.render(redirectPath, newLocals)
+    return redirectCompletedPath && newLocals.formObject.completed
+      ? res.render(redirectCompletedPath, newLocals)
+      : res.render(redirectPath, newLocals)
   } catch (error) {
     logger.warn(`Could not render step ERROR: ${error}`)
     return res.redirect('/')
