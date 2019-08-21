@@ -16,7 +16,7 @@ module.exports = function createSomeService(formClient) {
           return Number(id)
         })
         .map(({ [idParam]: id }) => {
-          return id
+          return Number(id)
         })
         .reduce((newId, oldId) => {
           return Math.max(newId, oldId)

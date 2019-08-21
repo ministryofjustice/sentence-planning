@@ -22,7 +22,7 @@ module.exports = formService => async (req, res) => {
         return res.redirect(req.header('Referer') || req.originalUrl)
       }
     }
-    const persistedData = await formService.updateOffenderStatement({
+    const { sentencePlans } = await formService.updateOffenderStatement({
       oaSysId: id,
       existingData: formObject,
       sentencePlanId,
@@ -31,9 +31,12 @@ module.exports = formService => async (req, res) => {
     })
     return sentencePlanId === 'new'
       ? res.redirect(
-          `/sentence-plan/oasys-offender-id/${id}/sentence-plan/${
-            persistedData.sentencePlans[0].sentencePlanId
-          }/motivations`
+          `/sentence-plan/oasys-offender-id/${id}/sentence-plan/${sentencePlans.reduce(
+            ({ sentencePlanId: previousId }, currentId) => {
+              return currentId > previousId ? currentId : previousId
+            },
+            0
+          )}/motivations`
         )
       : res.redirect(`/sentence-plan/oasys-offender-id/${id}/sentence-plan/${sentencePlanId}/`)
   } catch (error) {
