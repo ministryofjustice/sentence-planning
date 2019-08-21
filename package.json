@@ -1,7 +1,7 @@
 {
   "name": "sentence-planning",
   "version": "0.0.1",
-  "description": "HMPPS Sentence Planning Service Test",
+  "description": "HMPPS Sentence Planning Service",
   "repository": "git@github.com:ministryofjustice/sentence-planning.git",
   "license": "MIT",
   "scripts": {
