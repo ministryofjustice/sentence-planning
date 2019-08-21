@@ -32,8 +32,8 @@ module.exports = formService => async (req, res) => {
     return sentencePlanId === 'new'
       ? res.redirect(
           `/sentence-plan/oasys-offender-id/${id}/sentence-plan/${sentencePlans.reduce(
-            ({ sentencePlanId: previousId }, currentId) => {
-              return currentId > previousId ? currentId : previousId
+            (currentId, { sentencePlanId: nextId = 0 }) => {
+              return currentId > nextId ? currentId : nextId
             },
             0
           )}/motivations`
