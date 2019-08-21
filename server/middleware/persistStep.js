@@ -28,7 +28,8 @@ const validateSentencePlanAndStepIds = (rawSentencePlanId, rawStepId, formObject
       return sentencePlanId === testSentencePlanId
     })
     const steps = sentencePlan && sentencePlan.steps ? sentencePlan.steps : []
-    stepId = rawStepId === 'new' ? getNextId(steps, 'stepId') : rawStepId
+    const pastSteps = sentencePlan && sentencePlan.pastSteps ? sentencePlan.pastSteps : []
+    stepId = rawStepId === 'new' ? getNextId([...steps, ...pastSteps], 'stepId') : rawStepId
   }
   return { sentencePlanId, stepId }
 }

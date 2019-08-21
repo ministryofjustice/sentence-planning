@@ -55,7 +55,7 @@ module.exports = () => async (req, res) => {
     locals.breadcrumbs = [searchBreadcrumb()]
     return res.render('pages/offenderSummary', locals)
   } catch (error) {
-    logger.warn(`Could not render step ERROR: ${error}`)
+    logger.warn(`Could not render offender summary ERROR: ${error}`)
     return res.redirect('/')
   }
 }

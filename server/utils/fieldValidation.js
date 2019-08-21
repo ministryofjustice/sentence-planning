@@ -11,6 +11,13 @@ const fieldOptions = {
     .min(1)
     .items(joi.string())
     .required(),
+  requiredMotivations: joi
+    .object()
+    .pattern(
+      joi.string().regex(/^[a-zA-Z0-9-\s]+$/),
+      joi.valid('Pre-contemplation', 'Contemplation', 'Preparation', 'Action', 'Maintenance')
+    )
+    .required(),
   requiredString: joi.string().required(),
   optionalString: joi
     .string()

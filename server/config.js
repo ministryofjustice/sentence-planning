@@ -21,21 +21,40 @@ module.exports = {
     database: get('DB_NAME', 'form-builder'),
     sslEnabled: get('DB_SSL_ENABLED', 'false'),
   },
-  nomis: {
-    authUrl: get('NOMIS_AUTH_URL', 'http://localhost:8080/auth'),
-    authExternalUrl: get('NOMIS_AUTH_EXTERNAL_URL', get('NOMIS_AUTH_URL', 'http://localhost:8080/auth')),
-    timeout: {
-      response: 30000,
-      deadline: 35000,
-    },
-    apiClientId: get('API_CLIENT_ID', 'licences'),
-    apiClientSecret: get('API_CLIENT_SECRET', 'clientsecret'),
-  },
   oasys: {
     url: get('OASYSAPI_ENDPOINT_URL', 'http://localhost:18080', true),
     timeout: {
       response: get('OASYSAPII_ENDPOINT_TIMEOUT_RESPONSE', 30000, true),
       deadline: get('OASYSAPI_ENDPOINT_TIMEOUT_DEADLINE', 35000, true),
+    },
+  },
+  apis: {
+    oauth2: {
+      url: get('NOMIS_AUTH_URL', 'http://localhost:9090/auth', true),
+      externalUrl: get('NOMIS_AUTH_EXTERNAL_URL', get('NOMIS_AUTH_URL', 'http://localhost:9090/auth'), true),
+      timeout: {
+        response: get('AUTH_ENDPOINT_TIMEOUT_RESPONSE', 10000, true),
+        deadline: get('AUTH_ENDPOINT_TIMEOUT_DEADLINE', 10000, true),
+      },
+      agent: {
+        maxSockets: 100,
+        maxFreeSockets: 10,
+        freeSocketTimeout: 30000,
+      },
+      apiClientId: get('API_CLIENT_ID', 'use-of-force-client', true),
+      apiClientSecret: get('API_CLIENT_SECRET', 'clientsecret'),
+    },
+    elite2: {
+      url: get('ELITE2API_ENDPOINT_URL', 'http://localhost:8080', true),
+      timeout: {
+        response: get('ELITE2API_ENDPOINT_TIMEOUT_RESPONSE', 10000, true),
+        deadline: get('ELITE2API_ENDPOINT_TIMEOUT_DEADLINE', 10000, true),
+      },
+      agent: {
+        maxSockets: 100,
+        maxFreeSockets: 10,
+        freeSocketTimeout: 30000,
+      },
     },
   },
   domain: `${get('INGRESS_URL', 'http://localhost:3000', true)}`,

@@ -1,0 +1,62 @@
+{% from "summary-list/macro.njk" import govukSummaryList %}
+
+<div class="govuk-grid-row">
+  {% if formObject.step %}
+    {% set stepTitle="Step" %}
+    {% set stepDescription %}{{formObject.step}}{% endset %}
+  {% else %}    
+    {% set stepTitle="Intervention" %}
+    {% set stepDescription %}{{formObject.intervention}}{% endset %}
+  {% endif %}
+
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        {{stepTitle}}
+      </dt>
+      <dd class="govuk-summary-list__value">
+        {{stepDescription}}
+      </dd>
+    </div>
+    {% if formObject.strength %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Stengths
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{formObject.strength}}
+        </dd>
+      </div>
+    {% endif %}
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Owner
+      </dt>
+      <dd class="govuk-summary-list__value">
+        {{formObject.owner}}
+      </dd>
+    </div>
+  </dl>
+  <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header app-custom-class">Needs addressed</th>
+            <th scope="col" class="govuk-table__header app-custom-class"></th>
+            <th scope="col" class="govuk-table__header app-custom-class">Motivation</th>
+            <th scope="col" class="govuk-table__header app-custom-class">This means I'm</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          {% for need in needs%}
+            {% if need.checked %}
+              <tr class="govuk-table__row">
+                <td class="govuk-table__header">{{need.text}}</td>
+                <td class="govuk-table__header">{{need.hint.text}}</td>
+                <td class="govuk-table__cell"> - </td>
+                <td class="govuk-table__cell"> - </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+</div>

@@ -1,175 +1,197 @@
-defaults: &defaults
-  working_directory: ~/mojdigitalstudio/sentence-planning
-  docker:
-  - image: circleci/node:10.15.3-browsers
-    environment:
-      GITHUB_TEAM_NAME_SLUG: digital-prison-services
-      APPLICATON_DEPLOY_NAME: sentence-planning
-      REPONAME: sentence-planning
-
-deploy_container_config: &deploy_container_config
-  docker:
-    - image: ${ECR_ENDPOINT}/cloud-platform/tools:circleci
-      environment:
-        GITHUB_TEAM_NAME_SLUG: digital-prison-services
-        APPLICATON_DEPLOY_NAME: sentence-planning
-        REPONAME: sentence-planning
-
-install_aws_cli: &install_aws_cli
-  run:
-    name: Set up aws
-    command: |
-      sudo apt-get update
-      sudo apt-get --assume-yes install python3-pip
-      sudo pip3 install awscli
-      $(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)
-
-version: 2
-jobs:
-  build:
-    <<: *defaults
+version: 2.1
+commands:
+  setup:
+    description: 'Install tools and configure kubectl'
     steps:
-    - checkout
-    - run:
-        name: Update npm
-        command: 'sudo npm install -g npm@latest'
-    - restore_cache:
-        key: dependency-cache-{{ checksum "package-lock.json" }}
-    - run:
-        name: Install Dependencies
-        command: npm ci
-    - save_cache:
-        key: dependency-cache-{{ checksum "package-lock.json" }}
-        paths:
-        - node_modules
-    - run:
-        name: Linter check
-        command: npm run lint
-    - run:
-        command: |
-          npm run build
-          DATE=$(date '+%Y-%m-%d')
-          export BUILD_NUMBER=${DATE}.${CIRCLE_BUILD_NUM}
-          export GIT_REF="$CIRCLE_SHA1"
-          npm run record-build-info
-    - persist_to_workspace:
-        root: .
-        paths:
-        - node_modules
-        - build-info.json
-        - assets/stylesheets
-
-  test:
-    <<: *defaults
-    steps:
-    - checkout
-    - restore_cache:
-        key: dependency-cache-{{ checksum "package-lock.json" }}
-    - run:
-        name: unit tests
-        command: npm run test
-    - store_test_results:
-        path: ./reports
-
-  build_docker:
-    <<: *defaults
-    steps:
-    - checkout
-    - attach_workspace:
-        at: ~/mojdigitalstudio/sentence-planning
-    - setup_remote_docker:
-        exclusive: true
-    - run:
-        name: Build container and publish to docker hub (master only)
-        command: |
-          VERSION=$(egrep buildNumber build-info.json  | awk -F"\"" '{print $4}')
-          GIT_REF=$(egrep gitRef build-info.json  | awk -F"\"" '{print $8}')
-          BUILD_VERSION=${VERSION}
-
-          docker build --rm=false . \
-              --build-arg BUILD_NUMBER=$VERSION \
-              --build-arg GIT_REF=$GIT_REF \
-              --tag "mojdigitalstudio/${REPONAME}:$BUILD_VERSION" \
-              --label "maintainer=oasys@digital.justice.gov.uk" \
-              --label "build.number=$CIRCLE_BUILD_NUM" \
-              --label "build.url=$CIRCLE_BUILD_URL" \
-              --label "build.gitref=$GIT_REF"
-
-          docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker tag mojdigitalstudio/${REPONAME}:$BUILD_VERSION mojdigitalstudio/${REPONAME}:latest
-          docker push mojdigitalstudio/${REPONAME}:$BUILD_VERSION
-          docker push mojdigitalstudio/${REPONAME}:latest
-
-  copy_image_to_ecs:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/mojdigitalstudio/sentence-planning
-      - setup_remote_docker
-      - *install_aws_cli
+      - aws-cli/install
+      - kubernetes/install
+      - helm/install-helm-client:
+          version: v2.13.1
       - run:
-          name: publish image to ecs
+          name: Setup kubectl
+          command: |
+            echo -n "${KUBE_ENV_CACERT}" | base64 -d > /tmp/cluster_ca.crt
+            kubectl config set-cluster "${KUBE_ENV_NAME}" \
+              --certificate-authority="/tmp/cluster_ca.crt" \
+              --server="https://api.${KUBE_ENV_NAME}"
+            kubectl config set-credentials circleci \
+              --token="${KUBE_ENV_TOKEN}"
+            kubectl config set-context circleci \
+              --cluster="${KUBE_ENV_NAME}" \
+              --user="circleci" \
+              --namespace="${KUBE_ENV_NAMESPACE}"
+            # confirm setup is ok
+            kubectl config use-context circleci
+            kubectl -n "${KUBE_ENV_NAMESPACE}" get deployments
+  deploy_to_env:
+    parameters:
+      env:
+        type: string
+    steps:
+      - setup
+      - checkout:
+          path: ~/git
+      - attach_workspace:
+          at: ~/app
+      - deploy:
+          name: Deploy to << parameters.env >>
           command: |
             APP_VERSION=$(egrep buildNumber build-info.json  | awk -F"\"" '{print $4}')
+            aws secretsmanager --region ${AWS_DEFAULT_REGION} get-secret-value --secret-id ${KUBE_ENV_NAMESPACE} | jq -r .SecretString | \
+            helm upgrade sentence-planning ~/git/helm_deploy/sentence-planning/. \
+              --install --wait --force --reset-values --timeout 360 \
+              --tiller-namespace=${KUBE_ENV_NAMESPACE} \
+              --namespace=${KUBE_ENV_NAMESPACE} \
+              --description="${APP_VERSION} - ${CIRCLE_BUILD_URL}" \
+              --values ~/git/helm_deploy/values-<< parameters.env >>.yaml \
+              --values - \
+              --set image.tag="${APP_VERSION}"
+executors:
+  deployer:
+    docker:
+      - image: circleci/python:3
+    working_directory: ~/app
+  builder:
+    docker:
+      - image: circleci/node:10.15.3-browsers
+    working_directory: ~/app
 
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker pull mojdigitalstudio/${REPONAME}:$APP_VERSION
+orbs:
+  aws-cli: circleci/aws-cli@0.1.13
+  kubernetes: circleci/kubernetes@0.3.0
+  helm: circleci/helm@0.1.2
 
-            docker tag mojdigitalstudio/${REPONAME}:$APP_VERSION "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:${APP_VERSION}"
-            docker tag "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:${APP_VERSION}" "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:latest"
-            login="$(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)"
-            ${login}
-            docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:${APP_VERSION}"
-            docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}:latest"
-
-  deploy_dev:
-    <<: *deploy_container_config
+jobs:
+  build:
+    executor: builder
     steps:
       - checkout
+      - run:
+          name: Update npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install Dependencies
+          command: npm ci
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+            - ~/.cache
+      - run:
+          name: Linter check
+          command: npm run lint
+      - run:
+          command: |
+            npm run build
+            DATE=$(date '+%Y-%m-%d')
+            export BUILD_NUMBER=${DATE}.${CIRCLE_BUILD_NUM}
+            export GIT_REF="$CIRCLE_SHA1"
+            npm run record-build-info
+      - persist_to_workspace:
+          root: .
+          paths:
+            - node_modules
+            - build-info.json
+            - assets/stylesheets
+            - .cache/Cypress
+
+  test:
+    executor: builder
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+         name: list
+         command: ls -lah
+      - run:
+          name: unit tests
+          command: npm run test
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results/unit-test-reports.html
+
+  build_docker:
+    executor: deployer
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/app
       - setup_remote_docker:
           docker_layer_caching: true
-      - attach_workspace:
-          at: ~/mojdigitalstudio/sentence-planning
       - run:
-          name: Kubectl deployment dev setup
+          name: Build container and publish to docker hub
           command: |
-            $(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)
-            setup-kube-auth
-            kubectl config use-context development
-      - deploy:
-          name: Deploy to Dev
-          command: |
-            APP_VERSION=$(egrep buildNumber ~/mojdigitalstudio/sentence-planning/build-info.json  | awk -F"\"" '{print $4}')
-            AWS_ACCESS_KEY_ID=${SM_AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${SM_AWS_SECRET_ACCESS_KEY} aws secretsmanager --region ${AWS_DEFAULT_REGION} get-secret-value --secret-id sentence-planning-development | jq -r .SecretString | \
-            helm upgrade sentence-planning helm_deploy/sentence-planning/. \
-              --install --wait \
-              --tiller-namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
-              --namespace=${KUBE_ENV_DEVELOPMENT_NAMESPACE} \
-              --description="${APP_VERSION} - ${CIRCLE_BUILD_URL}" \
-              --values - \
-              --values ./helm_deploy/values-development.yaml \
-              --set image.repository="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${REPONAME}" \
-              --set image.tag="${APP_VERSION}"
+            APP_VERSION=$(egrep buildNumber build-info.json  | awk -F"\"" '{print $4}')
+            docker build --rm=false . \
+              --build-arg BUILD_NUMBER=$APP_VERSION \
+              --build-arg GIT_REF=$CIRCLE_SHA1 \
+              --tag "mojdigitalstudio/sentence-planning:$APP_VERSION" \
+              --label "maintainer=oasys@digital.justice.gov.uk" \
+              --label "app.version=$APP_VERSION" \
+              --label "build.version=$APP_VERSION" \
+              --label "build.number=$CIRCLE_BUILD_NUM" \
+              --label "build.url=$CIRCLE_BUILD_URL" \
+              --label "build.gitref=$CIRCLE_SHA1"
+            if [[ "${CIRCLE_BRANCH}" == "master" ]]; then
+              # publish to docker hub as the tag
+             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+             docker tag mojdigitalstudio/sentece-planning:$APP_VERSION mojdigitalstudio/sentece-planning:latest
+             docker push mojdigitalstudio/sentece-planning:$APP_VERSION
+             docker push mojdigitalstudio/sentece-planning:latest
+            fi
+  deploy_dev:
+    executor: deployer
+    steps:
+      - deploy_to_env:
+          env: 'dev'
+  deploy_preprod:
+    executor: deployer
+    steps:
+      - deploy_to_env:
+          env: 'preprod'
+#  deploy_prod:
+#    executor: deployer
+#    steps:
+#      - deploy_to_env:
+#          env: 'prod'
 
 workflows:
   version: 2
-  build_test_deploy:
+  build-test-and-deploy:
     jobs:
-    - build
-    - test:
-        requires:
-        - build
-    - build_docker:
-        requires:
-        - test
-        filters:
-          branches:
-            only:
-            - master
-    - copy_image_to_ecs:
-        requires:
-          - build_docker
-    - deploy_dev:
-        requires:
-          - copy_image_to_ecs
+      - build:
+          filters:
+            tags:
+              ignore: /.*/
+      - test:
+          requires:
+            - build
+      - build_docker:
+          filters:
+            branches:
+              only: master
+          requires:
+            - test
+      - deploy_dev:
+          requires:
+            - build_docker
+      - request-preprod-approval:
+          type: approval
+          requires:
+            - deploy_dev
+      - deploy_preprod:
+          context: sentence-planning-preprod
+          requires:
+            - request-preprod-approval
+  #     - request-prod-approval:
+  #         type: approval
+  #         requires:
+  #           - deploy_preprod
+  #     - deploy_prod:
+  #         context: sentence-planning-prod
+  #         requires:
+  #           - request-prod-approval
