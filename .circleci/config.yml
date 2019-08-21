@@ -138,7 +138,7 @@ jobs:
               --label "build.gitref=$CIRCLE_SHA1"
             if [[ "${CIRCLE_BRANCH}" == "master" ]]; then
               # publish to docker hub as the tag
-             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+             docker login -u $DOCKER_USER -p $DOCKER_PASS
              docker tag mojdigitalstudio/sentece-planning:$APP_VERSION mojdigitalstudio/sentece-planning:latest
              docker push mojdigitalstudio/sentece-planning:$APP_VERSION
              docker push mojdigitalstudio/sentece-planning:latest
