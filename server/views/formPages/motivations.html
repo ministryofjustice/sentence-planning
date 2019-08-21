@@ -1,0 +1,64 @@
+{% extends "../partials/offenderDetailsLayout.html" %}
+
+{% from "button/macro.njk" import govukButton %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+
+{% block content %}
+  {% if errors.length > 0 %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errors
+    }) }}
+  {% endif %}
+  <div class="govuk-body govuk-grid-row">
+    <h1 class="govuk-heading-xl govuk-grid-row">Set motivations</h1>
+    <form method="post">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th class="govuk-table__header" scope="col">Needs</th>
+            <th class="govuk-table__header" scope="col"> </th>
+            <th class="govuk-table__header" scope="col">Stage - This means I'm</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          {% for need in needs %}
+            <tr class="govuk-table__row" id="{{need.name}}">
+              <td class="govuk-table__cell">{{need.name}}</td>
+              <td class="govuk-table__cell govuk-!-font-weight-bold">{% if need.riskOfHarm %}Risk of Serious harm{% else %} {% endif %}</td>
+              <td class="govuk-table__cell">
+                <div class="govuk-form-group govuk-!-margin-bottom-0">
+                  <select class="govuk-select" id="{{need.name}}" name="{{need.name}}">
+                    <option value="Pre-contemplation" {% if (sentencePlan.motivations[need.name] === "Pre-contemplation") %}selected{% endif %}>Pre-contemplation - Not aware of it</option>
+                    <option value="Contemplation" {% if (sentencePlan.motivations[need.name] === "Contemplation") %}selected{% endif %}>Contemplation - Thinking about it</option>
+                    <option value="Preparation" {% if (sentencePlan.motivations[need.name] === "Preparation") %}selected{% endif %}>Preparation - Getting ready</option>
+                    <option value="Action" {% if (sentencePlan.motivations[need.name] === "Action") %}selected{% endif %}>Action - Doing it</option>
+                    <option value="Maintenance" {% if (sentencePlan.motivations[need.name] === "Maintenance") %}selected{% endif %}>Maintenance - Keeping going</option>
+                  </select>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+      {% if (sentencePlan.steps.length === 0) and (sentencePlan.pastSteps.length === 0) %}
+        {{ govukButton({
+            text: "Save and create step",
+            classes: "govuk-!-margin-right-1 govuk-grid-column-one-half"
+        }) }}
+      {% else %}
+        {{ govukButton({
+            text: "Save",
+            classes: "govuk-!-margin-right-1 govuk-grid-column-one-half"
+        }) }}
+      {% endif %}
+      {{ govukButton({
+          text: "Exit without saving",
+          href: "/sentence-plan/oasys-offender-id/" + oasysOffenderId + "/sentence-plan/" + sentencePlanId,
+          classes: "govuk-!-margin-right-1 govuk-grid-column-one-half"
+        }) }}
+    </form>
+  </div>
+{% endblock %}
