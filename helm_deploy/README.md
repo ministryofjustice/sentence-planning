@@ -29,6 +29,19 @@ helm  --namespace sentence-planning-development --tiller-namespace sentence-plan
 helm --tiller-namespace sentence-planning-development delete [release-name]
 ```
 
+### Rolling back a release
+Find the revision number for the deployment you want to roll back:
+```
+helm --tiller-namespace sentence-planning-development history sentence-planning -o yaml
+```
+(note, each revision has a description which has the app version and circleci build URL)
+
+Rollback
+```
+helm --tiller-namespace sentence-planning-development rollback sentence-planning [INSERT REVISION NUMBER HERE] --wait
+```
+
+
 
 ### Helm deploy app:
 
