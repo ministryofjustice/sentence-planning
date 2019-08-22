@@ -1,0 +1,51 @@
+[
+  {
+    "name": "Accommodation",
+    "overThreshold": false,
+    "riskOfHarm": false,
+    "riskOfReoffending": false,
+    "flaggedAsNeed": false
+  },
+  {
+    "name": "Relationships",
+    "overThreshold": false,
+    "riskOfHarm": true,
+    "riskOfReoffending": false,
+    "flaggedAsNeed": false
+  },
+  {
+    "name": "Lifestyle and Associates",
+    "overThreshold": false,
+    "riskOfHarm": false,
+    "riskOfReoffending": false,
+    "flaggedAsNeed": false
+  },
+  {
+    "name": "Emotional Well-Being",
+    "overThreshold": false,
+    "riskOfHarm": false,
+    "riskOfReoffending": false,
+    "flaggedAsNeed": false
+  },
+  {
+    "name": "Thinking and Behaviour",
+    "overThreshold": false,
+    "riskOfHarm": true,
+    "riskOfReoffending": false,
+    "flaggedAsNeed": false
+  },
+  {
+    "name": "Attitudes",
+    "overThreshold": false,
+    "riskOfHarm": false,
+    "riskOfReoffending": false,
+    "flaggedAsNeed": false
+  },
+  {
+    "name": "Child Safeguarding Need",
+    "overThreshold": false,
+    "riskOfHarm": true,
+    "riskOfReoffending": false,
+    "flaggedAsNeed": false
+  }
+]

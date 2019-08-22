@@ -1,25 +1,16 @@
 version: '3.1'
 services:
-  sentence-planning:
-    build: .
+  oauth-server:
+    image: mojdigitalstudio/nomis-oauth2-server:latest
     networks:
-    - hmpps
-    depends_on:
-    - sentence-planning-db
-    - nomis-oauth2-server
+      - hmpps
+    container_name: oauth-server
     ports:
-    - "3000:3000"
+      - "9090:8080"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
     environment:
-    - PORT=3000
-    - DB_USER=sentence-planning
-    - DB_PASS=sentence-planning
-    - DB_SERVER=sentence-planning-db
-    - DB_NAME=sentence-planning
-    - DB_SSL_ENABLED=no
-    - NOMIS_AUTH_URL=http://nomis-oauth2-server:8080/auth
-    - NOMIS_AUTH_EXTERNAL_URL=http://localhost:8080/auth
+      - SPRING_PROFILES_ACTIVE=dev
 
   sentence-planning-db:
     image: postgres
@@ -34,17 +25,27 @@ services:
     - POSTGRES_USER=sentence-planning
     - POSTGRES_DB=sentence-planning
 
-  nomis-oauth2-server:
-    image: mojdigitalstudio/nomis-oauth2-server:latest
+  sentence-planning:
+    build: .
     networks:
     - hmpps
-    container_name: nomis-oauth2-server
+    depends_on:
+    - sentence-planning-db
+    - oauth-server
     ports:
-    - "8080:8080"
+    - "3000:3000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
     environment:
-    - SPRING_PROFILES_ACTIVE=dev
+    - PORT=3000
+    - DB_USER=sentence-planning
+    - DB_PASS=sentence-planning
+    - DB_SERVER=sentence-planning-db
+    - DB_NAME=sentence-planning
+    - DB_SSL_ENABLED=no
+    - NOMIS_AUTH_URL=http://oauth-server:8080/auth
+    - NOMIS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
+
 
 networks:
   hmpps:
