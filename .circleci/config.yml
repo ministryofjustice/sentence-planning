@@ -70,12 +70,12 @@ jobs:
           name: Update npm
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          key: dependency-cache-${CACHE_VERSION}-{{ checksum "package-lock.json" }}
       - run:
           name: Install Dependencies
           command: npm ci
       - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          key: dependency-cache-${CACHE_VERSION}-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
             - ~/.cache
@@ -102,10 +102,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run:
-         name: list
-         command: ls -lah
+          key: dependency-cache-${CACHE_VERSION}-{{ checksum "package-lock.json" }}
       - run:
           name: unit tests
           command: npm run test
