@@ -36,10 +36,12 @@ module.exports = formService => async (req, res) => {
       motivations,
       formId,
     })
-    const sentencePlan = formObject.sentencePlans.find(({ sentencePlanId: spId }) => sentencePlanId === spId)
-    return sentencePlan.steps.length === 0 && sentencePlan.pastSteps.length === 0
-      ? res.redirect(`/sentence-plan/oasys-offender-id/${id}/sentence-plan/${sentencePlanId}/step/new`)
-      : res.redirect(`/sentence-plan/oasys-offender-id/${id}/sentence-plan/${sentencePlanId}/`)
+    const {
+      steps: { length: stepsLength },
+      pastSteps: { length: pastStepsLength },
+    } = formObject.sentencePlans.find(({ sentencePlanId: spId }) => sentencePlanId === spId)
+    const rootUrl = `/sentence-plan/oasys-offender-id/${id}/sentence-plan/${sentencePlanId}/`
+    return res.redirect(`${rootUrl}${stepsLength === 0 && pastStepsLength === 0 ? 'step/new' : ''}`)
   } catch (error) {
     logger.warn(`Could not persist motivations ${error}`)
     return res.redirect(`/`)
