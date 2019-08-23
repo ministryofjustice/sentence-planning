@@ -53,11 +53,16 @@ module.exports = formService => {
     `${stepPath}/progress`,
     getFormData(formService),
     getOffenderNeeds(),
-    getStep('../views/formPages/stepProgress')
+    getStep('../views/formPages/stepProgress', '../views/pages/stepView')
   )
   router.post(`${stepPath}/progress`, getFormData(formService), persistProgress(formService))
   router.get(`${stepPath}/view`, getFormData(formService), getOffenderNeeds(), getStep('../views/pages/stepView'))
-  router.get([stepPath, newStepPath], getFormData(formService), getOffenderNeeds(), getStep('../views/formPages/step'))
+  router.get(
+    [stepPath, newStepPath],
+    getFormData(formService),
+    getOffenderNeeds(),
+    getStep('../views/formPages/step', '../views/pages/stepView')
+  )
   router.post([stepPath, newStepPath], getFormData(formService), persistStep(formService))
 
   return router

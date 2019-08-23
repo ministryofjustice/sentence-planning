@@ -11,11 +11,13 @@
     <h1 class="govuk-heading-xl govuk-grid-row">Step details</h1>
     {% include "../partials/stepSummary.html" %}
     <div class="govuk-grid-row">
-      {{ govukButton({
-        text: "Edit step",
-        classes: "govuk-button--secondary",
-        href: rootUrl+"?origin="+rootUrl+"/view"
-      }) }}
+      {% if not formObject.completed %}
+        {{ govukButton({
+          text: "Edit step",
+          classes: "govuk-button--secondary",
+          href: rootUrl+"?origin="+rootUrl+"/view"
+        }) }}
+      {% endif %}
     </div>
     <div class="govuk-grid-row">
       <table class="govuk-table">
@@ -37,10 +39,12 @@
           {% endfor %}
         </tbody>
       </table>
-      {{ govukButton({
-        text: "Progress",
-        href: rootUrl+"/progress?origin="+rootUrl+"/view"
-      }) }}
+      {% if not formObject.completed %}
+        {{ govukButton({
+          text: "Progress",
+          href: rootUrl+"/progress?origin="+rootUrl+"/view"
+        }) }}
+      {% endif %}
 
     </div>
   </div>

@@ -2,6 +2,8 @@
 {% from "textarea/macro.njk" import govukTextarea %}
 {% from "radios/macro.njk" import govukRadios %}
 {% from "details/macro.njk" import govukDetails %}
+{% from "warning-text/macro.njk" import govukWarningText %}
+
 
 {% extends "../partials/offenderDetailsLayout.html" %}
 
@@ -21,6 +23,24 @@
   <hr class="govuk-section-break--xl govuk-section-break--visible govuk-grid-row">
   <div class="govuk-grid-row">
     <form method="post">
+      {% set completed_warning %}
+        {{ govukWarningText({
+          text: "Your completed step will not be editable after you save it.",
+          iconFallbackText: "Warning"
+        }) }}
+      {% endset %}
+      {% set partly_completed_warning %}
+        {{ govukWarningText({
+          text: "Your partly completed step will not be editable after you save it.",
+          iconFallbackText: "Warning"
+        }) }}
+      {% endset %}
+      {% set abandoned_warning %}
+        {{ govukWarningText({
+          text: "Your abandoned step will not be editable after you save it.",
+          iconFallbackText: "Warning"
+        }) }}
+      {% endset %}
       <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
       {{ govukRadios({
         classes: "govuk-radios--inline",
@@ -37,15 +57,24 @@
           },
           {
             value: "COMPLETED",
-            text: "Completed"
+            text: "Completed",
+            conditional: {
+              html: completed_warning
+            }
           },
           {
             value: "PARTLY_COMPLETED",
-            text: "Partly completed"
+            text: "Partly completed",
+            conditional: {
+              html: partly_completed_warning
+            }
           },
           {
             value: "ABANDONED",
-            text: "Abandoned"
+            text: "Abandoned",
+            conditional: {
+              html: abandoned_warning
+            }
           }
         ]
       }) }}

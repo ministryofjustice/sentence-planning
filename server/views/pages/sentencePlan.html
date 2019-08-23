@@ -19,42 +19,39 @@
 
   {% set currentStepsHtml %}
     {% if steps.length > 0 %}
-      <table class="govuk-table">
+      <table class="govuk-table table-layout-fixed sentence-plan-step-table">
+        <colgroup>
+          <col class="sentence-plan-table-step">
+          <col>
+          <col>
+          <col>
+          <col class="sentence-plan-table-move">
+        </colgroup>
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
             <th class="govuk-table__header" scope="col">Step</th>
             <th class="govuk-table__header" scope="col">Status</th>
-            <th class="govuk-table__header" scope="col">Last Update</th>
+            <th class="govuk-table__header nowrap" scope="col">Last update</th>
             <th class="govuk-table__header"></th>
-            <th class="govuk-table__header" scope="col">Move</th>
+            <th class="govuk-table__header table-column-align-center" scope="col">Move</th>
           </tr>
         </thead>
         <tbody class="govuk-table__body">
           {% for step in steps %}
+            {% set rootUrl %}/sentence-plan/oasys-offender-id/{{oasysOffenderId}}/sentence-plan/{{sentencePlanId}}/step/{{step.stepId}}{% endset %}
             <tr class="govuk-table__row" id="step{{step.stepId}}">
-              <td class="govuk-table__cell">{{step.step}}</td>
-              <td class="govuk-table__cell">{{step.status}}</td>
-              <td class="govuk-table__cell">{{step.lastUpdate}}</td>
-              <td class="govuk-table__cell">
-                  {% set rootUrl %}/sentence-plan/oasys-offender-id/{{oasysOffenderId}}/sentence-plan/{{sentencePlanId}}/step/{{step.stepId}}{% endset %}
-                  {{ govukButton({
-                    text: "Edit",
-                    classes: "govuk-!-margin-right-1 govuk-!-margin-bottom-0",
-                    href: rootUrl
-                  }) }} 
+              <td class="govuk-table__cell table-column-clip-text"><a href="{{rootUrl}}/view" class="govuk-link">{{step.step}}</a></td>
+              <td class="govuk-table__cell nowrap">{{step.status}}</td>
+              <td class="govuk-table__cell nowrap">{{step.lastUpdate}}</td>
+              <td class="govuk-table__cell nowrap">
                   {{ govukButton({
                     text: "Progress",
                     classes: "govuk-!-margin-right-1 govuk-!-margin-bottom-0",
                     href: rootUrl+"/progress"
                   }) }}
-                  {{ govukButton({
-                    text: "View",
-                    classes: "govuk-!-margin-right-1 govuk-!-margin-bottom-0",
-                    href: rootUrl+"/view"
-                  }) }}
                 </span>
               </td>
-              <td class="govuk-table__cell govuk-ordered-table-buttons">
+              <td class="govuk-table__cell govuk-ordered-table-buttons table-column-align-center">
                 <button type="button" class="govuk-ordered-table-icon" onclick="changeOrder({{step.stepId}}, 1)">
                   <span class="govuk-ordered-table-icon__up"></span>
                 </button>
@@ -72,30 +69,21 @@
   {% endset %}
   {% set pastStepsHtml %}
     {% if pastSteps.length > 0 %}
-      <table class="govuk-table">
+      <table class="govuk-table sentence-plan-step-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
             <th class="govuk-table__header" scope="col">Step</th>
             <th class="govuk-table__header" scope="col">Status</th>
-            <th class="govuk-table__header" scope="col">Last Update</th>
-            <th class="govuk-table__header"></th>
+            <th class="govuk-table__header nowrap" scope="col">Last update</th>
           </tr>
         </thead>
         <tbody class="govuk-table__body">
           {% for step in pastSteps %}
+            {% set rootUrl %}/sentence-plan/oasys-offender-id/{{oasysOffenderId}}/sentence-plan/{{sentencePlanId}}/step/{{step.stepId}}{% endset %}
             <tr class="govuk-table__row" id="step{{step.stepId}}">
-              <td class="govuk-table__cell">{{step.step}}</td>
-              <td class="govuk-table__cell">{{step.status}}</td>
-              <td class="govuk-table__cell">{{step.lastUpdate}}</td>
-              <td class="govuk-table__cell">
-                {% set rootUrl %}/sentence-plan/oasys-offender-id/{{oasysOffenderId}}/sentence-plan/{{sentencePlanId}}/step/{{step.stepId}}{% endset %}
-                
-                {{ govukButton({
-                  text: "View",
-                  classes: "govuk-!-margin-right-1 govuk-!-margin-bottom-0",
-                  href: rootUrl+"/view"
-                }) }}
-              </td>
+              <td class="govuk-table__cell"><a href="{{rootUrl}}/view" class="govuk-link">{{step.step}}</a></td>
+              <td class="govuk-table__cell nowrap">{{step.status}}</td>
+              <td class="govuk-table__cell nowrap">{{step.lastUpdate}}</td>
             </tr>
           {% endfor %}
         </tbody>
