@@ -57,7 +57,7 @@ describe('getValidationErrors', () => {
     ${{ needs: ['a', 'b'], owner: true }}        | ${stepConfig.step}               | ${[{ href: '#owner', text: 'Select the actions owner' }]}
     ${{ motivations: { bob: 'Contemplation' } }} | ${motivationsConfig.motivations} | ${[]}
     ${{ motivations: { 'pi+e': 'Action' } }}     | ${motivationsConfig.motivations} | ${[{ href: '#motivations', text: '"pi+e" is not allowed' }]}
-    ${{ motivations: { mash: 'Sausage' } }}      | ${motivationsConfig.motivations} | ${[{ href: '#motivations', text: '"mash" must be one of [Pre-contemplation, Contemplation, Preparation, Action, Maintenance]' }]}
+    ${{ motivations: { mash: 'Sausage' } }}      | ${motivationsConfig.motivations} | ${[{ href: '#motivations', text: '"mash" must be one of [Pre-contemplation, Contemplation, Preparation, Action, Maintenance, Relapse]' }]}
   `('should return errors $expectedContent for form return', ({ formBody, formConfig, expectedOutput }) => {
     expect(service.getValidationErrors(formBody, formConfig)).toEqual(expectedOutput)
   })

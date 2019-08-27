@@ -15,7 +15,7 @@ const fieldOptions = {
     .object()
     .pattern(
       joi.string().regex(/^[a-zA-Z0-9-\s]+$/),
-      joi.valid('Pre-contemplation', 'Contemplation', 'Preparation', 'Action', 'Maintenance')
+      joi.valid('Pre-contemplation', 'Contemplation', 'Preparation', 'Action', 'Maintenance', 'Relapse')
     )
     .required(),
   requiredString: joi.string().required(),
