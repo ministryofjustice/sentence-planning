@@ -6,7 +6,8 @@
     "identifiers": {
         "pnc": "96/314054Y",
         "crn": "X000340",
-        "nomisId": "A1234XY"
+        "nomisId": "A1234XY",
+        "bookingId": "-1"
     },
     "dateOfBirth": "1984-05-24",
     "deceased": false,

@@ -6,7 +6,8 @@
   "keyWorker": "Sarah Smith",
   "identifiers": {
       "crn": "S000001",
-      "noms": "A0000AB"
+      "noms": "A0000AB",
+      "bookingId": "-1"
   },
   "dateOfBirth": "1980-01-18",
   "deceased": false,

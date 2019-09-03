@@ -1,6 +1,6 @@
 const express = require('express')
 const flash = require('connect-flash')
-const { getIn, isNilOrEmpty, getFieldName, pickBy, firstItem } = require('../utils/functionalHelpers')
+const { getIn, isNilOrEmpty, getFieldName, pickBy, firstItem } = require('../utils/utils')
 const { getPathFor } = require('../utils/routes')
 const getFormData = require('../middleware/getFormData')
 const asyncMiddleware = require('../middleware/asyncMiddleware')

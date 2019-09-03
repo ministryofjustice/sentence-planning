@@ -6,7 +6,8 @@
   "keyWorker": "John Smith",
   "identifiers": {
       "crn": "X000020",
-      "noms": "A0200XC"
+      "noms": "A0200XC",
+      "bookingId": "-2"
   },
   "dateOfBirth": "1980-01-18",
   "deceased": false,

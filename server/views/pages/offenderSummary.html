@@ -22,9 +22,13 @@
 <div class="govuk-width-container govuk-body">
   <section class="govuk-grid-row govuk-!-margin-bottom-2">
     <div class="govuk-grid-column-one-quarter">
-      <img src="{{avatar}}" alt="photograph of {{forename1}} {{familyName}}" class='offender-summary-avatar'>
+      <img 
+        src="/api/offender/{{bookingId}}/image"
+        alt="Headshot of {{forename1}} {{familyName}}"
+        data-qa="offender-image"
+        class='offender-summary-avatar'>
     </div>
-    <div class="govuk-grid-column-three-quarter">
+    <div class="govuk-grid-column-three-quarters">
       <div class="govuk-heading-l">{{forename1}}{% if forename2 %} {{forename2}}{% endif %} {{familyName}}</div>
       <div class="govuk-caption-m">CRN number</div>
       <div class="govuk-heading-s">{{crn}}</div>

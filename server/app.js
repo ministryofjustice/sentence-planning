@@ -12,6 +12,7 @@ const cookieSession = require('cookie-session')
 const sassMiddleware = require('node-sass-middleware')
 
 const { healthcheck } = require('./services/healthcheck')
+const createApiRouter = require('./routes/api')
 const createOffenderSummaryRouter = require('./routes/offenderSummary')
 const createSentencePlanRouter = require('./routes/sentencePlan')
 const logger = require('../log.js')
@@ -24,7 +25,7 @@ const version = moment.now().toString()
 const production = process.env.NODE_ENV === 'production'
 const testMode = process.env.NODE_ENV === 'test'
 
-module.exports = function createApp({ signInService, formService }) {
+module.exports = function createApp({ signInService, formService, offenderService }) {
   const app = express()
 
   auth.init(signInService)
@@ -210,6 +211,7 @@ module.exports = function createApp({ signInService, formService }) {
   app.get('/', (req, res) => {
     res.render('formPages/offenderSearch', { user: req.user })
   })
+  app.use('/api/', createApiRouter({ authenticationMiddleware, offenderService }))
   app.use('/offender-summary/', createOffenderSummaryRouter(formService))
   app.use('/sentence-plan/', createSentencePlanRouter(formService))
   app.use((req, res, next) => {
