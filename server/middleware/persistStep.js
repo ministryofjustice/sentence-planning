@@ -1,5 +1,5 @@
 const { step: stepFormConfig } = require('../config/step')
-const { isNilOrEmpty, getFieldName, pickBy } = require('../utils/functionalHelpers')
+const { isNilOrEmpty, getFieldName, pickBy } = require('../utils/utils')
 const logger = require('../../log')
 
 const getNextId = (objectArray, idParam) => {

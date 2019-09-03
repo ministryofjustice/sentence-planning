@@ -14,7 +14,7 @@ const getThisIsMe = require('../middleware/getThisIsMe')
 const persistThisIsMe = require('../middleware/persistThisIsMe')
 const getOasysSentencePlan = require('../middleware/getOasysSentencePlan')
 
-module.exports = formService => {
+module.exports = (formService, offenderService) => {
   const router = express.Router()
 
   const userIdPath = '/:idType(oasys-offender-id)/:id(\\d{3,})'
@@ -31,7 +31,7 @@ module.exports = formService => {
     }
     next()
   })
-  router.use(userIdPath, getOffenderSummaryData())
+  router.use(userIdPath, getOffenderSummaryData(offenderService))
 
   router.get([`${sentencePlanPath}/this-is-me`, newSentencePlanPath], getFormData(formService), getThisIsMe())
   router.post(

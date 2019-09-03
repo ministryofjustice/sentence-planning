@@ -1,5 +1,5 @@
 const { thisIsMe: thisIsMeFormConfig } = require('../config/thisIsMe')
-const { isNilOrEmpty, getFieldName, pickBy } = require('../utils/functionalHelpers')
+const { isNilOrEmpty, getFieldName, pickBy } = require('../utils/utils')
 const logger = require('../../log')
 
 module.exports = formService => async (req, res) => {

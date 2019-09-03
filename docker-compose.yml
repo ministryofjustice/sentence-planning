@@ -12,6 +12,18 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
+  elite2-api:
+    image: mojdigitalstudio/elite2-api:latest
+    container_name: elite2-api
+    depends_on:
+    - oauth-server
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+    environment:
+      - SPRING_PROFILES_ACTIVE=nomis-hsqldb
+      
   sentence-planning-db:
     image: postgres
     networks:
