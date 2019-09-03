@@ -13,7 +13,7 @@ module.exports = () => async (req, res, next) => {
       forename1,
       forename2 = '',
       familyName,
-      identifiers: { crn = '', nomisId = '', bookingId = '' },
+      identifiers: { crn = '', nomisId = '', bookingId = '0' },
       sentencePlan: oasysSentencePlan,
       keyWorker,
       offence: {
