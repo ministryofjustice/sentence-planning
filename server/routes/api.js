@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path')
+const logger = require('../../log')
 
 module.exports = function Index({ authenticationMiddleware, offenderService }) {
   const router = express.Router()
@@ -17,6 +18,7 @@ module.exports = function Index({ authenticationMiddleware, offenderService }) {
         data.pipe(res)
       })
       .catch(error => {
+        logger.error(`Could not retrieve '${req.originalUrl}' with booking id '${bookingId}' - ${error}`)
         res.sendFile(placeHolder)
       })
   })
