@@ -6,7 +6,7 @@ module.exports = function Index({ authenticationMiddleware, offenderService }) {
 
   router.use(authenticationMiddleware())
 
-  const placeHolder = path.join(__dirname, '../assets/images/blank-portrait.png')
+  const placeHolder = path.join(__dirname, '../../assets/images/image-missing.png')
 
   router.get('/offender/:bookingId/image', (req, res) => {
     const { bookingId } = req.params
