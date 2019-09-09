@@ -5,53 +5,31 @@ const { getTimeStringFromISO8601 } = require('../utils/displayHelpers')
 module.exports = () => async (req, res) => {
   try {
     const { locals } = res
-    const { oasysOffenderId, formObject } = locals
-    const linkRoot = `/sentence-plan/oasys-offender-id/${oasysOffenderId}/`
+    const { oasysOffenderId } = locals
 
-    if (formObject.sentencePlans) {
-      const sortedSentencePlans = formObject.sentencePlans
-        .filter(({ dateCreated = '', sentencePlanId = '' }) => dateCreated && sentencePlanId)
-        .sort(({ dateCreated: a }, { dateCreated: b }) => a < b)
-      locals.sentencePlans = sortedSentencePlans.map(({ dateCreated, sentencePlanId }) => {
+    locals.sentencePlans = locals.sentencePlans
+      .sort(({ createdDate: a }, { createdDate: b }) => a < b)
+      .map(({ createdDate, planId, legacy }) => {
         return {
           key: {
-            text: getTimeStringFromISO8601(dateCreated),
+            text: getTimeStringFromISO8601(createdDate),
+          },
+          value: {
+            text: legacy ? 'OaSys based' : '',
           },
           actions: {
             items: [
               {
-                href: `${linkRoot}sentence-plan/${sentencePlanId}`,
+                href: `/sentence-plan/oasys-offender-id/${oasysOffenderId}/sentence-plan/${planId}`,
                 text: 'View',
-                visuallyHiddenText: `Action ${sentencePlanId}`,
+                visuallyHiddenText: `Action ${planId}`,
               },
             ],
           },
         }
       })
-      if (sortedSentencePlans.length > 0) locals.latestSentencePlanId = sortedSentencePlans[0].sentencePlanId
-    } else {
-      locals.sentencePlans = []
-    }
-    if (locals.oasysSentencePlan) {
-      const { sentencePlanId, createdDate } = locals.oasysSentencePlan
-      locals.sentencePlans.push({
-        key: {
-          text: getTimeStringFromISO8601(createdDate),
-        },
-        value: {
-          text: 'OaSys based',
-        },
-        actions: {
-          items: [
-            {
-              href: `${linkRoot}oasys-sentence-plan/${sentencePlanId}`,
-              text: 'View',
-              visuallyHiddenText: `Action ${sentencePlanId}`,
-            },
-          ],
-        },
-      })
-    }
+    locals.latestSentencePlanId = locals.sentencePlans.find(({ completedDate }) => !completedDate) || null
+
     locals.breadcrumbs = [searchBreadcrumb()]
     return res.render('pages/offenderSummary', locals)
   } catch (error) {
