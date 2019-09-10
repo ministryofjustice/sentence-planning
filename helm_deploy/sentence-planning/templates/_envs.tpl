@@ -40,6 +40,8 @@ env:
     value: {{ .Values.env.NOMIS_OAUTH_PUBLIC_KEY | quote }}
   - name: ELITE2API_ENDPOINT_URL
     value: {{ .Values.env.ELITE2_API_URL | quote }}
+  - name: SENTENCEPLANNINGAPI_ENDPOINT_URL
+    value: {{ .Values.env.SENTENCEPLANNING_API_URL | quote }}
   - name: INGRESS_URL
     value: 'https://{{ .Values.ingress.host }}'
 
