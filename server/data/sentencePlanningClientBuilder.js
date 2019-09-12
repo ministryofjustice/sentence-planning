@@ -25,6 +25,14 @@ module.exports = token => {
       const path = `${apiUrl}/offender/${offenderId}/sentenceplans/`
       return userGet({ path })
     },
+    async getSentencePlan(sentencePlanId) {
+      const path = `${apiUrl}/sentenceplan/${sentencePlanId}`
+      return userGet({ path })
+    },
+    async getLegacySentencePlan(offenderId, sentencePlanId) {
+      const path = `${apiUrl}/offender/${offenderId}/sentenceplan/${sentencePlanId}`
+      return userGet({ path })
+    },
   }
 }
 function userGetBuilder(token) {
