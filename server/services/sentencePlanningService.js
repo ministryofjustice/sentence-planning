@@ -34,9 +34,43 @@ module.exports = function createSentencePlanningService(sentencePlanningClientBu
       throw error
     }
   }
+  const getSentencePlanStep = async (token, sentencePlanId, stepId) => {
+    try {
+      const sentencePlanningClient = sentencePlanningClientBuilder(token)
+      const result = await sentencePlanningClient.getSentencePlanStep(sentencePlanId, stepId)
+
+      if (isNilOrEmpty(result)) {
+        logger.warn(`No step found for sentence plan id "${sentencePlanId}" and step id "${stepId}"`)
+        return []
+      }
+
+      return result
+    } catch (error) {
+      logger.error(error, 'Error during getSentencePlanStep')
+      throw error
+    }
+  }
+  const getSentencePlanNeeds = async (token, sentencePlanId) => {
+    try {
+      const sentencePlanningClient = sentencePlanningClientBuilder(token)
+      const result = await sentencePlanningClient.getSentencePlanNeeds(sentencePlanId)
+
+      if (isNilOrEmpty(result)) {
+        logger.warn(`No needs found for sentence plan id "${sentencePlanId}"`)
+        return []
+      }
+
+      return result
+    } catch (error) {
+      logger.error(error, 'Error during getSentencePlanNeeds')
+      throw error
+    }
+  }
 
   return {
     getSentencePlans,
     getSentencePlan,
+    getSentencePlanStep,
+    getSentencePlanNeeds,
   }
 }

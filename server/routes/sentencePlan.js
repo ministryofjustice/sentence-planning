@@ -1,11 +1,9 @@
 const express = require('express')
 const flash = require('connect-flash')
-const getFormData = require('../middleware/getFormData')
 const getStep = require('../middleware/getStep')
 const persistStep = require('../middleware/persistStep')
 const persistProgress = require('../middleware/persistProgress')
 const getOffenderSummaryData = require('../middleware/getOffenderSummaryData')
-const getOffenderNeeds = require('../middleware/getOffenderNeeds')
 const getSentencePlan = require('../middleware/getSentencePlan')
 const getSentencePlanSummary = require('../middleware/getSentencePlanSummary')
 const getMotivations = require('../middleware/getMotivations')
@@ -21,7 +19,7 @@ module.exports = (formService, offenderService, sentencePlanningService) => {
   const sentencePlanPath = `${userIdPath}/sentence-plan/:sentencePlanId([-0-9]+)`
   const newSentencePlanPath = `${userIdPath}/sentence-plan/:sentencePlanId(new)`
   const oasysSentencePlanPath = `${userIdPath}/oasys-sentence-plan/:oasysSentencePlanId(\\d+)`
-  const stepPath = `${sentencePlanPath}/step/:stepId(\\d+)`
+  const stepPath = `${sentencePlanPath}/step/:stepId([-0-9]+)`
   const newStepPath = `${sentencePlanPath}/step/:stepId(new)`
 
   router.use(flash())
@@ -33,37 +31,24 @@ module.exports = (formService, offenderService, sentencePlanningService) => {
   })
   router.use(userIdPath, getOffenderSummaryData(offenderService))
 
-  router.get([`${sentencePlanPath}/this-is-me`, newSentencePlanPath], getFormData(formService), getThisIsMe())
-  router.post(
-    [`${sentencePlanPath}/this-is-me`, newSentencePlanPath],
-    getFormData(formService),
-    persistThisIsMe(formService)
-  )
-  router.get(`${sentencePlanPath}/motivations`, getFormData(formService), getOffenderNeeds(), getMotivations())
-  router.post(
-    `${sentencePlanPath}/motivations`,
-    getFormData(formService),
-    getOffenderNeeds(),
-    persistMotivations(formService)
-  )
-  router.get(`${sentencePlanPath}/summary`, getFormData(formService), getOffenderNeeds(), getSentencePlanSummary())
+  router.get([`${sentencePlanPath}/this-is-me`, newSentencePlanPath], getThisIsMe())
+  router.post([`${sentencePlanPath}/this-is-me`, newSentencePlanPath], persistThisIsMe(formService))
+  router.get(`${sentencePlanPath}/motivations`, getMotivations())
+  router.post(`${sentencePlanPath}/motivations`, persistMotivations(formService))
+  router.get(`${sentencePlanPath}/summary`, getSentencePlanSummary())
   router.get(sentencePlanPath, getSentencePlan(sentencePlanningService))
   router.get(oasysSentencePlanPath, getOasysSentencePlan())
   router.get(
     `${stepPath}/progress`,
-    getFormData(formService),
-    getOffenderNeeds(),
-    getStep('../views/formPages/stepProgress', '../views/pages/stepView')
+    getStep(sentencePlanningService, '../views/formPages/stepProgress', '../views/pages/stepView')
   )
-  router.post(`${stepPath}/progress`, getFormData(formService), persistProgress(formService))
-  router.get(`${stepPath}/view`, getFormData(formService), getOffenderNeeds(), getStep('../views/pages/stepView'))
+  router.post(`${stepPath}/progress`, persistProgress(formService))
+  router.get(`${stepPath}/view`, getStep(sentencePlanningService, '../views/pages/stepView'))
   router.get(
     [stepPath, newStepPath],
-    getFormData(formService),
-    getOffenderNeeds(),
-    getStep('../views/formPages/step', '../views/pages/stepView')
+    getStep(sentencePlanningService, '../views/formPages/step', '../views/pages/stepView')
   )
-  router.post([stepPath, newStepPath], getFormData(formService), persistStep(formService))
+  router.post([stepPath, newStepPath], persistStep(formService))
 
   return router
 }
