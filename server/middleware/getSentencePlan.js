@@ -1,17 +1,18 @@
 const logger = require('../../log')
 const { searchBreadcrumb, summaryBreadcrumb } = require('./breadcrumbHelpers')
-const { getSentencePlan, getSentencePlanSteps } = require('./sentencePlanHelpers')
+const { getSentencePlanSteps } = require('./sentencePlanHelpers')
 
-module.exports = () => async (req, res) => {
+module.exports = sentencePlanningService => async (req, res) => {
   const {
     params: { id: oasysOffenderId, sentencePlanId },
   } = req
   try {
     const { locals } = res
-    locals.sentencePlan = getSentencePlan(sentencePlanId, locals.formObject.sentencePlans)
-    const { forename1, familyName, sentencePlan } = locals
-    locals.steps = getSentencePlanSteps(sentencePlan.steps)
-    locals.pastSteps = getSentencePlanSteps(sentencePlan.pastSteps)
+    const sentencePlan = await sentencePlanningService.getSentencePlan(locals.user.token, sentencePlanId)
+    locals.sentencePlan = sentencePlan
+    const { forename1, familyName } = locals
+    locals.pastSteps = getSentencePlanSteps(sentencePlan.steps.filter(isCompleted))
+    locals.steps = getSentencePlanSteps(sentencePlan.steps.filter(value => !isCompleted(value)))
     locals.sentencePlanId = sentencePlanId
     locals.breadcrumbs = [searchBreadcrumb(), summaryBreadcrumb(oasysOffenderId, forename1, familyName)]
     locals.linkRoot = `/sentence-plan/oasys-offender-id/${oasysOffenderId}/sentence-plan/${sentencePlanId}/step/`
@@ -20,4 +21,8 @@ module.exports = () => async (req, res) => {
     logger.warn(`Could not find sentence plan: ${sentencePlanId}`)
     return res.redirect('/')
   }
+}
+
+const isCompleted = ({ status }) => {
+  return status === 'COMPLETED' || status === 'PARTLY_COMPLETED' || status === 'ABANDONED'
 }

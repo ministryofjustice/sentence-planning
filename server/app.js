@@ -213,7 +213,7 @@ module.exports = function createApp({ signInService, formService, offenderServic
   })
   app.use('/api/', createApiRouter({ authenticationMiddleware, offenderService }))
   app.use('/offender-summary/', createOffenderSummaryRouter(sentencePlanningService))
-  app.use('/sentence-plan/', createSentencePlanRouter(formService))
+  app.use('/sentence-plan/', createSentencePlanRouter(formService, offenderService, sentencePlanningService))
   app.use((req, res, next) => {
     next(new Error('Not found'))
   })

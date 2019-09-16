@@ -8,7 +8,7 @@ module.exports = function createSentencePlanningService(sentencePlanningClientBu
       const result = await sentencePlanningClient.getSentencePlans(offenderId)
 
       if (isNilOrEmpty(result)) {
-        logger.warn(`No sentence plans found for offenderId=${offenderId}`)
+        logger.warn(`No sentence plans found for offenderId "${offenderId}"`)
         return []
       }
 
@@ -18,8 +18,25 @@ module.exports = function createSentencePlanningService(sentencePlanningClientBu
       throw error
     }
   }
+  const getSentencePlan = async (token, sentencePlanId) => {
+    try {
+      const sentencePlanningClient = sentencePlanningClientBuilder(token)
+      const result = await sentencePlanningClient.getSentencePlan(sentencePlanId)
+
+      if (isNilOrEmpty(result)) {
+        logger.warn(`No sentence plan found for sentence plan id "${sentencePlanId}"`)
+        return []
+      }
+
+      return result
+    } catch (error) {
+      logger.error(error, 'Error during getSentencePlan')
+      throw error
+    }
+  }
 
   return {
     getSentencePlans,
+    getSentencePlan,
   }
 }

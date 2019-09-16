@@ -14,11 +14,11 @@ const getThisIsMe = require('../middleware/getThisIsMe')
 const persistThisIsMe = require('../middleware/persistThisIsMe')
 const getOasysSentencePlan = require('../middleware/getOasysSentencePlan')
 
-module.exports = (formService, offenderService) => {
+module.exports = (formService, offenderService, sentencePlanningService) => {
   const router = express.Router()
 
   const userIdPath = '/:idType(oasys-offender-id)/:id(\\d{3,})'
-  const sentencePlanPath = `${userIdPath}/sentence-plan/:sentencePlanId(\\d+)`
+  const sentencePlanPath = `${userIdPath}/sentence-plan/:sentencePlanId([-0-9]+)`
   const newSentencePlanPath = `${userIdPath}/sentence-plan/:sentencePlanId(new)`
   const oasysSentencePlanPath = `${userIdPath}/oasys-sentence-plan/:oasysSentencePlanId(\\d+)`
   const stepPath = `${sentencePlanPath}/step/:stepId(\\d+)`
@@ -47,7 +47,7 @@ module.exports = (formService, offenderService) => {
     persistMotivations(formService)
   )
   router.get(`${sentencePlanPath}/summary`, getFormData(formService), getOffenderNeeds(), getSentencePlanSummary())
-  router.get(sentencePlanPath, getFormData(formService), getSentencePlan())
+  router.get(sentencePlanPath, getSentencePlan(sentencePlanningService))
   router.get(oasysSentencePlanPath, getOasysSentencePlan())
   router.get(
     `${stepPath}/progress`,

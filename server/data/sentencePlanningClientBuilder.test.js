@@ -33,4 +33,37 @@ describe('sentencePlanningClient', () => {
       expect(output).toEqual(sentencePlanningResponse)
     })
   })
+
+  describe('getSentencePlan', () => {
+    it('should return a sentence plan', async () => {
+      const sentencePlanningResponse = {
+        oasysSetId: 11032,
+        createdDate: '2012-10-16',
+        completedDate: '2011-09-28',
+        objectives: [
+          {
+            oasysCriminogenicNeeds: null,
+            oasysInterventions: null,
+            oasysObjectiveMeasure: null,
+            objectiveType: {
+              code: 'CURRENT',
+              shortDescription: null,
+              description: 'Current',
+            },
+            oasysWhoDoingWork: null,
+            objectiveCode: '100',
+            objectiveDescription: 'Increased ability to secure/maintain tenancy',
+            howMeasured: 'regularly',
+          },
+        ],
+      }
+      fakeSentencePlanningAPI
+        .get(`/sentenceplan/218`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, sentencePlanningResponse)
+
+      const output = await sentencePlanningClient.getSentencePlan('218')
+      expect(output).toEqual(sentencePlanningResponse)
+    })
+  })
 })

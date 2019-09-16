@@ -4,6 +4,7 @@ const token = 'token-1'
 
 const sentencePlanningClient = {
   getSentencePlans: jest.fn(),
+  getSentencePlan: jest.fn(),
 }
 
 const sentencePlanningClientBuilder = jest.fn()
@@ -17,6 +18,7 @@ beforeEach(() => {
 
 afterEach(() => {
   sentencePlanningClient.getSentencePlans.mockReset()
+  sentencePlanningClient.getSentencePlan.mockReset()
 })
 
 describe('getSentencePlans', () => {
@@ -45,6 +47,24 @@ describe('getSentencePlans', () => {
   it('should use the user token', async () => {
     sentencePlanningClient.getSentencePlans.mockReturnValue([])
     await service.getSentencePlans(token, '418')
+
+    expect(sentencePlanningClientBuilder).toBeCalledWith(token)
+  })
+})
+
+describe('getSentencePlan', () => {
+  it('should return a Sentence Plan JSON object', async () => {
+    const sentencePlan = { id: '218', steps: [] }
+    sentencePlanningClient.getSentencePlan.mockReturnValue(sentencePlan)
+
+    const result = await service.getSentencePlan(token, '218')
+
+    expect(result).toEqual(sentencePlan)
+  })
+
+  it('should use the user token', async () => {
+    sentencePlanningClient.getSentencePlan.mockReturnValue({})
+    await service.getSentencePlan(token, '218')
 
     expect(sentencePlanningClientBuilder).toBeCalledWith(token)
   })

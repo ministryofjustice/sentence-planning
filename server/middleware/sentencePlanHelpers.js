@@ -7,19 +7,13 @@ const getProgress = (progress, defaultProgress = 'In progress') => {
   const currentProgress = progress.reduce((next, last) => (next.dateCreated > last.dateCreated ? next : last))
   return Object.assign({ printableProgress: getPrintableProgress(currentProgress.progressStep) }, currentProgress)
 }
-const getSentencePlan = (sentencePlanId, sentencePlans) => {
-  return sentencePlans.find(({ sentencePlanId: id }) => {
-    return id === sentencePlanId
-  })
-}
 const getSentencePlanSteps = sentencePlanSteps => {
   try {
-    return sentencePlanSteps.map(({ step = '', intervention = '', stepId, dateCreated, progress = [] }) => {
-      const { printableProgress, dateCreated: progressDateCreated = null } = getProgress(progress)
+    return sentencePlanSteps.map(({ description: step = '', intervention = '', id: stepId, updated, status }) => {
       return {
         step: step || intervention,
-        status: printableProgress,
-        lastUpdate: getTimeStringFromISO8601(progressDateCreated || dateCreated),
+        status: getPrintableProgress(status),
+        lastUpdate: getTimeStringFromISO8601(updated),
         stepId,
       }
     })
@@ -42,7 +36,6 @@ const addFriendlyStepProgress = steps => {
 
 module.exports = {
   getProgress,
-  getSentencePlan,
   getSentencePlanSteps,
   addFriendlyStepProgress,
 }
