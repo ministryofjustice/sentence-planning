@@ -17,7 +17,7 @@ const formService = createFormService(formClient)
 const app = createApp({
   formService,
   offenderService,
-  sentencePlanningService
+  sentencePlanningService,
 })
 
 createMockAPI()
