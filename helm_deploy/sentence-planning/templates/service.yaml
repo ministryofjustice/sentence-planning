@@ -8,12 +8,11 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
-    - protocol: TCP
-      port: 3000
-      targetPort: 3000
-      name: http
+    - port: 80 
+      targetPort: {{ .Values.proxy.image.port }} 
+      name: proxy
   selector:
     app: {{ template "sentence-planning.name" . }}
     release: {{ .Release.Name }}

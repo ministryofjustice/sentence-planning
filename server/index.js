@@ -10,7 +10,6 @@ const createSentencePlanningService = require('./services/sentencePlanningServic
 const offenderService = createOffenderService(elite2ClientBuilder)
 const sentencePlanningService = createSentencePlanningService(sentencePlanningClientBuilder)
 const createFormService = require('./services/formService')
-const createSignInService = require('./authentication/signInService')
 
 // pass in dependencies of service
 const formService = createFormService(formClient)
@@ -18,8 +17,7 @@ const formService = createFormService(formClient)
 const app = createApp({
   formService,
   offenderService,
-  sentencePlanningService,
-  signInService: createSignInService(),
+  sentencePlanningService
 })
 
 createMockAPI()

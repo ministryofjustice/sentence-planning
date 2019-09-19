@@ -6,18 +6,16 @@ const csurf = require('csurf')
 const path = require('path')
 const moment = require('moment')
 const compression = require('compression')
-const passport = require('passport')
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 const sassMiddleware = require('node-sass-middleware')
-
+const auth = require('./authentication/auth')
 const { healthcheck } = require('./services/healthcheck')
 const createApiRouter = require('./routes/api')
 const createOffenderSummaryRouter = require('./routes/offenderSummary')
 const createSentencePlanRouter = require('./routes/sentencePlan')
 const logger = require('../log.js')
 const nunjucksSetup = require('./utils/nunjucksSetup')
-const auth = require('./authentication/auth')
 const config = require('../server/config')
 
 const { authenticationMiddleware } = auth
@@ -25,10 +23,8 @@ const version = moment.now().toString()
 const production = process.env.NODE_ENV === 'production'
 const testMode = process.env.NODE_ENV === 'test'
 
-module.exports = function createApp({ signInService, formService, offenderService, sentencePlanningService }) {
+module.exports = function createApp({ formService, offenderService, sentencePlanningService }) {
   const app = express()
-
-  auth.init(signInService)
 
   app.set('json spaces', 2)
 
@@ -63,9 +59,6 @@ module.exports = function createApp({ signInService, formService, offenderServic
       sameSite: 'lax',
     })
   )
-
-  app.use(passport.initialize())
-  app.use(passport.session())
 
   // Request Processing Configuration
   app.use(bodyParser.json())
@@ -180,34 +173,7 @@ module.exports = function createApp({ signInService, formService, offenderServic
     req.session.nowInMinutes = Math.floor(Date.now() / 60e3)
     next()
   })
-
-  const authLogoutUrl = `${config.apis.oauth2.externalUrl}/logout?client_id=${
-    config.apis.oauth2.apiClientId
-  }&redirect_uri=${config.domain}`
-
-  app.get('/autherror', (req, res) => {
-    res.status(401)
-    return res.render('autherror', {
-      authURL: authLogoutUrl,
-    })
-  })
-
-  app.get('/login', passport.authenticate('oauth2'))
-
-  app.get('/login/callback', (req, res, next) =>
-    passport.authenticate('oauth2', {
-      successReturnToOrRedirect: req.session.returnTo || '/',
-      failureRedirect: '/autherror',
-    })(req, res, next)
-  )
-
-  app.use('/logout', (req, res) => {
-    if (req.user) {
-      req.logout()
-    }
-    res.redirect(authLogoutUrl)
-  })
-  app.use(authenticationMiddleware())
+  
   app.get('/', (req, res) => {
     res.render('formPages/offenderSearch', { user: req.user })
   })
