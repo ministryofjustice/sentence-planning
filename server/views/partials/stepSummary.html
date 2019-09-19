@@ -1,12 +1,12 @@
 {% from "summary-list/macro.njk" import govukSummaryList %}
 
 <div class="govuk-grid-row">
-  {% if formObject.step %}
+  {% if description %}
     {% set stepTitle="Step" %}
-    {% set stepDescription %}{{formObject.step}}{% endset %}
+    {% set stepDescription %}{{description}}{% endset %}
   {% else %}    
     {% set stepTitle="Intervention" %}
-    {% set stepDescription %}{{formObject.intervention}}{% endset %}
+    {% set stepDescription %}{{intervention}}{% endset %}
   {% endif %}
 
   <dl class="govuk-summary-list">
@@ -18,13 +18,13 @@
         {{stepDescription}}
       </dd>
     </div>
-    {% if formObject.strength %}
+    {% if strength %}
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">
           Stengths
         </dt>
         <dd class="govuk-summary-list__value">
-          {{formObject.strength}}
+          {{strength}}
         </dd>
       </div>
     {% endif %}
@@ -33,7 +33,7 @@
         Owner
       </dt>
       <dd class="govuk-summary-list__value">
-        {{formObject.owner}}
+        {{owner}}
       </dd>
     </div>
   </dl>

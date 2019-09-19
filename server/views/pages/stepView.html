@@ -11,7 +11,7 @@
     <h1 class="govuk-heading-xl govuk-grid-row">Step details</h1>
     {% include "../partials/stepSummary.html" %}
     <div class="govuk-grid-row">
-      {% if not formObject.completed %}
+      {% if not completed %}
         {{ govukButton({
           text: "Edit step",
           classes: "govuk-button--secondary",
@@ -39,7 +39,7 @@
           {% endfor %}
         </tbody>
       </table>
-      {% if not formObject.completed %}
+      {% if not completed %}
         {{ govukButton({
           text: "Progress",
           href: rootUrl+"/progress?origin="+rootUrl+"/view"

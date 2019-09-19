@@ -2,17 +2,21 @@ const logger = require('../../log')
 const { getTimeStringFromISO8601 } = require('../utils/displayHelpers')
 const { sentencePlanChildrenBreadcrumbs } = require('./breadcrumbHelpers')
 
-const processNeeds = (rawNeeds, checkedNeeds = []) => {
+const processNeeds = (rawNeeds, checkedNeeds) => {
   return rawNeeds
     .sort(({ riskOfHarm }) => (riskOfHarm ? -1 : 1))
     .map(({ name, riskOfHarm }) => {
       return {
         text: name,
         value: name,
-        checked: checkedNeeds.includes(name),
+        checked: checkedNeeds.find(({ name: nameCheck }) => name === nameCheck) || false,
         hint: { text: riskOfHarm ? ' Risk of serious harm' : '' },
       }
     })
+}
+
+const statusDisplay = status => {
+  return status ? `${status.substring(0, 1)}${status.substring(1).toLowerCase()}`.replace('_', ' ') : 'In progress'
 }
 
 const getInterventionTypes = currentIntervention => {
@@ -43,73 +47,50 @@ const getInterventionTypes = currentIntervention => {
   })
 }
 
-const processFormData = (sentencePlanId, stepId, sentencePlans, rawNeeds) => {
-  if (sentencePlanId === 'new') {
-    return { sentencePlanId, stepId, formObject: {}, needs: processNeeds(rawNeeds) }
-  }
-  const sentencePlan = sentencePlans.find(({ sentencePlanId: id }) => {
-    return id === sentencePlanId
-  })
-  const sentencePlanDateCreated = getTimeStringFromISO8601(sentencePlan.dateCreated)
-  if (stepId === 'new')
-    return { sentencePlanId, stepId, sentencePlanDateCreated, formObject: {}, needs: processNeeds(rawNeeds, []) }
-  let formObject = sentencePlan.steps.find(({ stepId: id }) => {
-    return id === stepId
-  })
-  if (!formObject) {
-    formObject = sentencePlan.pastSteps.find(({ stepId: id }) => {
-      return id === stepId
+const processProgress = progress => {
+  return progress
+    .sort(({ created: createdAlt }, { created }) => created > createdAlt)
+    .map(({ comments, created, createdBy, status }, index) => {
+      return {
+        status: statusDisplay(status),
+        comments,
+        dateCreated: getTimeStringFromISO8601(created),
+        createdBy,
+        open: index === 0,
+      }
     })
-    if (!formObject) throw new Error(`Cannot find step ${stepId} in sentence plan ${sentencePlanId}.`)
-    formObject.completed = true
-  }
-
-  if (formObject.progress) {
-    formObject.progress = formObject.progress
-      .sort(({ dateCreated: dateCreatedAlt }, { dateCreated }) => dateCreated > dateCreatedAlt)
-      .map(({ progressStep, dateCreated, comments }, index) => {
-        const progressStepString = `${progressStep.substring(0, 1)}${progressStep.substring(1).toLowerCase()}`.replace(
-          '_',
-          ' '
-        )
-        return {
-          progressStep: progressStepString,
-          comments,
-          dateCreated: getTimeStringFromISO8601(dateCreated),
-          open: index === 0,
-        }
-      })
-  }
-  const checkedNeeds = formObject.needs ? formObject.needs : []
-  return { sentencePlanId, stepId, sentencePlanDateCreated, formObject, needs: processNeeds(rawNeeds, checkedNeeds) }
 }
 
-module.exports = (redirectPath, redirectCompletedPath) => async (req, res) => {
+module.exports = (sentencePlanningService, redirectPath, redirectCompletedPath) => async (req, res) => {
   try {
     const {
       params: { sentencePlanId, stepId, id: oasysOffenderId = '' },
     } = req
     const { locals } = res
-    const {
-      forename1,
-      familyName,
-      needs,
-      formObject: { sentencePlans },
-    } = locals
-    const newLocals = Object.assign(locals, processFormData(sentencePlanId, stepId, sentencePlans, needs))
-    newLocals.lastUpdate = newLocals.sentencePlanDateCreated
-    newLocals.currentStatus = newLocals.formObject.progress
-      ? newLocals.formObject.progress[0].progressStep
-      : 'In progress'
-    newLocals.interventionOptions = getInterventionTypes(newLocals.formObject.intervention || 'none')
+    const { forename1, familyName } = locals
+    const step = await sentencePlanningService.getSentencePlanStep(locals.user.token, sentencePlanId, stepId)
+    const needs = await sentencePlanningService.getSentencePlanNeeds(locals.user.token, sentencePlanId)
+    const { needs: stepNeeds, progress, status, intervention, description, created, updated, strength, owner } = step
+    const newLocals = Object.assign(locals)
+    newLocals.description = description
+    newLocals.intervention = intervention
+    newLocals.strength = strength
+    newLocals.owner = owner
+    newLocals.progress = processProgress(progress)
+    newLocals.needs = processNeeds(needs, stepNeeds)
+    newLocals.created = created
+    newLocals.lastUpdate = updated
+    newLocals.currentStatus = statusDisplay(status)
+    newLocals.interventionOptions = getInterventionTypes(intervention || 'none')
     newLocals.breadcrumbs = sentencePlanChildrenBreadcrumbs(
       oasysOffenderId,
       forename1,
       familyName,
       sentencePlanId,
-      locals.sentencePlanDateCreated
+      created || updated
     )
-    return redirectCompletedPath && newLocals.formObject.completed
+    newLocals.completed = status === 'COMPLETED' || status === 'PARTLY_COMPLETED' || status === 'ABANDONED'
+    return redirectCompletedPath && newLocals.completed
       ? res.render(redirectCompletedPath, newLocals)
       : res.render(redirectPath, newLocals)
   } catch (error) {
