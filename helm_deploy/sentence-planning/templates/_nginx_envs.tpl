@@ -16,3 +16,5 @@ env:
     value: 'FALSE'
   - name: ERROR_REDIRECT_CODES
     value: '501 502 503 504'
+
+{{- end -}}

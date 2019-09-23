@@ -25,4 +25,7 @@ args:
     - --secure-cookie=true
     - --http-only-cookie=true
     - --enable-logout-redirect=true
+    - --add-claims value
     - --verbose
+
+{{- end -}}
