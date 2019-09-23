@@ -13,9 +13,9 @@ image:
 
 proxy:
   image:
-    repository: quay.io/ukhomeofficedigital/nginx-proxy-govuk
+    repository: quay.io/ukhomeofficedigital/nginx-proxy
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     port: 10080
 
 gatekeeper:
