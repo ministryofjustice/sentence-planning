@@ -29,6 +29,7 @@ spec:
         - name: gatekeeper
           image: "{{ .Values.gatekeeper.image.repository }}:{{ .Values.gatekeeper.image.tag }}"
           imagePullPolicy: "{{ .Values.gatekeeper.image.pullPolicy }}"
+          ports:
             - name: gatekeeper
               containerPort: 8081
 {{ include "gatekeeper.args" . | nindent 10 }}
