@@ -33,9 +33,9 @@ services:
     ports:
     - "5432:5432"
     environment:
-    - POSTGRES_PASSWORD=sentence-planning
-    - POSTGRES_USER=sentence-planning
-    - POSTGRES_DB=sentence-planning
+    - POSTGRES_PASSWORD=form-builder
+    - POSTGRES_USER=form-builder
+    - POSTGRES_DB=form-builder
 
   sentence-planning:
     build: .
