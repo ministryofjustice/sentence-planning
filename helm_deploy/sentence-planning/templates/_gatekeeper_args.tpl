@@ -21,10 +21,17 @@ args:
     - --redirection-url={{ .Values.env.KEYCLOAK_REDIRECTION_URL }}
     - --cors-origins='*'
     - --resources=uri=/health|white-listed=true
+    - --resources=uri=/info|white-listed=true
     - --resources=uri=/*
     - --secure-cookie=true
     - --http-only-cookie=true
     - --enable-logout-redirect=true
+    - --add-claims=name
+    - --add-claims=username
+    - --add-claims=given_name
+    - --add-claims=family_name
+    - --add-claims=email
+    - --add-claims=locations
     - --verbose
 
 {{- end -}}
