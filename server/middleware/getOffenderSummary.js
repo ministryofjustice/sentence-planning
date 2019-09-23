@@ -20,7 +20,9 @@ module.exports = () => async (req, res) => {
           actions: {
             items: [
               {
-                href: `/sentence-plan/oasys-offender-id/${oasysOffenderId}/sentence-plan/${planId}`,
+                href: `/sentence-plan/oasys-offender-id/${oasysOffenderId}/${
+                  legacy ? 'oasys-sentence-plan' : 'sentence-plan'
+                }/${planId}`,
                 text: 'View',
                 visuallyHiddenText: `Action ${planId}`,
               },

@@ -18,7 +18,7 @@ module.exports = (formService, offenderService, sentencePlanningService) => {
   const userIdPath = '/:idType(oasys-offender-id)/:id(\\d{3,})'
   const sentencePlanPath = `${userIdPath}/sentence-plan/:sentencePlanId([-0-9]+)`
   const newSentencePlanPath = `${userIdPath}/sentence-plan/:sentencePlanId(new)`
-  const oasysSentencePlanPath = `${userIdPath}/oasys-sentence-plan/:oasysSentencePlanId(\\d+)`
+  const oasysSentencePlanPath = `${userIdPath}/oasys-sentence-plan/:oasysSentencePlanId([-0-9]+)`
   const stepPath = `${sentencePlanPath}/step/:stepId([-0-9]+)`
   const newStepPath = `${sentencePlanPath}/step/:stepId(new)`
 
@@ -37,7 +37,7 @@ module.exports = (formService, offenderService, sentencePlanningService) => {
   router.post(`${sentencePlanPath}/motivations`, persistMotivations(formService))
   router.get(`${sentencePlanPath}/summary`, getSentencePlanSummary())
   router.get(sentencePlanPath, getSentencePlan(sentencePlanningService))
-  router.get(oasysSentencePlanPath, getOasysSentencePlan())
+  router.get(oasysSentencePlanPath, getOasysSentencePlan(sentencePlanningService))
   router.get(
     `${stepPath}/progress`,
     getStep(sentencePlanningService, '../views/formPages/stepProgress', '../views/pages/stepView')

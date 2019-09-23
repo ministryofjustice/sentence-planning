@@ -7,6 +7,7 @@ const sentencePlanningClient = {
   getSentencePlan: jest.fn(),
   getSentencePlanStep: jest.fn(),
   getSentencePlanNeeds: jest.fn(),
+  getLegacySentencePlan: jest.fn(),
 }
 
 const sentencePlanningClientBuilder = jest.fn()
@@ -23,6 +24,7 @@ afterEach(() => {
   sentencePlanningClient.getSentencePlan.mockReset()
   sentencePlanningClient.getSentencePlanStep.mockReset()
   sentencePlanningClient.getSentencePlanNeeds.mockReset()
+  sentencePlanningClient.getLegacySentencePlan.mockReset()
 })
 
 describe('getSentencePlans', () => {
@@ -105,6 +107,24 @@ describe('getSentencePlanNeeds', () => {
   it('should use the user token', async () => {
     sentencePlanningClient.getSentencePlanNeeds.mockReturnValue({})
     await service.getSentencePlanNeeds(token, '218')
+
+    expect(sentencePlanningClientBuilder).toBeCalledWith(token)
+  })
+})
+
+describe('getLegacySentencePlan', () => {
+  it('should return a legacy sentence plan JSON object', async () => {
+    const legacySentencePlan = { id: '418', name: 'sentence plan' }
+    sentencePlanningClient.getLegacySentencePlan.mockReturnValue(legacySentencePlan)
+
+    const result = await service.getLegacySentencePlan(token, '418', '218')
+
+    expect(result).toEqual(legacySentencePlan)
+  })
+
+  it('should use the user token', async () => {
+    sentencePlanningClient.getLegacySentencePlan.mockReturnValue({})
+    await service.getLegacySentencePlan(token, '418', '218')
 
     expect(sentencePlanningClientBuilder).toBeCalledWith(token)
   })
