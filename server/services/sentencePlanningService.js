@@ -8,7 +8,7 @@ module.exports = function createSentencePlanningService(sentencePlanningClientBu
       const result = await sentencePlanningClient.getSentencePlans(offenderId)
 
       if (isNilOrEmpty(result)) {
-        logger.warn(`No sentence plans found for offenderId "${offenderId}"`)
+        logger.warn(`No sentence plans found for offender "${offenderId}"`)
         return []
       }
 
@@ -66,11 +66,28 @@ module.exports = function createSentencePlanningService(sentencePlanningClientBu
       throw error
     }
   }
+  const getLegacySentencePlan = async (token, offenderId, sentencePlanId) => {
+    try {
+      const sentencePlanningClient = sentencePlanningClientBuilder(token)
+      const result = await sentencePlanningClient.getLegacySentencePlan(offenderId, sentencePlanId)
+
+      if (isNilOrEmpty(result)) {
+        logger.warn(`No legacy sentence plan found for offender "${offenderId}" sentence plan id "${sentencePlanId}"`)
+        return []
+      }
+
+      return result
+    } catch (error) {
+      logger.error(error, 'Error during getLegacySentencePlan')
+      throw error
+    }
+  }
 
   return {
     getSentencePlans,
     getSentencePlan,
     getSentencePlanStep,
     getSentencePlanNeeds,
+    getLegacySentencePlan,
   }
 }
