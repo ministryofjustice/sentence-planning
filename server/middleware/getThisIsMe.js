@@ -8,14 +8,8 @@ module.exports = () => async (req, res) => {
   } = req
   try {
     const { locals } = res
-    const {
-      forename1,
-      familyName,
-      formObject: { sentencePlans = [] },
-    } = locals
-    const sentencePlan = sentencePlans.find(({ sentencePlanId: id }) => {
-      return id === sentencePlanId
-    })
+    const { forename1, familyName, sentencePlan = {} } = locals
+
     locals.breadcrumbs = sentencePlanChildrenBreadcrumbs(
       oasysOffenderId,
       forename1,
@@ -24,7 +18,6 @@ module.exports = () => async (req, res) => {
       sentencePlan ? getTimeStringFromISO8601(sentencePlan.dateCreated) : null
     )
     locals.sentencePlanId = sentencePlanId
-    locals.linkRoot = `/sentence-plan/oasys-offender-id/${oasysOffenderId}/sentence-plan/${sentencePlanId}/step/`
     return res.render('../views/formPages/thisIsMe', locals)
   } catch (err) {
     logger.warn(`Could not find sentence plan: ${sentencePlanId}`)
