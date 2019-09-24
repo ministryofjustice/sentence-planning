@@ -39,7 +39,7 @@ commands:
             APP_VERSION=$(egrep buildNumber build-info.json  | awk -F"\"" '{print $4}')
             aws secretsmanager --region ${AWS_DEFAULT_REGION} get-secret-value --secret-id ${KUBE_ENV_NAMESPACE} | jq -r .SecretString | \
             helm upgrade sentence-planning ~/git/helm_deploy/sentence-planning/. \
-              --install --wait --force --reset-values --timeout 360 \
+              --install --wait --reset-values --timeout 360 \
               --tiller-namespace=${KUBE_ENV_NAMESPACE} \
               --namespace=${KUBE_ENV_NAMESPACE} \
               --description="${APP_VERSION} - ${CIRCLE_BUILD_URL}" \
