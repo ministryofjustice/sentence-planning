@@ -9,8 +9,11 @@ args:
     - --client-secret={{ .Values.secrets.KEYCLOAK_CLIENT_SECRET }}
     - --discovery-url={{ .Values.env.KEYCLOAK_REALM }}
     - --listen=127.0.0.1:8081
+    - --enable-default-deny
+    - --enable-refresh-tokens=true
     - --enable-logging=true
     - --enable-json-logging=true
+    - --enable-token-header
     - --upstream-url={{ .Values.env.KEYCLOAK_UPSTREAM_URL }}
     - --upstream-response-header-timeout=60s
     - --upstream-expect-continue-timeout=60s
@@ -26,12 +29,7 @@ args:
     - --secure-cookie=true
     - --http-only-cookie=true
     - --enable-logout-redirect=true
-    - --add-claims=name
-    - --add-claims=username
-    - --add-claims=given_name
-    - --add-claims=family_name
-    - --add-claims=email
-    - --add-claims=locations
+    - --add-claims=name,username,given_name,family_name,email,locations
     - --verbose
 
 {{- end -}}

@@ -23,7 +23,7 @@ gatekeeper:
     repository: mojdigitalstudio/oasys-keycloak-gatekeeper
     tag: latest
     pullPolicy: Always
-    
+    port: 8081
 
 ingress:
   enabled: true
