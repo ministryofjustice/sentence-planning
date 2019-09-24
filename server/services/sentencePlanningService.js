@@ -82,6 +82,39 @@ module.exports = function createSentencePlanningService(sentencePlanningClientBu
       throw error
     }
   }
+  const createSentencePlan = async (token, offenderId) => {
+    try {
+      logger.info(`%%%%% ${offenderId}`)
+      const sentencePlanningClient = sentencePlanningClientBuilder(token)
+      const result = await sentencePlanningClient.createSentencePlan(offenderId)
+
+      if (isNilOrEmpty(result)) {
+        logger.warn(`Could not create a new sentence plan for offender "${offenderId}"`)
+        return {}
+      }
+
+      return result
+    } catch (error) {
+      logger.error(error, 'Error during createSentencePlan')
+      throw error
+    }
+  }
+  const updateServiceUserComments = async (token, id, serviceUserComment) => {
+    try {
+      const sentencePlanningClient = sentencePlanningClientBuilder(token)
+      const result = await sentencePlanningClient.updateServiceUserComments(id, serviceUserComment)
+
+      if (isNilOrEmpty(result)) {
+        logger.warn(`Could not update serviceUserComment with id "${id}"`)
+        return {}
+      }
+
+      return result
+    } catch (error) {
+      logger.error(error, 'Error during updateServiceUserComments')
+      throw error
+    }
+  }
 
   return {
     getSentencePlans,
@@ -89,5 +122,7 @@ module.exports = function createSentencePlanningService(sentencePlanningClientBu
     getSentencePlanStep,
     getSentencePlanNeeds,
     getLegacySentencePlan,
+    createSentencePlan,
+    updateServiceUserComments,
   }
 }

@@ -8,6 +8,8 @@ const sentencePlanningClient = {
   getSentencePlanStep: jest.fn(),
   getSentencePlanNeeds: jest.fn(),
   getLegacySentencePlan: jest.fn(),
+  createSentencePlan: jest.fn(),
+  updateServiceUserComments: jest.fn(),
 }
 
 const sentencePlanningClientBuilder = jest.fn()
@@ -25,6 +27,8 @@ afterEach(() => {
   sentencePlanningClient.getSentencePlanStep.mockReset()
   sentencePlanningClient.getSentencePlanNeeds.mockReset()
   sentencePlanningClient.getLegacySentencePlan.mockReset()
+  sentencePlanningClient.createSentencePlan.mockReset()
+  sentencePlanningClient.updateServiceUserComments.mockReset()
 })
 
 describe('getSentencePlans', () => {
@@ -125,6 +129,41 @@ describe('getLegacySentencePlan', () => {
   it('should use the user token', async () => {
     sentencePlanningClient.getLegacySentencePlan.mockReturnValue({})
     await service.getLegacySentencePlan(token, '418', '218')
+
+    expect(sentencePlanningClientBuilder).toBeCalledWith(token)
+  })
+})
+
+describe('createSentencePlan', () => {
+  it('should return a new sentence plan JSON object', async () => {
+    const newSentencePlan = { id: '418', name: 'sentence plan' }
+    sentencePlanningClient.createSentencePlan.mockReturnValue(newSentencePlan)
+
+    const result = await service.createSentencePlan(token, '418', '218')
+
+    expect(result).toEqual(newSentencePlan)
+  })
+
+  it('should use the user token', async () => {
+    sentencePlanningClient.getLegacySentencePlan.mockReturnValue({})
+    await service.createSentencePlan(token, '418', '218')
+
+    expect(sentencePlanningClientBuilder).toBeCalledWith(token)
+  })
+})
+
+describe('updateServiceUserComments', () => {
+  it('should return an updated sentence plan JSON object', async () => {
+    sentencePlanningClient.updateServiceUserComments.mockReturnValue()
+
+    const result = await service.updateServiceUserComments(token, '418', 'bacon')
+
+    expect(result).toEqual({})
+  })
+
+  it('should use the user token', async () => {
+    sentencePlanningClient.updateServiceUserComments.mockReturnValue({})
+    await service.updateServiceUserComments(token, '418', 'bacon')
 
     expect(sentencePlanningClientBuilder).toBeCalledWith(token)
   })

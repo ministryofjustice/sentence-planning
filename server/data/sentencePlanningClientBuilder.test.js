@@ -182,7 +182,7 @@ describe('sentencePlanningClient', () => {
   })
 
   describe('getLegacySentencePlan', () => {
-    it('should return a sentence plans needs', async () => {
+    it('should return a legacy sentence plan', async () => {
       const legacySP = {
         id: '11111111-1111-1111-1111-111111111111',
         needs: [],
@@ -195,6 +195,46 @@ describe('sentencePlanningClient', () => {
 
       const output = await sentencePlanningClient.getLegacySentencePlan('418', '218')
       expect(output).toEqual(legacySP)
+    })
+  })
+
+  describe('createSentencePlan', () => {
+    it('should return a new sentence plan', async () => {
+      const sentencePlan = {
+        childSafeguardingIndicated: true,
+        comments: [],
+        complyWithChildProtectionPlanIndicated: true,
+        createdOn: '2019-09-23T09:24:13.446Z',
+        id: 'string',
+        needs: [],
+        offender: {
+          nomisBookingNumber: 0,
+          oasysOffenderId: 0,
+        },
+        serviceUserComments: 'string',
+        status: 'STARTED',
+        steps: [],
+      }
+      fakeSentencePlanningAPI
+        .post(`/sentenceplan`, { offenderId: '418', offenderReferenceType: 'OASYS' })
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, sentencePlan)
+
+      const output = await sentencePlanningClient.createSentencePlan('418')
+      expect(output).toEqual(sentencePlan)
+    })
+  })
+
+  describe('updateServiceUserComments', () => {
+    it('should update the sentence plans "serviceUserComment" field', async () => {
+      const serviceUserComment = 'sausages'
+      fakeSentencePlanningAPI
+        .post(`/sentenceplan/418/serviceUserComments`, serviceUserComment)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, {})
+
+      const output = await sentencePlanningClient.updateServiceUserComments('418', serviceUserComment)
+      expect(output).toEqual({})
     })
   })
 })

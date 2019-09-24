@@ -32,7 +32,10 @@ module.exports = (formService, offenderService, sentencePlanningService) => {
   router.use(userIdPath, getOffenderSummaryData(offenderService))
 
   router.get([`${sentencePlanPath}/this-is-me`, newSentencePlanPath], getThisIsMe())
-  router.post([`${sentencePlanPath}/this-is-me`, newSentencePlanPath], persistThisIsMe(formService))
+  router.post(
+    [`${sentencePlanPath}/this-is-me`, newSentencePlanPath],
+    persistThisIsMe(formService, sentencePlanningService)
+  )
   router.get(`${sentencePlanPath}/motivations`, getMotivations())
   router.post(`${sentencePlanPath}/motivations`, persistMotivations(formService))
   router.get(`${sentencePlanPath}/summary`, getSentencePlanSummary())
