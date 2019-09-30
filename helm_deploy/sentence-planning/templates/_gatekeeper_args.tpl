@@ -10,7 +10,6 @@ args:
     - --discovery-url={{ .Values.env.KEYCLOAK_REALM }}
     - --listen=127.0.0.1:8081
     - --enable-default-deny
-    - --enable-refresh-tokens=true
     - --enable-logging=true
     - --enable-json-logging=true
     - --enable-token-header
