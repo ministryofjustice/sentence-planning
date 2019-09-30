@@ -15,7 +15,7 @@ proxy:
   image:
     repository: quay.io/ukhomeofficedigital/nginx-proxy-govuk
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     port: 10080
 
 gatekeeper:
@@ -23,6 +23,7 @@ gatekeeper:
     repository: mojdigitalstudio/oasys-keycloak-gatekeeper
     tag: latest
     pullPolicy: Always
+    port: 8081
 
 ingress:
   enabled: true
