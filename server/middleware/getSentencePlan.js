@@ -8,7 +8,7 @@ module.exports = sentencePlanningService => async (req, res) => {
   } = req
   try {
     const { locals } = res
-    const sentencePlan = await sentencePlanningService.getSentencePlan(locals.user.token, sentencePlanId)
+    const sentencePlan = await sentencePlanningService.getSentencePlan(req.get('X-Auth-Token'), sentencePlanId)
     locals.sentencePlan = sentencePlan
     const { forename1, familyName } = locals
     locals.pastSteps = getSentencePlanSteps(sentencePlan.steps.filter(isCompleted))
