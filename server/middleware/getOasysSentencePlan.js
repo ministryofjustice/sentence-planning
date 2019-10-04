@@ -10,7 +10,7 @@ module.exports = sentencePlanningService => async (req, res) => {
     const { locals } = res
 
     locals.oasysSentencePlan = await sentencePlanningService.getLegacySentencePlan(
-      locals.user.token,
+      req.get('X-Auth-Token'),
       oasysOffenderId,
       oasysSentencePlanId
     )

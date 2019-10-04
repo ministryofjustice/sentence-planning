@@ -20,11 +20,7 @@ module.exports = (formService, sentencePlanningService) => async (req, res) => {
         return res.redirect(req.header('Referer') || req.originalUrl)
       }
     }
-    const {
-      locals: {
-        user: { token },
-      },
-    } = res
+    const token = req.get('X-Auth-Token')
     const updatedSentencePlanId =
       sentencePlanId === 'new' ? await sentencePlanningService.createSentencePlan(token, id).id : sentencePlanId
     await sentencePlanningService.updateServiceUserComments(token, updatedSentencePlanId, body.offenderStatement)

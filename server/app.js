@@ -9,7 +9,7 @@ const compression = require('compression')
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 const sassMiddleware = require('node-sass-middleware')
-const auth = require('./authentication/auth')
+const { authenticationMiddleware } = require('./authentication/auth')
 const { healthcheck } = require('./services/healthcheck')
 const createApiRouter = require('./routes/api')
 const createOffenderSummaryRouter = require('./routes/offenderSummary')
@@ -18,7 +18,6 @@ const logger = require('../log.js')
 const nunjucksSetup = require('./utils/nunjucksSetup')
 const config = require('../server/config')
 
-const { authenticationMiddleware } = auth
 const version = moment.now().toString()
 const production = process.env.NODE_ENV === 'production'
 const testMode = process.env.NODE_ENV === 'test'
