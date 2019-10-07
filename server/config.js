@@ -70,4 +70,5 @@ module.exports = {
     },
   },
   domain: `${get('INGRESS_URL', 'http://localhost:3000', true)}`,
+  https: production,
 }

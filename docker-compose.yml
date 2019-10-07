@@ -23,7 +23,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
     environment:
       - SPRING_PROFILES_ACTIVE=nomis-hsqldb
-      
+
   sentence-planning-db:
     image: postgres
     networks:
@@ -57,6 +57,7 @@ services:
     - DB_SSL_ENABLED=no
     - NOMIS_AUTH_URL=http://oauth-server:8080/auth
     - NOMIS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
+    - NODE_ENV=development
 
 
 networks:

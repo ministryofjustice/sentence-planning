@@ -34,6 +34,11 @@ env:
       secretKeyRef:
         name: sentence-planning
         key: API_CLIENT_SECRET
+  - name: SESSION_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: {{ template "sentence-planning.name" . }}
+        key: SESSION_SECRET
   - name: NOMIS_AUTH_URL
     value: {{ .Values.env.NOMIS_AUTH_URL | quote }}
   - name: NOMIS_OAUTH_PUBLIC_KEY
