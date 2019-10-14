@@ -3,23 +3,24 @@ const createMockAPI = require('../mockServer/app')
 
 const elite2ClientBuilder = require('./data/elite2ClientBuilder')
 const sentencePlanningClientBuilder = require('./data/sentencePlanningClientBuilder')
-const formClient = require('./data/formClient')
 const createOffenderService = require('./services/offenderService')
 const createSentencePlanningService = require('./services/sentencePlanningService')
 
 const offenderService = createOffenderService(elite2ClientBuilder)
 const sentencePlanningService = createSentencePlanningService(sentencePlanningClientBuilder)
-const createFormService = require('./services/formService')
+
+const logger = require('../log')
 
 // pass in dependencies of service
-const formService = createFormService(formClient)
 
 const app = createApp({
-  formService,
   offenderService,
   sentencePlanningService,
 })
 
-createMockAPI()
+logger.info(`### process.env.NODE_ENV ::: ${process.env.NODE_ENV}`)
+if (process.env.NODE_ENV !== 'production') {
+  createMockAPI()
+}
 
 module.exports = app

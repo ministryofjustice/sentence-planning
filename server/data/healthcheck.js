@@ -1,16 +1,10 @@
 /* eslint-disable prefer-promise-reject-errors */
 const superagent = require('superagent')
 const config = require('../config.js')
-const db = require('./dataAccess/db')
 const logger = require('../../log.js')
 
 module.exports = {
-  dbCheck,
   authCheck,
-}
-
-function dbCheck() {
-  return db.query('SELECT 1 AS ok')
 }
 
 function authCheck() {

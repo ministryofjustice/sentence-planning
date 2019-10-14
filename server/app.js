@@ -22,7 +22,7 @@ const version = moment.now().toString()
 const production = process.env.NODE_ENV === 'production'
 const testMode = process.env.NODE_ENV === 'test'
 
-module.exports = function createApp({ formService, offenderService, sentencePlanningService }) {
+module.exports = function createApp({ offenderService, sentencePlanningService }) {
   const app = express()
 
   app.set('json spaces', 2)
@@ -153,7 +153,7 @@ module.exports = function createApp({ formService, offenderService, sentencePlan
   })
   app.use('/api/', createApiRouter({ authenticationMiddleware, offenderService }))
   app.use('/offender-summary/', createOffenderSummaryRouter(sentencePlanningService))
-  app.use('/sentence-plan/', createSentencePlanRouter(formService, offenderService, sentencePlanningService))
+  app.use('/sentence-plan/', createSentencePlanRouter(offenderService, sentencePlanningService))
   app.use((req, res, next) => {
     next(new Error('Not found'))
   })
