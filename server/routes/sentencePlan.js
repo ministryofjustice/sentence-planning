@@ -12,7 +12,7 @@ const getThisIsMe = require('../middleware/getThisIsMe')
 const persistThisIsMe = require('../middleware/persistThisIsMe')
 const getOasysSentencePlan = require('../middleware/getOasysSentencePlan')
 
-module.exports = (formService, offenderService, sentencePlanningService) => {
+module.exports = (offenderService, sentencePlanningService) => {
   const router = express.Router()
 
   const userIdPath = '/:idType(oasys-offender-id)/:id(\\d{3,})'
@@ -32,12 +32,9 @@ module.exports = (formService, offenderService, sentencePlanningService) => {
   router.use(userIdPath, getOffenderSummaryData(offenderService))
 
   router.get([`${sentencePlanPath}/this-is-me`, newSentencePlanPath], getThisIsMe())
-  router.post(
-    [`${sentencePlanPath}/this-is-me`, newSentencePlanPath],
-    persistThisIsMe(formService, sentencePlanningService)
-  )
+  router.post([`${sentencePlanPath}/this-is-me`, newSentencePlanPath], persistThisIsMe(sentencePlanningService))
   router.get(`${sentencePlanPath}/motivations`, getMotivations())
-  router.post(`${sentencePlanPath}/motivations`, persistMotivations(formService))
+  router.post(`${sentencePlanPath}/motivations`, persistMotivations())
   router.get(`${sentencePlanPath}/summary`, getSentencePlanSummary())
   router.get(sentencePlanPath, getSentencePlan(sentencePlanningService))
   router.get(oasysSentencePlanPath, getOasysSentencePlan(sentencePlanningService))
@@ -45,13 +42,13 @@ module.exports = (formService, offenderService, sentencePlanningService) => {
     `${stepPath}/progress`,
     getStep(sentencePlanningService, '../views/formPages/stepProgress', '../views/pages/stepView')
   )
-  router.post(`${stepPath}/progress`, persistProgress(formService))
+  router.post(`${stepPath}/progress`, persistProgress())
   router.get(`${stepPath}/view`, getStep(sentencePlanningService, '../views/pages/stepView'))
   router.get(
     [stepPath, newStepPath],
     getStep(sentencePlanningService, '../views/formPages/step', '../views/pages/stepView')
   )
-  router.post([stepPath, newStepPath], persistStep(formService))
+  router.post([stepPath, newStepPath], persistStep())
 
   return router
 }

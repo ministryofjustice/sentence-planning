@@ -24,25 +24,11 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=nomis-hsqldb
 
-  sentence-planning-db:
-    image: postgres
-    networks:
-    - hmpps
-    container_name: sentence-planning-db
-    restart: always
-    ports:
-    - "5432:5432"
-    environment:
-    - POSTGRES_PASSWORD=form-builder
-    - POSTGRES_USER=form-builder
-    - POSTGRES_DB=form-builder
-
   sentence-planning:
     build: .
     networks:
     - hmpps
     depends_on:
-    - sentence-planning-db
     - oauth-server
     ports:
     - "3000:3000"
@@ -50,11 +36,6 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
     environment:
     - PORT=3000
-    - DB_USER=sentence-planning
-    - DB_PASS=sentence-planning
-    - DB_SERVER=sentence-planning-db
-    - DB_NAME=sentence-planning
-    - DB_SSL_ENABLED=no
     - NOMIS_AUTH_URL=http://oauth-server:8080/auth
     - NOMIS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
     - NODE_ENV=development
