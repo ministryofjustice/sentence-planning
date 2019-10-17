@@ -1,42 +1,41 @@
-# Sentence Planning
+# GDS Node.js boilerplate
 
-Sentence Planning Application
+This is a skeleton Node.js app running on [Express] with [Nunjucks] as a template engine.
 
-## Getting started
+It includes:
+- Grunt for compliation of sass/js
+- [GOV.UK Frontend]
+- [Browserify] with babelify and Nunjucksify
+- Mocha for testing
+- Middleware to set correlation headers
+- i18n language support
+- [Snyk]
+- [StandardJS] for linting
+- [nvm] (optional) for nodejs version
 
-The easiest way to get started is to use docker compose to download and run the three required containers.
+To get started clone the repo and run
 
-`docker-compose pull`
+``` bash
+$ npm install
+$ npm start
+```
+(`npm install` might error about Snyk if it’s not set up but ignore for now)
 
-`docker-compose up`
+Then go to [http://localhost:3000/](http://localhost:3000/) to see it in action.
 
-for detailed instructions see `https://dsdmoj.atlassian.net/wiki/spaces/NFS/overview`
+### Using nvm (optional)
+If you work across multiple Node.js projects there's a good chance they require different Node.js and npm versions.
 
-###Users
-You can log in with users stored int eh seeded nomis oauth db e.g. `CA_USER, password123456`
+To enable this we use [nvm (Node Version Manager)](https://github.com/creationix/nvm) to switch between versions easily.
 
-### Dependencies
+1. [install nvm](https://github.com/creationix/nvm#installation)
+2. Run `nvm install` in the project directory (this will use [.nvmrc](/../../.nvmrc))
+3. Follow the steps above to install and start
 
-The app authenticates using nomis `Nomis Oauth2 Server` and saves to a Postgres database.
-
-### Runing the app for development\*\*
-
-#### Build assets
-
-`npm run build`
-
-Install dependencies using `npm install` ensure you are using >= `Node v8.4.0`
-
-#### Env variables
-
-In config.js you can see all the required variables. These are set with defaults that will allow the application to run, but you will need to add a `.env` file at some point.
-
-`npm run start`
-
-### Run linter
-
-`npm run lint`
-
-### Run tests
-
-`npm run test`
+[Express]: https://expressjs.com/
+[Nunjucks]: https://mozilla.github.io/nunjucks/
+[Snyk]: https://snyk.io/
+[GOV.UK Frontend]: https://design-system.service.gov.uk/
+[Browserify]: http://browserify.org/
+[StandardJS]: https://standardjs.com/
+[nvm]: https://github.com/creationix/nvm
