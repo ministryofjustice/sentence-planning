@@ -1,18 +1,18 @@
 const express = require('express')
 const path = require('path')
 const logger = require('../../log')
+const getToken = require('../authentication/nomisOAuth')
 
-module.exports = function Index({ authenticationMiddleware, offenderService }) {
+module.exports = function Index({ offenderService }) {
   const router = express.Router()
-
-  router.use(authenticationMiddleware())
 
   const placeHolder = path.join(__dirname, '../../assets/images/image-missing.png')
 
-  router.get('/offender/:bookingId/image', (req, res) => {
+  router.get('/offender/:bookingId/image', async (req, res) => {
     const { bookingId } = req.params
+    const token = await getToken()
     offenderService
-      .getOffenderImage(res.locals.user.token, bookingId)
+      .getOffenderImage(token, bookingId)
       .then(data => {
         res.type('image/jpeg')
         data.pipe(res)

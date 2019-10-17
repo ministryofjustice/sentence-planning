@@ -34,8 +34,8 @@ module.exports = {
         maxFreeSockets: 10,
         freeSocketTimeout: 30000,
       },
-      apiClientId: get('API_CLIENT_ID', 'use-of-force-client', true),
-      apiClientSecret: get('API_CLIENT_SECRET', 'clientsecret'),
+      apiClientId: get('API_CLIENT_ID', 'sentence-plan-api-client', true),
+      apiClientSecret: get('API_CLIENT_CREDENTIALS_SECRET', 'clientsecret'),
     },
     elite2: {
       url: get('ELITE2API_ENDPOINT_URL', 'http://localhost:8080', true),

@@ -9,11 +9,11 @@ env:
       secretKeyRef:
         name: sentence-planning
         key: API_CLIENT_ID
-  - name: API_CLIENT_SECRET
+  - name: API_CLIENT_CREDENTIALS_SECRET
     valueFrom:
       secretKeyRef:
         name: sentence-planning
-        key: API_CLIENT_SECRET
+        key: API_CLIENT_CREDENTIALS_SECRET
   - name: SESSION_SECRET
     valueFrom:
       secretKeyRef:
