@@ -1,6 +1,7 @@
 const superagent = require('superagent')
 const logger = require('../../log')
 const config = require('../config')
+const getToken = require('../authentication/nomisOAuth')
 
 const timeoutSpec = {
   response: config.oasys.timeout.response,
@@ -25,6 +26,7 @@ const getOffenderData = (idType, id) => {
     try {
       return await superagent
         .get(path)
+        .auth(await getToken(), { type: 'bearer' })
         .timeout(timeoutSpec)
         .then(({ body }) => body)
     } catch (error) {

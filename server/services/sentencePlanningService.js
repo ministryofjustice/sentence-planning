@@ -84,7 +84,6 @@ module.exports = function createSentencePlanningService(sentencePlanningClientBu
   }
   const createSentencePlan = async (token, offenderId) => {
     try {
-      logger.info(`%%%%% ${offenderId}`)
       const sentencePlanningClient = sentencePlanningClientBuilder(token)
       const result = await sentencePlanningClient.createSentencePlan(offenderId)
 

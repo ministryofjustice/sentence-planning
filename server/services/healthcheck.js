@@ -1,10 +1,4 @@
-const { dbCheck, authCheck } = require('../data/healthcheck')
-
-function db() {
-  return dbCheck()
-    .then(() => ({ name: 'db', status: 'ok', message: 'OK' }))
-    .catch(err => ({ name: 'db', status: 'ERROR', message: err.message }))
-}
+const { authCheck } = require('../data/healthcheck')
 
 function auth() {
   return authCheck()
@@ -13,7 +7,7 @@ function auth() {
 }
 
 function healthcheck(callback) {
-  const checks = [db, auth]
+  const checks = [auth]
 
   return Promise.all(checks.map(fn => fn())).then(checkResults => {
     const allOk = checkResults.every(item => item.status === 'ok')

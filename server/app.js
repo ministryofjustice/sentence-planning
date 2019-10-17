@@ -9,7 +9,6 @@ const compression = require('compression')
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 const sassMiddleware = require('node-sass-middleware')
-const { authenticationMiddleware } = require('./authentication/auth')
 const { healthcheck } = require('./services/healthcheck')
 const createApiRouter = require('./routes/api')
 const createOffenderSummaryRouter = require('./routes/offenderSummary')
@@ -151,7 +150,7 @@ module.exports = function createApp({ offenderService, sentencePlanningService }
   app.get('/', (req, res) => {
     res.render('formPages/offenderSearch', { user: req.user })
   })
-  app.use('/api/', createApiRouter({ authenticationMiddleware, offenderService }))
+  app.use('/api/', createApiRouter({ offenderService }))
   app.use('/offender-summary/', createOffenderSummaryRouter(sentencePlanningService))
   app.use('/sentence-plan/', createSentencePlanRouter(offenderService, sentencePlanningService))
   app.use((req, res, next) => {
