@@ -1,8 +1,7 @@
-'use strict'
-const path = require('path')
-const envfile = require('envfile')
+import { join } from 'path'
+import { parseFileSync } from 'envfile'
 
-const TEST_ENV = envfile.parseFileSync(path.join(__dirname, '../test.env'))
+const TEST_ENV = parseFileSync(join(__dirname, '../test.env'))
 
 if (TEST_ENV) {
   Object.keys(TEST_ENV).forEach(property => {

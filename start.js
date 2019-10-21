@@ -1,12 +1,10 @@
-'use strict'
-
-const path = require('path')
-const fs = require('fs')
 const logger = require('pino')()
 const throng = require('throng')
-const server = require('./server')
+const { readFileSync, unlink, writeFileSync } = require('fs')
+const { join } = require('path')
+const { start: _start } = require('./server')
 
-const pidFile = path.join(__dirname, '/.start.pid')
+const pidFile = join(__dirname, '/.start.pid')
 const fileOptions = { encoding: 'utf-8' }
 let pid
 
@@ -14,18 +12,18 @@ let pid
  * Throng is a wrapper around node cluster
  * https://github.com/hunterloftis/throng
  */
-function start () {
+function start() {
   throng({
     workers: process.env.NODE_WORKER_COUNT || 1,
     master: startMaster,
-    start: startWorker
+    start: startWorker,
   })
 }
 
 /**
  * Start master process
  */
-function startMaster () {
+function startMaster() {
   logger.info(`Master started. PID: ${process.pid}`)
   process.on('SIGINT', () => {
     logger.info(`Master exiting`)
@@ -37,8 +35,8 @@ function startMaster () {
  * Start cluster worker. Log start and exit
  * @param  {Number} workerId
  */
-function startWorker (workerId) {
-  server.start()
+function startWorker(workerId) {
+  _start()
 
   logger.info(`Started worker ${workerId}, PID: ${process.pid}`)
 
@@ -51,11 +49,11 @@ function startWorker (workerId) {
 /**
  * Make sure all child processes are cleaned up
  */
-function onInterrupt () {
-  pid = fs.readFileSync(pidFile, fileOptions)
-  fs.unlink(pidFile, (err) => {
+function onInterrupt() {
+  pid = readFileSync(pidFile, fileOptions)
+  unlink(pidFile, err => {
     if (err) throw err
-    console.log('File successfully deleted')
+    logger.info('File successfully deleted')
   })
   process.kill(pid, 'SIGTERM')
   process.exit()
@@ -64,8 +62,8 @@ function onInterrupt () {
 /**
  * Keep track of processes, and clean up on SIGINT
  */
-function monitor () {
-  fs.writeFileSync(pidFile, process.pid, fileOptions)
+function monitor() {
+  writeFileSync(pidFile, process.pid, fileOptions)
   process.on('SIGINT', onInterrupt)
 }
 

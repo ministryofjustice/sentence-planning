@@ -1,11 +1,9 @@
-'use strict'
-
 // Local dependencies
-const healthcheck = require('./healthcheck')
-const index = require('./index')
+const { router: healthcheckRouter } = require('./healthcheck/index')
+const { router } = require('./index')
 
 // Export
-module.exports.bind = app => {
-  app.use(healthcheck.router)
-  app.use(index.router)
+module.exports = app => {
+  app.use(healthcheckRouter)
+  app.use(router)
 }

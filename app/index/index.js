@@ -1,5 +1,3 @@
-'use strict'
-
 // Npm dependencies
 const express = require('express')
 
@@ -10,7 +8,7 @@ const getController = require('./get.controller')
 const router = new express.Router()
 const indexPath = '/'
 const paths = {
-  index: indexPath
+  index: indexPath,
 }
 
 // Routing
@@ -19,5 +17,5 @@ router.get(paths.index, getController)
 // Export
 module.exports = {
   router,
-  paths
+  paths,
 }

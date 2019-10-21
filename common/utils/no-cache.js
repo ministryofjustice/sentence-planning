@@ -1,5 +1,3 @@
-'use strict'
-
 module.exports = res => {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
   res.header('Expires', '-1')

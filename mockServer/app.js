@@ -1,10 +1,10 @@
-import { readFile } from 'fs'
+const { readFile } = require('fs')
+
 const app = require('express')()
-import { info } from '../log.js'
 
 const getFile = (directory, file, res) => {
   const path = `mockServer/${directory}/${file}.json`
-  info(`apiMockServer requesting ${path}`)
+  // info(`apiMockServer requesting ${path}`)
   readFile(path, (err, sentencePlan) => {
     return err ? res.status(404).send(`Invalid path ${path}`) : res.send(JSON.parse(sentencePlan))
   })
