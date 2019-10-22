@@ -143,4 +143,4 @@ if (argv.i) {
   start()
 }
 
-module.exports = { start, initialise, staticify }
+module.exports = { start, getApp: initialise, staticify }

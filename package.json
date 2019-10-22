@@ -8,7 +8,11 @@
     "node": "10.16.0"
   },
   "babel": {
-    "presets": [[ "@babel/preset-env" ]]
+    "presets": [
+      [
+        "@babel/preset-env"
+      ]
+    ]
   },
   "scripts": {
     "build": "npm run build:copy & npm run build:css & npm run build:js",
@@ -27,7 +31,7 @@
     "start": "npm run clean && npm run build && npm run server",
     "start:dev": "npm run clean && npm run build && npm run server & npm run watch",
     "lint-sass": "./node_modules/.bin/sass-lint -v",
-    "test": "npm run build && node ./node_modules/mocha/bin/mocha \"!(node_modules)/**/*+(.test|.tests)\".js",
+    "test": "npm run build && jest --forceExit",
     "lint": "eslint . --cache --max-warnings 0",
     "watch:node-sass": "nodemon -e scss -x \"npm run build:css\"",
     "watch": "npm run watch:node-sass"
@@ -64,6 +68,7 @@
     "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
+    "jest": "^24.9.0",
     "mocha": "^6.2.1",
     "nock": "^10.0.6",
     "node-sass": "^4.12.0",
