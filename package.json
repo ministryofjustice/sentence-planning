@@ -1,11 +1,13 @@
 {
-  "name": "moj-nodejs-boilerplate",
-  "description": "A Node.js project boilerplate for production apps",
+  "name": "sentence-planning-ui",
+  "description": "HMPPS Sentence Planning Service",
+  "repository": "git@github.com:ministryofjustice/sentence-planning.git",
   "version": "0.0.1",
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": "10.16.0"
+    "node": ">=10.16.3",
+    "npm": ">=6.4.1"
   },
   "babel": {
     "presets": [
