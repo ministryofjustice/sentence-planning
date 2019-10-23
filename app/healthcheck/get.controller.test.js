@@ -1,5 +1,5 @@
 // NPM dependencies
-const supertest = require('supertest');
+const supertest = require('supertest')
 
 // Local dependencies
 const { getApp } = require('../../server')
