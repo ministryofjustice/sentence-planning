@@ -15,6 +15,7 @@
     ],
     "no-use-before-define": 0,
     "semi": 0,
-    "comma-dangle": ["error", "always-multiline"]
+    "comma-dangle": ["error", "always-multiline"],
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.js", "test/**"]}]
   }
 }
