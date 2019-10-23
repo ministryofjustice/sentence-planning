@@ -1,45 +1,77 @@
 version: '3.1'
 services:
-  oauth-server:
+
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    networks:
+      - hmpps
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: dev
+    tmpfs:
+      - /var/lib/postgresql
+
+  oauth:
     image: mojdigitalstudio/nomis-oauth2-server:latest
     networks:
       - hmpps
-    container_name: oauth-server
+    container_name: oauth
     ports:
       - "9090:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
     environment:
+      - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=dev
 
   elite2-api:
     image: mojdigitalstudio/elite2-api:latest
     container_name: elite2-api
     depends_on:
-    - oauth-server
+    - oauth
     ports:
-      - "8080:8080"
+      - "8085:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
     environment:
       - SPRING_PROFILES_ACTIVE=nomis-hsqldb
 
-  sentence-planning:
-    build: .
+  offender-assessment-api:
+    image: mojdigitalstudio/offender-assessments-api:latest
     networks:
-    - hmpps
+      - hmpps
+    container_name: offender-assessment-api
     depends_on:
-    - oauth-server
+    - oauth
     ports:
-    - "3000:3000"
+      - "8081:8080"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
     environment:
-    - PORT=3000
-    - NOMIS_AUTH_URL=http://oauth-server:8080/auth
-    - NOMIS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
-    - NODE_ENV=development
+      - SERVER_PORT=8080
+      - SPRING_PROFILES_ACTIVE=dev
 
+  sentence-planning-api:
+    image: mojdigitalstudio/sentence-planning-api:latest
+    networks:
+      - hmpps
+    container_name: sentence-planning-api
+    depends_on:
+    - postgres
+    - oauth
+    - offender-assessment-api
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+    environment:
+      - SERVER_PORT=8080
+      - DATABASE_ENDPOINT=postgres:5432
+      - OAUTH_ROOT_URL=http://oauth:8080/auth
+      - ASSESSMENT_API_URI_ROOT=http://offender-assessment-api:8080
 
 networks:
   hmpps:
