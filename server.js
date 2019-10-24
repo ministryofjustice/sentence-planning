@@ -16,6 +16,7 @@ const staticify = require('staticify')(join(__dirname, 'public'))
 const bind = require('./app/router')
 const noCache = require('./common/utils/no-cache')
 const correlationHeader = require('./common/middleware/correlation-header')
+const { mdcSetup } = require('./common/logging/logger-mdc')
 
 // Global constants
 const { static: _static } = express
@@ -58,6 +59,9 @@ function initialiseGlobalMiddleware(app) {
   app.use(urlencoded({ extended: true }))
 
   app.use('*', correlationHeader)
+
+  // must be after session since we need session
+  app.use(mdcSetup)
 }
 
 function initialiseProxy(app) {
