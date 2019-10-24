@@ -43,6 +43,7 @@
     "@ministryofjustice/frontend": "^0.0.16-alpha",
     "body-parser": "1.18.x",
     "compression": "^1.7.4",
+    "continuation-local-storage": "^3.2.1",
     "express": "4.16.x",
     "govuk-frontend": "^3.3.0",
     "lodash": "^4.17.15",
@@ -52,7 +53,9 @@
     "pino": "^5.13.5",
     "serve-favicon": "^2.5.0",
     "staticify": "^3.3.4",
-    "throng": "4.0.x"
+    "throng": "4.0.x",
+    "uuid": "^3.3.3",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
