@@ -8,6 +8,7 @@ const { json, urlencoded } = require('body-parser')
 const loggingMiddleware = require('morgan')
 const compression = require('compression')
 const { configure } = require('nunjucks')
+const cookieSession = require('cookie-session')
 
 // Local dependencies
 const logger = require('pino')()
@@ -16,6 +17,7 @@ const staticify = require('staticify')(join(__dirname, 'public'))
 const bind = require('./app/router')
 const noCache = require('./common/utils/no-cache')
 const correlationHeader = require('./common/middleware/correlation-header')
+const keycloakHeader = require('./common/middleware/save-keycloak-headers').saveKeycloakHeaders
 const { mdcSetup } = require('./common/logging/logger-mdc')
 
 // Global constants
@@ -58,7 +60,18 @@ function initialiseGlobalMiddleware(app) {
   app.use(json())
   app.use(urlencoded({ extended: true }))
 
+  app.use(
+    cookieSession({
+      name: 'session',
+      keys: ['key1', 'key2'],
+
+      // Cookie Options
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    })
+  )
+
   app.use('*', correlationHeader)
+  app.use('*', keycloakHeader)
 
   // must be after session since we need session
   app.use(mdcSetup)
