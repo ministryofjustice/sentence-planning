@@ -2,21 +2,27 @@
 const addUserInformation = require('./add-user-information')
 
 describe('Put keycloak header information into session', () => {
-  let mockRequest
+  let req
+  let res
   beforeEach(() => {
-    mockRequest = sessionData => {
-      return {
-        headers: {
-          'X-Auth-Name': 'John',
-        },
-        session: { data: sessionData },
-      }
+    req = {
+      session: {
+        'X-Auth-Name': 'James',
+      },
+    }
+    res = {
+      locals: {},
     }
   })
 
-  test('should add header if present', done => {
-    const req = mockRequest()
-    addUserInformation(req, {}, done)
-    expect(req.session['X-Auth-Name']).toEqual('John')
+  test('should add user name to locals', done => {
+    addUserInformation(req, res, done)
+    expect(res.locals.username).toEqual('James')
+  })
+
+  test('should add Test User name to locals if not in session', done => {
+    req.session = {}
+    addUserInformation(req, res, done)
+    expect(res.locals.username).toEqual('Test User')
   })
 })
