@@ -41,9 +41,11 @@
   },
   "dependencies": {
     "@ministryofjustice/frontend": "^0.0.16-alpha",
+    "babel-polyfill": "^6.26.0",
     "body-parser": "1.18.x",
     "compression": "^1.7.4",
     "continuation-local-storage": "^3.2.1",
+    "cookie-session": "^1.3.3",
     "express": "4.16.x",
     "govuk-frontend": "^3.3.0",
     "lodash": "^4.17.15",
