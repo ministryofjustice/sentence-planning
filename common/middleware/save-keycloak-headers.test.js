@@ -3,6 +3,7 @@ const extractKeycloakHeaders = require('./save-keycloak-headers').saveKeycloakHe
 
 describe('Put keycloak header information into session', () => {
   let mockRequest
+  let req
   beforeEach(() => {
     mockRequest = sessionData => {
       return {
@@ -12,27 +13,22 @@ describe('Put keycloak header information into session', () => {
         session: { data: sessionData },
       }
     }
+    req = mockRequest()
   })
 
   test('should add header if present', done => {
-    const req = mockRequest()
-    const res = {}
-    extractKeycloakHeaders(req, res, done)
+    extractKeycloakHeaders(req, {}, done)
     expect(req.session['X-Auth-Name']).toEqual('John')
   })
 
   test('should overwrite existing value', done => {
-    const req = mockRequest()
     req.headers['X-Auth-Name'] = 'Paul'
-    const res = {}
-    extractKeycloakHeaders(req, res, done)
+    extractKeycloakHeaders(req, {}, done)
     expect(req.session['X-Auth-Name']).toEqual('Paul')
   })
 
   test('should not set in session when header not present in request', done => {
-    const req = mockRequest()
-    const res = {}
-    extractKeycloakHeaders(req, res, done)
+    extractKeycloakHeaders(req, {}, done)
     expect(req.session['X-Auth-Username']).toBeUndefined()
   })
 })
