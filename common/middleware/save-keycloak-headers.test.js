@@ -2,18 +2,14 @@
 const extractKeycloakHeaders = require('./save-keycloak-headers').saveKeycloakHeaders
 
 describe('Put keycloak header information into session', () => {
-  let mockRequest
   let req
   beforeEach(() => {
-    mockRequest = sessionData => {
-      return {
-        headers: {
-          'X-Auth-Name': 'John',
-        },
-        session: { data: sessionData },
-      }
+    req = {
+      headers: {
+        'X-Auth-Name': 'John',
+      },
+      session: {},
     }
-    req = mockRequest()
   })
 
   test('should add header if present', done => {
