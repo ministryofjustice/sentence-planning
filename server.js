@@ -18,6 +18,7 @@ const bind = require('./app/router')
 const noCache = require('./common/utils/no-cache')
 const correlationHeader = require('./common/middleware/correlation-header')
 const keycloakHeader = require('./common/middleware/save-keycloak-headers').saveKeycloakHeaders
+const addUserInformation = require('./common/middleware/add-user-information')
 const { mdcSetup } = require('./common/logging/logger-mdc')
 
 // Global constants
@@ -72,6 +73,7 @@ function initialiseGlobalMiddleware(app) {
 
   app.use('*', correlationHeader)
   app.use('*', keycloakHeader)
+  app.use('*', addUserInformation)
 
   // must be after session since we need session
   app.use(mdcSetup)
