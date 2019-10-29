@@ -11,9 +11,9 @@ const { configure } = require('nunjucks')
 const cookieSession = require('cookie-session')
 
 // Local dependencies
-const logger = require('pino')()
 const argv = require('minimist')(process.argv.slice(2))
 const staticify = require('staticify')(join(__dirname, 'public'))
+const logger = require('./common/logging/logger')
 const bind = require('./app/router')
 const noCache = require('./common/utils/no-cache')
 const correlationHeader = require('./common/middleware/correlation-header')

@@ -1,7 +1,7 @@
-const logger = require('pino')()
 const throng = require('throng')
 const { readFileSync, unlink, writeFileSync } = require('fs')
 const { join } = require('path')
+const logger = require('./common/logging/logger')
 const { start: _start } = require('./server')
 
 const pidFile = join(__dirname, '/.start.pid')
