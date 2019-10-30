@@ -12,6 +12,7 @@ spec:
   revisionHistoryLimit: 2
   minReadySeconds: {{ .Values.minReadySeconds }}
   strategy:
+    type: RollingUpdate
     rollingUpdate:
       maxSurge: {{ .Values.maxSurge }}
       maxUnavailable: {{ .Values.maxUnavailable }}
@@ -25,6 +26,18 @@ spec:
         app: {{ template "sentence-planning.name" . }}
         release: {{ .Release.Name }}
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ template "sentence-planning.name" . }}
+              topologyKey: kubernetes.io/hostname
       containers:
         - name: proxy
           image: "{{ .Values.proxy.image.repository }}:{{ .Values.proxy.image.tag }}"
