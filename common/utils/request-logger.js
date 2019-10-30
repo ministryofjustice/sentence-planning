@@ -1,4 +1,4 @@
-const logger = require('pino')()
+const logger = require('../logging/logger')
 
 const logRequestStart = context => {
   logger.debug(`Calling ${context.service}  ${context.description}-`, {
