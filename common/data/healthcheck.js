@@ -21,6 +21,7 @@ module.exports = (name, { url, agent }) => {
           deadline: 1500,
         })
         .end((error, result) => {
+          logger.info(`${name} ${url}/ping ${JSON.stringify(result)}`)
           if (error) {
             logger.error(error.stack, `Error calling ${name}`)
             reject(error)
