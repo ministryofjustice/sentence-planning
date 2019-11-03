@@ -4,7 +4,7 @@ const Agent = require('agentkeepalive')
 const { HttpsAgent } = require('agentkeepalive')
 const logger = require('../logging/logger')
 
-module.exports = (name, { url, agent }) => {
+const serviceCheckFactory = (name, { url, agent }) => {
   const keepaliveAgent = url.startsWith('https') ? new HttpsAgent(agent) : new Agent(agent)
 
   return () =>
@@ -33,3 +33,5 @@ module.exports = (name, { url, agent }) => {
         })
     })
 }
+
+module.exports = { serviceCheckFactory }

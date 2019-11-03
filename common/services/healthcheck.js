@@ -1,4 +1,4 @@
-const serviceCheckFactory = require('../data/healthcheck')
+const { serviceCheckFactory } = require('../data/healthcheck')
 
 const service = (name, url) => {
   const check = serviceCheckFactory(name, url)

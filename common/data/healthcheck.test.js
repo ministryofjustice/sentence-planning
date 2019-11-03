@@ -1,7 +1,7 @@
 const nock = require('nock')
-const serviceCheckFactory = require('./healthcheck')
+const { serviceCheckFactory } = require('./healthcheck')
 
-describe('service healthcheck', () => {
+describe('data service healthcheck', () => {
   const mockService = {
     url: 'http://test-service.com',
     agent: {
