@@ -14,7 +14,7 @@ const cookieSession = require('cookie-session')
 const argv = require('minimist')(process.argv.slice(2))
 const staticify = require('staticify')(join(__dirname, 'public'))
 const logger = require('./common/logging/logger')
-const bind = require('./app/router')
+const router = require('./app/router')
 const noCache = require('./common/utils/no-cache')
 const correlationHeader = require('./common/middleware/correlation-header')
 const { saveKeycloakHeaders: keycloakHeader, keycloakHeaders } = require('./common/middleware/save-keycloak-headers')
@@ -30,6 +30,7 @@ const PORT = process.env.PORT || 3000
 const { NODE_ENV } = process.env
 const CSS_PATH = staticify.getVersionedPath('/stylesheets/application.min.css')
 const JAVASCRIPT_PATH = staticify.getVersionedPath('/javascripts/application.js')
+const allGateKeeperPages = /^(?!health$).*/
 
 // Define app views
 const APP_VIEWS = [
@@ -72,7 +73,7 @@ function initialiseGlobalMiddleware(app) {
   )
 
   if (process.env.NODE_ENV === 'local') {
-    app.use('*', (req, res, next) => {
+    app.use(allGateKeeperPages, (req, res, next) => {
       keycloakHeaders.forEach(headerName => {
         logger.info(`Running locally: setting default header ${headerName}.`)
         req.headers[headerName] = `Test ${headerName}`
@@ -81,9 +82,9 @@ function initialiseGlobalMiddleware(app) {
     })
   }
 
-  app.use('*', correlationHeader)
-  app.use('*', keycloakHeader)
-  app.use('*', addUserInformation)
+  app.use(allGateKeeperPages, correlationHeader)
+  app.use(allGateKeeperPages, keycloakHeader)
+  app.use(allGateKeeperPages, addUserInformation)
 
   // must be after session since we need session
   app.use(mdcSetup)
@@ -133,7 +134,7 @@ function initialisePublic(app) {
 }
 
 function initialiseRoutes(app) {
-  bind(app)
+  router(app)
 }
 
 function listen() {
