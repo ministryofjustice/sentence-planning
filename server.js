@@ -17,7 +17,8 @@ const logger = require('./common/logging/logger')
 const bind = require('./app/router')
 const noCache = require('./common/utils/no-cache')
 const correlationHeader = require('./common/middleware/correlation-header')
-const keycloakHeader = require('./common/middleware/save-keycloak-headers').saveKeycloakHeaders
+const { saveKeycloakHeaders: keycloakHeader, keycloakHeaders } = require('./common/middleware/save-keycloak-headers')
+const addUserInformation = require('./common/middleware/add-user-information')
 const { mdcSetup } = require('./common/logging/logger-mdc')
 
 // Global constants
@@ -70,8 +71,19 @@ function initialiseGlobalMiddleware(app) {
     })
   )
 
+  if (process.env.NODE_ENV === 'local') {
+    app.use('*', (req, res, next) => {
+      keycloakHeaders.forEach(headerName => {
+        logger.info(`Running locally: setting default header ${headerName}.`)
+        req.headers[headerName] = `Test ${headerName}`
+      })
+      next()
+    })
+  }
+
   app.use('*', correlationHeader)
   app.use('*', keycloakHeader)
+  app.use('*', addUserInformation)
 
   // must be after session since we need session
   app.use(mdcSetup)
