@@ -30,7 +30,7 @@ const PORT = process.env.PORT || 3000
 const { NODE_ENV } = process.env
 const CSS_PATH = staticify.getVersionedPath('/stylesheets/application.min.css')
 const JAVASCRIPT_PATH = staticify.getVersionedPath('/javascripts/application.js')
-const allGateKeeperPages = /^(?!health$).*/
+const allGateKeeperPages = /^\/(?!health$).*/
 
 // Define app views
 const APP_VIEWS = [
