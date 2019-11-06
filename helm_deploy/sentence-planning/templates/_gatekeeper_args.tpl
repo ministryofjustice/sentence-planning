@@ -24,7 +24,7 @@ args:
     - --cors-origins='*'
     - --resources=uri=/health|white-listed=true
     - --resources=uri=/info|white-listed=true
-    - --resources=uri=/*
+    - --resources=uri=/*|white-listed=true
     - --secure-cookie=true
     - --http-only-cookie=true
     - --enable-logout-redirect=true
