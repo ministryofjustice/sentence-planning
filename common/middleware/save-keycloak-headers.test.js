@@ -6,7 +6,7 @@ describe('Put keycloak header information into session', () => {
   beforeEach(() => {
     req = {
       headers: {
-        'X-Auth-Name': 'John',
+        'x-auth-username': 'John',
       },
       session: {},
     }
@@ -14,17 +14,17 @@ describe('Put keycloak header information into session', () => {
 
   test('should add header if present', done => {
     extractKeycloakHeaders(req, {}, done)
-    expect(req.session['X-Auth-Name']).toEqual('John')
+    expect(req.session['x-auth-username']).toEqual('John')
   })
 
   test('should overwrite existing value', done => {
-    req.headers['X-Auth-Name'] = 'Paul'
+    req.headers['x-auth-username'] = 'Paul'
     extractKeycloakHeaders(req, {}, done)
-    expect(req.session['X-Auth-Name']).toEqual('Paul')
+    expect(req.session['x-auth-username']).toEqual('Paul')
   })
 
   test('should not set in session when header not present in request', done => {
     extractKeycloakHeaders(req, {}, done)
-    expect(req.session['X-Auth-Username']).toBeUndefined()
+    expect(req.session['x-auth-userid']).toBeUndefined()
   })
 })

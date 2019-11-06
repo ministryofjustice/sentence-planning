@@ -2,3 +2,10 @@
 @import "@ministryofjustice/frontend/moj/all";
 
 @import "components/cookie-message";
+
+.moj-header__link, .moj-header__navigation-link {
+  &:focus {
+    background-color: govuk-colour("yellow");
+    outline: 0;
+  }
+}

@@ -1,17 +1,9 @@
 const logger = require('../logging/logger')
 
-const keycloakHeaders = [
-  'X-Auth-Name',
-  'X-Auth-Username',
-  'X-Auth-Given-Name',
-  'X-Auth-Family-Name',
-  'X-Auth-Email',
-  'X-Auth-Locations',
-]
+const keycloakHeaders = ['x-auth-email', 'x-auth-groups', 'x-auth-roles', 'x-auth-userid', 'x-auth-username']
 
 const saveKeycloakHeaders = (req, res, next) => {
-  logger.info('in saveKeycloakHeaders')
-  logger.info(JSON.stringify(req.headers))
+  logger.debug(`request headers: ${JSON.stringify(req.headers)}`)
 
   keycloakHeaders.forEach(headerName => {
     if (req.headers[headerName]) {
