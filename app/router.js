@@ -20,5 +20,6 @@ module.exports = app => {
       return result
     })
   })
+  app.get(['/test1', '/test2'], (req, res) => res.send(`testing page ${req.originalUrl}`))
   app.use(router)
 }
