@@ -24,6 +24,7 @@ args:
     - --resources=uri=/health|white-listed=true
     - --resources=uri=/info|white-listed=true
     - --resources=uri=/*|white-listed=true
+    - --resources=uri=/test
     - --secure-cookie=true
     - --http-only-cookie=true
     - --enable-logout-redirect=true
