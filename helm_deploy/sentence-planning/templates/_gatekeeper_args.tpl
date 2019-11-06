@@ -9,6 +9,7 @@ args:
     - --client-secret={{ .Values.secrets.KEYCLOAK_CLIENT_SECRET }}
     - --discovery-url={{ .Values.env.KEYCLOAK_REALM }}
     - --listen=127.0.0.1:8081
+    - --enable-default-deny
     - --enable-logging=true
     - --enable-json-logging=true
     - --enable-token-header
@@ -23,8 +24,7 @@ args:
     - --cors-origins='*'
     - --resources=uri=/health|white-listed=true
     - --resources=uri=/info|white-listed=true
-    - --resources=uri=/*|white-listed=true
-    - --resources=uri=/test
+    - --resources=uri=/*
     - --secure-cookie=true
     - --http-only-cookie=true
     - --enable-logout-redirect=true
