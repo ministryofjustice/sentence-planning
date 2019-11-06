@@ -4,7 +4,11 @@ const {
     offenderAssessment: { url },
   },
 } = require('../config')
+<<<<<<< HEAD
 const { getOffenderData } = require('./offenderAssessment')
+=======
+const getOffenderData = require('./offenderAssessment')
+>>>>>>> 9e705eb... SP-359-add-offender-details
 
 jest.mock('./nomisOAuth', () => () => 'token-1')
 
