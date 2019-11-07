@@ -25,12 +25,14 @@ args:
     - --resources=uri=/health|white-listed=true
     - --resources=uri=/info|white-listed=true
     - --resources=uri=/public/*|white-listed=true
-    - --resources=uri=/test1|white-listed=true
     - --resources=uri=/*
     - --secure-cookie=true
     - --http-only-cookie=true
     - --enable-logout-redirect=true
-    - --add-claims=name,username,given_name,family_name,email,locations
+    - --add-claims=name
+    - --add-claims=given_name
+    - --add-claims=family_name
+    - --add-claims=locations
     - --verbose
 
 {{- end -}}
