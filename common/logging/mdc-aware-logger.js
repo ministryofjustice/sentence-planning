@@ -37,7 +37,7 @@ module.exports = class {
 
   // eslint-disable-next-line class-methods-use-this
   withMDC(meta) {
-    const mdcNamespace = getNamespace('uk.gov.digital.ho.rtr.mdc')
+    const mdcNamespace = getNamespace('uk.gov.justice.digital.sentence-planning.mdc')
     if (!mdcNamespace) {
       return meta
     }

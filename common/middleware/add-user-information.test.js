@@ -7,7 +7,7 @@ describe('Put keycloak header information into session', () => {
   beforeEach(() => {
     req = {
       session: {
-        'X-Auth-Name': 'James',
+        'x-auth-name': 'James',
       },
     }
     res = {
@@ -20,10 +20,10 @@ describe('Put keycloak header information into session', () => {
     expect(res.locals.username).toEqual('James')
   })
 
-  test('should throw an error if "X-Auth-Name" is not in session', () => {
+  test('should throw an error if "x-auth-name" is not in session', () => {
     req.session = {}
     expect(() => {
       addUserInformation(req, res, () => {})
-    }).toThrowError('Username (X-Auth-Name) not found in session')
+    }).toThrowError('Username (x-auth-name) not found in session')
   })
 })
