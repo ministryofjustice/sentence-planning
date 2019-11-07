@@ -30,7 +30,10 @@ args:
     - --secure-cookie=true
     - --http-only-cookie=true
     - --enable-logout-redirect=true
-    - --add-claims=name,username,given_name,family_name,email,locations
+    - --add-claims=name
+    - --add-claims=given_name
+    - --add-claims=family_name
+    - --add-claims=locations
     - --verbose
 
 {{- end -}}
