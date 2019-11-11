@@ -1,17 +1,17 @@
 const winston = require('winston')
-const config = require('../config')
+let { loggingLevel, env } = require('../config')
 const MDCAwareLogger = require('./mdc-aware-logger')
 
-if (!config.loggingLevel) {
-  config.loggingLevel = 'debug'
+if (!loggingLevel) {
+  loggingLevel = 'debug'
 }
-if (!config.env) {
-  config.env = 'development'
+if (!env) {
+  env = 'development'
 }
 
 const loggingTransports = []
 const exceptionTransports = []
-const notProd = config.env !== 'production'
+const notProd = env !== 'production'
 const colors = {
   info: 'green',
   email: 'magenta',
@@ -23,7 +23,7 @@ const consoleLog = new winston.transports.Console({
   json: notProd !== true,
   timestamp: true,
   colorize: true,
-  level: config.loggingLevel.toLowerCase(),
+  level: loggingLevel.toLowerCase(),
 })
 
 loggingTransports.push(consoleLog)

@@ -54,8 +54,9 @@
     "lint-sass": "./node_modules/.bin/sass-lint -v",
     "test": "jest",
     "lint": "eslint . --cache --max-warnings 0",
+    "watch:js": "nodemon --ignore public/ -e js -x \"npm run start\"",
     "watch:node-sass": "nodemon -e scss -x \"npm run build:css\"",
-    "watch": "npm run watch:node-sass",
+    "watch": "npm run watch:node-sass & npm run watch:js",
     "record-build-info": "node ./bin/record-build-info"
   },
   "dependencies": {

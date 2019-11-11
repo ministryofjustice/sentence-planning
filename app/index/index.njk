@@ -1,15 +1,31 @@
 {% extends "common/templates/layout.njk" %}
+{% from "components/button/macro.njk" import govukButton %}
 
 {% block pageTitle %}
-  {{ message }}
+    {{ heading }}
 {% endblock %}
 
 {% block content %}
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <h1 class="govuk-heading-xl">
-      {{ message }}
-    </h1>
-  </div>
-</div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-visually-hidden">
+                Offender plans:
+            </h1>
+
+            <div class="moj-page-header-actions">
+                <div class="moj-page-header-actions__title">
+                    <h1 class="govuk-heading-l">
+                        {{ heading }}
+                    </h1>
+                </div>
+            </div>
+            <p>{{ no_plan }}</p>
+
+            {{ govukButton({
+                text: start_plan,
+                href: "start-plan"
+            }) }}
+        </div>
+
+    </div>
 {% endblock %}
