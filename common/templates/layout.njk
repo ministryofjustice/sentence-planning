@@ -25,6 +25,9 @@
       }]
     }
   }) }}
+  {% if offenderDetails %}
+    {% include "./partials/offenderDetails.njk" %}
+  {% endif %}
 {% endblock %}
 
 {% block pageTitle %}MOJ Node.js boilerplate{% endblock %}
@@ -40,6 +43,7 @@
 
 {% block head %}
   {% include "common/templates/includes/head.njk" %}
+
 {% endblock %}
 
 {% block footer %}

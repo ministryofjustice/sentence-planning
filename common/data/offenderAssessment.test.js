@@ -4,11 +4,7 @@ const {
     offenderAssessment: { url },
   },
 } = require('../config')
-<<<<<<< HEAD
 const { getOffenderData } = require('./offenderAssessment')
-=======
-const getOffenderData = require('./offenderAssessment')
->>>>>>> 9e705eb... SP-359-add-offender-details
 
 jest.mock('./nomisOAuth', () => () => 'token-1')
 
@@ -17,7 +13,7 @@ describe('offenderAssessment', () => {
 
   const token = 'token-1'
   const id = '123458'
-  const offenderAssessmentUrl = `/offenders/oasys-offender-id/${id}`
+  const offenderAssessmentUrl = `/offenders/oasysOffenderId/${id}`
 
   afterEach(() => {
     nock.cleanAll()
@@ -30,7 +26,7 @@ describe('offenderAssessment', () => {
       forename1: 'Bernard',
       identifiers: {
         crn: 'S000001',
-        noms: 'A0000AB',
+        nomisId: 'A0000AB',
       },
     }
     beforeEach(() => {
