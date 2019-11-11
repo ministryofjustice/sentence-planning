@@ -42,7 +42,7 @@ module.exports = {
         freeSocketTimeout: 30000,
       },
     },
-    oasys: {
+    offenderAssessment: {
       url: get('OASYSAPI_ENDPOINT_URL', 'http://localhost:18080', true),
       timeout: {
         response: get('OASYSAPII_ENDPOINT_TIMEOUT_RESPONSE', 30000, true),
