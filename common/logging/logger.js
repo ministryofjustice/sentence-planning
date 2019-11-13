@@ -3,7 +3,7 @@ let { loggingLevel, env } = require('../config')
 const MDCAwareLogger = require('./mdc-aware-logger')
 
 if (!loggingLevel) {
-  loggingLevel = 'debug'
+  loggingLevel = 'info'
 }
 if (!env) {
   env = 'development'
