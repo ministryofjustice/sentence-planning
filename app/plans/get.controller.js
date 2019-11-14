@@ -16,7 +16,7 @@ function isEmptyObject(obj) {
 }
 
 const getSentencePlanData = (req, res) => {
-  const individualId = req.params.offenderid
+  const individualId = req.params.id
 
   getSentencePlanSummary(req, res, individualId).then(() => {
     const renderInfo = {}
@@ -25,7 +25,8 @@ const getSentencePlanData = (req, res) => {
     } else {
       renderInfo.activePlan = isActivePlan(res.body)
     }
-    res.render('app/index/index', { ...displayText, ...renderInfo })
+    renderInfo.individualId = individualId
+    res.render('app/plans/index', { ...displayText, ...renderInfo })
   })
 }
 

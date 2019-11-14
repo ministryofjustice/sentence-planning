@@ -6,6 +6,7 @@ const {
 } = require('../common/config')
 
 const offenderRoot = '/individual-id/:id(\\d{1,})'
+const getSentencePlanData = require('./plans/get.controller')
 
 // Export
 module.exports = app => {
@@ -24,4 +25,5 @@ module.exports = app => {
   })
   app.use(offenderRoot, getOffenderDetails)
   app.get(offenderRoot, (req, res) => res.render('app/index/index'))
+  app.get(`${offenderRoot}/plans`, (req, res) => getSentencePlanData(req, res))
 }
