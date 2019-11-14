@@ -10,7 +10,7 @@ describe('service offenderDetails', () => {
       forename1: 'Bernard',
       identifiers: {
         crn: 'S000001',
-        noms: 'A0000AB',
+        nomisId: 'A0000AB',
       },
       unnecessary: 'values',
     }
@@ -32,7 +32,7 @@ describe('service offenderDetails', () => {
           noms: 'A0000AB',
         })
       })
-      it('should call the data service onece and pass the id', () => {
+      it('should call the data service once and pass the id', () => {
         expect(getOffenderDataMock).toHaveBeenCalled()
         expect(getOffenderDataMock).toHaveBeenCalledWith(417)
       })
@@ -59,7 +59,7 @@ describe('service offenderDetails', () => {
       mockOffenderData = {
         forename1: 'Bernard',
         identifiers: {
-          noms: 'A0000AB',
+          nomisId: 'A0000AB',
         },
       }
       const offenderDetailsService = createOffenderDetailsService({ getOffenderData: getOffenderDataMock })

@@ -3,10 +3,48 @@
 
 @import "components/cookie-message";
 
+$white-transparent: rgba(255, 255, 255, .25);
+
 .moj-header__link, .moj-header__navigation-link {
   &:focus {
     background-color: govuk-colour("yellow");
     outline: 0;
   }
 }
-
+.moj-context-header {
+  background-color: govuk-colour("blue");
+  padding-bottom: govuk-spacing(2);
+}
+.moj-context-header dt, .moj-context-header dd{
+  color: govuk-colour("white");
+  padding-top: 0;
+  display: inline-block;
+  margin: govuk-spacing(1);
+}
+.moj-context-header__block dt:first-of-type {
+  margin-left: govuk-spacing(0) !important;
+  padding-left: govuk-spacing(0) !important;
+  border-left: 0;
+}
+.moj-context-header dt {
+  @extend .govuk-heading-s;
+  padding: 0 0 0 govuk-spacing(2) !important;
+}
+.moj-context-header dd {
+  @extend .govuk-body-s;
+}
+.moj-context-header__block dt {
+  border-left: 1px solid $white-transparent;
+}
+.moj-context-header__block {
+  @extend .govuk-width-container;
+  padding-bottom: govuk-spacing(1);
+  border-top: 1px solid $white-transparent;
+}
+.moj-context-header__top-block {
+  @extend .moj-context-header__block;
+  border-top: 0
+}
+.no_left_border {
+  border-left: 0 !important;
+}
