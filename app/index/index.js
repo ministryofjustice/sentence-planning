@@ -6,7 +6,7 @@ const getController = require('./get.controller')
 
 // Initialisation
 const router = new express.Router()
-const indexPath = '/'
+const indexPath = '/offender/:offenderid/plans'
 const paths = {
   index: indexPath,
 }

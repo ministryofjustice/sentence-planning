@@ -1,28 +1,32 @@
-const { request } = require('superagent')
-const api = require('../../common/config.js').apis.sentencePlanning
-const logger = require('../../common/logging/logger')
-const displayText = require('./display-text')
+const displayText = require('./displayText')
+const getSentencePlanSummary = require('../../common/data/offenderSentencePlanSummary')
 
-module.exports = async (req, res) => {
-  // get active plan
-  const response = await request
-    .get(api.url)
-    .query({ api_key: 'DEMO_KEY', date: '2017-08-02' })
-    .timeout({
-      response: api.timeout.response,
-      deadline: api.timeout.deadline,
-    })
-    .end((err, res) => {
-      if (err) {
-        logger.error(`Error retrieving current plan: ${err}`)
-        throw new Error(``)
-      }
-      console.log(res.body.url)
-      console.log(res.body.explanation)
-    })
-
-  if (response){
-
-  }
-  res.render('app/index/index', displayText)
+const activePlan = plans => {
+  let planPresent = false
+  plans.forEach(plan => {
+    if (!plan.completedDate) {
+      planPresent = true
+    }
+  })
+  return planPresent
 }
+
+function isEmptyObject(obj) {
+  return !Object.keys(obj).length
+}
+
+const getSentencePlanData = (req, res) => {
+  const individualId = req.params.offenderid // TODO: get id from session
+
+  getSentencePlanSummary(req, res, individualId).then(() => {
+    const renderParams = {}
+    if (isEmptyObject(res.body)) {
+      renderParams.activePlan = false
+    } else {
+      renderParams.activePlan = activePlan(res.body)
+    }
+    res.render('app/index/index', { ...displayText, ...renderParams })
+  })
+}
+
+module.exports = getSentencePlanData
