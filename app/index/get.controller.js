@@ -1,7 +1,7 @@
 const displayText = require('./displayText')
 const getSentencePlanSummary = require('../../common/data/offenderSentencePlanSummary')
 
-const activePlan = plans => {
+const isActivePlan = plans => {
   let planPresent = false
   plans.forEach(plan => {
     if (!plan.completedDate) {
@@ -16,16 +16,16 @@ function isEmptyObject(obj) {
 }
 
 const getSentencePlanData = (req, res) => {
-  const individualId = req.params.offenderid // TODO: get id from session
+  const individualId = req.params.offenderid
 
   getSentencePlanSummary(req, res, individualId).then(() => {
-    const renderParams = {}
-    if (isEmptyObject(res.body)) {
-      renderParams.activePlan = false
+    const renderInfo = {}
+    if (!res.body || isEmptyObject(res.body)) {
+      renderInfo.activePlan = false
     } else {
-      renderParams.activePlan = activePlan(res.body)
+      renderInfo.activePlan = isActivePlan(res.body)
     }
-    res.render('app/index/index', { ...displayText, ...renderParams })
+    res.render('app/index/index', { ...displayText, ...renderInfo })
   })
 }
 
