@@ -1,9 +1,11 @@
 // Local dependencies
 const healthCheckFactory = require('../common/services/healthcheck')
+const getOffenderDetails = require('../common/middleware/getOffenderDetails')
 const {
   apis: { oauth2, oasys, sentencePlanning, elite2 },
 } = require('../common/config')
-const { router } = require('./index')
+
+const offenderRoot = '/individual-id/:id(\\d{1,})'
 
 // Export
 module.exports = app => {
@@ -20,6 +22,6 @@ module.exports = app => {
       return result
     })
   })
-  app.get(['/test1', '/test2'], (req, res) => res.send(`testing page ${req.originalUrl}`))
-  app.use(router)
+  app.use(offenderRoot, getOffenderDetails)
+  app.get(offenderRoot, (req, res) => res.render('app/index/index'))
 }

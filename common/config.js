@@ -31,7 +31,7 @@ module.exports = {
       apiClientSecret: get('API_CLIENT_CREDENTIALS_SECRET', 'clientsecret'),
     },
     elite2: {
-      url: get('ELITE2API_ENDPOINT_URL', 'http://localhost:8080', true),
+      url: get('ELITE2API_ENDPOINT_URL', 'http://localhost:8085', true),
       timeout: {
         response: get('ELITE2API_ENDPOINT_TIMEOUT_RESPONSE', 10000, true),
         deadline: get('ELITE2API_ENDPOINT_TIMEOUT_DEADLINE', 10000, true),
@@ -43,7 +43,7 @@ module.exports = {
       },
     },
     offenderAssessment: {
-      url: get('OASYSAPI_ENDPOINT_URL', 'http://localhost:18080', true),
+      url: get('OASYSAPI_ENDPOINT_URL', 'http://localhost:8081', true),
       timeout: {
         response: get('OASYSAPII_ENDPOINT_TIMEOUT_RESPONSE', 30000, true),
         deadline: get('OASYSAPI_ENDPOINT_TIMEOUT_DEADLINE', 35000, true),
@@ -55,7 +55,7 @@ module.exports = {
       },
     },
     sentencePlanning: {
-      url: get('SENTENCEPLANNINGAPI_ENDPOINT_URL', 'http://localhost:18081', true),
+      url: get('SENTENCEPLANNINGAPI_ENDPOINT_URL', 'http://localhost:8080', true),
       timeout: {
         response: get('SENTENCEPLANNINGAPI_ENDPOINT_TIMEOUT_RESPONSE', 10000, true),
         deadline: get('SENTENCEPLANNINGAPI_TIMEOUT_DEADLINE', 10000, true),

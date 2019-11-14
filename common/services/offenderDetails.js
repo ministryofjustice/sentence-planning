@@ -1,16 +1,18 @@
 const { logger } = require('../logging/logger')
 
+const capitalizeName = name => `${name.charAt().toUpperCase()}${name.slice(1).toLowerCase()}`
+
 module.exports = function createOffenderDetailsService({ getOffenderData }) {
   const getOffenderDetails = async oasysOffenderId => {
     try {
       const {
         familyName,
         forename1,
-        identifiers: { crn = null, noms = null },
+        identifiers: { crn = null, nomisId: noms = null },
       } = await getOffenderData(oasysOffenderId)
       if (!familyName || !forename1) throw new Error('Required offender details could not be found')
       return {
-        fullName: `${forename1} ${familyName}`,
+        fullName: `${capitalizeName(forename1)} ${capitalizeName(familyName)}`,
         crn,
         noms,
       }

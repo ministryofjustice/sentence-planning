@@ -7,7 +7,7 @@ const {
   },
 } = require('../config')
 
-const oasysapiUrl = `${url}/offenders/oasys-offender-id/`
+const oasysapiUrl = `${url}/offenders/oasysOffenderId/`
 
 const getOffenderData = async id => {
   const path = `${oasysapiUrl}${id}`
