@@ -6,6 +6,8 @@ const {
 } = require('../common/config')
 
 const offenderRoot = '/individual-id/:id(\\d{1,})'
+
+// pages
 const getSentencePlanData = require('./plans/get.controller')
 
 // Export

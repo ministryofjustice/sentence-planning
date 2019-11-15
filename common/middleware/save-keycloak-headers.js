@@ -7,6 +7,7 @@ const keycloakHeaders = [
   'x-auth-family-name',
   'x-auth-email',
   'x-auth-locations',
+  'x-auth-token',
 ]
 
 const saveKeycloakHeaders = (req, res, next) => {

@@ -6,15 +6,16 @@ const {
   },
 } = require('../config')
 
-const getSentencePlanSummary = async (req, res, individualId) => {
+const getSentencePlanSummary = async (individualId, token) => {
   const path = `${url}/offenders/${individualId}/sentenceplans`
   logger.info(`getSentencePlanSummary: calling SentencePlanningApi: ${path}`)
   try {
-    await superagent
+    return await superagent
       .get(path)
+      .auth(token, { type: 'bearer' })
       .timeout(timeout)
-      .then(({ body }) => {
-        res.body = body
+      .then(response => {
+        return response.body
       })
   } catch (error) {
     logger.warn('Error calling sentence planning API')
