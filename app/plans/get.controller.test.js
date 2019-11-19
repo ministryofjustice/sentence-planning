@@ -37,7 +37,7 @@ describe('getSentencePlanSummary', () => {
     getSentencePlanSummary.mockReturnValueOnce(noActivePlan)
     const expected = { ...displayText, activePlan: false, individualId: 11034 }
     await controller.sentencePlanSummary(req, res)
-    expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`', expected)
+    expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
   it('should return true when a plan has null or no completed date', () => {
     expect(controller.hasActivePlan(activePlan)).toEqual(true)
