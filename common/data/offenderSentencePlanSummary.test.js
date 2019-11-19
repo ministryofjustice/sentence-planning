@@ -18,8 +18,6 @@ describe('offenderSentencePlanSummary', () => {
   const offenderAssessmentUrl = `/offenders/${id}/sentenceplans`
 
   describe('getSentencePlanSummary', () => {
-    let fakeSentencePlanningAPI
-
     beforeEach(() => {
       mockedEndpoint = nock(url)
     })
