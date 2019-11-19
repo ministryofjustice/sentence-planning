@@ -7,8 +7,9 @@ const activePlan = require('../../mockServer/sentencePlanSummary/11033.json')
 const noActivePlan = require('../../mockServer/sentencePlanSummary/11034.json')
 const completedDateAbsent = require('../../mockServer/sentencePlanSummary/11035.json')
 const emptyObject = require('../../mockServer/sentencePlanSummary/11032.json')
+const getSentencePlanSummary = require('../../common/data/offenderSentencePlanSummary')
 
-const summaryApi = jest.mock('../../common/data/offenderSentencePlanSummary.js')
+getSentencePlanSummary.getSentencePlanSummary = jest.fn()
 
 describe('getSentencePlanSummary', () => {
   const req = {
@@ -36,26 +37,15 @@ describe('getSentencePlanSummary', () => {
   })
 
   it('should set the correct render values when there is an active plan', async () => {
-    const expected = {
-      activePlan: true,
-      heading: 'Active plan',
-      individualId: 1,
-      no_plan: 'There is no active plan',
-      start_plan: 'Start a new plan',
-    }
-    const result = await controller.sentencePlanSummary(req, res)
+    req.params.id = 1
+    const expected = { ...displayText, activePlan: true, individualId: 1 }
+    await controller.sentencePlanSummary(req, res)
     expect(res.render).toHaveBeenCalledWith('app/plans/index', expected)
   })
   it('should set the correct render values when there is no active plan', async () => {
     req.params.id = 11034
-    const expected = {
-      activePlan: false,
-      heading: 'Active plan',
-      individualId: 11034,
-      no_plan: 'There is no active plan',
-      start_plan: 'Start a new plan',
-    }
-    const result = await controller.sentencePlanSummary(req, res)
+    const expected = { ...displayText, activePlan: false, individualId: 11034 }
+    await controller.sentencePlanSummary(req, res)
     expect(res.render).toHaveBeenCalledWith('app/plans/index', expected)
   })
   it('should return true when a plan has null or no completed date', () => {
