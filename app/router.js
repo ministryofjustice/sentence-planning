@@ -2,7 +2,7 @@
 const healthCheckFactory = require('../common/services/healthcheck')
 const getOffenderDetails = require('../common/middleware/getOffenderDetails')
 const {
-  apis: { oauth2, oasys, sentencePlanning, elite2 },
+  apis: { oauth2, offenderAssessment, sentencePlanning, elite2 },
 } = require('../common/config')
 
 const offenderRoot = '/individual-id/:id(\\d{1,})'
@@ -10,7 +10,7 @@ const offenderRoot = '/individual-id/:id(\\d{1,})'
 // Export
 module.exports = app => {
   app.get('/health', (req, res, next) => {
-    const healthService = healthCheckFactory(oauth2, oasys, sentencePlanning, elite2)
+    const healthService = healthCheckFactory(oauth2, offenderAssessment, sentencePlanning, elite2)
     healthService((err, result) => {
       if (err) {
         return next(err)
