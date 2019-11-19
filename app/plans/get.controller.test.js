@@ -1,4 +1,3 @@
-const nock = require('nock')
 const controller = require('./get.controller')
 
 const displayText = require('./displayText')
@@ -7,9 +6,11 @@ const activePlan = require('../../mockServer/sentencePlanSummary/11033.json')
 const noActivePlan = require('../../mockServer/sentencePlanSummary/11034.json')
 const completedDateAbsent = require('../../mockServer/sentencePlanSummary/11035.json')
 const emptyObject = require('../../mockServer/sentencePlanSummary/11032.json')
-const getSentencePlanSummary = require('../../common/data/offenderSentencePlanSummary')
+const { getSentencePlanSummary } = require('../../common/data/offenderSentencePlanSummary')
 
-getSentencePlanSummary.getSentencePlanSummary = jest.fn()
+jest.mock('../../common/data/offenderSentencePlanSummary.js', () => ({
+  getSentencePlanSummary: jest.fn(),
+}))
 
 describe('getSentencePlanSummary', () => {
   const req = {
@@ -24,26 +25,16 @@ describe('getSentencePlanSummary', () => {
     render: jest.fn(),
   }
 
-  beforeEach(() => {
-    nock('http://localhost:18081')
-      .get('/offenders/1/sentenceplans')
-      .reply(200, activePlan)
-    nock('http://localhost:18081')
-      .get('/offenders/11034/sentenceplans')
-      .reply(200, noActivePlan)
-  })
-  afterEach(() => {
-    nock.cleanAll()
-  })
-
   it('should set the correct render values when there is an active plan', async () => {
     req.params.id = 1
+    getSentencePlanSummary.mockReturnValueOnce(activePlan)
     const expected = { ...displayText, activePlan: true, individualId: 1 }
     await controller.sentencePlanSummary(req, res)
     expect(res.render).toHaveBeenCalledWith('app/plans/index', expected)
   })
   it('should set the correct render values when there is no active plan', async () => {
     req.params.id = 11034
+    getSentencePlanSummary.mockReturnValueOnce(noActivePlan)
     const expected = { ...displayText, activePlan: false, individualId: 11034 }
     await controller.sentencePlanSummary(req, res)
     expect(res.render).toHaveBeenCalledWith('app/plans/index', expected)
