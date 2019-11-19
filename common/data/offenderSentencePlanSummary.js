@@ -24,4 +24,4 @@ const getSentencePlanSummary = async (individualId, token) => {
   }
 }
 
-module.exports = getSentencePlanSummary
+module.exports = { getSentencePlanSummary }

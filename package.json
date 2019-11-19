@@ -14,7 +14,8 @@
       "common/**/*.js"
     ],
     "testMatch": [
-      "<rootDir>/(common)/**/?(*.)(test).js"
+      "<rootDir>/(common)/**/?(*.)(test).js",
+      "<rootDir>/(app)/**/?(*.)(test).js"
     ],
     "testEnvironment": "node",
     "moduleFileExtensions": [

@@ -8,7 +8,7 @@ const {
 const offenderRoot = '/individual-id/:id(\\d{1,})'
 
 // pages
-const getSentencePlanData = require('./plans/get.controller')
+const { sentencePlanSummary } = require('./plans/get.controller')
 
 // Export
 module.exports = app => {
@@ -26,6 +26,6 @@ module.exports = app => {
     })
   })
   app.use(offenderRoot, getOffenderDetails)
-  app.get(offenderRoot, (req, res) => res.render('app/index/index'))
-  app.get(`${offenderRoot}/plans`, (req, res) => getSentencePlanData(req, res))
+  app.get(offenderRoot, (req, res) => res.redirect(`/individual-id/${req.params.id}/plans`))
+  app.get(`${offenderRoot}/plans`, (req, res) => sentencePlanSummary(req, res))
 }
