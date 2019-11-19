@@ -8,10 +8,10 @@ const service = (name, url) => {
       .catch(err => ({ name, status: 'ERROR', message: err }))
 }
 
-module.exports = (auth, oasys, sentencePlanning, elite2) => {
+module.exports = (auth, offenderAssessment, sentencePlanning, elite2) => {
   const checks = [
     service('auth', auth),
-    service('oasys', oasys),
+    service('offenderAssessment', offenderAssessment),
     service('sentencePlanning', sentencePlanning),
     service('elite2', elite2),
   ]

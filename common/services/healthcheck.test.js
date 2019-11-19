@@ -34,7 +34,7 @@ describe.only('service healthcheck', () => {
     it('should call each required service', () => {
       expect(serviceCheckFactory).toHaveBeenCalledTimes(4)
       expect(serviceCheckFactory).toHaveBeenCalledWith('auth', healthyCheck)
-      expect(serviceCheckFactory).toHaveBeenCalledWith('oasys', healthyCheck)
+      expect(serviceCheckFactory).toHaveBeenCalledWith('offenderAssessment', healthyCheck)
       expect(serviceCheckFactory).toHaveBeenCalledWith('sentencePlanning', healthyCheck)
       expect(serviceCheckFactory).toHaveBeenCalledWith('elite2', healthyCheck)
     })
@@ -51,7 +51,7 @@ describe.only('service healthcheck', () => {
       expect(healthcheckServiceCallback.mock.calls[0][1].checks).toEqual({
         auth: 'OK',
         elite2: 'OK',
-        oasys: 'OK',
+        offenderAssessment: 'OK',
         sentencePlanning: 'OK',
       })
     })
@@ -92,7 +92,7 @@ describe.only('service healthcheck', () => {
       expect(healthcheckServiceCallback.mock.calls[0][1].checks).toEqual({
         auth: 'OK',
         elite2: 'OK',
-        oasys: new Error(404),
+        offenderAssessment: new Error(404),
         sentencePlanning: 'OK',
       })
     })
