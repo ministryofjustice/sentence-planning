@@ -24,4 +24,5 @@ module.exports = app => {
   })
   app.use(offenderRoot, getOffenderDetails)
   app.get(offenderRoot, (req, res) => res.render('app/index/index'))
+  app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }
