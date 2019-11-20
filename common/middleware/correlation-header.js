@@ -1,6 +1,6 @@
-const { CORRELATION_HEADER } = require('../config/index')
+const { correlationHeader } = require('../config')
 
 module.exports = (req, res, next) => {
-  req.correlationId = req.headers[CORRELATION_HEADER] || ''
+  req.correlationId = req.headers[correlationHeader] || ''
   next()
 }

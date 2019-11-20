@@ -14,7 +14,8 @@
       "common/**/*.js"
     ],
     "testMatch": [
-      "<rootDir>/(common)/**/?(*.)(test).js"
+      "<rootDir>/(common)/**/?(*.)(test).js",
+      "<rootDir>/(app)/**/?(*.)(test).js"
     ],
     "testEnvironment": "node",
     "moduleFileExtensions": [
@@ -49,8 +50,9 @@
     "compile-sass": "node-sass --include-path node_modules/ common/assets/sass -o public/stylesheets",
     "cssmin": "cleancss -o public/stylesheets/application.min.css public/stylesheets/application.css",
     "server": "node ./start.js",
+    "mockserver": "node ./mockServer/app.js",
     "start": "npm run clean && npm run build && npm run server",
-    "start:local": "npm run clean && npm run build && NODE_ENV=local npm run server & npm run watch",
+    "start:local": "npm run clean && npm run build && npm run mockserver && LOGGING_LEVEL=debug NODE_ENV=local npm run server & npm run watch",
     "lint-sass": "./node_modules/.bin/sass-lint -v",
     "test": "jest",
     "lint": "eslint . --cache --max-warnings 0",

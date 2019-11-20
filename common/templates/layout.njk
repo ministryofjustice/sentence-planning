@@ -16,7 +16,7 @@
     navigation: {
       label: 'Account navigation',
       items: [{
-        text: username,
+        text: username | title,
         href: '#',
         active: true
       }, {
@@ -50,7 +50,7 @@
   {{
     govukFooter({
       meta: {
-        html: 'MOJ Node.js boilerplate'
+        html: ''
       }
     })
   }}

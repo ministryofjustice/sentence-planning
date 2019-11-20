@@ -7,6 +7,9 @@ const {
 
 const offenderRoot = '/individual-id/:id(\\d{1,})'
 
+// pages
+const { sentencePlanSummary } = require('./plans/get.controller')
+
 // Export
 module.exports = app => {
   app.get('/health', (req, res, next) => {
@@ -23,6 +26,6 @@ module.exports = app => {
     })
   })
   app.use(offenderRoot, getOffenderDetails)
-  app.get(offenderRoot, (req, res) => res.render('app/index/index'))
+  app.get([offenderRoot, `${offenderRoot}/plans`], sentencePlanSummary)
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }

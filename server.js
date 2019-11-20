@@ -20,6 +20,7 @@ const correlationHeader = require('./common/middleware/correlation-header')
 const { saveKeycloakHeaders: keycloakHeader, keycloakHeaders } = require('./common/middleware/save-keycloak-headers')
 const addUserInformation = require('./common/middleware/add-user-information')
 const { mdcSetup } = require('./common/logging/logger-mdc')
+const { createMockAPI } = require('./mockServer/app')
 
 // Global constants
 const { static: _static } = express
@@ -80,6 +81,7 @@ function initialiseGlobalMiddleware(app) {
       })
       next()
     })
+    createMockAPI()
   }
 
   app.use(allGateKeeperPages, correlationHeader)
