@@ -1,5 +1,5 @@
-const displayText = require('./displayText')
 const { getSentencePlanSummary } = require('../../common/data/offenderSentencePlanSummary')
+const { isEmptyObject } = require('../../common/utils/util')
 
 const hasActivePlan = plans => {
   if (isEmptyObject(plans)) return false
@@ -12,20 +12,16 @@ const hasActivePlan = plans => {
   return activePlanPresent
 }
 
-function isEmptyObject(obj) {
-  return !Object.keys(obj).length
-}
-
-const sentencePlanSummary = async (req, res) => {
-  const plans = await getSentencePlanSummary(req.params.id, req.session['x-auth-token'])
+const sentencePlanSummary = async ({ params: { id }, session: { 'x-auth-token': token } }, res) => {
+  const plans = await getSentencePlanSummary(id, token)
   const renderInfo = {}
   if (!plans || isEmptyObject(plans)) {
     renderInfo.activePlan = false
   } else {
     renderInfo.activePlan = hasActivePlan(plans)
   }
-  renderInfo.individualId = req.params.id
-  res.render(`${__dirname}/index`, { ...displayText, ...renderInfo })
+  renderInfo.individualId = id
+  res.render(`${__dirname}/index`, renderInfo)
 }
 
 module.exports = { sentencePlanSummary, hasActivePlan }

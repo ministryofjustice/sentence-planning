@@ -1,6 +1,8 @@
 {% extends "common/templates/layout.njk" %}
 {% from "components/button/macro.njk" import govukButton %}
 
+{% set heading = "Active plan" %}
+
 {% block pageTitle %}
     {{ heading }}
 {% endblock %}
@@ -22,10 +24,10 @@
                         </h1>
                     </div>
                 </div>
-                <p>{{ no_plan }}</p>
+                <p>There is no active plan</p>
 
                 {{ govukButton({
-                    text: start_plan,
+                    text: 'Start a new plan',
                     href: "/individual-id/" + individualId + "/edit-plan/"
                 }) }}
             {% endif %}

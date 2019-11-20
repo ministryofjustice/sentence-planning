@@ -26,7 +26,6 @@ module.exports = app => {
     })
   })
   app.use(offenderRoot, getOffenderDetails)
-  app.get(offenderRoot, (req, res) => res.redirect(`/individual-id/${req.params.id}/plans`))
-  app.get(`${offenderRoot}/plans`, (req, res) => sentencePlanSummary(req, res))
+  app.get([offenderRoot, `${offenderRoot}/plans`], sentencePlanSummary)
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }
