@@ -25,7 +25,7 @@ const sentencePlanSummary = async (req, res) => {
     renderInfo.activePlan = hasActivePlan(plans)
   }
   renderInfo.individualId = req.params.id
-  res.render('app/plans/index', { ...displayText, ...renderInfo })
+  res.render(`${__dirname}/index`, { ...displayText, ...renderInfo })
 }
 
 module.exports = { sentencePlanSummary, hasActivePlan }

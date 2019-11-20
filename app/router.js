@@ -9,6 +9,8 @@ const offenderRoot = '/individual-id/:id(\\d{1,})'
 
 // pages
 const { sentencePlanSummary } = require('./plans/get.controller')
+const { diversityGet } = require('./diversity/get.controller')
+const { diversityPost } = require('./diversity/post.controller')
 
 // Export
 module.exports = app => {
@@ -28,5 +30,7 @@ module.exports = app => {
   app.use(offenderRoot, getOffenderDetails)
   app.get(offenderRoot, (req, res) => res.redirect(`/individual-id/${req.params.id}/plans`))
   app.get(`${offenderRoot}/plans`, (req, res) => sentencePlanSummary(req, res))
+  app.get(`${offenderRoot}/edit-plan/NEW/diversity`, (req, res) => diversityGet(req, res))
+  app.post(`${offenderRoot}/edit-plan/NEW/diversity`, (req, res) => diversityPost(req, res))
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }

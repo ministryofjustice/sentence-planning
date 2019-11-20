@@ -69,7 +69,7 @@
     "cookie-session": "^1.3.3",
     "dotenv": "^8.2.0",
     "express": "4.16.x",
-    "govuk-frontend": "^3.3.0",
+    "govuk-frontend": "^3.4.0",
     "lodash": "^4.17.15",
     "minimist": "1.2.x",
     "morgan": "1.9.x",
