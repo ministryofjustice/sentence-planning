@@ -28,7 +28,6 @@ module.exports = app => {
     })
   })
   app.use(offenderRoot, getOffenderDetails)
-  app.get(offenderRoot, (req, res) => res.redirect(`/individual-id/${req.params.id}/plans`))
   app.get(`${offenderRoot}/plans`, (req, res) => sentencePlanSummary(req, res))
   app.get(
     [`${offenderRoot}/edit-plan/NEW/diversity`, `${offenderRoot}/edit-plan/:planid(\\d{1,})/diversity`],
@@ -38,5 +37,6 @@ module.exports = app => {
     [`${offenderRoot}/edit-plan/NEW/diversity`, `${offenderRoot}/edit-plan/:planid(\\d{1,})/diversity`],
     (req, res) => diversityPost(req, res)
   )
+  app.get([offenderRoot, `${offenderRoot}/plans`], sentencePlanSummary)
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }
