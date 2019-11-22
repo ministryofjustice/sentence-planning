@@ -32,7 +32,12 @@ module.exports = app => {
   app.use(offenderRoot, getOffenderDetails)
   app.get(`${offenderRoot}/plans`, (req, res) => sentencePlanSummary(req, res))
   app.get([`${offenderRoot}/edit-plan/:planid(\\d{1,})/diversity`], getDiversity)
-  app.post([`${offenderRoot}/edit-plan/:planid(\\d{1,})/diversity`], diversityValidationRules(), validate, postDiversity)
+  app.post(
+    [`${offenderRoot}/edit-plan/:planid(\\d{1,})/diversity`],
+    diversityValidationRules(),
+    validate,
+    postDiversity
+  )
   app.get([offenderRoot, `${offenderRoot}/plans`], sentencePlanSummary)
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }

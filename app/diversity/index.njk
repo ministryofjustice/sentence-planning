@@ -5,9 +5,14 @@
 {% from "components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% set heading = "How we will respond to diversity factors" %}
+{% set errorHeading = "Error - " + heading %}
 
 {% block pageTitle %}
-    {{ heading }}
+    {% if errors %}
+        {{ errorHeading }}
+    {% else %}
+        heading
+    {% endif %}
 {% endblock %}
 
 {% block beforeContent %}

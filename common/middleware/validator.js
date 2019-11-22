@@ -6,11 +6,10 @@ const validate = (req, res, next) => {
     return next()
   }
 
-  // make template ready errors object
-  const newErrors = errors.array().reduce((obj, itm) => {
-    // eslint-disable-next-line no-param-reassign
-    obj[itm.param] = { text: itm.msg }
-    return obj
+  const errorList = errors.array().reduce((obj, item) => {
+    const arrayObj = obj
+    arrayObj[item.param] = { text: item.msg }
+    return arrayObj
   }, {})
 
   const errorSummary = []
@@ -18,7 +17,7 @@ const validate = (req, res, next) => {
     return errorSummary.push({ text: err.msg, href: `#${err.param}-error` })
   })
 
-  req.errors = newErrors
+  req.errors = errorList
   req.errorSummary = errorSummary
 
   return next()

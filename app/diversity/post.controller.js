@@ -12,8 +12,11 @@ const validationRules = () => {
 }
 
 const postDiversity = async (req, res) => {
-  console.log(req.body)
-  res.render(`${__dirname}/index`, { errorSummary: req.errorSummary, errors: req.errors, ...req.body })
+  if (req.errors) {
+    res.render(`${__dirname}/index`, { errorSummary: req.errorSummary, errors: req.errors, ...req.body })
+  } else {
+    res.redirect('./needtoknow')
+  }
 }
 
 module.exports = { postDiversity, diversityValidationRules: validationRules }
