@@ -2,6 +2,9 @@
 {% from "components/back-link/macro.njk" import govukBackLink %}
 {% from "components/button/macro.njk" import govukButton %}
 {% from "components/textarea/macro.njk" import govukTextarea %}
+{% from "components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set heading = "How we will respond to diversity factors" %}
 
 {% block pageTitle %}
     {{ heading }}
@@ -14,9 +17,14 @@
 {% endblock %}
 
 {% block content %}
+
+    {# include errorSummary partial #}
+    {{ super() }}
+
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <form method="post" novalidate>
+
             {{  govukTextarea({
                 id: 'diversity',
                 name: 'diversity',
@@ -26,8 +34,9 @@
                     isPageHeading: true
                 },
                 hint: {
-                    text: hint
-                }
+                    text: 'Record how you will take account of diversity factors when creating the plan. For example: ethnicity, race, sexual orientation, gender, age or religion.'
+                },
+                errorMessage: errors.diversity
             }) }}
 
             {{ govukButton({
