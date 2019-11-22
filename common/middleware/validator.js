@@ -8,43 +8,20 @@ const validate = (req, res, next) => {
 
   // make template ready errors object
   const newErrors = errors.array().reduce((obj, itm) => {
+    // eslint-disable-next-line no-param-reassign
     obj[itm.param] = { text: itm.msg }
     return obj
   }, {})
 
   const errorSummary = []
   errors.array().map(err => {
-    errorSummary.push({ text: err.msg, href: `#${err.param}-error` })
+    return errorSummary.push({ text: err.msg, href: `#${err.param}-error` })
   })
 
   req.errors = newErrors
   req.errorSummary = errorSummary
 
-  console.log('errorSummary')
-  console.log(errorSummary)
-
   return next()
 }
-
-// function validate(path) {
-//   return (req, res, next) => {
-//     const validationRules = require(`${path}/validation`).validation
-//     validationRules(req)
-//
-//     console.log(validationRules)
-//
-//     console.log(`Inside mycache:${path}`)
-//     const errors = validationResult(req)
-//     console.log(errors)
-//     if (errors.isEmpty()) {
-//       next()
-//     }
-//     const extractedErrors = []
-//     errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
-//     req.errors = errors
-//
-//     next()
-//   }
-// }
 
 module.exports = { validate }

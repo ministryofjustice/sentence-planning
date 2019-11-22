@@ -1,19 +1,19 @@
 const { body } = require('express-validator')
 
 const validationRules = () => {
-  console.log('in validation rules')
   return [
     body('diversity')
       .isLength({ min: 1 })
       .withMessage('Record how you will take account of diversity factors'),
     body('diversity')
-      .isLength({ max: 5 })
-      .withMessage('ooops I did it again from within me own postcontroller innit'),
+      .isLength({ max: 250 })
+      .withMessage('xxx error message required for greater then 250 characters xxx'),
   ]
 }
 
 const postDiversity = async (req, res) => {
-  res.render(`${__dirname}/index`, { errorSummary: req.errorSummary, errors: req.errors })
+  console.log(req.body)
+  res.render(`${__dirname}/index`, { errorSummary: req.errorSummary, errors: req.errors, ...req.body })
 }
 
 module.exports = { postDiversity, diversityValidationRules: validationRules }
