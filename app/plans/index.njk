@@ -1,0 +1,37 @@
+{% extends "common/templates/layout.njk" %}
+{% from "components/button/macro.njk" import govukButton %}
+
+{% set heading = "Active plan" %}
+
+{% block pageTitle %}
+    {{ heading }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-visually-hidden">
+                Offender plans:
+            </h1>
+
+            {% if activePlan %}
+                <p>There is currently an active plan - UI elements to be developed in upcoming story</p>
+            {% else %}
+                <div class="moj-page-header-actions">
+                    <div class="moj-page-header-actions__title">
+                        <h1 class="govuk-heading-l">
+                            {{ heading }}
+                        </h1>
+                    </div>
+                </div>
+                <p>There is no active plan</p>
+
+                {{ govukButton({
+                    text: 'Start a new plan',
+                    href: "/individual-id/" + individualId + "/edit-plan/"
+                }) }}
+            {% endif %}
+        </div>
+
+    </div>
+{% endblock %}

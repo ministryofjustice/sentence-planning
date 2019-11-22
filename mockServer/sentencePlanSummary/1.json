@@ -1,0 +1,20 @@
+[
+  {
+    "planId": "1234",
+    "createdDate": "2015-02-27",
+    "completedDate": "2016-02-27",
+    "legacy": true
+  },
+  {
+    "planId": "2345",
+    "createdDate": "2019-02-27",
+    "completedDate": "2019-05-27",
+    "legacy": false
+  },
+  {
+    "planId": "3456",
+    "createdDate": "2016-03-27",
+    "completedDate": "2017-02-27",
+    "legacy": true
+  }
+]

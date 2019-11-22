@@ -11,6 +11,11 @@ $white-transparent: rgba(255, 255, 255, .25);
     outline: 0;
   }
 }
+
+p {
+  @extend .govuk-body;
+}
+
 .moj-context-header {
   background-color: govuk-colour("blue");
   padding-bottom: govuk-spacing(2);
