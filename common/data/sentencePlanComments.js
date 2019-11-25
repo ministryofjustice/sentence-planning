@@ -24,4 +24,23 @@ const getSentencePlanComments = async (sentencePlanId, token) => {
   }
 }
 
-module.exports = { getSentencePlanComments }
+const postSentencePlanComments = async (sentencePlanId, data, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/comments`
+  logger.info(`getSentencePlanComments: calling SentencePlanningApi: ${path}`)
+  try {
+    return await superagent
+      .post(path)
+      .send(data)
+      .auth(token, { type: 'bearer' })
+      .timeout(timeout)
+      .then(response => {
+        return response.body
+      })
+  } catch (error) {
+    logger.warn('Error calling sentence planning API')
+    logger.warn(error)
+    throw error
+  }
+}
+
+module.exports = { getSentencePlanComments, postSentencePlanComments }

@@ -1,5 +1,7 @@
 const { readFile } = require('fs')
-const app = require('express')()
+const express = require('express')
+
+const app = express()
 
 const logger = require('../common/logging/logger')
 
@@ -12,6 +14,12 @@ const getFile = (directory, file, res) => {
 }
 
 function createMockAPI() {
+  app.use('*', (req, res, next) => {
+    logger.info(`MockAPI recieved for ${req.originalUrl}`)
+    next()
+  })
+  app.use(express.json())
+
   app.get('/', (req, res) => res.send('sentence-planner-mock is UP'))
   app.get(/offenders\/(crn|oasysOffenderId)\/([\w]+)$/, (req, res) => {
     return getFile('convictData', req.params[1], res)
@@ -21,6 +29,14 @@ function createMockAPI() {
   })
   app.get('/sentenceplans/:planid/comments', (req, res) => {
     return getFile('sentencePlanComments', req.params.planid, res)
+  })
+  app.post('/sentenceplans/:planid/comments', (req, res) => {
+    if (req.params.planid === 999) {
+      res.sendStatus(400)
+    } else {
+      logger.debug(`MockAPI saving comment ${JSON.stringify(req.body)}`)
+      res.sendStatus(200)
+    }
   })
   app.listen(18081)
 }
