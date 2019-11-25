@@ -1,4 +1,6 @@
 const { validationResult } = require('express-validator')
+const { formatErrors } = require('../utils/formatErrors')
+const { formatErrorSummary } = require('../utils/formatErrorSummary')
 
 const validate = (req, res, next) => {
   const errors = validationResult(req)
@@ -6,19 +8,8 @@ const validate = (req, res, next) => {
     return next()
   }
 
-  const errorList = errors.array().reduce((obj, item) => {
-    const arrayObj = obj
-    arrayObj[item.param] = { text: item.msg }
-    return arrayObj
-  }, {})
-
-  const errorSummary = []
-  errors.array().map(err => {
-    return errorSummary.push({ text: err.msg, href: `#${err.param}-error` })
-  })
-
-  req.errors = errorList
-  req.errorSummary = errorSummary
+  req.errors = formatErrors(errors)
+  req.errorSummary = formatErrorSummary(errors)
 
   return next()
 }

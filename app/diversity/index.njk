@@ -1,8 +1,8 @@
 {% extends "common/templates/layout.njk" %}
+{% from "components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "components/back-link/macro.njk" import govukBackLink %}
 {% from "components/button/macro.njk" import govukButton %}
 {% from "components/textarea/macro.njk" import govukTextarea %}
-{% from "components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% set heading = "How we will respond to diversity factors" %}
 {% set errorHeading = "Error - " + heading %}
