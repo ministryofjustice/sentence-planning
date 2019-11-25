@@ -2,4 +2,8 @@ const isEmptyObject = obj => {
   return !Object.keys(obj).length
 }
 
-module.exports = { isEmptyObject }
+const countWords = str => {
+  return str.trim().split(/\s+/).length
+}
+
+module.exports = { isEmptyObject, countWords }

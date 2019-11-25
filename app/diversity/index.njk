@@ -45,11 +45,16 @@
                 errorMessage: errors.diversity
             }) }}
 
+            {% if wordsOver %}
+            <span id="diversity-error" class="govuk-error-message extra-error">
+                You have {{ wordsOver }} words too many</span>
+            {% endif %}
+
             {{ govukButton({
                 text: 'Continue',
                 classes: 'govuk-!-margin-bottom-3'
             }) }}
-                <p>or <a href="{{ backurl }}">cancel</a></p>
+                <p>or <a class="govuk-link" href="{{ backurl }}">cancel</a></p>
             </form>
         </div>
     </div>

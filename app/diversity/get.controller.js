@@ -12,7 +12,7 @@ const getCommentText = (comments, commentType) => {
   return commentText
 }
 
-const getDiversity = async ({ path: path, params: { planid }, session: { 'x-auth-token': token } }, res) => {
+const getDiversity = async ({ path, params: { planid }, session: { 'x-auth-token': token } }, res) => {
   // get previously saved value for diversity comment
   const comments = await getSentencePlanComments(planid, token)
 
