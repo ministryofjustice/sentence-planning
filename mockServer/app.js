@@ -19,6 +19,9 @@ function createMockAPI() {
   app.get('/offenders/:individualid/sentenceplans', (req, res) => {
     return getFile('sentencePlanSummary', req.params.individualid, res)
   })
+  app.get('/sentenceplans/:planid/comments', (req, res) => {
+    return getFile('sentencePlanComments', req.params.planid, res)
+  })
   app.listen(18081)
 }
 module.exports = { createMockAPI }

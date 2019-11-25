@@ -1,0 +1,20 @@
+[
+  {
+    "comment": "My diversity comment",
+    "commentType": "YOUR_RESPONSIVITY",
+    "created": "2019-11-25T09:36:55.077Z",
+    "createdBy": "DEF1234"
+  },
+  {
+    "comment": "My summary comment",
+    "commentType": "YOUR_SUMMARY",
+    "created": "2019-11-25T09:36:55.077Z",
+    "createdBy": "ABC1234"
+  },
+  {
+    "comment": "Their diversity comment",
+    "commentType": "THEIR_RESPONSIVITY",
+    "created": "2019-11-25T09:36:55.077Z",
+    "createdBy": "GHI1234"
+  }
+]

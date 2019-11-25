@@ -7,7 +7,7 @@ const validationRules = () => {
       .withMessage('Record how you will take account of diversity factors'),
     body('diversity')
       .isLength({ max: 250 })
-      .withMessage('xxx error message required for greater then 250 characters xxx'),
+      .withMessage('Response to diversity factors must be 50 words or fewer'),
   ]
 }
 
