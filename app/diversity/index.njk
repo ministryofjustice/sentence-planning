@@ -17,7 +17,7 @@
 
 {% block beforeContent %}
     {{ govukBackLink({
-        href: "#"
+        href: backurl
     }) }}
 {% endblock %}
 
@@ -46,8 +46,10 @@
             }) }}
 
             {{ govukButton({
-                text: 'Continue'
+                text: 'Continue',
+                classes: 'govuk-!-margin-bottom-3'
             }) }}
+                <p>or <a href="{{ backurl }}">cancel</a></p>
             </form>
         </div>
     </div>

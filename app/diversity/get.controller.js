@@ -12,11 +12,12 @@ const getCommentText = (comments, commentType) => {
   return commentText
 }
 
-const getDiversity = async ({ params: { planid }, session: { 'x-auth-token': token } }, res) => {
+const getDiversity = async ({ path: path, params: { planid }, session: { 'x-auth-token': token } }, res) => {
   // get previously saved value for diversity comment
   const comments = await getSentencePlanComments(planid, token)
 
   const renderInfo = {}
+  renderInfo.backurl = path.substring(0, path.lastIndexOf('/'))
   renderInfo.diversity = getCommentText(comments, 'YOUR_RESPONSIVITY')
 
   res.render(`${__dirname}/index`, { ...renderInfo })
