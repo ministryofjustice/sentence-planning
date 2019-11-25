@@ -7,41 +7,46 @@ let tooManyWords = false
 
 const validationRules = () => {
   return [
-    body('diversity')
+    body('needtoknow')
       .isLength({ min: 1 })
-      .withMessage('Record how you will take account of diversity factors'),
-    body('diversity')
+      .withMessage('Add any other things the individual needs us to know about them'),
+    body('needtoknow')
       .custom(value => {
         tooManyWords = countWords(value) > wordsAllowed
         return !tooManyWords
       })
-      .withMessage('Response to diversity factors must be 250 words or fewer'),
+      .withMessage('They need us to know must be 250 words or fewer'),
   ]
 }
 
-const postDiversity = async (req, res) => {
+const postNeedToKnow = async (req, res) => {
   if (req.errors) {
     const renderInfo = {}
     let wordsOver = false
     if (tooManyWords) {
-      wordsOver = countWords(req.body.diversity) - wordsAllowed
+      wordsOver = countWords(req.body.needtoknow) - wordsAllowed
     }
     renderInfo.wordsOver = wordsOver
-    renderInfo.backurl = req.path.substring(0, req.path.lastIndexOf('/'))
-    res.render(`${__dirname}/index`, { errorSummary: req.errorSummary, errors: req.errors, ...req.body, ...renderInfo })
+    renderInfo.backurl = `${req.path.substring(0, req.path.lastIndexOf('/'))}/diversity`
+    res.render(`${__dirname}/index`, {
+      errorSummary: req.errorSummary,
+      errors: req.errors,
+      ...req.body,
+      ...renderInfo,
+    })
   } else {
     if (req.body.diversity) {
       const comment = [
         {
           comment: req.body.diversity,
-          commentType: 'YOUR_RESPONSIVITY',
+          commentType: 'THEIR_RESPONSIVITY',
         },
       ]
       await postSentencePlanComments(req.params.planid, comment, req.session['x-auth-token'])
     }
 
-    res.redirect('./need-to-know')
+    res.redirect(req.path.substring(0, req.path.lastIndexOf('/')))
   }
 }
 
-module.exports = { postDiversity, diversityValidationRules: validationRules }
+module.exports = { postNeedToKnow, needToKnowValidationRules: validationRules }

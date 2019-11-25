@@ -1,6 +1,6 @@
 [
   {
-    "comment": "My diversity comment",
+    "comment": "My responsivity comment",
     "commentType": "YOUR_RESPONSIVITY",
     "created": "2019-11-25T09:36:55.077Z",
     "createdBy": "DEF1234"
@@ -12,7 +12,7 @@
     "createdBy": "ABC1234"
   },
   {
-    "comment": "Their diversity comment",
+    "comment": "Their responsivity comment",
     "commentType": "THEIR_RESPONSIVITY",
     "created": "2019-11-25T09:36:55.077Z",
     "createdBy": "GHI1234"
