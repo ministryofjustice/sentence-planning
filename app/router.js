@@ -6,7 +6,6 @@ const {
 } = require('../common/config')
 
 const numericId = '\\d{1,}'
-// const numericIdOrNew = `${numericId}|new`
 const offenderRoute = `/individual-id/:id(${numericId})`
 const editPlanRoute = `${offenderRoute}/edit-plan/:planId(${numericId})`
 
