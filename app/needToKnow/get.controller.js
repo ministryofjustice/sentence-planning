@@ -17,6 +17,7 @@ const getNeedToKnow = async ({ path, params: { planid }, session: { 'x-auth-toke
   const comments = await getSentencePlanComments(planid, token)
 
   const renderInfo = {}
+  renderInfo.nexturl = path.substring(0, path.lastIndexOf('/'))
   renderInfo.backurl = `${path.substring(0, path.lastIndexOf('/'))}/diversity`
   renderInfo.needtoknow = getCommentText(comments, 'THEIR_RESPONSIVITY')
 

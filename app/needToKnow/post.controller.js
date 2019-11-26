@@ -20,6 +20,7 @@ const validationRules = () => {
 }
 
 const postNeedToKnow = async (req, res) => {
+  const nexturl = req.path.substring(0, req.path.lastIndexOf('/'))
   if (req.errors) {
     const renderInfo = {}
     let wordsOver = false
@@ -28,6 +29,7 @@ const postNeedToKnow = async (req, res) => {
     }
     renderInfo.wordsOver = wordsOver
     renderInfo.backurl = `${req.path.substring(0, req.path.lastIndexOf('/'))}/diversity`
+    renderInfo.nexturl = nexturl
     res.render(`${__dirname}/index`, {
       errorSummary: req.errorSummary,
       errors: req.errors,
@@ -45,7 +47,7 @@ const postNeedToKnow = async (req, res) => {
       await postSentencePlanComments(req.params.planid, comment, req.session['x-auth-token'])
     }
 
-    res.redirect(req.path.substring(0, req.path.lastIndexOf('/')))
+    res.redirect(nexturl)
   }
 }
 
