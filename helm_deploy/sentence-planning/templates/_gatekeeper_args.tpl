@@ -25,6 +25,9 @@ args:
     - --resources=uri=/health|white-listed=true
     - --resources=uri=/info|white-listed=true
     - --resources=uri=/public/*|white-listed=true
+    - --resources=uri=/stylesheets/*|white-listed=true
+    - --resources=uri=/javascripts/*|white-listed=true
+    - --resources=uri=/assets/*|white-listed=true
     - --resources=uri=/*
     - --secure-cookie=true
     - --http-only-cookie=true
@@ -32,7 +35,6 @@ args:
     - --add-claims=name
     - --add-claims=given_name
     - --add-claims=family_name
-    - --add-claims=locations
     - --verbose
 
 {{- end -}}

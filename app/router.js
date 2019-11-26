@@ -5,17 +5,24 @@ const {
   apis: { oauth2, offenderAssessment, sentencePlanning, elite2 },
 } = require('../common/config')
 
-const offenderRoot = '/individual-id/:id(\\d{1,})'
+const numericId = '\\d{1,}'
+// const numericIdOrNew = `${numericId}|new`
+const offenderRoute = `/individual-id/:id(${numericId})`
+const editPlanRoute = `${offenderRoute}/edit-plan/:planId(${numericId})`
 
 const { validate } = require('../common/middleware/validator')
 
 // pages
 const { sentencePlanSummary } = require('./plans/get.controller')
+
 const { getDiversity } = require('./diversity/get.controller')
 const { postDiversity, diversityValidationRules } = require('./diversity/post.controller')
 
 const { getNeedToKnow } = require('./needToKnow/get.controller')
 const { postNeedToKnow, needToKnowValidationRules } = require('./needToKnow/post.controller')
+
+const createSentencePlan = require('../common/middleware/createSentencePlan')
+const { editPlan } = require('./editPlan/get.controller')
 
 // Export
 module.exports = app => {
@@ -32,28 +39,35 @@ module.exports = app => {
       return result
     })
   })
-  app.use(offenderRoot, getOffenderDetails)
-  app.get(`${offenderRoot}/plans`, (req, res) => sentencePlanSummary(req, res))
+
+  app.use(offenderRoute, getOffenderDetails)
+  app.get(`${offenderRoute}/plans`, (req, res) => sentencePlanSummary(req, res))
 
   // sentence plans summary
-  app.get([offenderRoot, `${offenderRoot}/plans`], sentencePlanSummary)
+  app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)
 
   // diversity
-  app.get([`${offenderRoot}/edit-plan/:planid(\\d{1,})/diversity`], getDiversity)
+  app.get([`${offenderRoute}/edit-plan/:planid(\\d{1,})/diversity`], getDiversity)
   app.post(
-    [`${offenderRoot}/edit-plan/:planid(\\d{1,})/diversity`],
+    [`${offenderRoute}/edit-plan/:planid(\\d{1,})/diversity`],
     diversityValidationRules(),
     validate,
     postDiversity
   )
 
   // need to know
-  app.get([`${offenderRoot}/edit-plan/:planid(\\d{1,})/need-to-know`], getNeedToKnow)
+  app.get([`${offenderRoute}/edit-plan/:planid(\\d{1,})/need-to-know`], getNeedToKnow)
   app.post(
-    [`${offenderRoot}/edit-plan/:planid(\\d{1,})/need-to-know`],
+    [`${offenderRoute}/edit-plan/:planid(\\d{1,})/need-to-know`],
     needToKnowValidationRules(),
     validate,
     postNeedToKnow
   )
+
+  app.use(offenderRoute, getOffenderDetails)
+  app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)
+  app.get(`${offenderRoute}/edit-plan/new`, createSentencePlan)
+  app.get(editPlanRoute, editPlan)
+
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }

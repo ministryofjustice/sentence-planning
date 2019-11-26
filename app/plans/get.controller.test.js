@@ -4,9 +4,9 @@ const activePlan = require('../../mockServer/sentencePlanSummary/11033.json')
 const noActivePlan = require('../../mockServer/sentencePlanSummary/11034.json')
 const completedDateAbsent = require('../../mockServer/sentencePlanSummary/11035.json')
 const emptyObject = require('../../mockServer/sentencePlanSummary/11032.json')
-const { getSentencePlanSummary } = require('../../common/data/offenderSentencePlanSummary')
+const { getSentencePlanSummary } = require('../../common/data/sentencePlanningApi')
 
-jest.mock('../../common/data/offenderSentencePlanSummary.js', () => ({
+jest.mock('../../common/data/sentencePlanningApi.js', () => ({
   getSentencePlanSummary: jest.fn(),
 }))
 

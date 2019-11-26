@@ -2,7 +2,6 @@ const { readFile } = require('fs')
 const express = require('express')
 
 const app = express()
-
 const logger = require('../common/logging/logger')
 
 const getFile = (directory, file, res) => {
@@ -25,7 +24,12 @@ function createMockAPI() {
     return getFile('convictData', req.params[1], res)
   })
   app.get('/offenders/:individualid/sentenceplans', (req, res) => {
-    return getFile('sentencePlanSummary', req.params.individualid, res)
+    return getFile('sentencePlanSummary', req.params.offenderId, res)
+  })
+  app.post('/sentenceplan', (req, res) => {
+    logger.info(`%%%%%%% ${JSON.stringify(req.body)}`)
+    logger.info(`%%%%%%% ${req.body.offenderId}`)
+    return getFile('sentencePlan', req.body.offenderId, res)
   })
   app.get('/sentenceplans/:planid/comments', (req, res) => {
     return getFile('sentencePlanComments', req.params.planid, res)

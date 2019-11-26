@@ -1,4 +1,4 @@
-const { getSentencePlanSummary } = require('../../common/data/offenderSentencePlanSummary')
+const { getSentencePlanSummary } = require('../../common/data/sentencePlanningApi')
 const { isEmptyObject } = require('../../common/utils/util')
 
 const hasActivePlan = plans => {
