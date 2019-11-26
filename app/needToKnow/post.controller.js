@@ -1,5 +1,6 @@
 const { body } = require('express-validator')
-const { postSentencePlanComments } = require('../../common/data/sentencePlanComments')
+const { setSentencePlanComment } = require('../../common/data/sentencePlanningApi')
+const { getNeedToKnow } = require('./get.controller')
 const { countWords } = require('../../common/utils/util')
 
 const wordsAllowed = 250
@@ -20,7 +21,6 @@ const validationRules = () => {
 }
 
 const postNeedToKnow = async (req, res) => {
-  const nexturl = req.path.substring(0, req.path.lastIndexOf('/'))
   if (req.errors) {
     const renderInfo = {}
     let wordsOver = false
@@ -28,14 +28,8 @@ const postNeedToKnow = async (req, res) => {
       wordsOver = countWords(req.body.needtoknow) - wordsAllowed
     }
     renderInfo.wordsOver = wordsOver
-    renderInfo.backurl = `${req.path.substring(0, req.path.lastIndexOf('/'))}/diversity`
-    renderInfo.nexturl = nexturl
-    res.render(`${__dirname}/index`, {
-      errorSummary: req.errorSummary,
-      errors: req.errors,
-      ...req.body,
-      ...renderInfo,
-    })
+    req.renderInfo = renderInfo
+    await getNeedToKnow(req, res)
   } else {
     if (req.body.diversity) {
       const comment = [
@@ -44,10 +38,9 @@ const postNeedToKnow = async (req, res) => {
           commentType: 'THEIR_RESPONSIVITY',
         },
       ]
-      await postSentencePlanComments(req.params.planid, comment, req.session['x-auth-token'])
+      await setSentencePlanComment(req.params.planid, comment, req.session['x-auth-token'])
+      res.redirect(req.path.substring(0, req.path.lastIndexOf('/')))
     }
-
-    res.redirect(nexturl)
   }
 }
 

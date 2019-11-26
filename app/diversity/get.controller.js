@@ -1,26 +1,24 @@
-const { getSentencePlanComments } = require('../../common/data/sentencePlanComments')
-const { isEmptyObject } = require('../../common/utils/util')
+const { getSentencePlanComments } = require('../../common/data/sentencePlanningApi')
+const { getCommentText } = require('../../common/utils/getCommentText')
 
-const getCommentText = (comments, commentType) => {
-  if (isEmptyObject(comments)) return false
-  let commentText = ''
-  comments.forEach(comment => {
-    if (comment.commentType === commentType) {
-      commentText = comment.comment
-    }
-  })
-  return commentText
-}
+const getDiversity = async (
+  { path, errors, errorSummary, body, renderInfo, params: { planid }, session: { 'x-auth-token': token } },
+  res
+) => {
+  let renderDetails = renderInfo
+  if (!renderInfo) {
+    renderDetails = {}
+  }
+  renderDetails.backurl = path.substring(0, path.lastIndexOf('/'))
 
-const getDiversity = async ({ path, params: { planid }, session: { 'x-auth-token': token } }, res) => {
-  // get previously saved value for diversity comment
-  const comments = await getSentencePlanComments(planid, token)
+  if (body.diversity) {
+    renderDetails.diversity = body.diversity
+  } else {
+    const comments = await getSentencePlanComments(planid, token)
+    renderDetails.diversity = getCommentText(comments, 'YOUR_RESPONSIVITY')
+  }
 
-  const renderInfo = {}
-  renderInfo.backurl = path.substring(0, path.lastIndexOf('/'))
-  renderInfo.diversity = getCommentText(comments, 'YOUR_RESPONSIVITY')
-
-  res.render(`${__dirname}/index`, { ...renderInfo })
+  res.render(`${__dirname}/index`, { ...renderDetails, ...body, errors, errorSummary })
 }
 
 module.exports = { getDiversity }

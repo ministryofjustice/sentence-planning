@@ -1,27 +1,25 @@
-const { getSentencePlanComments } = require('../../common/data/sentencePlanComments')
-const { isEmptyObject } = require('../../common/utils/util')
+const { getSentencePlanComments } = require('../../common/data/sentencePlanningApi')
+const { getCommentText } = require('../../common/utils/getCommentText')
 
-const getCommentText = (comments, commentType) => {
-  if (isEmptyObject(comments)) return false
-  let commentText = ''
-  comments.forEach(comment => {
-    if (comment.commentType === commentType) {
-      commentText = comment.comment
-    }
-  })
-  return commentText
-}
+const getNeedToKnow = async (
+  { path, errors, errorSummary, body, renderInfo, params: { planid }, session: { 'x-auth-token': token } },
+  res
+) => {
+  let renderDetails = renderInfo
+  if (!renderInfo) {
+    renderDetails = {}
+  }
 
-const getNeedToKnow = async ({ path, params: { planid }, session: { 'x-auth-token': token } }, res) => {
-  // get previously saved value for diversity comment
-  const comments = await getSentencePlanComments(planid, token)
+  renderDetails.nexturl = path.substring(0, path.lastIndexOf('/'))
+  renderDetails.backurl = `${path.substring(0, path.lastIndexOf('/'))}/diversity`
 
-  const renderInfo = {}
-  renderInfo.nexturl = path.substring(0, path.lastIndexOf('/'))
-  renderInfo.backurl = `${path.substring(0, path.lastIndexOf('/'))}/diversity`
-  renderInfo.needtoknow = getCommentText(comments, 'THEIR_RESPONSIVITY')
-
-  res.render(`${__dirname}/index`, { ...renderInfo })
+  if (body.diversity) {
+    renderDetails.diversity = body.diversity
+  } else {
+    const comments = await getSentencePlanComments(planid, token)
+    renderDetails.needtoknow = getCommentText(comments, 'THEIR_RESPONSIVITY')
+  }
+  res.render(`${__dirname}/index`, { ...renderDetails, ...body, errors, errorSummary })
 }
 
 module.exports = { getNeedToKnow }
