@@ -1,36 +1,74 @@
 const controller = require('./get.controller')
+const { getSentencePlanComments } = require('../../common/data/sentencePlanningApi')
 
-// const { getSentencePlanSummary } = require('../../common/data/offenderSentencePlanSummary')
+jest.mock('../../common/data/sentencePlanningApi')
 
-jest.mock('../../common/data/offenderSentencePlanSummary.js', () => ({
-  getSentencePlanSummary: jest.fn(),
-}))
+const commentsEmpty = {}
+const commentsPresent = require('../../mockServer/sentencePlanComments/1.json')
 
-describe.skip('getSentencePlanSummary', () => {
+describe('getDiversity', () => {
   const req = {
+    path: '/this/is/my/path',
     params: {
-      id: 1,
+      planid: 1,
     },
     session: {
       'x-auth-token': '1234',
     },
+    body: {},
+    errors: {},
+    errorSummary: {},
+    renderInfo: null,
+    diversity: null,
   }
   const res = {
     render: jest.fn(),
   }
 
-  it('should set the correct render values when there is an active plan', async () => {
-    req.params.id = 1
-    // getSentencePlanSummary.mockReturnValueOnce(activePlan)
-    const expected = { activePlan: true, individualId: 1 }
-    await controller.sentencePlanSummary(req, res)
+  beforeEach(() => {
+    req.renderInfo = {}
+    delete req.body.diversity
+  })
+
+  it('should set the correct render values when there are no existing comments', async () => {
+    const expected = {
+      backurl: '/this/is/my',
+      errorSummary: {},
+      diversity: false,
+      errors: {},
+    }
+    getSentencePlanComments.mockReturnValueOnce(commentsEmpty)
+    await controller.getDiversity(req, res)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
-  it('should set the correct render values when there is no active plan', async () => {
-    req.params.id = 11034
-    // getSentencePlanSummary.mockReturnValueOnce(noActivePlan)
-    const expected = { activePlan: false, individualId: 11034 }
-    await controller.sentencePlanSummary(req, res)
+  it('should set the correct render values when there are existing comments', async () => {
+    delete req.body.diversity
+    const expected = {
+      backurl: '/this/is/my',
+      diversity: 'My responsivity comment',
+      errorSummary: {},
+      errors: {},
+    }
+    getSentencePlanComments.mockReturnValueOnce(commentsPresent)
+    await controller.getDiversity(req, res)
+    expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
+  })
+  it('should pass through any renderInfo or diversity information', async () => {
+    req.body.diversity = 'Random diversity comment'
+    req.renderInfo = {
+      testItem1: true,
+      textItem: 'hello',
+    }
+    const expected = {
+      backurl: '/this/is/my',
+      diversity: 'Random diversity comment',
+      errorSummary: {},
+      errors: {},
+      testItem1: true,
+      textItem: 'hello',
+    }
+    getSentencePlanComments.mockReturnValueOnce(commentsPresent)
+    await controller.getDiversity(req, res)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
 })

@@ -34,7 +34,7 @@ function createMockAPI() {
   app.get('/sentenceplans/:planid/comments', (req, res) => {
     return getFile('sentencePlanComments', req.params.planid, res)
   })
-  app.post('/sentenceplans/:planid/comments', (req, res) => {
+  app.put('/sentenceplans/:planid/comments', (req, res) => {
     if (req.params.planid === 999) {
       res.sendStatus(400)
     } else {

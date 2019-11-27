@@ -59,7 +59,7 @@ const putData = async (path, token, data) => {
   logger.info(`Calling SentencePlanningApi: ${path}`)
   try {
     return await superagent
-      .post(path)
+      .put(path)
       .send(data)
       .auth(token, { type: 'bearer' })
       .timeout(timeout)

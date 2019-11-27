@@ -24,23 +24,21 @@ const postNeedToKnow = async (req, res) => {
   if (req.errors) {
     const renderInfo = {}
     let wordsOver = false
-    if (tooManyWords) {
+    if (tooManyWords || req.tooManyWords) {
       wordsOver = countWords(req.body.needtoknow) - wordsAllowed
     }
     renderInfo.wordsOver = wordsOver
     req.renderInfo = renderInfo
     await getNeedToKnow(req, res)
-  } else {
-    if (req.body.diversity) {
-      const comment = [
-        {
-          comment: req.body.diversity,
-          commentType: 'THEIR_RESPONSIVITY',
-        },
-      ]
-      await setSentencePlanComment(req.params.planid, comment, req.session['x-auth-token'])
-      res.redirect(req.path.substring(0, req.path.lastIndexOf('/')))
-    }
+  } else if (req.body.needtoknow) {
+    const comment = [
+      {
+        comment: req.body.needtoknow,
+        commentType: 'THEIR_RESPONSIVITY',
+      },
+    ]
+    await setSentencePlanComment(req.params.planid, comment, req.session['x-auth-token'])
+    res.redirect(req.path.substring(0, req.path.lastIndexOf('/')))
   }
 }
 

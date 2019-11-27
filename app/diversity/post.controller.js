@@ -24,23 +24,21 @@ const postDiversity = async (req, res) => {
   if (req.errors) {
     const renderInfo = {}
     let wordsOver = false
-    if (tooManyWords) {
+    if (tooManyWords || req.tooManyWords) {
       wordsOver = countWords(req.body.diversity) - wordsAllowed
     }
     renderInfo.wordsOver = wordsOver
     req.renderInfo = renderInfo
     await getDiversity(req, res)
-  } else {
-    if (req.body.diversity) {
-      const comment = [
-        {
-          comment: req.body.diversity,
-          commentType: 'YOUR_RESPONSIVITY',
-        },
-      ]
-      await setSentencePlanComment(req.params.planid, comment, req.session['x-auth-token'])
-      res.redirect('./need-to-know')
-    }
+  } else if (req.body.diversity) {
+    const comment = [
+      {
+        comment: req.body.diversity,
+        commentType: 'YOUR_RESPONSIVITY',
+      },
+    ]
+    await setSentencePlanComment(req.params.planid, comment, req.session['x-auth-token'])
+    res.redirect('./need-to-know')
   }
 }
 
