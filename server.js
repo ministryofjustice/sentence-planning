@@ -35,8 +35,8 @@ const allGateKeeperPages = /^\/(?!health$).*/
 
 // Define app views
 const APP_VIEWS = [
-  join(__dirname, 'node_modules/govuk-frontend/govuk/'),
-  join(__dirname, 'node_modules/@ministryofjustice/frontend/moj/components/'),
+  join(__dirname, 'node_modules/govuk-frontend/'),
+  join(__dirname, 'node_modules/@ministryofjustice/frontend/'),
   __dirname,
 ]
 
