@@ -1,7 +1,7 @@
-{% from "components/footer/macro.njk" import govukFooter %}
-{% from 'header/macro.njk' import mojHeader %}
+{% from "govuk/components/footer/macro.njk" import govukFooter %}
+{% from 'moj/components/header/macro.njk' import mojHeader %}
 
-{% extends "template.njk" %}
+{% extends "govuk/template.njk" %}
 
 {% block header %}
   {{ mojHeader({
