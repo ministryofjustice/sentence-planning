@@ -1,7 +1,7 @@
 {% extends "common/templates/layout.njk" %}
 {% from "components/button/macro.njk" import govukButton %}
 
-{% set heading = "Active plan" %}
+{% set heading = "Status of plan" %}
 
 {% block pageTitle %}
     {{ heading }}
@@ -9,14 +9,12 @@
 
 {% block content %}
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
+        <p class="govuk-grid-column-full">
             <h1 class="govuk-visually-hidden">
                 Offender plans:
             </h1>
-
-            {% if activePlan %}
-                <p>There is currently an active plan - UI elements to be developed in upcoming story</p>
-            {% else %}
+            {% if planType == 'none' %}
+                {# no current plan #}
                 <div class="moj-page-header-actions">
                     <div class="moj-page-header-actions__title">
                         <h1 class="govuk-heading-l">
@@ -27,8 +25,38 @@
                 <p>There is no active plan</p>
 
                 {{ govukButton({
-                    text: 'Start a new plan',
+                    text: 'Create a new plan',
                     href: "/individual-id/" + individualId + "/edit-plan/"
+                }) }}
+            {% elseif planType == 'draft' %}
+                {# plan in draft #}
+                <div class="moj-page-header-actions">
+                    <div class="moj-page-header-actions__title">
+                        <h1 class="govuk-heading-l">
+                            {{ heading }}
+                        </h1>
+                    </div>
+                </div>
+                <p>There is a draft plan</p>
+
+                {{ govukButton({
+                    text: 'Continue',
+                    href: "/individual-id/" + individualId + "/edit-plan/"
+                }) }}
+            {% else %}
+                {# active plan #}
+                <div class="moj-page-header-actions">
+                    <div class="moj-page-header-actions__title">
+                        <h1 class="govuk-heading-l">
+                            {{ heading }}
+                        </h1>
+                    </div>
+                </div>
+                <p>There is an active plan.</p>
+
+                {{ govukButton({
+                    text: 'Update plan',
+                    href: "/individual-id/" + individualId + "/plan/" + currentPlan.planId
                 }) }}
             {% endif %}
         </div>
