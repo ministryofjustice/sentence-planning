@@ -12,18 +12,6 @@
       "commentType": "THEIR_RESPONSIVITY",
       "created": "2019-12-03T11:54:14.670Z",
       "createdBy": "string"
-    },
-    {
-      "comment": "peas peas peas",
-      "commentType": "YOUR_SUMMARY",
-      "created": "2019-12-03T11:54:14.670Z",
-      "createdBy": "string"
-    },
-    {
-      "comment": "carrots carrots carrots",
-      "commentType": "THEIR_SUMMARY",
-      "created": "2019-12-03T11:54:14.670Z",
-      "createdBy": "string"
     }
   ],
   "objectives": [
