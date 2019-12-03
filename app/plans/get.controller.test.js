@@ -10,6 +10,10 @@ jest.mock('../../common/data/sentencePlanningApi.js', () => ({
   getSentencePlanSummary: jest.fn(),
 }))
 
+afterEach(() => {
+  getSentencePlanSummary.mockReset()
+})
+
 describe('getSentencePlanSummary', () => {
   const req = {
     params: {
@@ -78,6 +82,14 @@ describe('getSentencePlanSummary', () => {
       }
       await sentencePlanSummary(req, res)
       expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
+    })
+    it('should display an error if comments are not available', async () => {
+      const theError = new Error('Error message')
+      getSentencePlanSummary.mockImplementation(() => {
+        throw theError
+      })
+      await sentencePlanSummary(req, res)
+      expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
     })
   })
 })
