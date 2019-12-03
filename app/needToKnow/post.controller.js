@@ -4,7 +4,6 @@ const { getNeedToKnow } = require('./get.controller')
 const { countWords } = require('../../common/utils/util')
 
 const wordsAllowed = 250
-let tooManyWords = false
 
 const validationRules = () => {
   return [
@@ -13,8 +12,7 @@ const validationRules = () => {
       .withMessage('Add any other things the individual needs us to know about them'),
     body('needtoknow')
       .custom(value => {
-        tooManyWords = countWords(value) > wordsAllowed
-        return !tooManyWords
+        return countWords(value) <= wordsAllowed
       })
       .withMessage('They need us to know must be 250 words or fewer'),
   ]
@@ -22,15 +20,10 @@ const validationRules = () => {
 
 const postNeedToKnow = async (req, res) => {
   if (req.errors) {
-    const renderInfo = {}
-    let wordsOver = false
-    if (tooManyWords || req.tooManyWords) {
-      wordsOver = countWords(req.body.needtoknow) - wordsAllowed
-    }
-    renderInfo.wordsOver = wordsOver
-    req.renderInfo = renderInfo
+    const wordsOver = countWords(req.body.needtoknow) - wordsAllowed
+    req.renderInfo = { wordsOver: wordsOver > 0 ? wordsOver : 0 }
     await getNeedToKnow(req, res)
-  } else if (req.body.needtoknow) {
+  } else {
     const comment = [
       {
         comment: req.body.needtoknow,

@@ -46,22 +46,12 @@ module.exports = app => {
   app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)
 
   // diversity
-  app.get([`${offenderRoute}/edit-plan/:planid(\\d{1,})/diversity`], getDiversity)
-  app.post(
-    [`${offenderRoute}/edit-plan/:planid(\\d{1,})/diversity`],
-    diversityValidationRules(),
-    validate,
-    postDiversity
-  )
+  app.get(`${editPlanRoute}/diversity`, getDiversity)
+  app.post(`${editPlanRoute}/diversity`, diversityValidationRules(), validate, postDiversity)
 
   // need to know
-  app.get([`${offenderRoute}/edit-plan/:planid(\\d{1,})/need-to-know`], getNeedToKnow)
-  app.post(
-    [`${offenderRoute}/edit-plan/:planid(\\d{1,})/need-to-know`],
-    needToKnowValidationRules(),
-    validate,
-    postNeedToKnow
-  )
+  app.get(`${editPlanRoute}/need-to-know`, getNeedToKnow)
+  app.post(`${editPlanRoute}/need-to-know`, needToKnowValidationRules(), validate, postNeedToKnow)
 
   app.use(offenderRoute, getOffenderDetails)
   app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)

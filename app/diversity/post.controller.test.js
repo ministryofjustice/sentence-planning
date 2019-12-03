@@ -44,7 +44,7 @@ const expected = {
     ],
   },
   renderInfo: {
-    wordsOver: false,
+    wordsOver: 0,
   },
 }
 

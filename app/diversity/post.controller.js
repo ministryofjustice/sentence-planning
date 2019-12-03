@@ -4,7 +4,6 @@ const { getDiversity } = require('./get.controller')
 const { countWords } = require('../../common/utils/util')
 
 const wordsAllowed = 250
-let tooManyWords = false
 
 const validationRules = () => {
   return [
@@ -13,8 +12,7 @@ const validationRules = () => {
       .withMessage('Record how you will take account of diversity factors'),
     body('diversity')
       .custom(value => {
-        tooManyWords = countWords(value) > wordsAllowed
-        return !tooManyWords
+        return countWords(value) <= wordsAllowed
       })
       .withMessage('Response to diversity factors must be 250 words or fewer'),
   ]
@@ -22,15 +20,10 @@ const validationRules = () => {
 
 const postDiversity = async (req, res) => {
   if (req.errors) {
-    const renderInfo = {}
-    let wordsOver = false
-    if (tooManyWords || req.tooManyWords) {
-      wordsOver = countWords(req.body.diversity) - wordsAllowed
-    }
-    renderInfo.wordsOver = wordsOver
-    req.renderInfo = renderInfo
+    const wordsOver = countWords(req.body.diversity) - wordsAllowed
+    req.renderInfo = { wordsOver: wordsOver > 0 ? wordsOver : 0 }
     await getDiversity(req, res)
-  } else if (req.body.diversity) {
+  } else {
     const comment = [
       {
         comment: req.body.diversity,

@@ -10,7 +10,7 @@ describe('getDiversity', () => {
   const req = {
     path: '/this/is/my/path',
     params: {
-      planid: 1,
+      planid: 1234,
     },
     session: {
       'x-auth-token': '1234',
@@ -28,6 +28,10 @@ describe('getDiversity', () => {
   beforeEach(() => {
     req.renderInfo = {}
     delete req.body.diversity
+  })
+
+  beforeEach(() => {
+    getSentencePlanComments.mockReset()
   })
 
   it('should set the correct render values when there are no existing comments', async () => {
@@ -70,5 +74,13 @@ describe('getDiversity', () => {
     getSentencePlanComments.mockReturnValueOnce(commentsPresent)
     await controller.getDiversity(req, res)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
+  })
+  it('should display an error if comments are not available', async () => {
+    const theError = new Error('Error message')
+    getSentencePlanComments.mockImplementation(() => {
+      throw theError
+    })
+    await controller.getDiversity(req, res)
+    expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
   })
 })
