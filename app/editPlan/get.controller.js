@@ -1,5 +1,22 @@
-const editPlan = async ({ params: { id }, session: { 'x-auth-token': token } }, res) => {
-  res.render(`${__dirname}/index`, { id, token })
+const { getSentencePlan } = require('../../common/data/sentencePlanningApi')
+const { getAboutTheIndividual, getAddObjectives, getFinalInformation } = require('./getTaskListData')
+
+const editPlan = async ({ path, params: { id, planId }, session: { 'x-auth-token': token } }, res) => {
+  try {
+    const sentencePlan = await getSentencePlan(planId, token)
+    const stub = path
+    const objectivesSection = getAddObjectives(sentencePlan, stub)
+    const planSummary = {
+      sections: [
+        getAboutTheIndividual(sentencePlan, stub),
+        objectivesSection,
+        getFinalInformation(sentencePlan, stub, objectivesSection.items[0].complete),
+      ],
+    }
+    res.render(`${__dirname}/index`, { id, token, planSummary })
+  } catch (error) {
+    res.render('app/error', { error })
+  }
 }
 
-module.exports = { editPlan }
+module.exports = { editPlan, getAboutTheIndividual, getAddObjectives, getFinalInformation }
