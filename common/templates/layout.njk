@@ -46,6 +46,12 @@
 
 {% endblock %}
 
+{%  block content %}
+  {% if errorSummary %}
+    {% include "./partials/errorSummary.njk" %}
+  {% endif %}
+{% endblock %}
+
 {% block footer %}
   {{
     govukFooter({
