@@ -24,7 +24,7 @@ function createMockAPI() {
     return getFile('convictData', req.params[1], res)
   })
   app.get('/offenders/:individualid/sentenceplans', (req, res) => {
-    return getFile('sentencePlanSummary', req.params.offenderId, res)
+    return getFile('sentencePlanSummary', req.params.individualid, res)
   })
   app.post('/sentenceplan', (req, res) => {
     logger.info(`%%%%%%% ${JSON.stringify(req.body)}`)
