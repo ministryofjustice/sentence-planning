@@ -15,6 +15,16 @@ const getSentencePlanSummary = async (individualId, token) => {
   return getData(path, token)
 }
 
+const getSentencePlanComments = async (sentencePlanId, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/comments`
+  return getData(path, token)
+}
+
+const setSentencePlanComment = async (sentencePlanId, comment, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/comments`
+  return putData(path, token, comment)
+}
+
 const getData = async (path, token) => {
   logger.info(`Calling SentencePlanningApi: ${path}`)
   try {
@@ -45,10 +55,26 @@ const postData = async (path, token, data) => {
   }
 }
 
+const putData = async (path, token, data) => {
+  logger.info(`Calling SentencePlanningApi: ${path}`)
+  try {
+    return await superagent
+      .put(path)
+      .send(data)
+      .auth(token, { type: 'bearer' })
+      .timeout(timeout)
+      .then(response => {
+        return response.body
+      })
+  } catch (error) {
+    return logError(error)
+  }
+}
+
 const logError = error => {
   logger.warn('Error calling sentence planning API')
   logger.warn(error)
   throw error
 }
 
-module.exports = { createSentencePlan, getSentencePlanSummary }
+module.exports = { createSentencePlan, getSentencePlanSummary, getSentencePlanComments, setSentencePlanComment }

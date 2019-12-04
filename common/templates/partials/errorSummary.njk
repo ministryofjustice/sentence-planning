@@ -1,0 +1,20 @@
+ <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: errorSummary
+        }) }}
+    </div>
+</div>
+ {# errorList should be in format:
+[
+  {
+    text: 'The date your passport was issued must be in the past',
+    href: '#passport-issued-error',
+  },
+  {
+    text: 'Enter a postcode, like AA1 1AA',
+    href: '#postcode-error',
+  },
+]
+ #}

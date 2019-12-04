@@ -18,6 +18,7 @@ function createMockAPI() {
     next()
   })
   app.use(express.json())
+
   app.get('/', (req, res) => res.send('sentence-planner-mock is UP'))
   app.get(/offenders\/(crn|oasysOffenderId)\/([\w]+)$/, (req, res) => {
     return getFile('convictData', req.params[1], res)
@@ -29,6 +30,17 @@ function createMockAPI() {
     logger.info(`%%%%%%% ${JSON.stringify(req.body)}`)
     logger.info(`%%%%%%% ${req.body.offenderId}`)
     return getFile('sentencePlan', req.body.offenderId, res)
+  })
+  app.get('/sentenceplans/:planid/comments', (req, res) => {
+    return getFile('sentencePlanComments', req.params.planid, res)
+  })
+  app.put('/sentenceplans/:planid/comments', (req, res) => {
+    if (req.params.planid === 999) {
+      res.sendStatus(400)
+    } else {
+      logger.debug(`MockAPI saving comment ${JSON.stringify(req.body)}`)
+      res.sendStatus(200)
+    }
   })
   app.listen(18081)
 }
