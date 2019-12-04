@@ -6,11 +6,11 @@ jest.mock('../../common/data/sentencePlanningApi')
 const commentsEmpty = {}
 const commentsPresent = require('../../mockServer/sentencePlanComments/1.json')
 
-describe('getNeedToKnow', () => {
+describe('getComments', () => {
   const req = {
     path: '/this/is/my/path',
     params: {
-      planid: 1,
+      planId: 1,
     },
     session: {
       'x-auth-token': '1234',
@@ -19,7 +19,7 @@ describe('getNeedToKnow', () => {
     errors: {},
     errorSummary: {},
     renderInfo: null,
-    needtoknow: null,
+    comments: null,
   }
   const res = {
     render: jest.fn(),
@@ -27,7 +27,7 @@ describe('getNeedToKnow', () => {
 
   beforeEach(() => {
     req.renderInfo = {}
-    delete req.body.needtoknow
+    delete req.body.comments
   })
 
   beforeEach(() => {
@@ -36,46 +36,46 @@ describe('getNeedToKnow', () => {
 
   it('should set the correct render values when there are no existing comments', async () => {
     const expected = {
-      backurl: '/this/is/my/diversity',
+      backurl: '/this/is/my/decisions',
       nexturl: '/this/is/my',
       errorSummary: {},
-      needtoknow: false,
+      comments: false,
       errors: {},
     }
     getSentencePlanComments.mockReturnValueOnce(commentsEmpty)
-    await controller.getNeedToKnow(req, res)
+    await controller.getComments(req, res)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
   it('should set the correct render values when there are existing comments', async () => {
-    delete req.body.needtoknow
+    delete req.body.comments
     const expected = {
-      backurl: '/this/is/my/diversity',
+      backurl: '/this/is/my/decisions',
       nexturl: '/this/is/my',
-      needtoknow: 'Their responsivity comment',
+      comments: 'Their summary comment',
       errorSummary: {},
       errors: {},
     }
     getSentencePlanComments.mockReturnValueOnce(commentsPresent)
-    await controller.getNeedToKnow(req, res)
+    await controller.getComments(req, res)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
-  it('should pass through any renderInfo or needtoknow information', async () => {
-    req.body.needtoknow = 'Random needtoknow comment'
+  it('should pass through any renderInfo or diversity information', async () => {
+    req.body.comments = 'Random diversity comment'
     req.renderInfo = {
       testItem1: true,
       textItem: 'hello',
     }
     const expected = {
-      backurl: '/this/is/my/diversity',
+      backurl: '/this/is/my/decisions',
       nexturl: '/this/is/my',
-      needtoknow: 'Random needtoknow comment',
+      comments: 'Random diversity comment',
       errorSummary: {},
       errors: {},
       testItem1: true,
       textItem: 'hello',
     }
     getSentencePlanComments.mockReturnValueOnce(commentsPresent)
-    await controller.getNeedToKnow(req, res)
+    await controller.getComments(req, res)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
   it('should display an error if comments are not available', async () => {
@@ -83,7 +83,7 @@ describe('getNeedToKnow', () => {
     getSentencePlanComments.mockImplementation(() => {
       throw theError
     })
-    await controller.getNeedToKnow(req, res)
+    await controller.getComments(req, res)
     expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
   })
 })

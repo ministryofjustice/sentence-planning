@@ -16,5 +16,11 @@
     "commentType": "THEIR_RESPONSIVITY",
     "created": "2019-11-25T09:36:55.077Z",
     "createdBy": "GHI1234"
+  },
+  {
+    "comment": "Their summary comment",
+    "commentType": "THEIR_SUMMARY",
+    "created": "2019-11-26T14:26:15.022Z",
+    "createdBy": "ABC1234"
   }
 ]
