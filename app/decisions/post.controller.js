@@ -36,4 +36,3 @@ const postDecisions = async (req, res) => {
 }
 
 module.exports = { postDecisions, decisionsValidationRules: validationRules }
-
