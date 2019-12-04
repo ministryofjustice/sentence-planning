@@ -13,12 +13,11 @@ const sentencePlanSummary = async ({ params: { id }, session: { 'x-auth-token': 
     const renderInfo = {}
     renderInfo.individualId = id
     renderInfo.currentPlan = getPlan(plans)
+    renderInfo.planType = 'active'
     if (isEmptyObject(renderInfo.currentPlan)) {
       renderInfo.planType = 'none'
     } else if (renderInfo.currentPlan.isDraft) {
       renderInfo.planType = 'draft'
-    } else {
-      renderInfo.planType = 'active'
     }
 
     res.render(`${__dirname}/index`, renderInfo)
