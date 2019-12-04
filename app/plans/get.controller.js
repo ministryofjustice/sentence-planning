@@ -1,27 +1,30 @@
+const { logger } = require('../../common/logging/logger')
 const { getSentencePlanSummary } = require('../../common/data/sentencePlanningApi')
 const { isEmptyObject } = require('../../common/utils/util')
 
-const hasActivePlan = plans => {
-  if (isEmptyObject(plans)) return false
-  let activePlanPresent = false
-  plans.forEach(plan => {
-    if (!plan.completedDate) {
-      activePlanPresent = true
-    }
-  })
-  return activePlanPresent
+const getPlan = plans => {
+  if (isEmptyObject(plans)) return {}
+  return plans.find(({ completedDate }) => completedDate === '' || completedDate === undefined) || {}
 }
 
 const sentencePlanSummary = async ({ params: { id }, session: { 'x-auth-token': token } }, res) => {
-  const plans = await getSentencePlanSummary(id, token)
-  const renderInfo = {}
-  if (!plans || isEmptyObject(plans)) {
-    renderInfo.activePlan = false
-  } else {
-    renderInfo.activePlan = hasActivePlan(plans)
+  try {
+    const plans = await getSentencePlanSummary(id, token)
+    const renderInfo = {}
+    renderInfo.individualId = id
+    renderInfo.currentPlan = getPlan(plans)
+    renderInfo.planType = 'active'
+    if (isEmptyObject(renderInfo.currentPlan)) {
+      renderInfo.planType = 'none'
+    } else if (renderInfo.currentPlan.isDraft) {
+      renderInfo.planType = 'draft'
+    }
+
+    res.render(`${__dirname}/index`, renderInfo)
+  } catch (error) {
+    logger.error(`Could not retrieve sentence plan summary for ${id}, error: ${error}`)
+    res.render('app/error', { error })
   }
-  renderInfo.individualId = id
-  res.render(`${__dirname}/index`, renderInfo)
 }
 
-module.exports = { sentencePlanSummary, hasActivePlan }
+module.exports = { sentencePlanSummary }
