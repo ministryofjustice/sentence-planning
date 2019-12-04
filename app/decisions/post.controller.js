@@ -1,38 +1,39 @@
 const { body } = require('express-validator')
 const { setSentencePlanComment } = require('../../common/data/sentencePlanningApi')
-const { getDiversity } = require('./get.controller')
+const { getDecisions } = require('./get.controller')
 const { countWords } = require('../../common/utils/util')
 
 const wordsAllowed = 250
 
 const validationRules = () => {
   return [
-    body('diversity')
+    body('decisions')
       .isLength({ min: 1 })
-      .withMessage('Record how you will take account of diversity factors'),
-    body('diversity')
+      .withMessage('Record your decisions'),
+    body('decisions')
       .custom(value => {
         return countWords(value) <= wordsAllowed
       })
-      .withMessage('Response to diversity factors must be 250 words or fewer'),
+      .withMessage('Response to Your decisions must be 250 words or fewer'),
   ]
 }
 
-const postDiversity = async (req, res) => {
+const postDecisions = async (req, res) => {
   if (req.errors) {
-    const wordsOver = countWords(req.body.diversity) - wordsAllowed
+    const wordsOver = countWords(req.body.decisions) - wordsAllowed
     req.renderInfo = { wordsOver: wordsOver > 0 ? wordsOver : 0 }
-    await getDiversity(req, res)
+    await getDecisions(req, res)
   } else {
     const comment = [
       {
-        comment: req.body.diversity,
+        comment: req.body.decisions,
         commentType: 'YOUR_SUMMARY',
       },
     ]
-    await setSentencePlanComment(req.params.planid, comment, req.session['x-auth-token'])
-    res.redirect('./need-to-know')
+    await setSentencePlanComment(req.params.planId, comment, req.session['x-auth-token'])
+    res.redirect('./comments')
   }
 }
 
-module.exports = { postDiversity, diversityValidationRules: validationRules }
+module.exports = { postDecisions, decisionsValidationRules: validationRules }
+
