@@ -10,6 +10,10 @@ const createSentencePlan = async (offenderId, token) => {
   const path = `${url}/sentenceplan`
   return postData(path, token, { offenderId, offenderReferenceType: 'OASYS' })
 }
+const getSentencePlan = async (sentencePlanId, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}`
+  return getData(path, token)
+}
 const getSentencePlanSummary = async (individualId, token) => {
   const path = `${url}/offenders/${individualId}/sentenceplans`
   return getData(path, token)
@@ -77,4 +81,10 @@ const logError = error => {
   throw error
 }
 
-module.exports = { createSentencePlan, getSentencePlanSummary, getSentencePlanComments, setSentencePlanComment }
+module.exports = {
+  createSentencePlan,
+  getSentencePlan,
+  getSentencePlanSummary,
+  getSentencePlanComments,
+  setSentencePlanComment,
+}
