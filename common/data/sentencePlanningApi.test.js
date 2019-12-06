@@ -1,6 +1,7 @@
 const nock = require('nock')
 const summaryPlanResponse = require('../../mockServer/sentencePlanSummary/11034.json')
 const sentencePlanComments = require('../../mockServer/sentencePlanComments/1.json')
+const sentencePlan = require('../../mockServer/sentencePlan/1.json')
 
 const {
   apis: {
@@ -9,6 +10,7 @@ const {
 } = require('../config')
 const {
   getSentencePlanSummary,
+  getSentencePlan,
   createSentencePlan,
   getSentencePlanComments,
   setSentencePlanComment,
@@ -51,6 +53,21 @@ describe('sentencePlanningApi', () => {
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.post(sentencePlanUrl, expectedBody).reply(400)
       await expect(createSentencePlan(id, token)).rejects.toThrowError('Bad Request')
+    })
+  })
+
+  describe('getSentencePlan', () => {
+    const planId = 417
+    const sentencePlansUrl = `/sentenceplans/${planId}`
+
+    it('should return a sentence plan', async () => {
+      mockedEndpoint.get(sentencePlansUrl).reply(200, sentencePlan)
+      const output = await getSentencePlan(planId, token)
+      expect(output).toEqual(sentencePlan)
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.get(sentencePlansUrl).reply(400)
+      await expect(getSentencePlan(planId, token)).rejects.toThrowError('Bad Request')
     })
   })
 
