@@ -60,7 +60,7 @@ describe('getSentencePlanSummary', () => {
         expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
       })
     })
-    describe('on recieving an error', () => {
+    describe('on receiving an error', () => {
       const theError = new Error('Error message')
       beforeEach(() => {
         getSentencePlan.mockImplementation(() => {
