@@ -18,7 +18,6 @@ describe('getDiversity', () => {
     body: {},
     errors: {},
     errorSummary: {},
-    renderInfo: null,
     diversity: null,
   }
   const res = {

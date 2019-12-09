@@ -18,7 +18,6 @@ describe('getComments', () => {
     body: {},
     errors: {},
     errorSummary: {},
-    renderInfo: null,
     comments: null,
   }
   const res = {
@@ -28,9 +27,6 @@ describe('getComments', () => {
   beforeEach(() => {
     req.renderInfo = {}
     delete req.body.comments
-  })
-
-  beforeEach(() => {
     getSentencePlanComments.mockReset()
   })
 
@@ -47,7 +43,6 @@ describe('getComments', () => {
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
   it('should set the correct render values when there are existing comments', async () => {
-    delete req.body.comments
     const expected = {
       backurl: '/this/is/my/decisions',
       nexturl: '/this/is/my',
@@ -85,5 +80,17 @@ describe('getComments', () => {
     })
     await controller.getComments(req, res)
     expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
+  })
+  it('copes with an empty renderInfo', async () => {
+    delete req.renderInfo
+    const expected = {
+      backurl: '/this/is/my/decisions',
+      nexturl: '/this/is/my',
+      comments: false,
+      errorSummary: {},
+      errors: {},
+    }
+    await controller.getComments(req, res)
+    expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
 })

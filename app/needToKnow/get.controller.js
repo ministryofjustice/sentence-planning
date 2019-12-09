@@ -13,16 +13,15 @@ const getNeedToKnow = async (
 
   if (body.needtoknow) {
     renderDetails.needtoknow = body.needtoknow
-  } else {
-    try {
-      const comments = await getSentencePlanComments(planId, token)
-      renderDetails.needtoknow = getCommentText(comments, 'THEIR_RESPONSIVITY')
-    } catch (error) {
-      logger.error(`Could not retrieve sentence plan comments for ${planId}, error: ${error}`)
-      return res.render('app/error', { error })
-    }
   }
-  return res.render(`${__dirname}/index`, { ...renderDetails, ...body, errors, errorSummary })
+  try {
+    const comments = await getSentencePlanComments(planId, token)
+    renderDetails.needtoknow = getCommentText(comments, 'THEIR_RESPONSIVITY')
+    return res.render(`${__dirname}/index`, { ...renderDetails, ...body, errors, errorSummary })
+  } catch (error) {
+    logger.error(`Could not retrieve sentence plan comments for ${planId}, error: ${error}`)
+    return res.render('app/error', { error })
+  }
 }
 
 module.exports = { getNeedToKnow }

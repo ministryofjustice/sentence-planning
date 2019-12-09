@@ -51,6 +51,7 @@ const expected = {
 describe('postNeedToKNow', () => {
   const res = {
     redirect: jest.fn(),
+    render: jest.fn(),
   }
 
   it('should save the need to know entry when there are no errors', async () => {
@@ -100,5 +101,13 @@ describe('postNeedToKNow', () => {
     await controller.postNeedToKnow(req, res)
     expect(setSentencePlanComment).not.toHaveBeenCalled()
     expect(getNeedToKnow).toHaveBeenCalledWith(expected, res)
+  })
+  it('should display an error if comments saving fails', async () => {
+    const theError = new Error('Error message')
+    setSentencePlanComment.mockImplementation(() => {
+      throw theError
+    })
+    await controller.postNeedToKnow(req, res)
+    expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
   })
 })

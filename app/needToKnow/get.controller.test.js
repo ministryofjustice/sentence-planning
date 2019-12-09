@@ -18,7 +18,6 @@ describe('getNeedToKnow', () => {
     body: {},
     errors: {},
     errorSummary: {},
-    renderInfo: null,
     needtoknow: null,
   }
   const res = {

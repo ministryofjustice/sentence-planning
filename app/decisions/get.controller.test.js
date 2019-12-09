@@ -18,7 +18,6 @@ describe('getDecision', () => {
     body: {},
     errors: {},
     errorSummary: {},
-    renderInfo: null,
     decisions: null,
   }
   const res = {
@@ -28,9 +27,6 @@ describe('getDecision', () => {
   beforeEach(() => {
     req.renderInfo = {}
     delete req.body.decisions
-  })
-
-  beforeEach(() => {
     getSentencePlanComments.mockReset()
   })
 
@@ -46,7 +42,6 @@ describe('getDecision', () => {
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
   it('should set the correct render values when there are existing comments', async () => {
-    delete req.body.decisions
     const expected = {
       backurl: '/this/is/my',
       decisions: 'My decisions comment',

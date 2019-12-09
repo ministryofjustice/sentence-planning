@@ -51,6 +51,7 @@ const expected = {
 describe('postComments', () => {
   const res = {
     redirect: jest.fn(),
+    render: jest.fn(),
   }
 
   it('should save the comment entry when there are no errors', async () => {
@@ -100,5 +101,13 @@ describe('postComments', () => {
     await controller.postComments(req, res)
     expect(setSentencePlanComment).not.toHaveBeenCalled()
     expect(getComments).toHaveBeenCalledWith(expected, res)
+  })
+  it('should display an error if comments saving fails', async () => {
+    const theError = new Error('Error message')
+    setSentencePlanComment.mockImplementation(() => {
+      throw theError
+    })
+    await controller.postComments(req, res)
+    expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
   })
 })

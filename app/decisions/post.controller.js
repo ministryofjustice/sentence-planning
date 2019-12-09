@@ -1,4 +1,5 @@
 const { body } = require('express-validator')
+const { logger } = require('../../common/logging/logger')
 const { setSentencePlanComment } = require('../../common/data/sentencePlanningApi')
 const { getDecisions } = require('./get.controller')
 const { countWords } = require('../../common/utils/util')
@@ -22,8 +23,9 @@ const postDecisions = async (req, res) => {
   if (req.errors) {
     const wordsOver = countWords(req.body.decisions) - wordsAllowed
     req.renderInfo = { wordsOver: wordsOver > 0 ? wordsOver : 0 }
-    await getDecisions(req, res)
-  } else {
+    return getDecisions(req, res)
+  }
+  try {
     const comment = [
       {
         comment: req.body.decisions,
@@ -31,7 +33,10 @@ const postDecisions = async (req, res) => {
       },
     ]
     await setSentencePlanComment(req.params.planId, comment, req.session['x-auth-token'])
-    res.redirect('./comments')
+    return res.redirect('./comments')
+  } catch (error) {
+    logger.error(`Could not save sentence plan comments 'YOUR_SUMMARY' for plan ${req.params.planid}, error: ${error}`)
+    return res.render('app/error', { error })
   }
 }
 

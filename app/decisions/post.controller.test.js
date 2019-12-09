@@ -51,6 +51,7 @@ beforeEach(() => {
 describe('postDecisions', () => {
   const res = {
     redirect: jest.fn(),
+    render: jest.fn(),
   }
 
   it('should save the decisions entry when there are no errors', async () => {
@@ -100,5 +101,13 @@ describe('postDecisions', () => {
     await controller.postDecisions(req, res)
     expect(setSentencePlanComment).not.toHaveBeenCalled()
     expect(getDecisions).toHaveBeenCalledWith(expected, res)
+  })
+  it('should display an error if comments saving fails', async () => {
+    const theError = new Error('Error message')
+    setSentencePlanComment.mockImplementation(() => {
+      throw theError
+    })
+    await controller.postDecisions(req, res)
+    expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
   })
 })
