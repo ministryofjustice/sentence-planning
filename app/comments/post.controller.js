@@ -1,45 +1,43 @@
 const { body } = require('express-validator')
 const { logger } = require('../../common/logging/logger')
 const { setSentencePlanComment } = require('../../common/data/sentencePlanningApi')
-const { getNeedToKnow } = require('./get.controller')
+const { getComments } = require('./get.controller')
 const { countWords } = require('../../common/utils/util')
 
 const wordsAllowed = 250
 
 const validationRules = () => {
   return [
-    body('needtoknow')
+    body('comments')
       .isLength({ min: 1 })
-      .withMessage('Add any other things the individual needs us to know about them'),
-    body('needtoknow')
+      .withMessage('Record the individual’s comments'),
+    body('comments')
       .custom(value => {
         return countWords(value) <= wordsAllowed
       })
-      .withMessage('They need us to know must be 250 words or fewer'),
+      .withMessage('Individual’s comments must be 250 words or fewer'),
   ]
 }
 
-const postNeedToKnow = async (req, res) => {
+const postComments = async (req, res) => {
   if (req.errors) {
-    const wordsOver = countWords(req.body.needtoknow) - wordsAllowed
+    const wordsOver = countWords(req.body.comments) - wordsAllowed
     req.renderInfo = { wordsOver: wordsOver > 0 ? wordsOver : 0 }
-    return getNeedToKnow(req, res)
+    return getComments(req, res)
   }
   try {
     const comment = [
       {
-        comment: req.body.needtoknow,
-        commentType: 'THEIR_RESPONSIVITY',
+        comment: req.body.comments,
+        commentType: 'THEIR_SUMMARY',
       },
     ]
     await setSentencePlanComment(req.params.planid, comment, req.session['x-auth-token'])
     return res.redirect(req.path.substring(0, req.path.lastIndexOf('/')))
   } catch (error) {
-    logger.error(
-      `Could not save sentence plan comments 'THEIR_RESPONSIVITY' for plan ${req.params.planid}, error: ${error}`
-    )
+    logger.error(`Could not save sentence plan comments 'THEIR_SUMMARY' for plan ${req.params.planid}, error: ${error}`)
     return res.render('app/error', { error })
   }
 }
 
-module.exports = { postNeedToKnow, needToKnowValidationRules: validationRules }
+module.exports = { postComments, commentsValidationRules: validationRules }

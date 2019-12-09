@@ -20,6 +20,12 @@ const { postDiversity, diversityValidationRules } = require('./diversity/post.co
 const { getNeedToKnow } = require('./needToKnow/get.controller')
 const { postNeedToKnow, needToKnowValidationRules } = require('./needToKnow/post.controller')
 
+const { getDecisions } = require('./decisions/get.controller')
+const { postDecisions, decisionsValidationRules } = require('./decisions/post.controller')
+
+const { getComments } = require('./comments/get.controller')
+const { postComments, commentsValidationRules } = require('./comments/post.controller')
+
 const createSentencePlan = require('../common/middleware/createSentencePlan')
 const { editPlan } = require('./editPlan/get.controller')
 
@@ -52,6 +58,14 @@ module.exports = app => {
   // need to know
   app.get(`${editPlanRoute}/need-to-know`, getNeedToKnow)
   app.post(`${editPlanRoute}/need-to-know`, needToKnowValidationRules(), validate, postNeedToKnow)
+
+  // decisions
+  app.get(`${editPlanRoute}/decisions`, getDecisions)
+  app.post(`${editPlanRoute}/decisions`, decisionsValidationRules(), validate, postDecisions)
+
+  // comments
+  app.get(`${editPlanRoute}/comments`, getComments)
+  app.post(`${editPlanRoute}/comments`, commentsValidationRules(), validate, postComments)
 
   app.use(offenderRoute, getOffenderDetails)
   app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)
