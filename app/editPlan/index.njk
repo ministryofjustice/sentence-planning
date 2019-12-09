@@ -1,5 +1,6 @@
 {% extends "common/templates/layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "common/templates/components/task-list/macro.njk" import spTaskList %}
 
 {% set heading = "Active plan" %}
 
@@ -9,11 +10,13 @@
 
 {% block content %}
   <div class="govuk-grid-row">
-      <div class="govuk-grid-column-full">
-          <h1 class="govuk-visually-hidden">
-              Create sentence plan
-          </h1>
-          <p>Coming soon.</p>
-      </div>
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l">
+        Create sentence plan
+      </h1>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+      {{ spTaskList(planSummary) }} 
+    </div>
   </div>
 {% endblock %}
