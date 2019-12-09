@@ -26,6 +26,9 @@ const { postDecisions, decisionsValidationRules } = require('./decisions/post.co
 const { getComments } = require('./comments/get.controller')
 const { postComments, commentsValidationRules } = require('./comments/post.controller')
 
+const { getObjective } = require('./objective/get.controller')
+const { postObjective, objectiveValidationRules } = require('./objective/post.controller')
+
 const createSentencePlan = require('../common/middleware/createSentencePlan')
 const { editPlan } = require('./editPlan/get.controller')
 
@@ -66,6 +69,13 @@ module.exports = app => {
   // comments
   app.get(`${editPlanRoute}/comments`, getComments)
   app.post(`${editPlanRoute}/comments`, commentsValidationRules(), validate, postComments)
+
+  // objective
+  app.get(
+    [`${editPlanRoute}/edit-objective/new`, `${editPlanRoute}/edit-objective/:objectiveId(${numericId})`],
+    getObjective
+  )
+  app.post(`${editPlanRoute}/edit-objective/new`, objectiveValidationRules(), validate, postObjective)
 
   app.use(offenderRoute, getOffenderDetails)
   app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)
