@@ -6,8 +6,11 @@ const {
 } = require('../common/config')
 
 const numericId = '\\d{1,}'
+const numericOrNewId = `${numericId}|NEW`
 const offenderRoute = `/individual-id/:id(${numericId})`
 const editPlanRoute = `${offenderRoute}/edit-plan/:planId(${numericId})`
+const editObjectiveRoute = `${editPlanRoute}/edit-objective/:objectiveId(${numericOrNewId})`
+const editActionRoute = `${editPlanRoute}/edit-objective/:objectiveId(${numericId})/edit-action/:actionId(${numericOrNewId})`
 
 const { validate } = require('../common/middleware/validator')
 
@@ -66,6 +69,12 @@ module.exports = app => {
   // comments
   app.get(`${editPlanRoute}/comments`, getComments)
   app.post(`${editPlanRoute}/comments`, commentsValidationRules(), validate, postComments)
+
+  // objetives
+  app.get(editObjectiveRoute, ({ params: { objectiveId } }, res) => res.send(`Todo: objective ${objectiveId} page`))
+
+  // actions
+  app.get(editActionRoute, ({ params: { actionId } }, res) => res.send(`Todo: action ${actionId} page`))
 
   app.use(offenderRoute, getOffenderDetails)
   app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)
