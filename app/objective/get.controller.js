@@ -5,7 +5,6 @@ const getObjective = async (
   { path, errors, errorSummary, body, renderInfo, params: { planId, objectiveId }, session: { 'x-auth-token': token } },
   res
 ) => {
-  console.log('in objective....')
   const nexturl = path.substring(0, path.lastIndexOf('/'))
   const renderDetails = { ...renderInfo, nexturl, backurl: `${nexturl}/decisions` }
 
