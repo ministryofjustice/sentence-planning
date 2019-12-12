@@ -26,9 +26,13 @@ function createMockAPI() {
   app.get('/offenders/:individualid/sentenceplans', (req, res) => {
     return getFile('sentencePlanSummary', req.params.individualid, res)
   })
-  app.post('/sentenceplan', (req, res) => {
+  app.post('/sentenceplans', (req, res) => {
     logger.info(`MockAPI creating NEW sentence plan with: ${JSON.stringify(req.body)}`)
-    return getFile('sentencePlan', req.body.offenderId, res)
+    return getFile('sentencePlans', req.body.offenderId, res)
+  })
+  app.get('/sentenceplans/:planId', ({ params: { planId } }, res) => {
+    logger.info(`MockAPI returning sentence plan with id: ${planId}}`)
+    return getFile('sentencePlans', planId, res)
   })
   app.get('/sentenceplans/:planid/comments', (req, res) => {
     return getFile('sentencePlanComments', req.params.planid, res)

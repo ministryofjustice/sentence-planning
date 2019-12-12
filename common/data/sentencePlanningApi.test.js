@@ -1,7 +1,7 @@
 const nock = require('nock')
 const summaryPlanResponse = require('../../mockServer/sentencePlanSummary/11034.json')
 const sentencePlanComments = require('../../mockServer/sentencePlanComments/1.json')
-const sentencePlan = require('../../mockServer/sentencePlan/1.json')
+const sentencePlan = require('../../mockServer/sentencePlans/1.json')
 
 const {
   apis: {
@@ -42,7 +42,7 @@ describe('sentencePlanningApi', () => {
   })
 
   describe('createSentencePlan', () => {
-    const sentencePlanUrl = `/sentenceplan`
+    const sentencePlanUrl = `/sentenceplans`
     const expectedBody = { offenderId: id, offenderReferenceType: 'OASYS' }
 
     it('should return new sentence plan data', async () => {
