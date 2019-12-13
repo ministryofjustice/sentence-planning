@@ -26,9 +26,9 @@ function createMockAPI() {
   app.get('/offenders/:individualid/sentenceplans', (req, res) => {
     return getFile('sentencePlanSummary', req.params.individualid, res)
   })
-  app.post('/sentenceplans', (req, res) => {
-    logger.info(`MockAPI creating NEW sentence plan with: ${JSON.stringify(req.body)}`)
-    return getFile('sentencePlans', req.body.offenderId, res)
+  app.post('/offenders/:individualid/sentenceplans', ({ params: { individualid } }, res) => {
+    logger.info(`MockAPI creating NEW sentence plan with: ${individualid}`)
+    return getFile('sentencePlans', individualid, res)
   })
   app.get('/sentenceplans/:planId', ({ params: { planId } }, res) => {
     logger.info(`MockAPI returning sentence plan with id: ${planId}}`)

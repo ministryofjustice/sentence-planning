@@ -6,9 +6,9 @@ const {
   },
 } = require('../config')
 
-const createSentencePlan = async (offenderId, token) => {
-  const path = `${url}/sentenceplans`
-  return postData(path, token, { offenderId, offenderReferenceType: 'OASYS' })
+const createSentencePlan = async (individualId, token) => {
+  const path = `${url}/offenders/${individualId}/sentenceplans`
+  return postData(path, token)
 }
 const getSentencePlan = async (sentencePlanId, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}`

@@ -46,16 +46,15 @@ describe('sentencePlanningApi', () => {
   })
 
   describe('createSentencePlan', () => {
-    const sentencePlanUrl = `/sentenceplans`
-    const expectedBody = { offenderId: id, offenderReferenceType: 'OASYS' }
+    const sentencePlanUrl = `/offenders/${id}/sentenceplans`
 
     it('should return new sentence plan data', async () => {
-      mockedEndpoint.post(sentencePlanUrl, expectedBody).reply(200, summaryPlanResponse)
+      mockedEndpoint.post(sentencePlanUrl).reply(200, summaryPlanResponse)
       const output = await createSentencePlan(id, token)
       expect(output).toEqual(summaryPlanResponse)
     })
     it('should throw an error if it does not receive a valid response', async () => {
-      mockedEndpoint.post(sentencePlanUrl, expectedBody).reply(400)
+      mockedEndpoint.post(sentencePlanUrl).reply(400)
       await expect(createSentencePlan(id, token)).rejects.toThrowError('Bad Request')
     })
   })
