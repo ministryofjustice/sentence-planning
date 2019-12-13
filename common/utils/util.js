@@ -11,6 +11,9 @@ const countWords = str => {
 }
 
 const removeUrlLevels = (url, levels) => {
+  if (!levels) {
+    return url
+  }
   let newUrl = url
   for (let i = 0; i < levels; i += 1) {
     newUrl = newUrl.substring(0, newUrl.lastIndexOf('/'))
