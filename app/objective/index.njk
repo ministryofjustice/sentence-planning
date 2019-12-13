@@ -12,7 +12,7 @@
     {% if errors %}
         {{ errorHeading }}
     {% else %}
-        heading
+        {{ heading }}
     {% endif %}
 {% endblock %}
 
@@ -42,7 +42,7 @@
                     classes: 'govuk-label--m',
                     text: 'Objective description'
                 },
-                maxwords: 250,
+                maxwords: 50,
                 hint: {
                     text: 'What does the individual need to achieve?'
                 },

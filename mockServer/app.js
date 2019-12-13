@@ -14,7 +14,7 @@ const getFile = (directory, file, res) => {
 
 function createMockAPI() {
   app.use('*', (req, res, next) => {
-    logger.info(`MockAPI recieved for ${req.originalUrl}`)
+    logger.info(`MockAPI received for ${req.originalUrl}`)
     next()
   })
   app.use(express.json())
@@ -44,6 +44,15 @@ function createMockAPI() {
   app.get('/sentenceplans/:planid', (req, res) => {
     return getFile('sentencePlan', req.params.planid, res)
   })
+
+  app.get('/sentenceplans/:planid/objectives', (req, res) => {
+    return getFile('sentencePlanObjectives', req.params.planid, res)
+  })
+
+  app.post('/sentenceplans/:planid/objectives', (req, res) => {
+    return getFile('sentencePlanObjectives', req.params.planid, res)
+  })
+
   app.listen(18081)
 }
 module.exports = { createMockAPI }

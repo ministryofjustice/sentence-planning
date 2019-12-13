@@ -29,7 +29,7 @@ const getAboutTheIndividual = ({ comments }, stub) => {
     items: [
       {
         text: 'Responsivity',
-        href: `${stub}/review-responsivity`,
+        href: `${stub}/diversity`,
         ...reviewComments(comments, ['YOUR_RESPONSIVITY', 'THEIR_RESPONSIVITY']),
       },
     ],
@@ -97,7 +97,7 @@ const getFinalInformation = ({ comments }, stub, hasObjective) => {
     items: [
       {
         text: 'Decisions and comments',
-        href: hasObjective ? `${stub}/review-responsivity` : '',
+        href: hasObjective ? `${stub}/decisions` : '',
         ...itemOptions,
       },
     ],
