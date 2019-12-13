@@ -7,7 +7,7 @@ const {
 } = require('../config')
 
 const createSentencePlan = async (offenderId, token) => {
-  const path = `${url}/sentenceplan`
+  const path = `${url}/sentenceplans`
   return postData(path, token, { offenderId, offenderReferenceType: 'OASYS' })
 }
 const getSentencePlan = async (sentencePlanId, token) => {

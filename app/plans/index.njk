@@ -41,7 +41,7 @@
 
                 {{ govukButton({
                     text: 'Continue',
-                    href: "/individual-id/" + individualId + "/edit-plan/"
+                    href: "/individual-id/" + individualId + "/edit-plan/" + currentPlan.planId
                 }) }}
             {% else %}
                 {# active plan #}
