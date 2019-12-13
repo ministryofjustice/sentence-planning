@@ -1,17 +1,6 @@
 const { logger } = require('../../common/logging/logger')
 const { getSentencePlanObjective } = require('../../common/data/sentencePlanningApi')
-
-const removeUrlLevel = url => {
-  return url.substring(0, url.lastIndexOf('/'))
-}
-
-const removeUrlLevels = (url, levels) => {
-  let newUrl = url
-  for (let i = 0; i < levels; i += 1) {
-    newUrl = newUrl.substring(0, newUrl.lastIndexOf('/'))
-  }
-  return newUrl
-}
+const { removeUrlLevels } = require('../../common/utils/util')
 
 const getObjective = async (
   { path, errors, errorSummary, body, renderInfo, params: { planId, objectiveId }, session: { 'x-auth-token': token } },

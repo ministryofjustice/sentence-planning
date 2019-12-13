@@ -53,8 +53,21 @@ function createMockAPI() {
     return getFile('sentencePlanObjectives', req.params.planid, res)
   })
 
+  app.get('/sentenceplans/:planid/objectives/:objectiveid', (req, res) => {
+    return getFile('sentencePlanObjectives', req.params.objectiveid, res)
+  })
+
   app.post('/sentenceplans/:planid/objectives', (req, res) => {
-    return getFile('sentencePlanObjectives', req.params.planid, res)
+    logger.debug(`MockAPI saving new objective ${JSON.stringify(req.body)}`)
+    return getFile('sentencePlanObjectives', '1', res)
+  })
+
+  app.put('/sentenceplans/:planid/objectives/:objectiveid', (req, res) => {
+    if (req.params.objectiveid === 999) {
+      res.sendStatus(400)
+    }
+    logger.debug(`MockAPI saving objective ${JSON.stringify(req.body)}`)
+    return getFile('sentencePlanObjectives', req.params.objectiveid, res)
   })
 
   app.listen(18081)

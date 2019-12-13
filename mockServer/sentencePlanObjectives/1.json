@@ -1,38 +1,7 @@
 {
-  "actions": [
-    {
-      "description": "string",
-      "id": "string",
-      "intervention": "string",
-      "motivationUUID": "string",
-      "owner": [
-        "SERVICE_USER"
-      ],
-      "ownerOther": "string",
-      "priority": 0,
-      "progress": [
-        {
-          "comment": "string",
-          "created": "2019-12-12T10:34:14.706Z",
-          "createdBy": "string",
-          "motivationUUID": "string",
-          "status": "NOT_STARTED",
-          "targetDate": {
-            "leapYear": true,
-            "month": 0,
-            "monthValue": 0,
-            "year": 0
-          }
-        }
-      ],
-      "status": "NOT_STARTED",
-      "updated": "2019-12-12T10:34:14.706Z"
-    }
-  ],
-  "description": "string",
-  "id": "string",
-  "needs": [
-    "string"
-  ],
+  "actions": [],
+  "description": "newly created objective",
+  "id": 1,
+  "needs": [],
   "priority": 0
 }

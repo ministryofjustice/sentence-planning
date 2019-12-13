@@ -37,7 +37,7 @@
             {{  govukCharacterCount({
                 id: 'objective',
                 name: 'objective',
-                value: objective,
+                value: objective.description,
                 label: {
                     classes: 'govuk-label--m',
                     text: 'Objective description'
@@ -58,7 +58,7 @@
                 text: 'Continue',
                 classes: 'govuk-!-margin-bottom-3'
             }) }}
-                <p>or <a class="govuk-link" href="{{ nexturl }}">cancel</a></p>
+                <p>or <a class="govuk-link" href="{{ backurl }}">cancel</a></p>
             </form>
         </div>
     </div>
