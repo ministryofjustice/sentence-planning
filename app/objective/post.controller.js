@@ -41,7 +41,6 @@ const postObjective = async (req, res) => {
       description: objectiveDescription,
       needs: [],
     }
-
     let redirectUrl
     if (objectiveId.toLowerCase() === 'new') {
       const newObjective = await setNewSentencePlanObjective(planId, objective, token)

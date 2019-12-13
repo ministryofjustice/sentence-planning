@@ -15,7 +15,7 @@ describe('getAboutTheIndividual', () => {
   beforeEach(() => {
     item = {
       text: 'Responsivity',
-      href: `${stub}/review-responsivity`,
+      href: `${stub}/diversity`,
       statusText: NOT_STARTED,
       complete: false,
       hrefText: ADD_DETAILS,
@@ -293,7 +293,7 @@ describe('getFinalInformation', () => {
   beforeEach(() => {
     item = {
       text: 'Decisions and comments',
-      href: `${stub}/review-responsivity`,
+      href: `${stub}/decisions`,
       statusText: NOT_STARTED,
       complete: false,
       hrefText: ADD_DETAILS,
