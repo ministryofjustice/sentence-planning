@@ -14,7 +14,7 @@ const getFile = (directory, file, res) => {
 
 function createMockAPI() {
   app.use('*', (req, res, next) => {
-    logger.info(`MockAPI recieved for ${req.originalUrl}`)
+    logger.info(`MockAPI received for ${req.originalUrl}`)
     next()
   })
   app.use(express.json())
@@ -48,6 +48,28 @@ function createMockAPI() {
   app.get('/sentenceplans/:planid', (req, res) => {
     return getFile('sentencePlan', req.params.planid, res)
   })
+
+  app.get('/sentenceplans/:planid/objectives', (req, res) => {
+    return getFile('sentencePlanObjectives', req.params.planid, res)
+  })
+
+  app.get('/sentenceplans/:planid/objectives/:objectiveid', (req, res) => {
+    return getFile('sentencePlanObjectives', req.params.objectiveid, res)
+  })
+
+  app.post('/sentenceplans/:planid/objectives', (req, res) => {
+    logger.debug(`MockAPI saving new objective ${JSON.stringify(req.body)}`)
+    return getFile('sentencePlanObjectives', '1', res)
+  })
+
+  app.put('/sentenceplans/:planid/objectives/:objectiveid', (req, res) => {
+    if (req.params.objectiveid === 999) {
+      res.sendStatus(400)
+    }
+    logger.debug(`MockAPI saving objective ${JSON.stringify(req.body)}`)
+    return getFile('sentencePlanObjectives', req.params.objectiveid, res)
+  })
+
   app.listen(18081)
 }
 module.exports = { createMockAPI }

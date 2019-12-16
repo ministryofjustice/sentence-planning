@@ -11,13 +11,14 @@ const getNeedToKnow = async (
   renderDetails.nexturl = path.substring(0, path.lastIndexOf('/'))
   renderDetails.backurl = `${path.substring(0, path.lastIndexOf('/'))}/diversity`
 
-  if (body.needtoknow) {
-    renderDetails.needtoknow = body.needtoknow
-  }
   try {
-    const comments = await getSentencePlanComments(planId, token)
-    renderDetails.needtoknow = getCommentText(comments, 'THEIR_RESPONSIVITY')
-    return res.render(`${__dirname}/index`, { ...renderDetails, ...body, errors, errorSummary })
+    if (body.needtoknow !== undefined) {
+      renderDetails.needtoknow = body.needtoknow
+    } else {
+      const comments = await getSentencePlanComments(planId, token)
+      renderDetails.needtoknow = getCommentText(comments, 'THEIR_RESPONSIVITY')
+    }
+    return res.render(`${__dirname}/index`, { ...body, errors, errorSummary, ...renderDetails })
   } catch (error) {
     logger.error(`Could not retrieve sentence plan comments for ${planId}, error: ${error}`)
     return res.render('app/error', { error })

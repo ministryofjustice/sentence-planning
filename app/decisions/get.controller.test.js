@@ -53,14 +53,14 @@ describe('getDecision', () => {
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
   it('should pass through any renderInfo or decisions information', async () => {
-    req.body.decisions = 'Random decisions comment'
+    req.body.decisions = 'A random decisions comment'
     req.renderInfo = {
       testItem1: true,
       textItem: 'hello',
     }
     const expected = {
       backurl: '/this/is/my',
-      decisions: 'Random decisions comment',
+      decisions: 'A random decisions comment',
       errorSummary: {},
       errors: {},
       testItem1: true,

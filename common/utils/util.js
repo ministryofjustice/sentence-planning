@@ -10,4 +10,13 @@ const countWords = str => {
     .split(/\s+/).length
 }
 
-module.exports = { isEmptyObject, countWords }
+const removeUrlLevels = (url, levels) => {
+  return !levels
+    ? url
+    : url
+        .split('/')
+        .slice(0, -levels)
+        .join('/')
+}
+
+module.exports = { isEmptyObject, countWords, removeUrlLevels }
