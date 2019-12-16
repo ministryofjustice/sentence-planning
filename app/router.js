@@ -32,6 +32,9 @@ const { postComments, commentsValidationRules } = require('./comments/post.contr
 const { getObjective } = require('./objective/get.controller')
 const { postObjective, objectiveValidationRules } = require('./objective/post.controller')
 
+const { getAction } = require('./action/get.controller')
+const { postAction, actionValidationRules } = require('./action/post.controller')
+
 const createSentencePlan = require('../common/middleware/createSentencePlan')
 const { editPlan } = require('./editPlan/get.controller')
 
@@ -78,7 +81,8 @@ module.exports = app => {
   app.post(editObjectiveRoute, objectiveValidationRules(), validate, postObjective)
 
   // actions
-  app.get(editActionRoute, ({ params: { actionId } }, res) => res.send(`Todo: action ${actionId} page`))
+  app.get(editActionRoute, getAction)
+  app.post(editActionRoute, actionValidationRules(), validate, postAction)
 
   app.use(offenderRoute, getOffenderDetails)
   app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)

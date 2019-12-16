@@ -70,6 +70,23 @@ function createMockAPI() {
     return getFile('sentencePlanObjectives', req.params.objectiveid, res)
   })
 
+  app.get('/sentenceplans/:planid/objectives/:objectiveid/actions/:actionId', (req, res) => {
+    return getFile('sentencePlanActions', req.params.actionId, res)
+  })
+
+  app.post('/sentenceplans/:planid/objectives/:objectiveid/actions', (req, res) => {
+    logger.debug(`MockAPI saving new action ${JSON.stringify(req.body)}`)
+    return res.sendStatus(200)
+  })
+
+  app.put('/sentenceplans/:planid/objectives/:objectiveid/actions/:actionId', (req, res) => {
+    if (req.params.actionId === 999) {
+      res.sendStatus(400)
+    }
+    logger.debug(`MockAPI saving action ${JSON.stringify(req.body)}`)
+    return getFile('sentencePlanActions', req.params.objectiveid, res)
+  })
+
   app.listen(18081)
 }
 module.exports = { createMockAPI }
