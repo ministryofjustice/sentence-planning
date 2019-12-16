@@ -16,7 +16,7 @@ const {
   getSentencePlanComments,
   setSentencePlanComment,
   getSentencePlanObjective,
-  setNewSentencePlanObjective,
+  addSentencePlanObjective,
   updateSentencePlanObjective,
 } = require('./sentencePlanningApi')
 
@@ -133,12 +133,12 @@ describe('sentencePlanningApi', () => {
 
     it('should save objective', async () => {
       mockedEndpoint.post(sentencePlansObjectiveUrl).reply(200, {})
-      const output = await setNewSentencePlanObjective(planid, data, token)
+      const output = await addSentencePlanObjective(planid, data, token)
       expect(output).toEqual({})
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.post(sentencePlansObjectiveUrl).reply(400)
-      await expect(setNewSentencePlanObjective(planid, data, token)).rejects.toThrowError('Bad Request')
+      await expect(addSentencePlanObjective(planid, data, token)).rejects.toThrowError('Bad Request')
     })
   })
 

@@ -1,5 +1,5 @@
 const controller = require('./post.controller')
-const { setNewSentencePlanObjective, updateSentencePlanObjective } = require('../../common/data/sentencePlanningApi')
+const { addSentencePlanObjective, updateSentencePlanObjective } = require('../../common/data/sentencePlanningApi')
 const { getObjective } = require('./get.controller')
 const returnedObjective = require('../../mockServer/sentencePlanObjectives/1.json')
 
@@ -22,7 +22,7 @@ beforeEach(() => {
     renderInfo: null,
   }
   updateSentencePlanObjective.mockReset()
-  setNewSentencePlanObjective.mockReset()
+  addSentencePlanObjective.mockReset()
 })
 
 const expected = {
@@ -60,9 +60,9 @@ describe('post or update objective', () => {
 
   it('should save the new objective when there are no errors', async () => {
     req.body.objective = 'The objective description'
-    setNewSentencePlanObjective.mockReturnValueOnce(returnedObjective)
+    addSentencePlanObjective.mockReturnValueOnce(returnedObjective)
     await controller.postObjective(req, res)
-    expect(setNewSentencePlanObjective).toHaveBeenCalledWith(
+    expect(addSentencePlanObjective).toHaveBeenCalledWith(
       1,
       { description: 'The objective description', needs: [] },
       '1234'
@@ -74,7 +74,7 @@ describe('post or update objective', () => {
   it('should update the objective when there are no errors', async () => {
     req.params.objectiveId = '1'
     req.body.objective = 'The objective description'
-    setNewSentencePlanObjective.mockReturnValueOnce(returnedObjective)
+    addSentencePlanObjective.mockReturnValueOnce(returnedObjective)
     await controller.postObjective(req, res)
     expect(updateSentencePlanObjective).toHaveBeenCalledWith(
       1,
@@ -82,12 +82,12 @@ describe('post or update objective', () => {
       { description: 'The objective description', needs: [] },
       '1234'
     )
-    expect(setNewSentencePlanObjective).not.toHaveBeenCalled()
+    expect(addSentencePlanObjective).not.toHaveBeenCalled()
     expect(res.redirect).toHaveBeenCalledWith('/this/is')
   })
 
   it('should redisplay the page when there are errors', async () => {
-    setNewSentencePlanObjective.mockReturnValueOnce(returnedObjective)
+    addSentencePlanObjective.mockReturnValueOnce(returnedObjective)
     req.body.objective = 'The objective description'
     req.errors = {
       errors: [
@@ -100,7 +100,7 @@ describe('post or update objective', () => {
       ],
     }
     await controller.postObjective(req, res)
-    expect(setNewSentencePlanObjective).not.toHaveBeenCalled()
+    expect(addSentencePlanObjective).not.toHaveBeenCalled()
     expect(updateSentencePlanObjective).not.toHaveBeenCalled()
     expect(getObjective).toHaveBeenCalledWith(expected, res)
   })
@@ -122,13 +122,13 @@ describe('post or update objective', () => {
     expected.tooManyWords = true
     expected.renderInfo.wordsOver = 204
     await controller.postObjective(req, res)
-    expect(setNewSentencePlanObjective).not.toHaveBeenCalled()
+    expect(addSentencePlanObjective).not.toHaveBeenCalled()
     expect(updateSentencePlanObjective).not.toHaveBeenCalled()
     expect(getObjective).toHaveBeenCalledWith(expected, res)
   })
   it('should display an error if objective saving fails', async () => {
     const theError = new Error('Error message')
-    setNewSentencePlanObjective.mockImplementation(() => {
+    addSentencePlanObjective.mockImplementation(() => {
       throw theError
     })
     await controller.postObjective(req, res)

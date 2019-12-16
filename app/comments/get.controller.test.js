@@ -55,7 +55,7 @@ describe('getComments', () => {
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
   it('should pass through any renderInfo or diversity information', async () => {
-    req.body.comments = 'Random diversity comment'
+    req.body.comments = 'A random summary comment'
     req.renderInfo = {
       testItem1: true,
       textItem: 'hello',
@@ -63,7 +63,7 @@ describe('getComments', () => {
     const expected = {
       backurl: '/this/is/my/decisions',
       nexturl: '/this/is/my',
-      comments: 'Random diversity comment',
+      comments: 'A random summary comment',
       errorSummary: {},
       errors: {},
       testItem1: true,

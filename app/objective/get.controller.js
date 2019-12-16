@@ -10,14 +10,13 @@ const getObjective = async (
   const backurl = removeUrlLevels(path, 2)
   const renderDetails = { ...renderInfo, nexturl, backurl }
 
-  if (body.objective) {
-    renderDetails.objective = body.objective
-  }
   try {
-    if (objectiveId.toLowerCase() !== 'new') {
+    if (body.objective !== undefined) {
+      renderDetails.objective = body.objective
+    } else if (objectiveId.toLowerCase() !== 'new') {
       renderDetails.objective = await getSentencePlanObjective(planId, objectiveId, token)
     }
-    return res.render(`${__dirname}/index`, { ...renderDetails, ...body, errors, errorSummary })
+    return res.render(`${__dirname}/index`, { ...body, errors, errorSummary, ...renderDetails })
   } catch (error) {
     logger.error(`Could not retrieve objective ${objectiveId} for sentence plan ${planId}, error: ${error}`)
     return res.render('app/error', { error })

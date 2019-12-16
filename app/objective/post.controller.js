@@ -1,6 +1,6 @@
 const { body } = require('express-validator')
 const { logger } = require('../../common/logging/logger')
-const { setNewSentencePlanObjective, updateSentencePlanObjective } = require('../../common/data/sentencePlanningApi')
+const { addSentencePlanObjective, updateSentencePlanObjective } = require('../../common/data/sentencePlanningApi')
 const { getObjective } = require('./get.controller')
 const { countWords, removeUrlLevels } = require('../../common/utils/util')
 
@@ -28,8 +28,6 @@ const postObjective = async (req, res) => {
     session: { 'x-auth-token': token },
   } = req
 
-  const backurl = removeUrlLevels(path, 2)
-
   if (errors) {
     const wordsOver = countWords(objectiveDescription) - wordsAllowed
     req.renderInfo = { wordsOver: wordsOver > 0 ? wordsOver : 0 }
@@ -43,11 +41,11 @@ const postObjective = async (req, res) => {
     }
     let redirectUrl
     if (objectiveId.toLowerCase() === 'new') {
-      const newObjective = await setNewSentencePlanObjective(planId, objective, token)
+      const newObjective = await addSentencePlanObjective(planId, objective, token)
       redirectUrl = `${newObjective.id}/edit-action/NEW`
     } else {
       await updateSentencePlanObjective(planId, objectiveId, objective, token)
-      redirectUrl = backurl
+      redirectUrl = removeUrlLevels(path, 2)
     }
     return res.redirect(redirectUrl)
   } catch (error) {

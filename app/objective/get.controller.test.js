@@ -27,7 +27,7 @@ describe('getObjective', () => {
   beforeEach(() => {
     req.renderInfo = {}
     req.params.objectiveId = 'NEW'
-    delete req.body.comments
+    delete req.body.objective
     getSentencePlanObjective.mockReset()
   })
 
@@ -56,7 +56,7 @@ describe('getObjective', () => {
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
   it('should pass through any renderInfo or objective information', async () => {
-    req.body.objective = 'My objective text'
+    req.body.objective = 'A random objective text'
     req.renderInfo = {
       testItem1: true,
       textItem: 'hello',
@@ -64,7 +64,7 @@ describe('getObjective', () => {
     const expected = {
       backurl: '/this/is',
       nexturl: '/this/is/my',
-      objective: 'My objective text',
+      objective: 'A random objective text',
       errorSummary: {},
       errors: {},
       testItem1: true,

@@ -34,7 +34,7 @@ const getSentencePlanObjective = async (sentencePlanId, objectiveId, token) => {
   return getData(path, token)
 }
 
-const setNewSentencePlanObjective = async (sentencePlanId, objective, token) => {
+const addSentencePlanObjective = async (sentencePlanId, objective, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives`
   return postData(path, token, objective)
 }
@@ -103,6 +103,6 @@ module.exports = {
   getSentencePlanComments,
   setSentencePlanComment,
   getSentencePlanObjective,
-  setNewSentencePlanObjective,
+  addSentencePlanObjective,
   updateSentencePlanObjective,
 }

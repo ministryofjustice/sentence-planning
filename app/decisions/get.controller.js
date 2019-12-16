@@ -9,13 +9,14 @@ const getDecisions = async (
   const renderDetails = renderInfo || {}
   renderDetails.backurl = path.substring(0, path.lastIndexOf('/'))
 
-  if (body.decisions) {
-    renderDetails.decisions = body.decisions
-  }
   try {
-    const comments = await getSentencePlanComments(planId, token)
-    renderDetails.decisions = getCommentText(comments, 'YOUR_SUMMARY')
-    return res.render(`${__dirname}/index`, { ...renderDetails, ...body, errors, errorSummary })
+    if (body.decisions !== undefined) {
+      renderDetails.decisions = body.decisions
+    } else {
+      const comments = await getSentencePlanComments(planId, token)
+      renderDetails.decisions = getCommentText(comments, 'YOUR_SUMMARY')
+    }
+    return res.render(`${__dirname}/index`, { ...body, errors, errorSummary, ...renderDetails })
   } catch (error) {
     logger.error(`Could not retrieve sentence plan comments for ${planId}, error: ${error}`)
     return res.render('app/error', { error })
