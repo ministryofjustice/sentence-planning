@@ -44,6 +44,21 @@ const updateSentencePlanObjective = async (sentencePlanId, objectiveId, objectiv
   return putData(path, token, objective)
 }
 
+const addSentencePlanObjectiveAction = async (sentencePlanId, objectiveId, action, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/actions`
+  return postData(path, token, action)
+}
+
+const getSentencePlanObjectiveAction = async (sentencePlanId, objectiveId, actionId, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/actions/${actionId}`
+  return getData(path, token)
+}
+
+const updateSentencePlanObjectiveAction = async (sentencePlanId, objectiveId, actionId, action, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/actions/${actionId}`
+  return putData(path, token, action)
+}
+
 const getData = async (path, token) => {
   logger.info(`Calling SentencePlanningApi: ${path}`)
   try {
@@ -105,4 +120,7 @@ module.exports = {
   getSentencePlanObjective,
   addSentencePlanObjective,
   updateSentencePlanObjective,
+  addSentencePlanObjectiveAction,
+  getSentencePlanObjectiveAction,
+  updateSentencePlanObjectiveAction,
 }
