@@ -11,13 +11,6 @@ image:
   tag: latest
   pullPolicy: Always
 
-proxy:
-  image:
-    repository: quay.io/ukhomeofficedigital/nginx-proxy
-    tag: latest
-    pullPolicy: Always
-    port: 10080
-
 gatekeeper:
   image:
     repository: mojdigitalstudio/oasys-keycloak-gatekeeper

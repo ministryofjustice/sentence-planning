@@ -11,7 +11,7 @@ spec:
   type: ClusterIP
   ports:
     - port: 80 
-      targetPort: 8081 
+      targetPort: {{ .Values.gatekeeper.image.port }} 
       name: gatekeeper
   selector:
     app: {{ template "sentence-planning.name" . }}
