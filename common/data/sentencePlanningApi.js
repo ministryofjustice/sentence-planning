@@ -6,9 +6,13 @@ const {
   },
 } = require('../config')
 
-const createSentencePlan = async (offenderId, token) => {
-  const path = `${url}/sentenceplan`
-  return postData(path, token, { offenderId, offenderReferenceType: 'OASYS' })
+const createSentencePlan = async (individualId, token) => {
+  const path = `${url}/offenders/${individualId}/sentenceplans`
+  return postData(path, token)
+}
+const getSentencePlan = async (sentencePlanId, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}`
+  return getData(path, token)
 }
 const getSentencePlanSummary = async (individualId, token) => {
   const path = `${url}/offenders/${individualId}/sentenceplans`
@@ -23,6 +27,21 @@ const getSentencePlanComments = async (sentencePlanId, token) => {
 const setSentencePlanComment = async (sentencePlanId, comment, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/comments`
   return putData(path, token, comment)
+}
+
+const getSentencePlanObjective = async (sentencePlanId, objectiveId, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}`
+  return getData(path, token)
+}
+
+const addSentencePlanObjective = async (sentencePlanId, objective, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/objectives`
+  return postData(path, token, objective)
+}
+
+const updateSentencePlanObjective = async (sentencePlanId, objectiveId, objective, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}`
+  return putData(path, token, objective)
 }
 
 const getData = async (path, token) => {
@@ -77,4 +96,13 @@ const logError = error => {
   throw error
 }
 
-module.exports = { createSentencePlan, getSentencePlanSummary, getSentencePlanComments, setSentencePlanComment }
+module.exports = {
+  createSentencePlan,
+  getSentencePlan,
+  getSentencePlanSummary,
+  getSentencePlanComments,
+  setSentencePlanComment,
+  getSentencePlanObjective,
+  addSentencePlanObjective,
+  updateSentencePlanObjective,
+}

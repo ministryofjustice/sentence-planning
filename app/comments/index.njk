@@ -4,7 +4,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
-{% set heading = "How we will respond to diversity factors" %}
+{% set heading = "Individual’s comments" %}
 {% set errorHeading = "Error - " + heading %}
 
 {% block pageTitle %}
@@ -31,22 +31,22 @@
             <form method="post" novalidate>
 
             {{  govukTextarea({
-                id: 'diversity',
-                name: 'diversity',
-                value: diversity,
+                id: 'comments',
+                name: 'comments',
+                value: comments,
                 label: {
                     classes: 'govuk-label--l',
                     text: heading,
                     isPageHeading: true
                 },
                 hint: {
-                    text: 'Record how you will take account of diversity factors when creating the plan. For example: ethnicity, race, sexual orientation, gender, age or religion.'
+                    text: 'Record anything they want to say about their plan. Include any points they want to make or clarify.'
                 },
-                errorMessage: errors.diversity
+                errorMessage: errors.comments
             }) }}
 
             {% if wordsOver %}
-            <span id="diversity-error" class="govuk-error-message extra-error">
+            <span id="comments-error" class="govuk-error-message extra-error">
                 You have {{ wordsOver }} words too many</span>
             {% endif %}
 
@@ -54,7 +54,7 @@
                 text: 'Continue',
                 classes: 'govuk-!-margin-bottom-3'
             }) }}
-                <p>or <a class="govuk-link" href="{{ backurl }}">cancel</a></p>
+                <p>or <a class="govuk-link" href="{{ nexturl }}">cancel</a></p>
             </form>
         </div>
     </div>

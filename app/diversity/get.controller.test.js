@@ -18,7 +18,6 @@ describe('getDiversity', () => {
     body: {},
     errors: {},
     errorSummary: {},
-    renderInfo: null,
     diversity: null,
   }
   const res = {
@@ -58,14 +57,14 @@ describe('getDiversity', () => {
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
   it('should pass through any renderInfo or diversity information', async () => {
-    req.body.diversity = 'Random diversity comment'
+    req.body.diversity = 'A random responsivity comment'
     req.renderInfo = {
       testItem1: true,
       textItem: 'hello',
     }
     const expected = {
       backurl: '/this/is/my',
-      diversity: 'Random diversity comment',
+      diversity: 'A random responsivity comment',
       errorSummary: {},
       errors: {},
       testItem1: true,

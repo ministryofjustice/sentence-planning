@@ -1,6 +1,8 @@
 const nock = require('nock')
 const summaryPlanResponse = require('../../mockServer/sentencePlanSummary/11034.json')
 const sentencePlanComments = require('../../mockServer/sentencePlanComments/1.json')
+const sentencePlanObjective = require('../../mockServer/sentencePlanObjectives/1.json')
+const sentencePlan = require('../../mockServer/sentencePlans/1.json')
 
 const {
   apis: {
@@ -9,9 +11,13 @@ const {
 } = require('../config')
 const {
   getSentencePlanSummary,
+  getSentencePlan,
   createSentencePlan,
   getSentencePlanComments,
   setSentencePlanComment,
+  getSentencePlanObjective,
+  addSentencePlanObjective,
+  updateSentencePlanObjective,
 } = require('./sentencePlanningApi')
 
 describe('sentencePlanningApi', () => {
@@ -40,17 +46,31 @@ describe('sentencePlanningApi', () => {
   })
 
   describe('createSentencePlan', () => {
-    const sentencePlanUrl = `/sentenceplan`
-    const expectedBody = { offenderId: id, offenderReferenceType: 'OASYS' }
+    const sentencePlanUrl = `/offenders/${id}/sentenceplans`
 
     it('should return new sentence plan data', async () => {
-      mockedEndpoint.post(sentencePlanUrl, expectedBody).reply(200, summaryPlanResponse)
+      mockedEndpoint.post(sentencePlanUrl).reply(200, summaryPlanResponse)
       const output = await createSentencePlan(id, token)
       expect(output).toEqual(summaryPlanResponse)
     })
     it('should throw an error if it does not receive a valid response', async () => {
-      mockedEndpoint.post(sentencePlanUrl, expectedBody).reply(400)
+      mockedEndpoint.post(sentencePlanUrl).reply(400)
       await expect(createSentencePlan(id, token)).rejects.toThrowError('Bad Request')
+    })
+  })
+
+  describe('getSentencePlan', () => {
+    const planId = 417
+    const sentencePlansUrl = `/sentenceplans/${planId}`
+
+    it('should return a sentence plan', async () => {
+      mockedEndpoint.get(sentencePlansUrl).reply(200, sentencePlan)
+      const output = await getSentencePlan(planId, token)
+      expect(output).toEqual(sentencePlan)
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.get(sentencePlansUrl).reply(400)
+      await expect(getSentencePlan(planId, token)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -87,6 +107,55 @@ describe('sentencePlanningApi', () => {
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.put(sentencePlansCommentsUrl).reply(400)
       await expect(setSentencePlanComment(planid, data, token)).rejects.toThrowError('Bad Request')
+    })
+  })
+
+  describe('getSentencePlanObjective', () => {
+    const planid = '1'
+    const objectiveid = '1'
+    const sentencePlansObjectiveUrl = `/sentenceplans/${planid}/objectives/${objectiveid}`
+
+    it('should return objective data', async () => {
+      mockedEndpoint.get(sentencePlansObjectiveUrl).reply(200, sentencePlanObjective)
+      const output = await getSentencePlanObjective(planid, objectiveid, token)
+      expect(output).toEqual(sentencePlanObjective)
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.get(sentencePlansObjectiveUrl).reply(400)
+      await expect(getSentencePlanObjective(planid, objectiveid, token)).rejects.toThrowError('Bad Request')
+    })
+  })
+
+  describe('setSentencePlanObjective', () => {
+    const planid = '1'
+    const sentencePlansObjectiveUrl = `/sentenceplans/${planid}/objectives`
+    const data = [{ description: 'The objective description', needs: [] }]
+
+    it('should save objective', async () => {
+      mockedEndpoint.post(sentencePlansObjectiveUrl).reply(200, {})
+      const output = await addSentencePlanObjective(planid, data, token)
+      expect(output).toEqual({})
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.post(sentencePlansObjectiveUrl).reply(400)
+      await expect(addSentencePlanObjective(planid, data, token)).rejects.toThrowError('Bad Request')
+    })
+  })
+
+  describe('update SentencePlanObjective', () => {
+    const planid = '1'
+    const objectiveid = '199'
+    const sentencePlansObjectiveUrl = `/sentenceplans/${planid}/objectives/${objectiveid}`
+    const data = [{ description: 'The objective description', needs: [] }]
+
+    it('should update objective', async () => {
+      mockedEndpoint.put(sentencePlansObjectiveUrl).reply(200, {})
+      const output = await updateSentencePlanObjective(planid, objectiveid, data, token)
+      expect(output).toEqual({})
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.put(sentencePlansObjectiveUrl).reply(400)
+      await expect(updateSentencePlanObjective(planid, objectiveid, data, token)).rejects.toThrowError('Bad Request')
     })
   })
 })

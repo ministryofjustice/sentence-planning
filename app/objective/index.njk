@@ -2,9 +2,10 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 
-{% set heading = "How we will respond to diversity factors" %}
+
+{% set heading = "Add an objective" %}
 {% set errorHeading = "Error - " + heading %}
 
 {% block pageTitle %}
@@ -28,25 +29,28 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">{{ heading }}</h1>
             <form method="post" novalidate>
-
-            {{  govukTextarea({
-                id: 'diversity',
-                name: 'diversity',
-                value: diversity,
+                <div class="govuk-inset-text">
+                    You’ll be able to add actions for this objective next.
+                </div>
+            {{  govukCharacterCount({
+                id: 'objective',
+                name: 'objective',
+                value: objective.description,
                 label: {
-                    classes: 'govuk-label--l',
-                    text: heading,
-                    isPageHeading: true
+                    classes: 'govuk-label--m',
+                    text: 'Objective description'
                 },
+                maxwords: 50,
                 hint: {
-                    text: 'Record how you will take account of diversity factors when creating the plan. For example: ethnicity, race, sexual orientation, gender, age or religion.'
+                    text: 'What does the individual need to achieve?'
                 },
-                errorMessage: errors.diversity
+                errorMessage: errors.objective
             }) }}
 
             {% if wordsOver %}
-            <span id="diversity-error" class="govuk-error-message extra-error">
+            <span id="objective-error" class="govuk-error-message extra-error">
                 You have {{ wordsOver }} words too many</span>
             {% endif %}
 

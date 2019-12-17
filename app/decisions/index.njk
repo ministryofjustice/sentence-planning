@@ -4,7 +4,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
-{% set heading = "How we will respond to diversity factors" %}
+{% set heading = "Your decisions" %}
 {% set errorHeading = "Error - " + heading %}
 
 {% block pageTitle %}
@@ -31,22 +31,22 @@
             <form method="post" novalidate>
 
             {{  govukTextarea({
-                id: 'diversity',
-                name: 'diversity',
-                value: diversity,
+                id: 'decisions',
+                name: 'decisions',
+                value: decisions,
                 label: {
                     classes: 'govuk-label--l',
                     text: heading,
                     isPageHeading: true
                 },
                 hint: {
-                    text: 'Record how you will take account of diversity factors when creating the plan. For example: ethnicity, race, sexual orientation, gender, age or religion.'
+                    text: 'Record the key points from your conversations with the individual as you created their plan. Explain decisions you made, e.g. why you might not deal with a certain need at this time.'
                 },
-                errorMessage: errors.diversity
+                errorMessage: errors.decisions
             }) }}
 
             {% if wordsOver %}
-            <span id="diversity-error" class="govuk-error-message extra-error">
+            <span id="decisions-error" class="govuk-error-message extra-error">
                 You have {{ wordsOver }} words too many</span>
             {% endif %}
 

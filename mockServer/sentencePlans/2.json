@@ -1,0 +1,16 @@
+{
+  "id": 2,
+  "comments": [
+  ],
+  "objectives": [
+    {
+      "actions": [
+      ],
+      "description": "",
+      "id": "sausages",
+      "needs": [
+      ],
+      "priority": 0
+    }
+  ]
+}
