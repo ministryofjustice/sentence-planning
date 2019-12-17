@@ -53,6 +53,8 @@ spec:
           ports:
             - name: gatekeeper
               containerPort: 8081
+            - name: http
+              containerPort: 8082
 {{ include "gatekeeper.args" . | nindent 10 }}
 
         - name: sentence-planning
