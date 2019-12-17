@@ -52,7 +52,9 @@ spec:
           imagePullPolicy: "{{ .Values.gatekeeper.image.pullPolicy }}"
           ports:
             - name: gatekeeper
-              containerPort: {{ .Values.gatekeeper.image.port }}
+              containerPort: 8081
+            - name: http
+              containerPort: 8082
 {{ include "gatekeeper.args" . | nindent 10 }}
 
         - name: sentence-planning

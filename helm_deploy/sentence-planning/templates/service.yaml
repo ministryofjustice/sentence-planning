@@ -11,8 +11,8 @@ spec:
   type: ClusterIP
   ports:
     - port: 80 
-      targetPort: {{ .Values.gatekeeper.image.port }} 
-      name: proxy
+      targetPort: 8082 
+      name: gatekeeper
   selector:
     app: {{ template "sentence-planning.name" . }}
     release: {{ .Release.Name }}
