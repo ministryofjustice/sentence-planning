@@ -9,8 +9,6 @@ args:
     - --client-secret={{ .Values.secrets.KEYCLOAK_CLIENT_SECRET }}
     - --discovery-url={{ .Values.env.KEYCLOAK_REALM }}
     - --listen=127.0.0.1:8081
-    - --listen-http=127.0.0.1:8081
-    - --enable-security-filter=false
     - --enable-default-deny
     - --enable-logging=true
     - --enable-json-logging=true
