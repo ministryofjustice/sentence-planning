@@ -23,7 +23,7 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/whitelist-source-range: "217.33.148.210/32,81.134.202.29/32"
-  host: sentence-planning-preprod.apps.live-1.cloud-platform.service.justice.gov.uk
+  host: preprod.sentence-planning.service.justice.gov.uk
   path: /
   
 env:
@@ -33,5 +33,5 @@ env:
   SENTENCEPLANNING_API_URL: http://sentence-planning-api.sentence-planning-preprod.svc.cluster.local/
   KEYCLOAK_REALM: https://sentence-planning-keycloak-preprod.apps.live-1.cloud-platform.service.justice.gov.uk/auth/realms/sentence-planning
   KEYCLOAK_UPSTREAM_URL: http://127.0.0.1:3000
-  KEYCLOAK_REDIRECTION_URL: https://sentence-planning-preprod.apps.live-1.cloud-platform.service.justice.gov.uk
+  KEYCLOAK_REDIRECTION_URL: https://preprod.sentence-planning.service.justice.gov.uk
   
