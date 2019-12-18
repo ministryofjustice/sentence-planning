@@ -1,10 +1,42 @@
 const controller = require('./get.controller')
-const { getSentencePlanObjective } = require('../../common/data/sentencePlanningApi')
+const { getSentencePlanObjective, getSentencePlanNeeds } = require('../../common/data/sentencePlanningApi')
 
 jest.mock('../../common/data/sentencePlanningApi')
 
 const objectiveEmpty = {}
 const objectivePresent = require('../../mockServer/sentencePlanObjectives/1.json')
+const needs = require('../../mockServer/sentencePlanNeeds/2.json')
+
+const displayNeeds = [
+  {
+    html: 'Accommodation - <span class="risk"> Risk of serious harm',
+    value: 'needsid_accommodation',
+  },
+  {
+    html: 'ETE',
+    value: 'needsid_ete',
+  },
+  {
+    html: 'Finance - <span class="risk"> Risk of serious harm',
+    value: 'needsid_finance',
+  },
+]
+
+const displayNeedsProcessed = [
+  {
+    html: 'Accommodation - <span class="risk"> Risk of serious harm',
+    value: 'needsid_accommodation',
+    checked: true,
+  },
+  {
+    html: 'ETE',
+    value: 'needsid_ete',
+  },
+  {
+    html: 'Finance - <span class="risk"> Risk of serious harm',
+    value: 'needsid_finance',
+  },
+]
 
 describe('getObjective', () => {
   const req = {
@@ -28,7 +60,12 @@ describe('getObjective', () => {
     req.renderInfo = {}
     req.params.objectiveId = 'NEW'
     delete req.body.objective
+    getSentencePlanNeeds.mockReturnValueOnce(needs)
+  })
+
+  afterEach(() => {
     getSentencePlanObjective.mockReset()
+    getSentencePlanNeeds.mockReset()
   })
 
   it('should set the correct render values when adding a new objective', async () => {
@@ -37,6 +74,8 @@ describe('getObjective', () => {
       nexturl: '/this/is/my',
       errorSummary: {},
       errors: {},
+      displayNeeds,
+      objective: {},
     }
     getSentencePlanObjective.mockReturnValueOnce(objectiveEmpty)
     await controller.getObjective(req, res)
@@ -50,6 +89,7 @@ describe('getObjective', () => {
       objective: objectivePresent,
       errorSummary: {},
       errors: {},
+      displayNeeds: displayNeedsProcessed,
     }
     getSentencePlanObjective.mockReturnValueOnce(objectivePresent)
     await controller.getObjective(req, res)
@@ -69,6 +109,7 @@ describe('getObjective', () => {
       errors: {},
       testItem1: true,
       textItem: 'hello',
+      displayNeeds,
     }
     getSentencePlanObjective.mockReturnValueOnce(objectivePresent)
     await controller.getObjective(req, res)
@@ -90,6 +131,7 @@ describe('getObjective', () => {
       nexturl: '/this/is/my',
       errorSummary: {},
       errors: {},
+      displayNeeds,
     }
     await controller.getObjective(req, res)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)

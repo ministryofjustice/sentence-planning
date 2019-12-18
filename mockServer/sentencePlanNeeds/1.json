@@ -1,0 +1,72 @@
+[
+  {
+    "description": "Accommodation",
+    "active": true,
+    "flaggedAsNeed": true,
+    "id": "needsid_accommodation",
+    "name": "accommodation",
+    "overThreshold": false,
+    "riskOfHarm": true,
+    "riskOfReoffending": false
+  },
+  {
+    "description": "ETE",
+    "active": true,
+    "flaggedAsNeed": true,
+    "id": "needsid_ete",
+    "name": "ete",
+    "overThreshold": false,
+    "riskOfHarm": true,
+    "riskOfReoffending": false
+  },
+  {
+    "description": "Finance",
+    "active": true,
+    "flaggedAsNeed": true,
+    "id": "needsid_finance",
+    "name": "finance",
+    "overThreshold": false,
+    "riskOfHarm": true,
+    "riskOfReoffending": false
+  },
+  {
+    "description": "Relationships",
+    "active": true,
+    "flaggedAsNeed": true,
+    "id": "needsid_relationships",
+    "name": "relationships",
+    "overThreshold": false,
+    "riskOfHarm": true,
+    "riskOfReoffending": false
+  },
+  {
+    "description": "Alcohol misuse",
+    "active": true,
+    "flaggedAsNeed": true,
+    "id": "needsid_alcohol",
+    "name": "alcohol",
+    "overThreshold": false,
+    "riskOfHarm": false,
+    "riskOfReoffending": false
+  },
+  {
+    "description": "Emotional well-being",
+    "active": true,
+    "flaggedAsNeed": true,
+    "id": "needsid_wellbeing",
+    "name": "wellbeing",
+    "overThreshold": false,
+    "riskOfHarm": false,
+    "riskOfReoffending": false
+  },
+  {
+    "description": "Thinking and behaviour",
+    "active": true,
+    "flaggedAsNeed": true,
+    "id": "needsid_thinking",
+    "name": "thinking",
+    "overThreshold": false,
+    "riskOfHarm": false,
+    "riskOfReoffending": false
+  }
+]

@@ -2,6 +2,8 @@
   "actions": [],
   "description": "newly created objective",
   "id": 1,
-  "needs": [],
+  "needs": [
+    "needsid_accommodation", "needsid_wellbeing"
+  ],
   "priority": 0
 }
