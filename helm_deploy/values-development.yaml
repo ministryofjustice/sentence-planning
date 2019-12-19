@@ -25,6 +25,7 @@ ingress:
     nginx.ingress.kubernetes.io/whitelist-source-range: "217.33.148.210/32,81.134.202.29/32"
   host: development.sentence-planning.service.justice.gov.uk
   path: /
+  cert_secret: sentence-planning-cert
 
 env:
   NOMIS_AUTH_URL: https://gateway.t3.nomis-api.hmpps.dsd.io/auth
