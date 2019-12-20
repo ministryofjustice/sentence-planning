@@ -11,14 +11,17 @@ const displayNeeds = [
   {
     html: 'Accommodation - <span class="risk"> Risk of serious harm',
     value: 'needsid_accommodation',
+    active: true,
   },
   {
     html: 'ETE',
     value: 'needsid_ete',
+    active: true,
   },
   {
     html: 'Finance - <span class="risk"> Risk of serious harm',
     value: 'needsid_finance',
+    active: true,
   },
 ]
 
@@ -27,14 +30,17 @@ const displayNeedsProcessed = [
     html: 'Accommodation - <span class="risk"> Risk of serious harm',
     value: 'needsid_accommodation',
     checked: true,
+    active: true,
   },
   {
     html: 'ETE',
     value: 'needsid_ete',
+    active: true,
   },
   {
     html: 'Finance - <span class="risk"> Risk of serious harm',
     value: 'needsid_finance',
+    active: true,
   },
 ]
 
@@ -74,8 +80,8 @@ describe('getObjective', () => {
       nexturl: '/this/is/my',
       errorSummary: {},
       errors: {},
+      description: '',
       displayNeeds,
-      objective: {},
     }
     getSentencePlanObjective.mockReturnValueOnce(objectiveEmpty)
     await controller.getObjective(req, res)
@@ -86,9 +92,9 @@ describe('getObjective', () => {
     const expected = {
       backurl: '/this/is',
       nexturl: '/this/is/my',
-      objective: objectivePresent,
       errorSummary: {},
       errors: {},
+      description: 'newly created objective',
       displayNeeds: displayNeedsProcessed,
     }
     getSentencePlanObjective.mockReturnValueOnce(objectivePresent)
@@ -97,6 +103,7 @@ describe('getObjective', () => {
   })
   it('should pass through any renderInfo or objective information', async () => {
     req.body.objective = 'A random objective text'
+    req.body.needs = ['need1', 'need2']
     req.renderInfo = {
       testItem1: true,
       textItem: 'hello',
@@ -104,7 +111,7 @@ describe('getObjective', () => {
     const expected = {
       backurl: '/this/is',
       nexturl: '/this/is/my',
-      objective: 'A random objective text',
+      description: 'A random objective text',
       errorSummary: {},
       errors: {},
       testItem1: true,
@@ -131,6 +138,7 @@ describe('getObjective', () => {
       nexturl: '/this/is/my',
       errorSummary: {},
       errors: {},
+      description: '',
       displayNeeds,
     }
     await controller.getObjective(req, res)

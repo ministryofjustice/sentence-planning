@@ -68,5 +68,25 @@
     "overThreshold": false,
     "riskOfHarm": false,
     "riskOfReoffending": false
+  },
+  {
+    "description": "Inactive but previously selected need description",
+    "active": false,
+    "flaggedAsNeed": true,
+    "id": "needsid_inactive",
+    "name": "needsid_inactive",
+    "overThreshold": false,
+    "riskOfHarm": false,
+    "riskOfReoffending": false
+  },
+  {
+    "description": "Inactive need description",
+    "active": false,
+    "flaggedAsNeed": true,
+    "id": "needsid_hide",
+    "name": "needsid_hide",
+    "overThreshold": false,
+    "riskOfHarm": false,
+    "riskOfReoffending": false
   }
 ]

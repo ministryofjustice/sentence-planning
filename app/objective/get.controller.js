@@ -10,55 +10,62 @@ const getObjective = async (
   const backurl = removeUrlLevels(path, 2)
   const renderDetails = { ...renderInfo, nexturl, backurl }
   let displayNeeds
-  let displayObjective = {}
+  let displayObjective = { description: '', needs: [] }
 
+  // get the saved or submitted objective
+  try {
+    if (body.objective !== undefined) {
+      displayObjective.description = body.objective
+      displayObjective.needs = body.needs || []
+    } else if (objectiveId.toLowerCase() !== 'new') {
+      const savedObjective = await getSentencePlanObjective(planId, objectiveId, token)
+
+      // convert need to array if only one has been passed back
+      if (savedObjective.needs) {
+        if (!(savedObjective.needs instanceof Array)) {
+          savedObjective.needs = [savedObjective.needs]
+        }
+      }
+      displayObjective = savedObjective
+    }
+  } catch (error) {
+    logger.error(`Could not retrieve objective ${objectiveId} for sentence plan ${planId}, error: ${error}`)
+    return res.render('app/error', { error })
+  }
+
+  // get all the needs that apply to this sentence plan
   try {
     const needs = await getSentencePlanNeeds(planId, token)
+    // convert to format for display
+
     displayNeeds = needs
       .map(need => {
         const returnNeed = {
           value: need.id,
           html: need.description,
+          active: need.active,
         }
         if (need.riskOfHarm) {
           returnNeed.html += ' - <span class="risk"> Risk of serious harm'
         }
+
+        if (displayObjective.needs.includes(returnNeed.value)) {
+          returnNeed.active = true
+          returnNeed.checked = true
+        }
         return returnNeed
       })
+      // don't display inactive needs
+      .filter(need => need.active === true)
+      // display needs alphabetically
       .sort(sortObject('html'))
-  } catch (error) {
-    logger.error(`Could not retrieve needs for sentence plan ${planId}, error: ${error}`)
-    return res.render('app/error', { error })
-  }
-
-  try {
-    if (body.objective !== undefined) {
-      displayObjective = body
-    } else if (objectiveId.toLowerCase() !== 'new') {
-      displayObjective = await getSentencePlanObjective(planId, objectiveId, token)
-    }
-
-    // determine if any needs should be checked when we display the page
-    if (displayObjective.needs) {
-      if (!(displayObjective.needs instanceof Array)) {
-        displayObjective.needs = [displayObjective.needs]
-      }
-      displayObjective.needs.forEach(needsId => {
-        displayNeeds.forEach(need => {
-          if (need.value === needsId) {
-            // eslint-disable-next-line no-param-reassign
-            need.checked = true
-          }
-        })
-      })
-    }
 
     renderDetails.displayNeeds = displayNeeds
-    renderDetails.objective = displayObjective.objective
+    renderDetails.description = displayObjective.description
 
-    return res.render(`${__dirname}/index`, { ...body, errors, errorSummary, ...renderDetails })
+    return res.render(`${__dirname}/index`, { errors, errorSummary, ...renderDetails })
   } catch (error) {
-    logger.error(`Could not retrieve objective ${objectiveId} for sentence plan ${planId}, error: ${error}`)
+    logger.error(`Could not retrieve needs for sentence plan ${planId}, error: ${error}`)
     return res.render('app/error', { error })
   }
 }
