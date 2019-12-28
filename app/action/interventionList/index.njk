@@ -1,0 +1,52 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "common/templates/components/accessible-autocomplete/macro.njk" import accessibleAutocomplete %}
+
+{% set yesHtml %}
+    {{ accessibleAutocomplete(interventionId, interventionList, interventionLabel, errors.intervention.text) }}
+{% endset -%}
+{% set noHtml %}
+    {{  govukCharacterCount({
+        id: 'description',
+        name: 'description',
+        value: description,
+        label: {
+            text: 'What action are they going to take?',
+            isPageHeading: true
+        },
+        maxwords: 50,
+        errorMessage: errors.description
+    }) }}
+{% endset -%}
+
+{{ govukRadios({
+    classes: "govuk-radios--small",
+    idPrefix: "actionType",
+    name: "actionType",
+    fieldset: {
+        legend: {
+            text: "Will this action come from the National Interventions List?",
+            isPageHeading: false,
+            classes: "govuk-fieldset__legend--s"
+        }
+    },
+    items: [
+        {
+            value: "intervention",
+            text: "Yes",
+            checked: interventionChecked,
+            conditional: {
+                html: yesHtml
+            }
+        },
+        {
+            value: "description",
+            text: "No",
+            checked: descriptionChecked,
+            conditional: {
+                html: noHtml
+            }
+        }
+    ],
+    errorMessage: errors.actionType
+}) }}

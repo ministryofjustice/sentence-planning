@@ -3,6 +3,7 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 
 
 {% set heading = "Add an action" %}
@@ -29,9 +30,10 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-xl">Add actions to the objective</h1>
+            <h1 class="govuk-heading-l">Add actions to the objective</h1>
             <h2 class="govuk-heading-m">Action</h2>
             <form method="post" novalidate>
+                {% include "./interventionList/index.njk" %}
                 {{ govukButton({
                     name: 'addAnotherAction',
                     text: 'Add another action',
