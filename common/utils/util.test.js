@@ -1,4 +1,4 @@
-const { countWords, isEmptyObject, removeUrlLevels } = require('./util')
+const { countWords, isEmptyObject, removeUrlLevels, sortObject } = require('./util')
 
 const inputText = "There is a green hill far away - and I shouldn't tell you that really"
 
@@ -50,5 +50,39 @@ describe('removes appropriate number of levels from url', () => {
   it('copes with missing parameter for number of levels', () => {
     const myUrl = 'levels/one/two/three/four'
     expect(removeUrlLevels(myUrl)).toEqual(myUrl)
+  })
+})
+
+describe('sorts an object correctly', () => {
+  let input
+  beforeEach(() => {
+    input = [
+      { sortKey: 'a ', otherfield: 'qwer' },
+      { sortKey: 'c ', otherfield: 'asdf' },
+      { sortKey: 'b ', otherfield: 'zxcv' },
+    ]
+  })
+  it('sorts object in ascending order', () => {
+    const expected = [
+      { sortKey: 'a ', otherfield: 'qwer' },
+      { sortKey: 'b ', otherfield: 'zxcv' },
+      { sortKey: 'c ', otherfield: 'asdf' },
+    ]
+    input.sort(sortObject('sortKey'))
+    expect(input).toStrictEqual(expected)
+  })
+  it('sorts object in descending order', () => {
+    const expected = [
+      { sortKey: 'c ', otherfield: 'asdf' },
+      { sortKey: 'b ', otherfield: 'zxcv' },
+      { sortKey: 'a ', otherfield: 'qwer' },
+    ]
+    input.sort(sortObject('sortKey', 'desc'))
+    expect(input).toStrictEqual(expected)
+  })
+  it('returns input if key field not present', () => {
+    const expected = input
+    input.sort(sortObject('notarealkey', 'desc'))
+    expect(input).toStrictEqual(expected)
   })
 })

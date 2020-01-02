@@ -1,0 +1,11 @@
+{
+  "actions": [],
+  "description": "objective with inactive need",
+  "id": 1,
+  "needs": [
+    "needsid_accommodation",
+    "needsid_wellbeing",
+    "needsid_inactive"
+  ],
+  "priority": 0
+}

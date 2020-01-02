@@ -20,7 +20,7 @@ const getObjective = async (
     } else if (objectiveId.toLowerCase() !== 'new') {
       const savedObjective = await getSentencePlanObjective(planId, objectiveId, token)
 
-      // convert need to array if only one has been passed back
+      // convert need to an array if only one has been passed back
       if (savedObjective.needs) {
         if (!(savedObjective.needs instanceof Array)) {
           savedObjective.needs = [savedObjective.needs]
@@ -37,7 +37,6 @@ const getObjective = async (
   try {
     const needs = await getSentencePlanNeeds(planId, token)
     // convert to format for display
-
     displayNeeds = needs
       .map(need => {
         const returnNeed = {
