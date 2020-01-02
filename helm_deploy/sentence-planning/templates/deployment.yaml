@@ -39,14 +39,6 @@ spec:
                   - {{ template "sentence-planning.name" . }}
               topologyKey: kubernetes.io/hostname
       containers:
-        - name: proxy
-          image: "{{ .Values.proxy.image.repository }}:{{ .Values.proxy.image.tag }}"
-          imagePullPolicy: "{{ .Values.proxy.image.pullPolicy }}"
-          ports:
-            - name: proxy
-              containerPort: {{ .Values.proxy.image.port }} 
-{{ include "nginx.envs" . | nindent 10 }}
-
         - name: gatekeeper
           image: "{{ .Values.gatekeeper.image.repository }}:{{ .Values.gatekeeper.image.tag }}"
           imagePullPolicy: "{{ .Values.gatekeeper.image.pullPolicy }}"
