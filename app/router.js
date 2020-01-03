@@ -5,12 +5,12 @@ const {
   apis: { oauth2, offenderAssessment, sentencePlanning, elite2 },
 } = require('../common/config')
 
-const numericId = '\\d{1,}'
-const numericOrNewId = `${numericId}|NEW`
-const offenderRoute = `/individual-id/:id(${numericId})`
-const editPlanRoute = `${offenderRoute}/edit-plan/:planId(${numericId})`
-const editObjectiveRoute = `${editPlanRoute}/edit-objective/:objectiveId(${numericOrNewId})`
-const editActionRoute = `${editPlanRoute}/edit-objective/:objectiveId(${numericId})/edit-action/:actionId(${numericOrNewId})`
+const uuid = '[0-9a-f-]{1,}'
+const uuidOrNewId = `${uuid}|NEW`
+const offenderRoute = `/individual-id/:id(\\d{1,})`
+const editPlanRoute = `${offenderRoute}/edit-plan/:planId(${uuid})`
+const editObjectiveRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuidOrNewId})`
+const editActionRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuid})/edit-action/:actionId(${uuidOrNewId})`
 
 const { validate } = require('../common/middleware/validator')
 
