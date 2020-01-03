@@ -70,6 +70,10 @@ function createMockAPI() {
     return getFile('sentencePlanObjectives', req.params.objectiveid, res)
   })
 
+  app.get('/sentenceplans/:planid/needs', (req, res) => {
+    return getFile('sentencePlanNeeds', req.params.planid, res)
+  })
+
   app.get('/sentenceplans/:planid/objectives/:objectiveid/actions/:actionId', (req, res) => {
     return getFile('sentencePlanActions', req.params.actionId, res)
   })

@@ -1,0 +1,32 @@
+[
+  {
+    "description": "Accommodation",
+    "active": true,
+    "flaggedAsNeed": true,
+    "id": "needsid_accommodation",
+    "name": "accommodation",
+    "overThreshold": false,
+    "riskOfHarm": true,
+    "riskOfReoffending": false
+  },
+  {
+    "description": "ETE",
+    "active": true,
+    "flaggedAsNeed": true,
+    "id": "needsid_ete",
+    "name": "ete",
+    "overThreshold": false,
+    "riskOfHarm": false,
+    "riskOfReoffending": false
+  },
+  {
+    "description": "Finance",
+    "active": true,
+    "flaggedAsNeed": true,
+    "id": "needsid_finance",
+    "name": "finance",
+    "overThreshold": false,
+    "riskOfHarm": true,
+    "riskOfReoffending": false
+  }
+]

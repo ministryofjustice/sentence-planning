@@ -1,6 +1,6 @@
 {
   "actions": [],
-  "description": "newly created objective",
+  "description": "objective with inactive need",
   "id": 1,
   "needs": [
     "needsid_accommodation",

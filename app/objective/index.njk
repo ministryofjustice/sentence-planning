@@ -3,6 +3,8 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+
 
 
 {% set heading = "Add an objective" %}
@@ -37,7 +39,7 @@
             {{  govukCharacterCount({
                 id: 'objective',
                 name: 'objective',
-                value: objective.description,
+                value: description,
                 label: {
                     classes: 'govuk-label--m',
                     text: 'Objective description'
@@ -53,6 +55,25 @@
             <span id="objective-error" class="govuk-error-message extra-error">
                 You have {{ wordsOver }} words too many</span>
             {% endif %}
+
+            <div class="govuk-form-group">
+                {{ govukCheckboxes({
+                    idPrefix: "needs",
+                    name: "needs",
+                    classes: "govuk-checkboxes--small",
+                    fieldset: {
+                        legend: {
+                            text: "Needs identified in OASys related to this objective",
+                            isPageHeading: false,
+                            classes: "govuk-fieldset__legend govuk-fieldset__legend--m"
+                        }
+                    },
+                    hint: {
+                        text: "Select all that apply."
+                    },
+                    items: displayNeeds
+                }) }}
+            </div>
 
             {{ govukButton({
                 text: 'Continue',

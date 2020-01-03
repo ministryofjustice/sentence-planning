@@ -44,6 +44,11 @@ const updateSentencePlanObjective = async (sentencePlanId, objectiveId, objectiv
   return putData(path, token, objective)
 }
 
+const getSentencePlanNeeds = async (sentencePlanId, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/needs`
+  return getData(path, token)
+}
+
 const addSentencePlanObjectiveAction = async (sentencePlanId, objectiveId, action, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/actions`
   return postData(path, token, action)
@@ -120,6 +125,7 @@ module.exports = {
   getSentencePlanObjective,
   addSentencePlanObjective,
   updateSentencePlanObjective,
+  getSentencePlanNeeds,
   addSentencePlanObjectiveAction,
   getSentencePlanObjectiveAction,
   updateSentencePlanObjectiveAction,
