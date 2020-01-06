@@ -33,7 +33,7 @@ env:
   ELITE2_API_URL: https://gateway.nomis-api.service.hmpps.dsd.io/elite2api
   OASYSAPI_ENDPOINT_URL: https://dev.devtest.assessment-api.hmpps.dsd.io
   SENTENCEPLANNING_API_URL: http://sentence-planning-api.sentence-planning-prod.svc.cluster.local/
-  KEYCLOAK_REALM: https://oasys-auth.service.justice.gov.uk/auth/realms/sentence-planning
+  KEYCLOAK_REALM: https://oasys-auth.service.justice.gov.uk/auth/realms/sentence-planning-prod
   KEYCLOAK_UPSTREAM_URL: http://127.0.0.1:3000
   KEYCLOAK_REDIRECTION_URL: https://www.sentence-planning.service.justice.gov.uk
   
