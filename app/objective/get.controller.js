@@ -3,7 +3,15 @@ const { getSentencePlanObjective, getSentencePlanNeeds } = require('../../common
 const { removeUrlLevels, sortObject } = require('../../common/utils/util')
 
 const getObjective = async (
-  { path, errors, errorSummary, body, renderInfo, params: { planId, objectiveId }, session: { 'x-auth-token': token } },
+  {
+    path,
+    errors,
+    errorSummary,
+    body: { objective = null, needs = [] },
+    renderInfo,
+    params: { planId, objectiveId },
+    session: { 'x-auth-token': token },
+  },
   res
 ) => {
   const nexturl = path.substring(0, path.lastIndexOf('/'))
@@ -13,9 +21,9 @@ const getObjective = async (
 
   // get the saved or submitted objective
   try {
-    if (body.objective !== undefined) {
-      displayObjective.description = body.objective
-      displayObjective.needs = body.needs || []
+    if (objective) {
+      displayObjective.description = objective
+      displayObjective.needs = needs || []
     } else if (objectiveId.toLowerCase() !== 'new') {
       const savedObjective = await getSentencePlanObjective(planId, objectiveId, token)
 
@@ -34,9 +42,9 @@ const getObjective = async (
 
   // get all the needs that apply to this sentence plan
   try {
-    const needs = await getSentencePlanNeeds(planId, token)
+    const displayNeeds = await getSentencePlanNeeds(planId, token)
     // convert to format for display
-    renderDetails.displayNeeds = needs
+    renderDetails.displayNeeds = displayNeeds
       .map(({ id: value, description: html, active, riskOfHarm = false }) => {
         const returnNeed = {
           value,
