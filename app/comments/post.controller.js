@@ -9,6 +9,9 @@ const wordsAllowed = 250
 const validationRules = () => {
   return [
     body('comments')
+      .trim()
+      .escape(),
+    body('comments')
       .isLength({ min: 1 })
       .withMessage('Record the individual’s comments'),
     body('comments')

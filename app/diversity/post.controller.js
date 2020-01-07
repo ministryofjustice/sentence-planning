@@ -9,6 +9,9 @@ const wordsAllowed = 250
 const validationRules = () => {
   return [
     body('diversity')
+      .trim()
+      .escape(),
+    body('diversity')
       .isLength({ min: 1 })
       .withMessage('Record how you will take account of diversity factors'),
     body('diversity')

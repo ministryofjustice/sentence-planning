@@ -9,6 +9,9 @@ const wordsAllowed = 250
 const validationRules = () => {
   return [
     body('decisions')
+      .trim()
+      .escape(),
+    body('decisions')
       .isLength({ min: 1 })
       .withMessage('Record your decisions'),
     body('decisions')

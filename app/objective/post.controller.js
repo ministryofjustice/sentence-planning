@@ -9,6 +9,9 @@ const wordsAllowed = 50
 const validationRules = () => {
   return [
     body('objective')
+      .trim()
+      .escape(),
+    body('objective')
       .isLength({ min: 1 })
       .withMessage('Describe the objective'),
     body('objective')
@@ -16,6 +19,9 @@ const validationRules = () => {
         return countWords(value) <= wordsAllowed
       })
       .withMessage('Objective description must be 50 words or fewer'),
+    body('needs')
+      .toArray()
+      .escape(),
     body('needs')
       .isLength({ min: 1 })
       .withMessage('Select the needs for this objective'),

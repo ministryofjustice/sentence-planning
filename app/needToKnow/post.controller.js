@@ -9,6 +9,9 @@ const wordsAllowed = 250
 const validationRules = () => {
   return [
     body('needtoknow')
+      .trim()
+      .escape(),
+    body('needtoknow')
       .isLength({ min: 1 })
       .withMessage('Add any other things the individual needs us to know about them'),
     body('needtoknow')
