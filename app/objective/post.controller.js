@@ -16,6 +16,9 @@ const validationRules = () => {
         return countWords(value) <= wordsAllowed
       })
       .withMessage('Objective description must be 50 words or fewer'),
+    body('needs')
+      .isLength({ min: 1 })
+      .withMessage('Select the needs for this objective'),
   ]
 }
 
@@ -23,7 +26,7 @@ const postObjective = async (req, res) => {
   const {
     path,
     errors,
-    body: { objective: objectiveDescription },
+    body: { objective: objectiveDescription, needs },
     params: { planId, objectiveId },
     session: { 'x-auth-token': token },
   } = req
@@ -37,7 +40,7 @@ const postObjective = async (req, res) => {
   try {
     const objective = {
       description: objectiveDescription,
-      needs: [],
+      needs,
     }
     let redirectUrl
     if (objectiveId.toLowerCase() === 'new') {

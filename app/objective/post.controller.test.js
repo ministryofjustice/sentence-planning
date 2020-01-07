@@ -36,6 +36,7 @@ const expected = {
   },
   body: {
     objective: 'The objective description',
+    needs: ['needsid_ete', 'needsid_finance'],
   },
   errors: {
     errors: [
@@ -60,11 +61,12 @@ describe('post or update objective', () => {
 
   it('should save the new objective when there are no errors', async () => {
     req.body.objective = 'The objective description'
+    req.body.needs = ['needsid_ete', 'needsid_finance']
     addSentencePlanObjective.mockReturnValueOnce(returnedObjective)
     await controller.postObjective(req, res)
     expect(addSentencePlanObjective).toHaveBeenCalledWith(
       1,
-      { description: 'The objective description', needs: [] },
+      { description: 'The objective description', needs: ['needsid_ete', 'needsid_finance'] },
       '1234'
     )
     expect(updateSentencePlanObjective).not.toHaveBeenCalled()
@@ -74,12 +76,13 @@ describe('post or update objective', () => {
   it('should update the objective when there are no errors', async () => {
     req.params.objectiveId = '1'
     req.body.objective = 'The objective description'
+    req.body.needs = ['needsid_ete']
     addSentencePlanObjective.mockReturnValueOnce(returnedObjective)
     await controller.postObjective(req, res)
     expect(updateSentencePlanObjective).toHaveBeenCalledWith(
       1,
       '1',
-      { description: 'The objective description', needs: [] },
+      { description: 'The objective description', needs: ['needsid_ete'] },
       '1234'
     )
     expect(addSentencePlanObjective).not.toHaveBeenCalled()
@@ -89,6 +92,7 @@ describe('post or update objective', () => {
   it('should redisplay the page when there are errors', async () => {
     addSentencePlanObjective.mockReturnValueOnce(returnedObjective)
     req.body.objective = 'The objective description'
+    req.body.needs = ['needsid_ete', 'needsid_finance']
     req.errors = {
       errors: [
         {
@@ -107,6 +111,7 @@ describe('post or update objective', () => {
 
   it('sets the wordsOver value', async () => {
     req.body.objective = Array(255).join('word ')
+    req.body.needs = ['needsid_ete', 'needsid_finance']
     req.tooManyWords = true
     req.errors = {
       errors: [
