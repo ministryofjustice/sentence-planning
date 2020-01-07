@@ -11,7 +11,7 @@ const needsInactive = require('../../mockServer/sentencePlanNeeds/3.json')
 
 const displayNeeds = [
   {
-    html: 'Accommodation - <span class="risk"> Risk of serious harm',
+    html: 'Accommodation - <span class="risk"> Risk of serious harm</span>',
     value: 'needsid_accommodation',
     active: true,
   },
@@ -21,7 +21,7 @@ const displayNeeds = [
     active: true,
   },
   {
-    html: 'Finance - <span class="risk"> Risk of serious harm',
+    html: 'Finance - <span class="risk"> Risk of serious harm</span>',
     value: 'needsid_finance',
     active: true,
   },
@@ -29,7 +29,7 @@ const displayNeeds = [
 
 const displayNeedsProcessed = [
   {
-    html: 'Accommodation - <span class="risk"> Risk of serious harm',
+    html: 'Accommodation - <span class="risk"> Risk of serious harm</span>',
     value: 'needsid_accommodation',
     checked: true,
     active: true,
@@ -40,7 +40,7 @@ const displayNeedsProcessed = [
     active: true,
   },
   {
-    html: 'Finance - <span class="risk"> Risk of serious harm',
+    html: 'Finance - <span class="risk"> Risk of serious harm</span>',
     value: 'needsid_finance',
     active: true,
   },
@@ -48,7 +48,7 @@ const displayNeedsProcessed = [
 
 const displayNeedsProcessedWithInactiveNeeds = [
   {
-    html: 'Accommodation - <span class="risk"> Risk of serious harm',
+    html: 'Accommodation - <span class="risk"> Risk of serious harm</span>',
     value: 'needsid_accommodation',
     checked: true,
     active: true,
@@ -59,7 +59,7 @@ const displayNeedsProcessedWithInactiveNeeds = [
     active: true,
   },
   {
-    html: 'Finance - <span class="risk"> Risk of serious harm',
+    html: 'Finance - <span class="risk"> Risk of serious harm</span>',
     value: 'needsid_finance',
     active: true,
   },
@@ -93,7 +93,6 @@ describe('getObjective', () => {
     req.renderInfo = {}
     req.params.objectiveId = 'NEW'
     delete req.body.objective
-    // getSentencePlanNeeds.mockReturnValueOnce(needs)
   })
 
   afterEach(() => {
@@ -168,6 +167,17 @@ describe('getObjective', () => {
     await controller.getObjective(req, res)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
+
+  it('should display an error if unable to retrieve needs', async () => {
+    const theError = new Error('Error message')
+    getSentencePlanNeeds.mockImplementation(() => {
+      throw theError
+    })
+    getSentencePlanObjective.mockReturnValueOnce(objectivePresent)
+    await controller.getObjective(req, res)
+    expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
+  })
+
   it('should display an error if unable to retrieve objective', async () => {
     req.params.objectiveId = '1'
     const theError = new Error('Error message')

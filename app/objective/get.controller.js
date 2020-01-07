@@ -9,7 +9,6 @@ const getObjective = async (
   const nexturl = path.substring(0, path.lastIndexOf('/'))
   const backurl = removeUrlLevels(path, 2)
   const renderDetails = { ...renderInfo, nexturl, backurl }
-  let displayNeeds
   let displayObjective = { description: '', needs: [] }
 
   // get the saved or submitted objective
@@ -37,15 +36,15 @@ const getObjective = async (
   try {
     const needs = await getSentencePlanNeeds(planId, token)
     // convert to format for display
-    displayNeeds = needs
-      .map(need => {
+    renderDetails.displayNeeds = needs
+      .map(({ id: value, description: html, active, riskOfHarm = false }) => {
         const returnNeed = {
-          value: need.id,
-          html: need.description,
-          active: need.active,
+          value,
+          html,
+          active,
         }
-        if (need.riskOfHarm) {
-          returnNeed.html += ' - <span class="risk"> Risk of serious harm'
+        if (riskOfHarm) {
+          returnNeed.html += ' - <span class="risk"> Risk of serious harm</span>'
         }
 
         if (displayObjective.needs.includes(returnNeed.value)) {
@@ -59,7 +58,6 @@ const getObjective = async (
       // display needs alphabetically
       .sort(sortObject('html'))
 
-    renderDetails.displayNeeds = displayNeeds
     renderDetails.description = displayObjective.description
 
     return res.render(`${__dirname}/index`, { errors, errorSummary, ...renderDetails })
