@@ -43,7 +43,7 @@ const getObjective = async (
     const displayNeeds = await getSentencePlanNeeds(planId, token)
     // convert to format for display
     renderDetails.displayNeeds = displayNeeds
-      .map(({ id: value, description: html, active, riskOfHarm = false }) => {
+      .map(({ id: value, name: html, active, riskOfHarm = false }) => {
         const returnNeed = {
           value,
           html,
