@@ -23,15 +23,13 @@ const getObjective = async (
   try {
     if (objective) {
       displayObjective.description = objective
-      displayObjective.needs = needs || []
+      displayObjective.needs = needs
     } else if (objectiveId.toLowerCase() !== 'new') {
       const savedObjective = await getSentencePlanObjective(planId, objectiveId, token)
 
       // convert need to an array if only one has been passed back
-      if (savedObjective.needs) {
-        if (!(savedObjective.needs instanceof Array)) {
-          savedObjective.needs = [savedObjective.needs]
-        }
+      if (savedObjective.needs && !(savedObjective.needs instanceof Array)) {
+        savedObjective.needs = [savedObjective.needs]
       }
       displayObjective = savedObjective
     }
