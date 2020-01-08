@@ -6,55 +6,60 @@ const {
   },
 } = require('../config')
 
-const createSentencePlan = async (individualId, token) => {
+const createSentencePlan = (individualId, token) => {
   const path = `${url}/offenders/${individualId}/sentenceplans`
   return postData(path, token)
 }
-const getSentencePlan = async (sentencePlanId, token) => {
+const getSentencePlan = (sentencePlanId, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}`
   return getData(path, token)
 }
-const getSentencePlanSummary = async (individualId, token) => {
+const getSentencePlanSummary = (individualId, token) => {
   const path = `${url}/offenders/${individualId}/sentenceplans`
   return getData(path, token)
 }
 
-const getSentencePlanComments = async (sentencePlanId, token) => {
+const getSentencePlanComments = (sentencePlanId, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/comments`
   return getData(path, token)
 }
 
-const setSentencePlanComment = async (sentencePlanId, comment, token) => {
+const setSentencePlanComment = (sentencePlanId, comment, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/comments`
   return putData(path, token, comment)
 }
 
-const getSentencePlanObjective = async (sentencePlanId, objectiveId, token) => {
+const getSentencePlanObjective = (sentencePlanId, objectiveId, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}`
   return getData(path, token)
 }
 
-const addSentencePlanObjective = async (sentencePlanId, objective, token) => {
+const addSentencePlanObjective = (sentencePlanId, objective, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives`
   return postData(path, token, objective)
 }
 
-const updateSentencePlanObjective = async (sentencePlanId, objectiveId, objective, token) => {
+const updateSentencePlanObjective = (sentencePlanId, objectiveId, objective, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}`
   return putData(path, token, objective)
 }
 
-const addSentencePlanObjectiveAction = async (sentencePlanId, objectiveId, action, token) => {
+const getSentencePlanNeeds = (sentencePlanId, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/needs`
+  return getData(path, token)
+}
+
+const addSentencePlanObjectiveAction = (sentencePlanId, objectiveId, action, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/actions`
   return postData(path, token, action)
 }
 
-const getSentencePlanObjectiveAction = async (sentencePlanId, objectiveId, actionId, token) => {
+const getSentencePlanObjectiveAction = (sentencePlanId, objectiveId, actionId, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/actions/${actionId}`
   return getData(path, token)
 }
 
-const updateSentencePlanObjectiveAction = async (sentencePlanId, objectiveId, actionId, action, token) => {
+const updateSentencePlanObjectiveAction = (sentencePlanId, objectiveId, actionId, action, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/actions/${actionId}`
   return putData(path, token, action)
 }
@@ -120,6 +125,7 @@ module.exports = {
   getSentencePlanObjective,
   addSentencePlanObjective,
   updateSentencePlanObjective,
+  getSentencePlanNeeds,
   addSentencePlanObjectiveAction,
   getSentencePlanObjectiveAction,
   updateSentencePlanObjectiveAction,

@@ -2,6 +2,7 @@ const nock = require('nock')
 const summaryPlanResponse = require('../../mockServer/sentencePlanSummary/11034.json')
 const sentencePlanComments = require('../../mockServer/sentencePlanComments/1.json')
 const sentencePlanObjective = require('../../mockServer/sentencePlanObjectives/1.json')
+const sentencePlanNeeds = require('../../mockServer/sentencePlanNeeds/1.json')
 const sentencePlanAction = require('../../mockServer/sentencePlanActions/1.json')
 const sentencePlan = require('../../mockServer/sentencePlans/1.json')
 
@@ -19,6 +20,7 @@ const {
   getSentencePlanObjective,
   addSentencePlanObjective,
   updateSentencePlanObjective,
+  getSentencePlanNeeds,
   addSentencePlanObjectiveAction,
   getSentencePlanObjectiveAction,
   updateSentencePlanObjectiveAction,
@@ -163,6 +165,20 @@ describe('sentencePlanningApi', () => {
     })
   })
 
+  describe('getSentencePlanNeed', () => {
+    const planid = '1'
+    const sentencePlanNeedsUrl = `/sentenceplans/${planid}/needs`
+
+    it('should return needs data', async () => {
+      mockedEndpoint.get(sentencePlanNeedsUrl).reply(200, sentencePlanNeeds)
+      const output = await getSentencePlanNeeds(planid, token)
+      expect(output).toEqual(sentencePlanNeeds)
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.get(sentencePlanNeedsUrl).reply(400)
+      await expect(getSentencePlanNeeds(planid, token)).rejects.toThrowError('Bad Request')
+    })
+  })
   describe('concerning actions', () => {
     const sentencePlanId = 417
     const objectiveId = 503
