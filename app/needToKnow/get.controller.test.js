@@ -10,7 +10,7 @@ describe('getNeedToKnow', () => {
   const req = {
     path: '/this/is/my/path',
     params: {
-      planid: 1,
+      planId: 1,
     },
     session: {
       'x-auth-token': '1234',

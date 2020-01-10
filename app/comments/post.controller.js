@@ -9,9 +9,6 @@ const wordsAllowed = 250
 const validationRules = () => {
   return [
     body('comments')
-      .trim()
-      .escape(),
-    body('comments')
       .isLength({ min: 1 })
       .withMessage('Record the individual’s comments'),
     body('comments')
@@ -19,6 +16,9 @@ const validationRules = () => {
         return countWords(value) <= wordsAllowed
       })
       .withMessage('Individual’s comments must be 250 words or fewer'),
+    body('comments')
+      .trim()
+      .escape(),
   ]
 }
 
@@ -35,10 +35,10 @@ const postComments = async (req, res) => {
         commentType: 'THEIR_SUMMARY',
       },
     ]
-    await setSentencePlanComment(req.params.planid, comment, req.session['x-auth-token'])
+    await setSentencePlanComment(req.params.planId, comment, req.session['x-auth-token'])
     return res.redirect(req.path.substring(0, req.path.lastIndexOf('/')))
   } catch (error) {
-    logger.error(`Could not save sentence plan comments 'THEIR_SUMMARY' for plan ${req.params.planid}, error: ${error}`)
+    logger.error(`Could not save sentence plan comments 'THEIR_SUMMARY' for plan ${req.params.planId}, error: ${error}`)
     return res.render('app/error', { error })
   }
 }

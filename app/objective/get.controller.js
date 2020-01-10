@@ -1,4 +1,3 @@
-const { XmlEntities: entities } = require('html-entities')
 const { logger } = require('../../common/logging/logger')
 const { getSentencePlanObjective, getSentencePlanNeeds } = require('../../common/data/sentencePlanningApi')
 const { removeUrlLevels, sortObject } = require('../../common/utils/util')
@@ -65,7 +64,7 @@ const getObjective = async (
       // display needs alphabetically
       .sort(sortObject('html'))
 
-    renderDetails.description = entities.decode(displayObjective.description)
+    renderDetails.description = displayObjective.description
 
     return res.render(`${__dirname}/index`, { errors, errorSummary, ...renderDetails })
   } catch (error) {
