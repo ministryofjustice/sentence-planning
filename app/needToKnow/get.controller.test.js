@@ -38,7 +38,7 @@ describe('getNeedToKnow', () => {
       backurl: '/this/is/my/diversity',
       nexturl: '/this/is/my',
       errorSummary: {},
-      needtoknow: false,
+      needtoknow: '',
       errors: {},
     }
     getSentencePlanComments.mockReturnValueOnce(commentsEmpty)

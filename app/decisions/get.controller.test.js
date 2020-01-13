@@ -34,7 +34,7 @@ describe('getDecision', () => {
     const expected = {
       backurl: '/this/is/my',
       errorSummary: {},
-      decisions: false,
+      decisions: '',
       errors: {},
     }
     getSentencePlanComments.mockReturnValueOnce(commentsEmpty)
