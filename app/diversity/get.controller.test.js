@@ -37,7 +37,7 @@ describe('getDiversity', () => {
     const expected = {
       backurl: '/this/is/my',
       errorSummary: {},
-      diversity: false,
+      diversity: '',
       errors: {},
     }
     getSentencePlanComments.mockReturnValueOnce(commentsEmpty)
