@@ -66,7 +66,7 @@ describe('post or update objective', () => {
     await controller.postObjective(req, res)
     expect(addSentencePlanObjective).toHaveBeenCalledWith(
       1,
-      { name: 'The objective description', needs: ['needsid_ete', 'needsid_finance'] },
+      { description: 'The objective description', needs: ['needsid_ete', 'needsid_finance'] },
       '1234'
     )
     expect(updateSentencePlanObjective).not.toHaveBeenCalled()
@@ -82,7 +82,7 @@ describe('post or update objective', () => {
     expect(updateSentencePlanObjective).toHaveBeenCalledWith(
       1,
       '1',
-      { name: 'The objective description', needs: ['needsid_ete'] },
+      { description: 'The objective description', needs: ['needsid_ete'] },
       '1234'
     )
     expect(addSentencePlanObjective).not.toHaveBeenCalled()

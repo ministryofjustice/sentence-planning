@@ -45,7 +45,7 @@ const postObjective = async (req, res) => {
 
   try {
     const objective = {
-      name: objectiveDescription,
+      description: objectiveDescription,
       needs,
     }
     let redirectUrl
