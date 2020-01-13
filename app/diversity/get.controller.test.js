@@ -10,7 +10,7 @@ describe('getDiversity', () => {
   const req = {
     path: '/this/is/my/path',
     params: {
-      planid: 1234,
+      planId: 1234,
     },
     session: {
       'x-auth-token': '1234',
