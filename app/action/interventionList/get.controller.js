@@ -20,7 +20,7 @@ const getActionDescriptionIntervention = async (
         intervention = bodyIntervention
         description = ''
       } else {
-        descriptionChecked = false
+        interventionChecked = false
         descriptionChecked = true
         intervention = ''
         description = bodyDescription

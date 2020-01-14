@@ -9,9 +9,7 @@ const getAction = async (
 ) => {
   let action = {}
   try {
-    if (body.action !== undefined) {
-      action = body.action
-    } else if (actionId.toLowerCase() !== 'new') {
+    if (actionId.toLowerCase() !== 'new') {
       action = await getSentencePlanObjectiveAction(planId, objectiveId, actionId, token)
     }
     const nexturl = path.substring(0, path.lastIndexOf('/'))
@@ -21,7 +19,6 @@ const getAction = async (
       ...body,
       errors,
       errorSummary,
-      action,
       ...actionDescriptionIntervention,
       nexturl,
       backurl,
