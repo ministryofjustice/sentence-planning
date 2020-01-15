@@ -1,0 +1,129 @@
+{% extends "common/templates/layout.njk" %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "moj/components/button-menu/macro.njk" import mojButtonMenu %}
+
+{% set heading = "Active plan" %}
+{% set errorHeading = "Error - " + heading %}
+{% set addObjectiveUrl = "/individual-id/" + id + "/edit-plan/" + planId + "/edit-objective/NEW" %}
+{% set printFullPlanUrl = "/individual-id/" + id + "/plan/" + planId + "/print-full" %}
+{% set printSimplePlanUrl = "/individual-id/" + id + "/plan/" + planId + "/print-simple" %}
+{% set endPlanUrl = "/individual-id/" + id + "/plan/" + planId + "/end-plan" %}
+{% set addMeetingUrl = "/individual-id/" + id + "/plan/" + planId + "/sentence-board-review" %}
+{% set contactUrl = "/individual-id/" + id + "/plan/" + planId + "/contact-arrangements" %}
+
+{% block pageTitle %}
+    {% if errors %}
+        {{ errorHeading }}
+    {% else %}
+        {{ heading }}
+    {% endif %}
+{% endblock %}
+
+{% block beforeContent %}
+{# put plan started box here #}
+{% endblock %}
+
+{% block content %}
+
+    {# include errorSummary partial #}
+    {{ super() }}
+
+    <div class="moj-page-header-actions">
+        <div class="moj-page-header-actions__title">
+            <h2 class="govuk-heading-l">
+                {{ heading }}
+            </h2>
+        </div>
+
+        <div class="moj-page-header-actions__actions moj-button-menu__float-right">
+            {{ mojButtonMenu({
+                classes: 'active-plan-menu',
+                items: [{
+                    text: 'Add an objective',
+                    href: addObjectiveUrl,
+                    classes: 'govuk-button--secondary moj-button-menu__item moj-page-header-actions__action'
+                }, {
+                    text: 'Print full plan ',
+                    href: printFullPlanUrl,
+                    classes: 'govuk-button--secondary moj-button-menu__item moj-page-header-actions__action'
+                }, {
+                    text: 'Print simplified plan ',
+                    href: printSimplePlanUrl,
+                    classes: 'govuk-button--secondary moj-button-menu__item moj-page-header-actions__action'
+                }, {
+                    text: 'End the plan',
+                    href: endPlanUrl,
+                    classes: 'moj-button-menu__item moj-page-header-actions__action'
+                }]
+            }) }}
+        </div>
+    </div>
+
+
+    {% set objectivesHtml %}
+        {% include "./tab-objectives.njk" %}
+    {% endset -%}
+
+    {% set summaryHtml %}
+        {% include "./tab-summary.njk" %}
+    {% endset -%}
+
+    {% set meetingsHtml %}
+        {% include "./tab-meetings.njk" %}
+    {% endset -%}
+
+    {% set contactHtml %}
+        {% include "./tab-contact.njk" %}
+    {% endset -%}
+
+    {{ govukTabs({
+        items: [
+            {
+                label: "Objectives",
+                id: "objectives",
+                panel: {
+                html: objectivesHtml
+            }
+            },
+            {
+                label: "Plan summary",
+                id: "summary",
+                panel: {
+                html: summaryHtml
+            }
+            },
+            {
+                label: "Sentence plan meetings",
+                id: "meetings",
+                panel: {
+                html: meetingsHtml
+            }
+            },
+            {
+                label: "Contact arrangements",
+                id: "contact",
+                panel: {
+                html: contactHtml
+            }
+            }
+        ]
+    }) }}
+{% endblock %}
+
+{% block bodyEnd %}
+    {{ super() }}
+    <script src="/javascripts/jquery-1.11.3.js"></script>
+    <script src="/javascripts/namespace.js"></script>
+    <script src="/javascripts/helpers.js"></script>
+    <script src="/javascripts/button-menu.js"></script>
+    <script>
+      new MOJFrontend.ButtonMenu({
+        container: $('.active-plan-menu'),
+        buttonText: 'Options',
+        buttonClasses: 'govuk-button--primary moj-button-menu__toggle-button--primary'
+      });
+    </script>
+
+{% endblock %}

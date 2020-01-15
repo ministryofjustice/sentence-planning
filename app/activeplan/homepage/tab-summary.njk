@@ -1,0 +1,39 @@
+<h3 class="govuk-heading-m govuk-!-font-size-27">
+  Plan summary
+</h3>
+
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Responsivity
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ data['diversity'] | nl2br | safe }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      They need us to know
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ data['offender-summary'] | nl2br | safe }}
+    </dd>
+  </div>
+  
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+        Your decisions 
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ data['practitioner-comment'] | nl2br | safe }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Individual&rsquo;s comments 
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ data['offender-comment'] | nl2br | safe }}
+    </dd>
+  </div>
+</dl>
