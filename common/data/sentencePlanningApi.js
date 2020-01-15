@@ -64,6 +64,11 @@ const updateSentencePlanObjectiveAction = (sentencePlanId, objectiveId, actionId
   return putData(path, token, action)
 }
 
+const getInterventions = token => {
+  const path = `${url}/interventions`
+  return getData(path, token)
+}
+
 const getData = async (path, token) => {
   logger.info(`Calling SentencePlanningApi: ${path}`)
   try {
@@ -129,4 +134,5 @@ module.exports = {
   addSentencePlanObjectiveAction,
   getSentencePlanObjectiveAction,
   updateSentencePlanObjectiveAction,
+  getInterventions,
 }

@@ -1,5 +1,5 @@
 // console.log(`You can write scripts here that will be browserfied`)
+const { initAll } = require('govuk-frontend')
 
-const govukFrontend = require('../../node_modules/govuk-frontend/govuk/all.js')
-
-govukFrontend.initAll()
+window.initAll = initAll
+window.accessibleAutocomplete = require('accessible-autocomplete')

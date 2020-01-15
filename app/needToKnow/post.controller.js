@@ -16,6 +16,9 @@ const validationRules = () => {
         return countWords(value) <= wordsAllowed
       })
       .withMessage('They need us to know must be 250 words or fewer'),
+    body('needtoknow')
+      .trim()
+      .escape(),
   ]
 }
 
@@ -32,11 +35,11 @@ const postNeedToKnow = async (req, res) => {
         commentType: 'THEIR_RESPONSIVITY',
       },
     ]
-    await setSentencePlanComment(req.params.planid, comment, req.session['x-auth-token'])
+    await setSentencePlanComment(req.params.planId, comment, req.session['x-auth-token'])
     return res.redirect(req.path.substring(0, req.path.lastIndexOf('/')))
   } catch (error) {
     logger.error(
-      `Could not save sentence plan comments 'THEIR_RESPONSIVITY' for plan ${req.params.planid}, error: ${error}`
+      `Could not save sentence plan comments 'THEIR_RESPONSIVITY' for plan ${req.params.planId}, error: ${error}`
     )
     return res.render('app/error', { error })
   }

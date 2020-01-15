@@ -10,7 +10,7 @@ describe('getNeedToKnow', () => {
   const req = {
     path: '/this/is/my/path',
     params: {
-      planid: 1,
+      planId: 1,
     },
     session: {
       'x-auth-token': '1234',
@@ -38,7 +38,7 @@ describe('getNeedToKnow', () => {
       backurl: '/this/is/my/diversity',
       nexturl: '/this/is/my',
       errorSummary: {},
-      needtoknow: false,
+      needtoknow: '',
       errors: {},
     }
     getSentencePlanComments.mockReturnValueOnce(commentsEmpty)

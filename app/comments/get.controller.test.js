@@ -35,7 +35,7 @@ describe('getComments', () => {
       backurl: '/this/is/my/decisions',
       nexturl: '/this/is/my',
       errorSummary: {},
-      comments: false,
+      comments: '',
       errors: {},
     }
     getSentencePlanComments.mockReturnValueOnce(commentsEmpty)
@@ -86,7 +86,7 @@ describe('getComments', () => {
     const expected = {
       backurl: '/this/is/my/decisions',
       nexturl: '/this/is/my',
-      comments: false,
+      comments: '',
       errorSummary: {},
       errors: {},
     }

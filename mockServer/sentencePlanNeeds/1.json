@@ -1,90 +1,81 @@
 [
   {
-    "description": "Accommodation",
     "active": true,
     "flaggedAsNeed": true,
     "id": "needsid_accommodation",
-    "name": "accommodation",
+    "name": "Accommodation",
     "overThreshold": false,
     "riskOfHarm": true,
     "riskOfReoffending": false
   },
   {
-    "description": "ETE",
     "active": true,
     "flaggedAsNeed": true,
     "id": "needsid_ete",
-    "name": "ete",
+    "name": "ETE",
     "overThreshold": false,
     "riskOfHarm": true,
     "riskOfReoffending": false
   },
   {
-    "description": "Finance",
     "active": true,
     "flaggedAsNeed": true,
     "id": "needsid_finance",
-    "name": "finance",
+    "name": "Finance",
     "overThreshold": false,
     "riskOfHarm": true,
     "riskOfReoffending": false
   },
   {
-    "description": "Relationships",
     "active": true,
     "flaggedAsNeed": true,
     "id": "needsid_relationships",
-    "name": "relationships",
+    "name": "Relationships",
     "overThreshold": false,
     "riskOfHarm": true,
     "riskOfReoffending": false
   },
   {
-    "description": "Alcohol misuse",
     "active": true,
     "flaggedAsNeed": true,
     "id": "needsid_alcohol",
-    "name": "alcohol",
+    "name": "Alcohol misuse",
     "overThreshold": false,
     "riskOfHarm": false,
     "riskOfReoffending": false
   },
   {
-    "description": "Emotional well-being",
     "active": true,
     "flaggedAsNeed": true,
     "id": "needsid_wellbeing",
-    "name": "wellbeing",
+    "name": "Emotional well-being",
     "overThreshold": false,
     "riskOfHarm": false,
     "riskOfReoffending": false
   },
   {
-    "description": "Thinking and behaviour",
     "active": true,
     "flaggedAsNeed": true,
     "id": "needsid_thinking",
-    "name": "thinking",
+    "name": "Thinking and behaviour",
     "overThreshold": false,
     "riskOfHarm": false,
     "riskOfReoffending": false
   },
   {
-    "description": "Inactive but previously selected need description",
     "active": false,
     "flaggedAsNeed": true,
     "id": "needsid_inactive",
-    "name": "needsid_inactive",
+    "name": "Inactive but previously selected need description",
     "overThreshold": false,
     "riskOfHarm": false,
     "riskOfReoffending": false
   },
   {
-    "description": "Inactive need description",
     "active": false,
     "flaggedAsNeed": true,
     "id": "needsid_hide",
-    "name": "needsid_hide",
+    "name": "Inactive need description",
     "overThreshold": false,
     "riskOfHarm": false,
     "riskOfReoffending": false

@@ -10,7 +10,7 @@ describe('getDecision', () => {
   const req = {
     path: '/this/is/my/path',
     params: {
-      planid: 1234,
+      planId: 1234,
     },
     session: {
       'x-auth-token': '1234',
@@ -34,7 +34,7 @@ describe('getDecision', () => {
     const expected = {
       backurl: '/this/is/my',
       errorSummary: {},
-      decisions: false,
+      decisions: '',
       errors: {},
     }
     getSentencePlanComments.mockReturnValueOnce(commentsEmpty)

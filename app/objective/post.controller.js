@@ -16,9 +16,15 @@ const validationRules = () => {
         return countWords(value) <= wordsAllowed
       })
       .withMessage('Objective description must be 50 words or fewer'),
+    body('objective')
+      .trim()
+      .escape(),
     body('needs')
       .isLength({ min: 1 })
       .withMessage('Select the needs for this objective'),
+    body('needs')
+      .toArray()
+      .escape(),
   ]
 }
 

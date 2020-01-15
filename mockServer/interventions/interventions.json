@@ -1,0 +1,27 @@
+[
+  {
+    "longDescription": "Long description for Intervention 1",
+    "shortDescription": "Intervention 1",
+    "uuid": "int1"
+  },
+  {
+    "longDescription": "Long description for Intervention 2",
+    "shortDescription": "Intervention 2",
+    "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa2"
+  },
+  {
+    "longDescription": "Long description for Intervention 3",
+    "shortDescription": "Intervention 3",
+    "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa3"
+  },
+  {
+    "longDescription": "Long description for Intervention 4",
+    "shortDescription": "Intervention 4",
+    "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa4"
+  },
+  {
+    "longDescription": "Long description for Intervention 5",
+    "shortDescription": "Intervention 5",
+    "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa5"
+  }
+]

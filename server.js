@@ -9,6 +9,7 @@ const loggingMiddleware = require('morgan')
 const compression = require('compression')
 const { configure } = require('nunjucks')
 const cookieSession = require('cookie-session')
+const helmet = require('helmet')
 
 // Local dependencies
 const argv = require('minimist')(process.argv.slice(2))
@@ -42,6 +43,7 @@ const APP_VIEWS = [
 
 function initialiseGlobalMiddleware(app) {
   app.set('settings', { getVersionedPath: staticify.getVersionedPath })
+  app.use(helmet())
   app.use(favicon(join(__dirname, 'public/images/', 'favicon.ico')))
   app.use(compression())
   app.use(staticify.middleware)
