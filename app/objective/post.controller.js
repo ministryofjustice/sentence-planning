@@ -22,9 +22,7 @@ const validationRules = () => {
     body('needs')
       .isLength({ min: 1 })
       .withMessage('Select the needs for this objective'),
-    body('needs')
-      .toArray()
-      .escape(),
+    body('needs').toArray(),
   ]
 }
 
@@ -48,6 +46,7 @@ const postObjective = async (req, res) => {
       description: objectiveDescription,
       needs,
     }
+
     let redirectUrl
     if (objectiveId.toLowerCase() === 'new') {
       const newObjective = await addSentencePlanObjective(planId, objective, token)
