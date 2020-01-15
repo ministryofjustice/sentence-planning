@@ -91,6 +91,10 @@ function createMockAPI() {
     return getFile('sentencePlanActions', req.params.objectiveid, res)
   })
 
+  app.get('/interventions', (req, res) => {
+    return getFile('interventions', 'interventions', res)
+  })
+
   app.listen(18081)
 }
 module.exports = { createMockAPI }

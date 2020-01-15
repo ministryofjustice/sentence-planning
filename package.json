@@ -62,6 +62,7 @@
   },
   "dependencies": {
     "@ministryofjustice/frontend": "^0.0.16-alpha",
+    "accessible-autocomplete": "^2.0.1",
     "agentkeepalive": "^4.1.0",
     "body-parser": "1.18.x",
     "compression": "^1.7.4",

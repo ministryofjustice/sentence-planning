@@ -1,8 +1,12 @@
 const { getAction } = require('./get.controller')
 const { getSentencePlanObjectiveAction } = require('../../common/data/sentencePlanningApi')
+const { getActionDescriptionIntervention } = require('./interventionList/get.controller')
 
 jest.mock('../../common/data/sentencePlanningApi', () => ({
   getSentencePlanObjectiveAction: jest.fn(),
+}))
+jest.mock('./interventionList/get.controller', () => ({
+  getActionDescriptionIntervention: jest.fn(() => ({ intervention: '', description: '' })),
 }))
 
 const actionPresent = require('../../mockServer/sentencePlanActions/1.json')
@@ -26,9 +30,10 @@ describe('getAction', () => {
     render: jest.fn(),
   }
 
-  beforeEach(() => {
+  afterEach(() => {
     delete req.body.action
     getSentencePlanObjectiveAction.mockReset()
+    getActionDescriptionIntervention.mockReset()
   })
 
   it('should set the correct render values when adding a new action', async () => {
@@ -37,6 +42,8 @@ describe('getAction', () => {
       nexturl: '/this/is/my',
       errorSummary: {},
       errors: {},
+      intervention: '',
+      description: '',
     }
     expect(getSentencePlanObjectiveAction).not.toHaveBeenCalled()
     await getAction(req, res)
@@ -47,26 +54,18 @@ describe('getAction', () => {
     const expected = {
       backurl: '/this/is',
       nexturl: '/this/is/my',
-      action: actionPresent,
       errorSummary: {},
       errors: {},
+      intervention: '',
+      description: '',
     }
     getSentencePlanObjectiveAction.mockReturnValueOnce(actionPresent)
     await getAction(req, res)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
-  it('should pass through any action information', async () => {
-    req.body.action = 'A random action text'
-    const expected = {
-      backurl: '/this/is',
-      nexturl: '/this/is/my',
-      action: req.body.action,
-      errorSummary: {},
-      errors: {},
-    }
-    getSentencePlanObjectiveAction.mockReturnValueOnce(actionPresent)
+  it('should process the action description/intervention data', async () => {
     await getAction(req, res)
-    expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
+    expect(getActionDescriptionIntervention).toHaveBeenCalled()
   })
   it('should display an error if unable to retrieve action', async () => {
     req.params.actionId = '1'
