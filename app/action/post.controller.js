@@ -7,9 +7,13 @@ const { getAction } = require('./get.controller')
 const { removeUrlLevels } = require('../../common/utils/util')
 // temporary action mock
 const mockAction = require('../../mockServer/sentencePlanActions/1.json')
+const {
+  postActionDescriptionIntervention,
+  actionDescriptionInterventionValidationRules,
+} = require('./interventionList/post.controller')
 
 const validationRules = () => {
-  return []
+  return [...actionDescriptionInterventionValidationRules()]
 }
 
 const postAction = async (req, res) => {
@@ -22,8 +26,7 @@ const postAction = async (req, res) => {
   } = req
 
   // temporarily add values to the action
-  const action = { ...mockAction, ...body }
-
+  const action = { ...mockAction, ...body, ...postActionDescriptionIntervention(body) }
   if (errors) {
     return getAction(req, res)
   }

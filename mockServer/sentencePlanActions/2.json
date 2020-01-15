@@ -1,7 +1,7 @@
 {
-    "description": "",
+    "description": "This is the description of an action",
     "id": "1",
-    "intervention": "3fa85f64-5717-4562-b3fc-2c963f66afa4",
+    "intervention": "",
     "motivationUUID": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "owner": [
         "SERVICE_USER"
@@ -13,7 +13,7 @@
             "comment": "string",
             "created": "2019-12-16T11:51:29.032Z",
             "createdBy": "string",
-            "motivationUUID": "3fa85f64-5717-4562-b3fc-2c963f66afa4",
+            "motivationUUID": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
             "status": "NOT_STARTED",
             "targetDate": {
                 "leapYear": true,

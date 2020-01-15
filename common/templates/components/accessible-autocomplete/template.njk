@@ -1,0 +1,24 @@
+<div class="govuk-form-group {% if error %}govuk-form-group--error{% endif %}">
+  {%if label %}
+    <label class="govuk-label" for={{ id }}>{{ label }}</label>
+  {% endif %}
+  {% if error %}
+    <span id="{{ id }}-error" class="govuk-error-message">
+      <span class="govuk-visually-hidden">Error: </span>{{ error }}
+    </span>
+  {% endif %}
+  <select id="{{ id }}" name="{{ id }}"class="govuk-body">
+    <option value="">Please select from the list</option>
+    {% for item in list %}
+      <option value="{{item.value}}" {% if item.selected %}selected{% endif %}>{{item.text}}</option>
+    {% endfor %}
+  </select>
+  <script>
+    window.accessibleAutocomplete.enhanceSelectElement({
+      selectElement: document.querySelector('#{{ id }}'),
+      showAllValues: true,
+      autoselect: false,
+      defaultValue: '',
+    })
+  </script>
+</div>

@@ -3,6 +3,9 @@
 
 {% extends "govuk/template.njk" %}
 
+{% block bodyStart %}
+  {% include "common/templates/includes/scripts.njk" %}
+{% endblock %}
 {% block header %}
   {{ mojHeader({
     organisationLabel: {
@@ -63,5 +66,7 @@
 {% endblock %}
 
 {% block bodyEnd %}
-  {% include "common/templates/includes/scripts.njk" %}
+  <script>
+    window.initAll()
+  </script>
 {% endblock %}

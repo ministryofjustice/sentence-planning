@@ -5,10 +5,14 @@ const {
 } = require('../../common/data/sentencePlanningApi')
 const { getAction } = require('./get.controller')
 const returnedAction = require('../../mockServer/sentencePlanActions/1.json')
+const { postActionDescriptionIntervention } = require('./interventionList/post.controller')
 
 jest.mock('../../common/data/sentencePlanningApi', () => ({
   addSentencePlanObjectiveAction: jest.fn(),
   updateSentencePlanObjectiveAction: jest.fn(),
+}))
+jest.mock('./interventionList/post.controller', () => ({
+  postActionDescriptionIntervention: jest.fn(() => ({})),
 }))
 jest.mock('./get.controller')
 
@@ -35,6 +39,7 @@ beforeEach(() => {
   }
   updateSentencePlanObjectiveAction.mockReset()
   addSentencePlanObjectiveAction.mockReset()
+  postActionDescriptionIntervention.mockReset()
   res = {
     redirect: jest.fn(),
     render: jest.fn(),
@@ -53,6 +58,10 @@ describe('add a new action', () => {
       expect(addSentencePlanObjectiveAction).toHaveBeenCalledWith(planId, objectiveId, expectedAction, token)
       expect(updateSentencePlanObjectiveAction).not.toHaveBeenCalled()
       expect(res.redirect).toHaveBeenCalledWith('/this/is/my/NEW')
+    })
+    it('should process the action intervention/description', async () => {
+      await postAction(req, res)
+      expect(postActionDescriptionIntervention).toHaveBeenCalled()
     })
 
     it('should redisplay the page when there are errors', async () => {
