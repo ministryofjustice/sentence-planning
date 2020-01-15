@@ -3,7 +3,7 @@
     <label class="govuk-label" for={{ id }}>{{ label }}</label>
   {% endif %}
   {% if error %}
-    <span id="nationality-error" class="govuk-error-message">
+    <span id="{{ id }}-error" class="govuk-error-message">
       <span class="govuk-visually-hidden">Error: </span>{{ error }}
     </span>
   {% endif %}
