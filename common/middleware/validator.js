@@ -1,6 +1,5 @@
 const { validationResult } = require('express-validator')
-const { formatErrors } = require('../utils/formatErrors')
-const { formatErrorSummary } = require('../utils/formatErrorSummary')
+const { removeBlankErrors, formatErrors, formatErrorSummary } = require('../utils/formatErrors')
 const { isEmptyObject } = require('../utils/util')
 
 const validate = (req, res, next) => {
@@ -8,9 +7,9 @@ const validate = (req, res, next) => {
   if (isEmptyObject(errors)) {
     return next()
   }
-
-  req.errors = formatErrors(errors)
-  req.errorSummary = formatErrorSummary(errors)
+  const filteredErrors = removeBlankErrors(errors)
+  req.errors = formatErrors(filteredErrors)
+  req.errorSummary = formatErrorSummary(filteredErrors)
 
   return next()
 }

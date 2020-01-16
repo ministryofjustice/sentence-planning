@@ -14,6 +14,9 @@ jest.mock('../../common/data/sentencePlanningApi', () => ({
 jest.mock('./interventionList/post.controller', () => ({
   postActionDescriptionIntervention: jest.fn(() => ({})),
 }))
+jest.mock('./targetDate/post.controller', () => ({
+  postTargetDate: jest.fn(() => ({})),
+}))
 jest.mock('./get.controller')
 
 let req
@@ -40,6 +43,7 @@ beforeEach(() => {
   updateSentencePlanObjectiveAction.mockReset()
   addSentencePlanObjectiveAction.mockReset()
   postActionDescriptionIntervention.mockReset()
+
   res = {
     redirect: jest.fn(),
     render: jest.fn(),
@@ -48,14 +52,12 @@ beforeEach(() => {
 
 describe('add a new action', () => {
   describe('when the user wants to "Add another action"', () => {
-    let expectedAction
     beforeEach(() => {
       req.body.addAnotherAction = ''
-      expectedAction = { ...returnedAction, ...req.body }
     })
     it('should save the new action when there are no errors', async () => {
       await postAction(req, res)
-      expect(addSentencePlanObjectiveAction).toHaveBeenCalledWith(planId, objectiveId, expectedAction, token)
+      expect(addSentencePlanObjectiveAction).toHaveBeenCalledWith(planId, objectiveId, returnedAction, token)
       expect(updateSentencePlanObjectiveAction).not.toHaveBeenCalled()
       expect(res.redirect).toHaveBeenCalledWith('/this/is/my/NEW')
     })
@@ -106,16 +108,14 @@ describe('add a new action', () => {
 })
 describe('update an existing action', () => {
   describe('when the user wants to "Add another action"', () => {
-    let expectedAction
     beforeEach(() => {
       req.params.actionId = '313'
       req.body.addAnotherAction = ''
-      expectedAction = { ...returnedAction, ...req.body }
     })
     it('should save the new action when there are no errors', async () => {
       await postAction(req, res)
       expect(addSentencePlanObjectiveAction).not.toHaveBeenCalled()
-      expect(updateSentencePlanObjectiveAction).toHaveBeenCalledWith('1', '2', '313', expectedAction, token)
+      expect(updateSentencePlanObjectiveAction).toHaveBeenCalledWith('1', '2', '313', returnedAction, token)
       expect(res.redirect).toHaveBeenCalledWith('/this/is/my/NEW')
     })
     it('should display an error if action saving fails', async () => {

@@ -1,10 +1,8 @@
 const { validationResult } = require('express-validator')
 const { validate } = require('./validator')
-const { formatErrors } = require('../utils/formatErrors')
-const { formatErrorSummary } = require('../utils/formatErrorSummary')
+const { formatErrors, formatErrorSummary } = require('../utils/formatErrors')
 
 jest.mock('../utils/formatErrors')
-jest.mock('../utils/formatErrorSummary')
 jest.mock('express-validator', () => ({
   validationResult: jest.fn(),
 }))
