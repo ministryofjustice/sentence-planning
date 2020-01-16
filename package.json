@@ -45,7 +45,7 @@
     "browserify": "browserify -o public/javascripts/browsered.js common/browsered/*.js",
     "babel": "babel -o public/javascripts/browsered.js public/javascripts/browsered.js",
     "concat": "concat -o public/javascripts/application.js public/javascripts/browsered.js && rm public/javascripts/browsered.js",
-    "copy-assets": "copyfiles -e \"**/*.test.js\" -e \"**/sass/**/*\" -e \"**/javascripts/**/*\" -u 1 common/assets/**/* public && copyfiles -u 3 common/assets/images/**/* public/images",
+    "copy-assets": "copyfiles -e \"**/*.test.js\" -e \"**/sass/**/*\" -e \"**/javascripts/**/*\" -u 1 common/assets/**/* public && copyfiles -u 3 common/assets/images/**/* public/images && copyfiles -u 3 common/assets/javascripts/**/* public/javascripts",
     "copy-govuk-assets": "copyfiles -u 1 node_modules/govuk-frontend/govuk/assets/fonts/**/* -f public/assets/fonts && copyfiles -u 1 node_modules/govuk-frontend/govuk/assets/images/**/* -f public/assets/images",
     "compile-sass": "node-sass --include-path node_modules/ common/assets/sass -o public/stylesheets",
     "cssmin": "cleancss -o public/stylesheets/application.min.css public/stylesheets/application.css",
