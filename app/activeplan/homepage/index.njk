@@ -7,11 +7,12 @@
 {% set heading = "Active plan" %}
 {% set errorHeading = "Error - " + heading %}
 {% set addObjectiveUrl = "/individual-id/" + id + "/edit-plan/" + planId + "/edit-objective/NEW" %}
-{% set printFullPlanUrl = "/individual-id/" + id + "/plan/" + planId + "/print-full" %}
-{% set printSimplePlanUrl = "/individual-id/" + id + "/plan/" + planId + "/print-simple" %}
-{% set endPlanUrl = "/individual-id/" + id + "/plan/" + planId + "/end-plan" %}
-{% set addMeetingUrl = "/individual-id/" + id + "/plan/" + planId + "/sentence-board-review" %}
-{% set contactUrl = "/individual-id/" + id + "/plan/" + planId + "/contact-arrangements" %}
+{% set planRoute = "/individual-id/" + id + "/plan/" + planId %}
+{% set printFullPlanUrl = planRoute + "/print-full" %}
+{% set printSimplePlanUrl = planRoute + "/print-simple" %}
+{% set endPlanUrl = planRoute + "/end-plan" %}
+{% set addMeetingUrl = planRoute + "/sentence-board-review" %}
+{% set contactUrl = planRoute + "/contact-arrangements" %}
 
 {% block pageTitle %}
     {% if errors %}
