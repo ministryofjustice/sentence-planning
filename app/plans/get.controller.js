@@ -4,7 +4,10 @@ const { isEmptyObject } = require('../../common/utils/util')
 
 const getPlan = plans => {
   if (isEmptyObject(plans)) return {}
-  return plans.find(({ completedDate }) => completedDate === '' || completedDate === undefined) || {}
+  return (
+    plans.find(({ completedDate }) => completedDate === '' || completedDate === undefined || completedDate === null) ||
+    {}
+  )
 }
 
 const sentencePlanSummary = async ({ params: { id }, session: { 'x-auth-token': token } }, res) => {
