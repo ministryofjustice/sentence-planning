@@ -2,8 +2,8 @@ const { logger } = require('../../common/logging/logger')
 const { getSentencePlanObjective, getSentencePlanNeeds } = require('../../common/data/sentencePlanningApi')
 const { removeUrlLevels, sortObject } = require('../../common/utils/util')
 
-const getObjective = async (
-  {
+const getObjective = async (req, res) => {
+  const {
     path,
     errors,
     errorSummary,
@@ -11,9 +11,7 @@ const getObjective = async (
     renderInfo,
     params: { planId, objectiveId },
     session: { 'x-auth-token': token },
-  },
-  res
-) => {
+  } = req
   const nexturl = path.substring(0, path.lastIndexOf('/'))
   const backurl = removeUrlLevels(path, 2)
   const renderDetails = { ...renderInfo, nexturl, backurl }
@@ -41,6 +39,14 @@ const getObjective = async (
   // get all the needs that apply to this sentence plan
   try {
     const displayNeeds = await getSentencePlanNeeds(planId, token)
+
+    // if there are no needs, put flag into session so we don't insist the user selects one in the validation
+    if (displayNeeds.length === 0) {
+      req.session.noNeedsAvailable = true
+    } else {
+      delete req.session.noNeedsAvailable
+    }
+
     // convert to format for display
     renderDetails.displayNeeds = displayNeeds
       .map(({ id: value, name: html, active, riskOfHarm = false }) => {

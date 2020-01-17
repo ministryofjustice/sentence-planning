@@ -6,6 +6,8 @@ jest.mock('../../common/data/sentencePlanningApi')
 const objectiveEmpty = {}
 const objectivePresent = require('../../mockServer/sentencePlanObjectives/1.json')
 const objectiveWithInactiveNeed = require('../../mockServer/sentencePlanObjectives/3.json')
+
+const needsEmpty = []
 const needs = require('../../mockServer/sentencePlanNeeds/2.json')
 const needsInactive = require('../../mockServer/sentencePlanNeeds/3.json')
 
@@ -112,6 +114,21 @@ describe('getObjective', () => {
     }
     getSentencePlanObjective.mockReturnValueOnce(objectiveEmpty)
     await controller.getObjective(req, res)
+    expect(req.session.noNeedsAvailable).toEqual(undefined)
+    expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
+  })
+  it('sets flag in session when there are no needs', async () => {
+    getSentencePlanNeeds.mockReturnValueOnce(needsEmpty)
+    const expected = {
+      backurl: '/this/is',
+      nexturl: '/this/is/my',
+      errorSummary: {},
+      errors: {},
+      description: '',
+      displayNeeds: [],
+    }
+    await controller.getObjective(req, res)
+    expect(req.session.noNeedsAvailable).toEqual(true)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
   it('should set the correct render values when editing an objective', async () => {
