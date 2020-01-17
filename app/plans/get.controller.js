@@ -16,8 +16,6 @@ const sentencePlanSummary = async ({ params: { id }, session: { 'x-auth-token': 
     const renderInfo = {}
     renderInfo.individualId = id
     renderInfo.currentPlan = getPlan(plans)
-    console.log('renderInfo.currentPlan')
-    console.log(renderInfo.currentPlan)
     renderInfo.planType = 'active'
     if (isEmptyObject(renderInfo.currentPlan)) {
       renderInfo.planType = 'none'
