@@ -2,7 +2,7 @@ const { body } = require('express-validator')
 const { logger } = require('../../common/logging/logger')
 const { addSentencePlanObjective, updateSentencePlanObjective } = require('../../common/data/sentencePlanningApi')
 const { getObjective } = require('./get.controller')
-const { countWords, removeUrlLevels } = require('../../common/utils/util')
+const { countWords, removeUrlLevels, isEmptyObject } = require('../../common/utils/util')
 
 const wordsAllowed = 50
 
@@ -32,10 +32,14 @@ const postObjective = async (req, res) => {
     errors,
     body: { objective: objectiveDescription, needs },
     params: { planId, objectiveId },
-    session: { 'x-auth-token': token },
+    session: { 'x-auth-token': token, noNeedsAvailable = false },
   } = req
 
-  if (errors) {
+  if (noNeedsAvailable) {
+    delete errors.needs
+  }
+
+  if (!isEmptyObject(errors)) {
     const wordsOver = countWords(objectiveDescription) - wordsAllowed
     req.renderInfo = { wordsOver: wordsOver > 0 ? wordsOver : 0 }
     return getObjective(req, res)
