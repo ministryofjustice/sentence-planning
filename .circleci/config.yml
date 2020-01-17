@@ -36,7 +36,7 @@ commands:
           name: Deploy to << parameters.env >>
           command: |
             APP_VERSION=$(egrep buildNumber build-info.json  | awk -F"\"" '{print $4}')
-            sed -i "s/appVersion: \".*\"/appVersion: \"${APP_VERSION}\"/g" ~/git/helm_deploy/sentence-planning-api/Chart.yaml
+            sed -i "s/appVersion: \".*\"/appVersion: \"${APP_VERSION}\"/g" ~/git/helm_deploy/sentence-planning/Chart.yaml
             aws secretsmanager --region ${AWS_DEFAULT_REGION} get-secret-value --secret-id ${KUBE_ENV_NAMESPACE} | jq -r .SecretString | \
             helm upgrade sentence-planning ~/git/helm_deploy/sentence-planning/. \
               --install --wait --reset-values --timeout 5m --history-max 10 \
