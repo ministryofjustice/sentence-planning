@@ -2,13 +2,13 @@
   Contact arrangements
 </h3>
 
-{% if data['liason'] %}
+{% if contactArrangements %}
 
-  <p>{{ data['liason'] | nl2br | safe }}</p>
+  <p>{{ contactArrangements | nl2br | safe }}</p>
 
   {{ govukButton ({
     text: 'Edit contact arrangements',
-    href: '/offender/add-contacts',
+    href: contactUrl,
     classes: 'govuk-button--secondary'
   }) }}
 {% else %}
