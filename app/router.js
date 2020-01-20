@@ -9,6 +9,7 @@ const uuid = '[0-9a-f-]{1,}'
 const uuidOrNewId = `${uuid}|NEW`
 const offenderRoute = `/individual-id/:id(\\d{1,})`
 const editPlanRoute = `${offenderRoute}/edit-plan/:planId(${uuid})`
+const activePlanRoute = `${offenderRoute}/plan/:planId(${uuid})`
 const editObjectiveRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuidOrNewId})`
 const editActionRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuid})/edit-action/:actionId(${uuidOrNewId})`
 
@@ -37,6 +38,9 @@ const { postAction, actionValidationRules } = require('./action/post.controller'
 
 const createSentencePlan = require('../common/middleware/createSentencePlan')
 const { editPlan } = require('./editPlan/get.controller')
+
+// active plan pages
+const { getHomepage } = require('./activeplan/homepage/get.controller')
 
 // Export
 module.exports = app => {
@@ -84,10 +88,25 @@ module.exports = app => {
   app.get(editActionRoute, getAction)
   app.post(editActionRoute, actionValidationRules(), validate, postAction)
 
+  // active plan homepage
+  app.get(activePlanRoute, getHomepage)
+
   app.use(offenderRoute, getOffenderDetails)
   app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)
   app.get(`${offenderRoute}/edit-plan/new`, createSentencePlan)
   app.get(editPlanRoute, editPlan)
+
+  // outstanding pages still to be developed
+  app.get(
+    [
+      `${activePlanRoute}/print-full`,
+      `${activePlanRoute}/print-simple`,
+      `${activePlanRoute}/end-plan`,
+      `${activePlanRoute}/sentence-board-review`,
+      `${activePlanRoute}/contact-arrangements`,
+    ],
+    (req, res) => res.send('Functionality still to be developed')
+  )
 
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }
