@@ -12,14 +12,14 @@ const validationRules = () => {
     body('description')
       .if(body('actionType').equals('description'))
       .isLength({ min: 1 })
-      .withMessage('Describe the action'),
-    body('description')
+      .withMessage('Describe the action')
+      .bail()
       .if(body('actionType').equals('description'))
       .custom(value => {
         return countWords(value) <= wordsAllowed
       })
-      .withMessage(`Action description must be ${wordsAllowed} words or fewer`),
-    body('description')
+      .withMessage(`Action description must be ${wordsAllowed} words or fewer`)
+      .bail()
       .trim()
       .escape(),
     body('intervention')
