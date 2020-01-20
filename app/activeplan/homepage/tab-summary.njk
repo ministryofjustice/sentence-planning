@@ -8,7 +8,7 @@
       Responsivity
     </dt>
     <dd class="govuk-summary-list__value">
-      {{ data['diversity'] | nl2br | safe }}
+      {{ diversity | nl2br | safe }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -16,7 +16,7 @@
       They need us to know
     </dt>
     <dd class="govuk-summary-list__value">
-      {{ data['offender-summary'] | nl2br | safe }}
+      {{ needToKnow | nl2br | safe }}
     </dd>
   </div>
   
@@ -25,7 +25,7 @@
         Your decisions 
     </dt>
     <dd class="govuk-summary-list__value">
-      {{ data['practitioner-comment'] | nl2br | safe }}
+      {{ decisions | nl2br | safe }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -33,7 +33,7 @@
       Individual&rsquo;s comments 
     </dt>
     <dd class="govuk-summary-list__value">
-      {{ data['offender-comment'] | nl2br | safe }}
+      {{ comments | nl2br | safe }}
     </dd>
   </div>
 </dl>

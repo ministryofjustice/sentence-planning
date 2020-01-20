@@ -14,6 +14,10 @@ const getHomepage = async (req, res) => {
     // get contact arrangements
     const comments = await getSentencePlanComments(planId, token)
     renderDetails.contactArrangements = getCommentText(comments, 'LIAISON_ARRANGEMENTS')
+    renderDetails.diversity = getCommentText(comments, 'YOUR_RESPONSIVITY')
+    renderDetails.decisions = getCommentText(comments, 'YOUR_SUMMARY')
+    renderDetails.needToKnow = getCommentText(comments, 'THEIR_RESPONSIVITY')
+    renderDetails.comments = getCommentText(comments, 'THEIR_SUMMARY')
 
     return res.render(`${__dirname}/index`, { planId, id, planStarted, ...renderDetails })
   } catch (error) {
