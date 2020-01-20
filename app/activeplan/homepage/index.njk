@@ -13,6 +13,8 @@
 {% set endPlanUrl = planRoute + "/end-plan" %}
 {% set addMeetingUrl = planRoute + "/sentence-board-review" %}
 {% set contactUrl = planRoute + "/contact-arrangements" %}
+{% set buttonClasses='moj-button-menu__item moj-page-header-actions__action' %}
+{% set secondaryButtonClasses='govuk-button--secondary ' + buttonClasses %}
 
 {% block pageTitle %}
     {% if errors %}
@@ -53,19 +55,19 @@
                 items: [{
                     text: 'Add an objective',
                     href: addObjectiveUrl,
-                    classes: 'govuk-button--secondary moj-button-menu__item moj-page-header-actions__action'
+                    classes: secondaryButtonClasses
                 }, {
                     text: 'Print full plan ',
                     href: printFullPlanUrl,
-                    classes: 'govuk-button--secondary moj-button-menu__item moj-page-header-actions__action'
+                    classes: secondaryButtonClasses
                 }, {
                     text: 'Print simplified plan ',
                     href: printSimplePlanUrl,
-                    classes: 'govuk-button--secondary moj-button-menu__item moj-page-header-actions__action'
+                    classes: secondaryButtonClasses
                 }, {
                     text: 'End the plan',
                     href: endPlanUrl,
-                    classes: 'moj-button-menu__item moj-page-header-actions__action'
+                    classes: buttonClasses
                 }]
             }) }}
         </div>

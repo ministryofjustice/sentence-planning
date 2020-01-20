@@ -97,11 +97,16 @@ module.exports = app => {
   app.get(editPlanRoute, editPlan)
 
   // outstanding pages still to be developed
-  app.get(`${activePlanRoute}/print-full`, (req, res) => res.send('Functionality still to be developed'))
-  app.get(`${activePlanRoute}/print-simple`, (req, res) => res.send('Functionality still to be developed'))
-  app.get(`${activePlanRoute}/end-plan`, (req, res) => res.send('Functionality still to be developed'))
-  app.get(`${activePlanRoute}/sentence-board-review`, (req, res) => res.send('Functionality still to be developed'))
-  app.get(`${activePlanRoute}/contact-arrangements`, (req, res) => res.send('Functionality still to be developed'))
+  app.get(
+    [
+      `${activePlanRoute}/print-full`,
+      `${activePlanRoute}/print-simple`,
+      `${activePlanRoute}/end-plan`,
+      `${activePlanRoute}/sentence-board-review`,
+      `${activePlanRoute}/contact-arrangements`,
+    ],
+    (req, res) => res.send('Functionality still to be developed')
+  )
 
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }

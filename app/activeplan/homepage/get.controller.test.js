@@ -8,18 +8,14 @@ describe('showHomepage', () => {
     },
     session: {
       'x-auth-token': '1234',
-      planStarted: false,
     },
   }
   const res = {
     render: jest.fn(),
   }
 
-  afterEach(() => {
-    req.session.planStarted = false
-  })
-
   it('should pass in the correct values to the render function', async () => {
+    req.session.planStarted = false
     const expected = {
       planId: 12,
       id: 123,
