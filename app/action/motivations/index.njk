@@ -1,0 +1,15 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{{ govukRadios({
+    classes: "govuk-radios--small",
+    idPrefix: "motivation",
+    name: "motivation",
+    fieldset: {
+        legend: {
+            text: "How motivated is the individual to start or complete this action?",
+            isPageHeading: false,
+            classes: "govuk-fieldset__legend--s"
+        }
+    },
+    items: motivationList,
+    errorMessage: errors.motivation
+}) }}

@@ -69,6 +69,11 @@ const getInterventions = token => {
   return getData(path, token)
 }
 
+const getMotivations = token => {
+  const path = `${url}/motivation`
+  return getData(path, token)
+}
+
 const getData = async (path, token) => {
   logger.info(`Calling SentencePlanningApi: ${path}`)
   try {
@@ -135,4 +140,5 @@ module.exports = {
   getSentencePlanObjectiveAction,
   updateSentencePlanObjectiveAction,
   getInterventions,
+  getMotivations,
 }

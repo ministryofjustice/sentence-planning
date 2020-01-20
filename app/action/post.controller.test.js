@@ -17,6 +17,9 @@ jest.mock('./interventionList/post.controller', () => ({
 jest.mock('./targetDate/post.controller', () => ({
   postTargetDate: jest.fn(() => ({})),
 }))
+jest.mock('./motivations/post.controller', () => ({
+  postMotivation: jest.fn(() => ({ motivationUUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })),
+}))
 jest.mock('./get.controller')
 
 let req

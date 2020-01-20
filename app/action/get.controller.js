@@ -3,6 +3,7 @@ const { getSentencePlanObjectiveAction } = require('../../common/data/sentencePl
 const { removeUrlLevels } = require('../../common/utils/util')
 const { getActionDescriptionIntervention } = require('./interventionList/get.controller')
 const { getTargetDate } = require('./targetDate/get.controller')
+const { getMotivation } = require('./motivations/get.controller')
 
 const getAction = async (
   { path, errors, errorSummary, body, params: { planId, objectiveId, actionId }, session: { 'x-auth-token': token } },
@@ -16,12 +17,14 @@ const getAction = async (
     const nexturl = path.substring(0, path.lastIndexOf('/'))
     const backurl = removeUrlLevels(path, 2)
     const actionDescriptionIntervention = await getActionDescriptionIntervention(action, body, token)
+    const { motivationList } = await getMotivation(action, body, token)
     return res.render(`${__dirname}/index`, {
       ...body,
       errors,
       errorSummary,
       ...actionDescriptionIntervention,
       ...getTargetDate(action, body),
+      motivationList,
       nexturl,
       backurl,
     })

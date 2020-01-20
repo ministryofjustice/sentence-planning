@@ -34,6 +34,7 @@
             <form method="post" novalidate>
                 {% include "./interventionList/index.njk" %}
                 {% include "./targetDate/index.njk" %}
+                {% include "./motivations/index.njk" %}
                 {{ govukButton({
                     name: 'addAnotherAction',
                     text: 'Add another action',
