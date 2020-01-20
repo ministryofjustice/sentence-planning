@@ -13,12 +13,14 @@ const {
 } = require('./interventionList/post.controller')
 const { postTargetDate, targetDateValidationRules } = require('./targetDate/post.controller')
 const { postMotivation, motivationValidationRules } = require('./motivations/post.controller')
+const { postStatus, statusValidationRules } = require('./status/post.controller')
 
 const validationRules = () => {
   return [
     ...actionDescriptionInterventionValidationRules(),
     ...targetDateValidationRules(),
     ...motivationValidationRules(),
+    ...statusValidationRules(),
   ]
 }
 
@@ -37,6 +39,7 @@ const postAction = async (req, res) => {
     ...postActionDescriptionIntervention(body),
     ...postTargetDate(body),
     ...postMotivation(body),
+    ...postStatus(body),
   }
   if (errors) {
     return getAction(req, res)

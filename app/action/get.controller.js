@@ -4,6 +4,7 @@ const { removeUrlLevels } = require('../../common/utils/util')
 const { getActionDescriptionIntervention } = require('./interventionList/get.controller')
 const { getTargetDate } = require('./targetDate/get.controller')
 const { getMotivation } = require('./motivations/get.controller')
+const { getStatus } = require('./status/get.controller')
 
 const getAction = async (
   { path, errors, errorSummary, body, params: { planId, objectiveId, actionId }, session: { 'x-auth-token': token } },
@@ -25,6 +26,7 @@ const getAction = async (
       ...actionDescriptionIntervention,
       ...getTargetDate(action, body),
       motivationList,
+      ...getStatus(action, body),
       nexturl,
       backurl,
     })
