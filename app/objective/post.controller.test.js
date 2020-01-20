@@ -58,6 +58,15 @@ describe('post or update objective', () => {
     redirect: jest.fn(),
     render: jest.fn(),
   }
+  it('ignores needs error when noNeedsAvailable is set on session', async () => {
+    req.body.needs = []
+    req.session.noNeedsAvailable = true
+    req.errors = { needs: { text: 'Select the needs for this objective' } }
+    await controller.postObjective(req, res)
+    expect(addSentencePlanObjective).toHaveBeenCalled()
+    expect(updateSentencePlanObjective).not.toHaveBeenCalled()
+    expect(getObjective).not.toHaveBeenCalled()
+  })
 
   it('should save the new objective when there are no errors', async () => {
     req.body.objective = 'The objective description'

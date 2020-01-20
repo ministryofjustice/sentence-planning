@@ -35,7 +35,7 @@ describe('getSentencePlanSummary', () => {
         currentPlan: {
           completedDate: '',
           createdDate: '2019-02-27',
-          isDraft: false,
+          draft: false,
           legacy: false,
           planId: '2345',
         },
@@ -51,7 +51,7 @@ describe('getSentencePlanSummary', () => {
       const expected = {
         currentPlan: {
           createdDate: '2019-02-27',
-          isDraft: true,
+          draft: true,
           legacy: false,
           planId: '2345',
         },
