@@ -8,6 +8,9 @@ jest.mock('../../common/data/sentencePlanningApi', () => ({
 jest.mock('./interventionList/get.controller', () => ({
   getActionDescriptionIntervention: jest.fn(() => ({ intervention: '', description: '' })),
 }))
+jest.mock('./targetDate/get.controller', () => ({
+  getTargetDate: jest.fn(() => ({ targetDateMonth: '', targetDateYear: '' })),
+}))
 
 const actionPresent = require('../../mockServer/sentencePlanActions/1.json')
 
@@ -44,6 +47,8 @@ describe('getAction', () => {
       errors: {},
       intervention: '',
       description: '',
+      targetDateMonth: '',
+      targetDateYear: '',
     }
     expect(getSentencePlanObjectiveAction).not.toHaveBeenCalled()
     await getAction(req, res)
@@ -58,6 +63,8 @@ describe('getAction', () => {
       errors: {},
       intervention: '',
       description: '',
+      targetDateMonth: '',
+      targetDateYear: '',
     }
     getSentencePlanObjectiveAction.mockReturnValueOnce(actionPresent)
     await getAction(req, res)

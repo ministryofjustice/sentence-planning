@@ -1,0 +1,39 @@
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+
+{% set targetDateMonthError %}
+  {% if errors['target-date-Month'] %}
+    <div id='target-date-Month-error'>{{ errors['target-date-Month'].text }}</div>
+  {% endif %}
+{% endset %}
+{% set targetDateYearError %}
+  {% if errors['target-date-Year'] %}
+    <div id='target-date-Year-error'>{{ errors['target-date-Year'].text }}</div>
+  {% endif %}
+{% endset %}
+{% if targetDateMonthError or targetDateYearError %}
+  {% set targetDateError = {html: targetDateMonthError+targetDateYearError}%}
+{% endif %}
+
+{{ govukDateInput({
+  id: "target-date",
+  namePrefix: "target-date",
+  fieldset: {
+    legend: {
+      text: "What is the target date for the action to be finished?",
+      classes: "govuk-fieldset__legend--s"
+    }
+  },
+  items: [
+    {
+      name: "Month",
+      classes: "govuk-input--width-2",
+      value: targetDateMonth
+    },
+    {
+      name: "Year",
+      classes: "govuk-input--width-4",
+      value: targetDateYear
+    }
+  ],
+  errorMessage: targetDateError
+}) }}

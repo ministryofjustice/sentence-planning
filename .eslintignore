@@ -1,2 +1,3 @@
 node_modules
 public
+common/assets/javascripts/*.min.js

@@ -1,0 +1,26 @@
+<h3 class="govuk-heading-m govuk-!-font-size-27">
+  Sentence board reviews
+</h3>
+
+{% if data['review-done'] %}
+  {% set reviewDate = data['review-date-year'] + "-" + data['review-date-month'] + "-" + data['review-date-day'] %}
+
+  <ul class="govuk-list g/ovuk-list--bullet">
+    <li>
+      <a href="view-review">{{ reviewDate | date("D MMMM YYYY") }}</a>
+    </li>
+  </ul>
+
+  {{ govukButton ({
+    text: 'Add another review',
+    href: '#0',
+    classes: 'govuk-button--secondary'
+  }) }}
+{% else %}
+  <p>No reviews have been done yet.</p>
+
+  {{ govukButton ({
+    text: 'Add a review',
+    href: addMeetingUrl
+  }) }}
+{% endif %}
