@@ -33,6 +33,7 @@
             <h2 class="govuk-heading-m">Action</h2>
             <form method="post" novalidate>
                 {% include "./interventionList/index.njk" %}
+                {% include "./targetDate/index.njk" %}
                 {{ govukButton({
                     name: 'addAnotherAction',
                     text: 'Add another action',

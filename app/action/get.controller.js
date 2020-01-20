@@ -2,6 +2,7 @@ const { logger } = require('../../common/logging/logger')
 const { getSentencePlanObjectiveAction } = require('../../common/data/sentencePlanningApi')
 const { removeUrlLevels } = require('../../common/utils/util')
 const { getActionDescriptionIntervention } = require('./interventionList/get.controller')
+const { getTargetDate } = require('./targetDate/get.controller')
 
 const getAction = async (
   { path, errors, errorSummary, body, params: { planId, objectiveId, actionId }, session: { 'x-auth-token': token } },
@@ -20,6 +21,7 @@ const getAction = async (
       errors,
       errorSummary,
       ...actionDescriptionIntervention,
+      ...getTargetDate(action, body),
       nexturl,
       backurl,
     })
