@@ -2,6 +2,7 @@
 @import "@ministryofjustice/frontend/moj/all";
 @import "accessible-autocomplete/dist/accessible-autocomplete.min";
 
+@import "components/accessible-autocomplete";
 @import "components/cookie-message";
 
 $white-transparent: rgba(255, 255, 255, .25);

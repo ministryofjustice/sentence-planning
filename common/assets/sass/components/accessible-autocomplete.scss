@@ -1,0 +1,6 @@
+@import "govuk-frontend/govuk/all";
+
+.autocomplete__option {
+  @extend .govuk-body;
+  margin-bottom: 0px;
+}
