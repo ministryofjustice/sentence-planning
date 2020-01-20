@@ -7,6 +7,5 @@ const validationRules = () => {
       .withMessage('Choose a status'),
   ]
 }
-const postStatus = ({ status }) => ({ status })
 
-module.exports = { postStatus, statusValidationRules: validationRules }
+module.exports = { statusValidationRules: validationRules }

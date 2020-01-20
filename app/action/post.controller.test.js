@@ -17,12 +17,6 @@ jest.mock('./interventionList/post.controller', () => ({
 jest.mock('./targetDate/post.controller', () => ({
   postTargetDate: jest.fn(() => ({})),
 }))
-jest.mock('./motivations/post.controller', () => ({
-  postMotivation: jest.fn(() => ({ motivationUUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6' })),
-}))
-jest.mock('./status/post.controller', () => ({
-  postStatus: jest.fn(() => ({ status: 'NOT_STARTED' })),
-}))
 jest.mock('./get.controller')
 
 let req
@@ -43,7 +37,10 @@ beforeEach(() => {
     session: {
       'x-auth-token': token,
     },
-    body: {},
+    body: {
+      motivation: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      status: 'NOT_STARTED',
+    },
     renderInfo: null,
   }
   updateSentencePlanObjectiveAction.mockReset()
@@ -102,7 +99,7 @@ describe('add a new action', () => {
   describe('when the user wants to review the objective and action', () => {
     let expectedAction
     beforeEach(() => {
-      expectedAction = { ...returnedAction, ...req.body }
+      expectedAction = { ...returnedAction }
     })
     it('should save the new action when there are no errors', async () => {
       await postAction(req, res)

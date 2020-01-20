@@ -7,8 +7,5 @@ const validationRules = () => {
       .withMessage('Choose a motivational level'),
   ]
 }
-const postMotivation = ({ motivation: motivationUUID }) => {
-  return { motivationUUID }
-}
 
-module.exports = { postMotivation, motivationValidationRules: validationRules }
+module.exports = { motivationValidationRules: validationRules }
