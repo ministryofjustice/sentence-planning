@@ -24,6 +24,8 @@ const {
   addSentencePlanObjectiveAction,
   getSentencePlanObjectiveAction,
   updateSentencePlanObjectiveAction,
+  getInterventions,
+  getMotivations,
 } = require('./sentencePlanningApi')
 
 describe('sentencePlanningApi', () => {
@@ -230,6 +232,48 @@ describe('sentencePlanningApi', () => {
           ).rejects.toThrowError('Bad Request')
         })
       })
+    })
+  })
+
+  describe('getInterventions', () => {
+    const interventionsUrl = '/interventions'
+
+    it('should return an intervention list', async () => {
+      const interventions = [
+        {
+          longDescription: 'string',
+          shortDescription: 'string',
+          uuid: 'string',
+        },
+      ]
+      mockedEndpoint.get(interventionsUrl).reply(200, interventions)
+      const output = await getInterventions(token)
+      expect(output).toEqual(interventions)
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.get(interventionsUrl).reply(400)
+      await expect(getInterventions(token)).rejects.toThrowError('Bad Request')
+    })
+  })
+
+  describe('getMotivations', () => {
+    const motivationUrl = '/motivation'
+
+    it('should return an motivations list', async () => {
+      const motivations = [
+        {
+          friendlyText: 'string',
+          motivationText: 'string',
+          uuid: 'string',
+        },
+      ]
+      mockedEndpoint.get(motivationUrl).reply(200, motivations)
+      const output = await getMotivations(token)
+      expect(output).toEqual(motivations)
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.get(motivationUrl).reply(400)
+      await expect(getMotivations(token)).rejects.toThrowError('Bad Request')
     })
   })
 })
