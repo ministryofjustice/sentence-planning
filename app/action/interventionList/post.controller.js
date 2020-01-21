@@ -1,6 +1,7 @@
 const { body } = require('express-validator')
 const { countWords } = require('../../../common/utils/util')
 const { logger } = require('../../../common/logging/logger')
+const { UUID_REGEX } = require('../../../common/utils/util')
 
 const wordsAllowed = 50
 
@@ -24,7 +25,7 @@ const validationRules = () => {
       .escape(),
     body('intervention')
       .if(body('actionType').equals('intervention'))
-      .matches(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/, 'i')
+      .matches(UUID_REGEX, 'i')
       .withMessage('Select an intervention'),
   ]
 }
