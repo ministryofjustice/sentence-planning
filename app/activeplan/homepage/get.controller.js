@@ -1,5 +1,5 @@
 const { logger } = require('../../../common/logging/logger')
-const { getSentencePlanComments } = require('../../../common/data/sentencePlanningApi')
+const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
 const { getCommentText } = require('../../../common/utils/getCommentText')
 
 const getHomepage = async (req, res) => {
@@ -9,17 +9,19 @@ const getHomepage = async (req, res) => {
   } = req
   try {
     delete req.session.planStarted
-    const renderDetails = {}
 
-    // get contact arrangements
-    const comments = await getSentencePlanComments(planId, token)
-    renderDetails.contactArrangements = getCommentText(comments, 'LIAISON_ARRANGEMENTS')
-    renderDetails.diversity = getCommentText(comments, 'YOUR_RESPONSIVITY')
-    renderDetails.decisions = getCommentText(comments, 'YOUR_SUMMARY')
-    renderDetails.needToKnow = getCommentText(comments, 'THEIR_RESPONSIVITY')
-    renderDetails.comments = getCommentText(comments, 'THEIR_SUMMARY')
+    const { comments } = await getSentencePlan(planId, token)
 
-    return res.render(`${__dirname}/index`, { planId, id, planStarted, ...renderDetails })
+    return res.render(`${__dirname}/index`, {
+      planId,
+      id,
+      planStarted,
+      contactArrangements: getCommentText(comments, 'LIAISON_ARRANGEMENTS'),
+      diversity: getCommentText(comments, 'YOUR_RESPONSIVITY'),
+      decisions: getCommentText(comments, 'YOUR_SUMMARY'),
+      needToKnow: getCommentText(comments, 'THEIR_RESPONSIVITY'),
+      comments: getCommentText(comments, 'THEIR_SUMMARY'),
+    })
   } catch (error) {
     logger.error(`Could not display active sentence plan ${planId} for offender ${id}, error: ${error}`)
     return res.render('app/error', { error })

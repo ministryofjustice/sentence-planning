@@ -1,10 +1,10 @@
 const controller = require('./get.controller')
-const { getSentencePlanComments } = require('../../../common/data/sentencePlanningApi')
+const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
 
 jest.mock('../../../common/data/sentencePlanningApi')
 
-const commentsEmpty = {}
-const commentsPresent = require('../../../mockServer/sentencePlanComments/1.json')
+const sentencePlanEmpty = {}
+const sentencePlan = require('../../../mockServer/sentencePlans/6.json')
 
 describe('showHomepage', () => {
   const req = {
@@ -21,29 +21,29 @@ describe('showHomepage', () => {
   }
 
   beforeEach(() => {
-    getSentencePlanComments.mockReset()
+    getSentencePlan.mockReset()
   })
 
   it('should pass in the correct values to the render function', async () => {
-    getSentencePlanComments.mockReturnValueOnce(commentsPresent)
+    getSentencePlan.mockReturnValueOnce(sentencePlan)
     req.session.planStarted = false
     const expected = {
       planId: 12,
       id: 123,
       planStarted: false,
       contactArrangements: 'Contact arrangements added for this plan',
-      comments: 'Their summary comment',
-      decisions: 'My decisions comment',
-      diversity: 'My responsivity comment',
-      needToKnow: 'Their responsivity comment',
+      comments: 'carrots carrots carrots',
+      decisions: 'peas peas peas',
+      diversity: 'bacon bacon bacon',
+      needToKnow: 'egg egg egg',
     }
     await controller.getHomepage(req, res)
     expect(req.session.planStarted).toEqual(undefined)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
-  it('should pass in the correct values to the render function when plan has just been started', async () => {
+  it('should pass in the correct values to the render function when plan is empty', async () => {
     req.session.planStarted = true
-    getSentencePlanComments.mockReturnValueOnce(commentsEmpty)
+    getSentencePlan.mockReturnValueOnce(sentencePlanEmpty)
     const expected = {
       planId: 12,
       id: 123,
@@ -60,7 +60,7 @@ describe('showHomepage', () => {
   })
   it('should display an error if comments are not available', async () => {
     const theError = new Error('Error message')
-    getSentencePlanComments.mockImplementation(() => {
+    getSentencePlan.mockImplementation(() => {
       throw theError
     })
     await controller.getHomepage(req, res)
