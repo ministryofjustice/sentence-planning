@@ -1,0 +1,26 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{{ govukRadios({
+    classes: "govuk-radios--small",
+    idPrefix: "status",
+    name: "status",
+    fieldset: {
+        legend: {
+            text: "Set an initial status for this action",
+            isPageHeading: false,
+            classes: "govuk-fieldset__legend--s"
+        }
+    },
+    items: [
+      {
+        text: "To do",
+        value: "NOT_STARTED",
+        checked: true if (status == "NOT_STARTED")
+      },
+      {
+        text: "In progress",
+        value: "IN_PROGRESS",
+        checked: true if (status == "IN_PROGRESS")
+      }
+    ],
+    errorMessage: errors.status
+}) }}
