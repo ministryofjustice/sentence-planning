@@ -5,6 +5,7 @@ const sentencePlanObjective = require('../../mockServer/sentencePlanObjectives/1
 const sentencePlanNeeds = require('../../mockServer/sentencePlanNeeds/1.json')
 const sentencePlanAction = require('../../mockServer/sentencePlanActions/1.json')
 const sentencePlan = require('../../mockServer/sentencePlans/1.json')
+const sentencePlanReviews = require('../../mockServer/sentencePlanReviews/1.json')
 
 const {
   apis: {
@@ -26,6 +27,7 @@ const {
   updateSentencePlanObjectiveAction,
   getInterventions,
   getMotivations,
+  getSentencePlanReviews,
 } = require('./sentencePlanningApi')
 
 describe('sentencePlanningApi', () => {
@@ -230,6 +232,21 @@ describe('sentencePlanningApi', () => {
           await expect(
             getSentencePlanObjectiveAction(sentencePlanId, objectiveId, actionId, token)
           ).rejects.toThrowError('Bad Request')
+        })
+      })
+
+      describe('getSentencePlanReviews', () => {
+        const planid = '1'
+        const sentencePlansReviewUrl = `/sentenceplans/${planid}/reviews`
+
+        it('should return sentence plan reviews data', async () => {
+          mockedEndpoint.get(sentencePlansReviewUrl).reply(200, sentencePlanComments)
+          const output = await getSentencePlanReviews(planid, token)
+          expect(output).toEqual(sentencePlanReviews)
+        })
+        it('should throw an error if it does not receive a valid response', async () => {
+          mockedEndpoint.get(sentencePlansReviewUrl).reply(400)
+          await expect(getSentencePlanReviews(planid, token)).rejects.toThrowError('Bad Request')
         })
       })
     })

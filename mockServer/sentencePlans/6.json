@@ -1,0 +1,69 @@
+{
+  "id": 1,
+  "comments": [
+    {
+      "comment": "My responsivity comment",
+      "commentType": "YOUR_RESPONSIVITY",
+      "created": "2019-11-25T09:36:55.077Z",
+      "createdBy": "DEF1234"
+    },
+    {
+      "comment": "My decisions comment",
+      "commentType": "YOUR_SUMMARY",
+      "created": "2019-11-25T09:36:55.077Z",
+      "createdBy": "ABC1234"
+    },
+    {
+      "comment": "Their responsivity comment",
+      "commentType": "THEIR_RESPONSIVITY",
+      "created": "2019-11-25T09:36:55.077Z",
+      "createdBy": "GHI1234"
+    },
+    {
+      "comment": "Their summary comment",
+      "commentType": "THEIR_SUMMARY",
+      "created": "2019-11-26T14:26:15.022Z",
+      "createdBy": "ABC1234"
+    },
+    {
+      "comment": "Here are the contact arrangements for this plan",
+      "commentType": "LIAISON_ARRANGEMENTS",
+      "created": "2019-11-26T14:26:15.022Z",
+      "createdBy": "ABC1234"
+    }
+  ],
+  "objectives": [
+    {
+      "actions": [
+        {
+          "description": "string",
+          "id": "string",
+          "motivationUUID": "string",
+          "owner": [
+            "SERVICE_USER"
+          ],
+          "priority": 0,
+          "progress": [],
+          "status": "NOT_STARTED",
+          "updated": "2019-12-04T15:33:28.545Z"
+        },
+        {
+          "id": "string",
+          "intervention": "string",
+          "motivationUUID": "string",
+          "ownerOther": "string",
+          "priority": 0,
+          "progress": [],
+          "status": "NOT_STARTED",
+          "updated": "2019-12-04T15:33:28.545Z"
+        }
+      ],
+      "description": "This is a very interesting objective",
+      "id": "sausages",
+      "needs": [
+        "care"
+      ],
+      "priority": 0
+    }
+  ]
+}
