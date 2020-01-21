@@ -22,5 +22,11 @@
     "commentType": "THEIR_SUMMARY",
     "created": "2019-11-26T14:26:15.022Z",
     "createdBy": "ABC1234"
+  },
+  {
+    "comment": "Contact arrangements added for this plan",
+    "commentType": "LIAISON_ARRANGEMENTS",
+    "created": "2019-11-26T14:26:15.022Z",
+    "createdBy": "ABC1234"
   }
 ]
