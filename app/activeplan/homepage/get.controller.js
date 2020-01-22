@@ -1,5 +1,5 @@
 const { logger } = require('../../../common/logging/logger')
-const { getSentencePlan, getSentencePlanReviews } = require('../../../common/data/sentencePlanningApi')
+const { getSentencePlan, getSentencePlanMeetings } = require('../../../common/data/sentencePlanningApi')
 const { getCommentText } = require('../../../common/utils/getCommentText')
 
 const getHomepage = async (req, res) => {
@@ -23,7 +23,7 @@ const getHomepage = async (req, res) => {
 
   // get review meetings
   try {
-    meetings = await getSentencePlanReviews(id, token)
+    meetings = await getSentencePlanMeetings(id, token)
   } catch (error) {
     logger.error(`Could not retrieve meetings for offender ${id}, error: ${error}`)
     return res.render('app/error', { error })

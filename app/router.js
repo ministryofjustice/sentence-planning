@@ -41,6 +41,7 @@ const { editPlan } = require('./editPlan/get.controller')
 
 // active plan pages
 const { getHomepage } = require('./activeplan/homepage/get.controller')
+const { getMeeting } = require('./activeplan/homepage/meetings/get.controller')
 
 // Export
 module.exports = app => {
@@ -91,6 +92,9 @@ module.exports = app => {
   // active plan homepage
   app.get(activePlanRoute, getHomepage)
 
+  // sentence plan meetings
+  app.get(`${activePlanRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`, getMeeting)
+
   app.use(offenderRoute, getOffenderDetails)
   app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)
   app.get(`${offenderRoute}/edit-plan/new`, createSentencePlan)
@@ -102,7 +106,7 @@ module.exports = app => {
       `${activePlanRoute}/print-full`,
       `${activePlanRoute}/print-simple`,
       `${activePlanRoute}/end-plan`,
-      `${activePlanRoute}/sentence-board-review`,
+      `${activePlanRoute}/sentence-board-meeting`,
       `${activePlanRoute}/contact-arrangements`,
     ],
     (req, res) => res.send('Functionality still to be developed')

@@ -1,11 +1,11 @@
 const controller = require('./get.controller')
-const { getSentencePlan, getSentencePlanReviews } = require('../../../common/data/sentencePlanningApi')
+const { getSentencePlan, getSentencePlanMeetings } = require('../../../common/data/sentencePlanningApi')
 
 jest.mock('../../../common/data/sentencePlanningApi')
 
 const sentencePlanEmpty = {}
 const sentencePlan = require('../../../mockServer/sentencePlans/6.json')
-const reviews = require('../../../mockServer/sentencePlanReviews/1.json')
+const meetings = require('../../../mockServer/sentencePlanMeetings/summary/1.json')
 
 describe('showHomepage', () => {
   const req = {
@@ -27,7 +27,7 @@ describe('showHomepage', () => {
 
   it('should pass in the correct values to the render function', async () => {
     getSentencePlan.mockReturnValueOnce(sentencePlan)
-    getSentencePlanReviews.mockReturnValueOnce(reviews)
+    getSentencePlanMeetings.mockReturnValueOnce(meetings)
     req.session.planStarted = false
     const expected = {
       planId: 12,
@@ -38,7 +38,7 @@ describe('showHomepage', () => {
       decisions: 'My decisions comment',
       diversity: 'My responsivity comment',
       needToKnow: 'Their responsivity comment',
-      meetings: reviews,
+      meetings,
     }
     await controller.getHomepage(req, res)
     expect(req.session.planStarted).toEqual(undefined)
@@ -47,7 +47,7 @@ describe('showHomepage', () => {
   it('should pass in the correct values to the render function when plan is empty', async () => {
     req.session.planStarted = true
     getSentencePlan.mockReturnValueOnce(sentencePlanEmpty)
-    getSentencePlanReviews.mockReturnValueOnce([])
+    getSentencePlanMeetings.mockReturnValueOnce([])
     const expected = {
       planId: 12,
       id: 123,

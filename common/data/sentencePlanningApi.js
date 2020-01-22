@@ -74,8 +74,13 @@ const getMotivations = token => {
   return getData(path, token)
 }
 
-const getSentencePlanReviews = (individualId, token) => {
+const getSentencePlanMeetings = (individualId, token) => {
   const path = `${url}/offenders/${individualId}/reviews`
+  return getData(path, token)
+}
+
+const getSentencePlanMeeting = (individualId, meetingId, token) => {
+  const path = `${url}/offenders/${individualId}/reviews/${meetingId}`
   return getData(path, token)
 }
 
@@ -146,5 +151,6 @@ module.exports = {
   updateSentencePlanObjectiveAction,
   getInterventions,
   getMotivations,
-  getSentencePlanReviews,
+  getSentencePlanMeetings,
+  getSentencePlanMeeting,
 }

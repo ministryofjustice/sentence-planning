@@ -3,12 +3,10 @@
 </h3>
 
 {% if meetings %}
-  {% set reviewDate = data['review-date-year'] + "-" + data['review-date-month'] + "-" + data['review-date-day'] %}
-
   <ul class="govuk-list">
     {%- for item in meetings | sort(attribute='dateOfBoard') %}
     <li>
-      <a class="govuk-link" href="/individual-id/{{ id }}/plan/{{ planId }}/view-sentence-board-review/{{ item.id }}">{{ item.dateOfBoard | date("D MMMM YYYY") }}</a>
+      <a class="govuk-link" href="/individual-id/{{ id }}/plan/{{ planId }}/view-sentence-plan-meeting/{{ item.id }}">{{ item.dateOfBoard | date("D MMMM YYYY") }}</a>
     </li>
     {% endfor -%}
   </ul>
