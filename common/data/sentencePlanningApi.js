@@ -69,14 +69,13 @@ const getInterventions = token => {
   return getData(path, token)
 }
 
-
 const getMotivations = token => {
   const path = `${url}/motivation`
   return getData(path, token)
 }
 
-const getSentencePlanReviews = (sentencePlanId, token) => {
-  const path = `${url}/sentenceplans/${sentencePlanId}/reviews`
+const getSentencePlanReviews = (individualId, token) => {
+  const path = `${url}/offenders/${individualId}/reviews`
   return getData(path, token)
 }
 
@@ -146,9 +145,6 @@ module.exports = {
   getSentencePlanObjectiveAction,
   updateSentencePlanObjectiveAction,
   getInterventions,
-<<<<<<< Updated upstream
   getMotivations,
-=======
   getSentencePlanReviews,
->>>>>>> Stashed changes
 }

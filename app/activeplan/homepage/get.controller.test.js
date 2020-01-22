@@ -1,10 +1,11 @@
 const controller = require('./get.controller')
-const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
+const { getSentencePlan, getSentencePlanReviews } = require('../../../common/data/sentencePlanningApi')
 
 jest.mock('../../../common/data/sentencePlanningApi')
 
 const sentencePlanEmpty = {}
 const sentencePlan = require('../../../mockServer/sentencePlans/6.json')
+const reviews = require('../../../mockServer/sentencePlanReviews/1.json')
 
 describe('showHomepage', () => {
   const req = {
@@ -26,16 +27,18 @@ describe('showHomepage', () => {
 
   it('should pass in the correct values to the render function', async () => {
     getSentencePlan.mockReturnValueOnce(sentencePlan)
+    getSentencePlanReviews.mockReturnValueOnce(reviews)
     req.session.planStarted = false
     const expected = {
       planId: 12,
       id: 123,
       planStarted: false,
-      contactArrangements: 'Contact arrangements added for this plan',
-      comments: 'carrots carrots carrots',
-      decisions: 'peas peas peas',
-      diversity: 'bacon bacon bacon',
-      needToKnow: 'egg egg egg',
+      comments: 'Their summary comment',
+      contactArrangements: 'Here are the contact arrangements for this plan',
+      decisions: 'My decisions comment',
+      diversity: 'My responsivity comment',
+      needToKnow: 'Their responsivity comment',
+      meetings: reviews,
     }
     await controller.getHomepage(req, res)
     expect(req.session.planStarted).toEqual(undefined)
@@ -44,6 +47,7 @@ describe('showHomepage', () => {
   it('should pass in the correct values to the render function when plan is empty', async () => {
     req.session.planStarted = true
     getSentencePlan.mockReturnValueOnce(sentencePlanEmpty)
+    getSentencePlanReviews.mockReturnValueOnce([])
     const expected = {
       planId: 12,
       id: 123,
@@ -53,6 +57,7 @@ describe('showHomepage', () => {
       decisions: '',
       diversity: '',
       needToKnow: '',
+      meetings: [],
     }
     await controller.getHomepage(req, res)
     expect(req.session.planStarted).toEqual(undefined)

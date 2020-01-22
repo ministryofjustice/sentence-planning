@@ -236,17 +236,16 @@ describe('sentencePlanningApi', () => {
       })
 
       describe('getSentencePlanReviews', () => {
-        const planid = '1'
-        const sentencePlansReviewUrl = `/sentenceplans/${planid}/reviews`
+        const sentencePlansReviewUrl = `/offenders/${id}/reviews`
 
         it('should return sentence plan reviews data', async () => {
-          mockedEndpoint.get(sentencePlansReviewUrl).reply(200, sentencePlanComments)
-          const output = await getSentencePlanReviews(planid, token)
+          mockedEndpoint.get(sentencePlansReviewUrl).reply(200, sentencePlanReviews)
+          const output = await getSentencePlanReviews(id, token)
           expect(output).toEqual(sentencePlanReviews)
         })
         it('should throw an error if it does not receive a valid response', async () => {
           mockedEndpoint.get(sentencePlansReviewUrl).reply(400)
-          await expect(getSentencePlanReviews(planid, token)).rejects.toThrowError('Bad Request')
+          await expect(getSentencePlanReviews(id, token)).rejects.toThrowError('Bad Request')
         })
       })
     })
