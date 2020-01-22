@@ -1,4 +1,4 @@
-const controller = require('./get.controller')
+const { getHomepage } = require('./get.controller')
 const { getSentencePlan, getSentencePlanMeetings } = require('../../../common/data/sentencePlanningApi')
 
 jest.mock('../../../common/data/sentencePlanningApi')
@@ -40,7 +40,7 @@ describe('showHomepage', () => {
       needToKnow: 'Their responsivity comment',
       meetings,
     }
-    await controller.getHomepage(req, res)
+    await getHomepage(req, res)
     expect(req.session.planStarted).toEqual(undefined)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
@@ -59,7 +59,7 @@ describe('showHomepage', () => {
       needToKnow: '',
       meetings: [],
     }
-    await controller.getHomepage(req, res)
+    await getHomepage(req, res)
     expect(req.session.planStarted).toEqual(undefined)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
@@ -68,7 +68,7 @@ describe('showHomepage', () => {
     getSentencePlan.mockImplementation(() => {
       throw theError
     })
-    await controller.getHomepage(req, res)
+    await getHomepage(req, res)
     expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
   })
 })

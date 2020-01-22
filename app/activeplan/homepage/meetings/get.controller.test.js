@@ -1,4 +1,4 @@
-const controller = require('./get.controller')
+const { getMeeting } = require('./get.controller')
 const { getSentencePlanMeeting } = require('../../../../common/data/sentencePlanningApi')
 
 jest.mock('../../../../common/data/sentencePlanningApi')
@@ -31,7 +31,7 @@ describe('getDiversity', () => {
       meeting: meetingData,
     }
     getSentencePlanMeeting.mockReturnValueOnce(meetingData)
-    await controller.getMeeting(req, res)
+    await getMeeting(req, res)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
   it('should display an error if meeting call is bad', async () => {
@@ -39,7 +39,7 @@ describe('getDiversity', () => {
     getSentencePlanMeeting.mockImplementation(() => {
       throw theError
     })
-    await controller.getMeeting(req, res)
+    await getMeeting(req, res)
     expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
   })
 })
