@@ -1,19 +1,21 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
 <h3 class="govuk-heading-m govuk-!-font-size-27">
-  Sentence board reviews
+  Sentence plan meetings
 </h3>
 
-{% if data['review-done'] %}
-  {% set reviewDate = data['review-date-year'] + "-" + data['review-date-month'] + "-" + data['review-date-day'] %}
-
-  <ul class="govuk-list g/ovuk-list--bullet">
+{% if meetings %}
+  <ul class="govuk-list">
+    {%- for item in meetings | sort(attribute='dateOfBoard') %}
     <li>
-      <a href="view-review">{{ reviewDate | date("D MMMM YYYY") }}</a>
+      <a class="govuk-link" href="/individual-id/{{ id }}/plan/{{ planId }}/view-sentence-plan-meeting/{{ item.id }}">{{ item.dateOfBoard | date("D MMMM YYYY") }}</a>
     </li>
+    {% endfor -%}
   </ul>
 
   {{ govukButton ({
     text: 'Add another review',
-    href: '#0',
+    href: addMeetingUrl,
     classes: 'govuk-button--secondary'
   }) }}
 {% else %}

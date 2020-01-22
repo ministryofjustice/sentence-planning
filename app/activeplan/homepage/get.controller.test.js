@@ -1,10 +1,11 @@
-const controller = require('./get.controller')
-const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
+const { getHomepage } = require('./get.controller')
+const { getSentencePlan, getSentencePlanMeetings } = require('../../../common/data/sentencePlanningApi')
 
 jest.mock('../../../common/data/sentencePlanningApi')
 
 const sentencePlanEmpty = {}
 const sentencePlan = require('../../../mockServer/sentencePlans/6.json')
+const meetings = require('../../../mockServer/sentencePlanMeetings/summary/1.json')
 
 describe('showHomepage', () => {
   const req = {
@@ -26,24 +27,27 @@ describe('showHomepage', () => {
 
   it('should pass in the correct values to the render function', async () => {
     getSentencePlan.mockReturnValueOnce(sentencePlan)
+    getSentencePlanMeetings.mockReturnValueOnce(meetings)
     req.session.planStarted = false
     const expected = {
       planId: 12,
       id: 123,
       planStarted: false,
-      contactArrangements: 'Contact arrangements added for this plan',
-      comments: 'carrots carrots carrots',
-      decisions: 'peas peas peas',
-      diversity: 'bacon bacon bacon',
-      needToKnow: 'egg egg egg',
+      comments: 'Their summary comment',
+      contactArrangements: 'Here are the contact arrangements for this plan',
+      decisions: 'My decisions comment',
+      diversity: 'My responsivity comment',
+      needToKnow: 'Their responsivity comment',
+      meetings,
     }
-    await controller.getHomepage(req, res)
+    await getHomepage(req, res)
     expect(req.session.planStarted).toEqual(undefined)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
   it('should pass in the correct values to the render function when plan is empty', async () => {
     req.session.planStarted = true
     getSentencePlan.mockReturnValueOnce(sentencePlanEmpty)
+    getSentencePlanMeetings.mockReturnValueOnce([])
     const expected = {
       planId: 12,
       id: 123,
@@ -53,8 +57,9 @@ describe('showHomepage', () => {
       decisions: '',
       diversity: '',
       needToKnow: '',
+      meetings: [],
     }
-    await controller.getHomepage(req, res)
+    await getHomepage(req, res)
     expect(req.session.planStarted).toEqual(undefined)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
@@ -63,7 +68,7 @@ describe('showHomepage', () => {
     getSentencePlan.mockImplementation(() => {
       throw theError
     })
-    await controller.getHomepage(req, res)
+    await getHomepage(req, res)
     expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
   })
 })

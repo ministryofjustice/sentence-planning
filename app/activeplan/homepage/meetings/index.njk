@@ -1,0 +1,53 @@
+{% extends "common/templates/layout.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% set heading = "Sentence board minutes" %}
+
+{% block pageTitle %}
+    {{ heading }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        href: backurl,
+        text: 'Back to plan'
+    }) }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <h1 class="govuk-heading-l">
+                Sentence board minutes
+            </h1>
+
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Date of review
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ meeting.dateOfBoard | date("D MMMM YYYY") }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Comments
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ meeting.comments }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Attendees
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ meeting.attendees }}
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+{% endblock %}

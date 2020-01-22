@@ -8,6 +8,7 @@ const { json, urlencoded } = require('body-parser')
 const loggingMiddleware = require('morgan')
 const compression = require('compression')
 const { configure } = require('nunjucks')
+const dateFilter = require('nunjucks-date-filter')
 const cookieSession = require('cookie-session')
 const helmet = require('helmet')
 
@@ -113,6 +114,9 @@ function initialiseTemplateEngine(app) {
 
   // Initialise nunjucks environment
   const nunjucksEnvironment = configure(APP_VIEWS, nunjucksConfiguration)
+
+  // add custom nunjucks filters
+  nunjucksEnvironment.addFilter('date', dateFilter)
 
   // Set view engine
   app.set('view engine', 'njk')

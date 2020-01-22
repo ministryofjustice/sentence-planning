@@ -2,37 +2,31 @@
   "id": 1,
   "comments": [
     {
-      "comment": "bacon bacon bacon",
+      "comment": "My responsivity comment",
       "commentType": "YOUR_RESPONSIVITY",
-      "created": "2019-12-03T11:54:14.670Z",
-      "createdBy": "string"
+      "created": "2019-11-25T09:36:55.077Z",
+      "createdBy": "DEF1234"
     },
     {
-      "comment": "egg egg egg",
-      "commentType": "THEIR_RESPONSIVITY",
-      "created": "2019-12-03T11:54:14.670Z",
-      "createdBy": "string"
-    },
-    {
-      "comment": "peas peas peas",
+      "comment": "My decisions comment",
       "commentType": "YOUR_SUMMARY",
-      "created": "2019-12-03T11:54:14.670Z",
-      "createdBy": "string"
+      "created": "2019-11-25T09:36:55.077Z",
+      "createdBy": "ABC1234"
     },
     {
-      "comment": "carrots carrots carrots",
+      "comment": "Their responsivity comment",
+      "commentType": "THEIR_RESPONSIVITY",
+      "created": "2019-11-25T09:36:55.077Z",
+      "createdBy": "GHI1234"
+    },
+    {
+      "comment": "Their summary comment",
       "commentType": "THEIR_SUMMARY",
-      "created": "2019-12-03T11:54:14.670Z",
-      "createdBy": "string"
+      "created": "2019-11-26T14:26:15.022Z",
+      "createdBy": "ABC1234"
     },
     {
-      "comment": "carrots carrots carrots",
-      "commentType": "THEIR_SUMMARY",
-      "created": "2019-12-03T11:54:14.670Z",
-      "createdBy": "string"
-    },
-    {
-      "comment": "Contact arrangements added for this plan",
+      "comment": "Here are the contact arrangements for this plan",
       "commentType": "LIAISON_ARRANGEMENTS",
       "created": "2019-11-26T14:26:15.022Z",
       "createdBy": "ABC1234"
