@@ -14,6 +14,9 @@ jest.mock('./targetDate/get.controller', () => ({
 jest.mock('./motivations/get.controller', () => ({
   getMotivation: jest.fn(() => ({ motivationList: [] })),
 }))
+jest.mock('./responsibility/get.controller', () => ({
+  getResponsibility: jest.fn(() => ({ responsibility: ['OTHER'], responsibilityOther: '' })),
+}))
 jest.mock('./status/get.controller', () => ({
   getStatus: jest.fn(() => ({ status: 'NOT_STARTED' })),
 }))
@@ -56,6 +59,8 @@ describe('getAction', () => {
       targetDateMonth: '',
       targetDateYear: '',
       motivationList: [],
+      responsibility: ['OTHER'],
+      responsibilityOther: '',
       status: 'NOT_STARTED',
     }
     expect(getSentencePlanObjectiveAction).not.toHaveBeenCalled()
@@ -74,6 +79,8 @@ describe('getAction', () => {
       targetDateMonth: '',
       targetDateYear: '',
       motivationList: [],
+      responsibility: ['OTHER'],
+      responsibilityOther: '',
       status: 'NOT_STARTED',
     }
     getSentencePlanObjectiveAction.mockReturnValueOnce(actionPresent)

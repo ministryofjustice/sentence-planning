@@ -13,6 +13,7 @@ const {
 } = require('./interventionList/post.controller')
 const { postTargetDate, targetDateValidationRules } = require('./targetDate/post.controller')
 const { motivationValidationRules } = require('./motivations/post.controller')
+const { postResponsibility, responsibilityValidationRules } = require('./responsibility/post.controller')
 const { statusValidationRules } = require('./status/post.controller')
 
 const validationRules = () => {
@@ -20,6 +21,7 @@ const validationRules = () => {
     ...actionDescriptionInterventionValidationRules(),
     ...targetDateValidationRules(),
     ...motivationValidationRules(),
+    ...responsibilityValidationRules(),
     ...statusValidationRules(),
   ]
 }
@@ -32,13 +34,13 @@ const postAction = async (req, res) => {
     params: { planId, objectiveId, actionId },
     session: { 'x-auth-token': token },
   } = req
-
   // temporarily add values to the action
   const action = {
     ...mockAction,
     ...postActionDescriptionIntervention(body),
     ...postTargetDate(body),
     motivationUUID: body.motivation,
+    ...postResponsibility(body),
     status: body.status,
   }
   if (errors) {
