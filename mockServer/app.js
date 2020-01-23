@@ -107,6 +107,11 @@ function createMockAPI() {
     return getFile('sentencePlanMeetings/minutes', req.params.meetingId, res)
   })
 
+  app.post('/sentenceplans/:planid/start', (req, res) => {
+    logger.debug(`MockAPI starting plan ${req.params.planid}`)
+    return res.sendStatus(200)
+  })
+
   app.listen(18081)
 }
 module.exports = { createMockAPI }

@@ -1,0 +1,39 @@
+{% extends "common/templates/layout.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set heading = "Start plan" %}
+{% set backurl = "/individual-id/" + planId + "/edit-plan/" + planId %}
+
+{% block pageTitle %}
+    {{ heading }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        href: backurl
+    }) }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <h1 class="govuk-heading-l">
+                {{ heading }}
+            </h1>
+
+            <form method="post" novalidate>
+                <p>xxxx content outstanding xxxx</p>
+                {{ govukButton ({
+                    text: 'Yes, start the plan',
+                    href: addMeetingUrl,
+                    classes: 'govuk-button--warning govuk-!-margin-bottom-3'
+                }) }}
+                <p>or <a class="govuk-link" href="{{ backurl }}">no, go back</a></p>
+            </form>
+
+
+        </div>
+    </div>
+{% endblock %}
