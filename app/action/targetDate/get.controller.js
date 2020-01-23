@@ -1,4 +1,4 @@
-const getTargetDate = ({ targetDate = '' }, body = {}) => {
+const getTargetDate = ({ progress: [{ targetDate = '' } = {}] = [] }, body = {}) => {
   let { 'target-date-Month': targetDateMonth = '', 'target-date-Year': targetDateYear = '' } = body
   if (!targetDateMonth && !targetDateYear && targetDate) {
     const date = new Date(targetDate)
