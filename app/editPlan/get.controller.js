@@ -14,7 +14,10 @@ const editPlan = async ({ path, params: { id, planId }, session: { 'x-auth-token
         getFinalInformation(sentencePlan, stub, objectivesSection.items[0].complete),
       ],
     }
-    res.render(`${__dirname}/index`, { id, token, planSummary })
+
+    const disableStartButton = !planSummary.sections[2].items[0].complete
+
+    res.render(`${__dirname}/index`, { planId, id, token, planSummary, disableStartButton })
   } catch (error) {
     logger.error(`Could not retrieve sentence plan for ${id}, error: ${error}`)
     res.render('app/error', { error })
