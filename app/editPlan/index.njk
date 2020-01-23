@@ -19,4 +19,13 @@
       {{ spTaskList(planSummary) }} 
     </div>
   </div>
+
+  {% if disableStartButton == false %}
+    {%  set buttonHref = '/individual-id/' + id + '/edit-plan/' + planId + '/start-plan' %}
+  {% endif %}
+  {{ govukButton({
+    href: buttonHref,
+    text: 'Start plan',
+    disabled: disableStartButton
+  }) }}
 {% endblock %}
