@@ -74,6 +74,16 @@ const getMotivations = token => {
   return getData(path, token)
 }
 
+const getSentencePlanMeetings = (individualId, token) => {
+  const path = `${url}/offenders/${individualId}/reviews`
+  return getData(path, token)
+}
+
+const getSentencePlanMeeting = (individualId, meetingId, token) => {
+  const path = `${url}/offenders/${individualId}/reviews/${meetingId}`
+  return getData(path, token)
+}
+
 const getData = async (path, token) => {
   logger.info(`Calling SentencePlanningApi: ${path}`)
   try {
@@ -141,4 +151,6 @@ module.exports = {
   updateSentencePlanObjectiveAction,
   getInterventions,
   getMotivations,
+  getSentencePlanMeetings,
+  getSentencePlanMeeting,
 }

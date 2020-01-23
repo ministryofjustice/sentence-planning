@@ -5,6 +5,8 @@ const sentencePlanObjective = require('../../mockServer/sentencePlanObjectives/1
 const sentencePlanNeeds = require('../../mockServer/sentencePlanNeeds/1.json')
 const sentencePlanAction = require('../../mockServer/sentencePlanActions/1.json')
 const sentencePlan = require('../../mockServer/sentencePlans/1.json')
+const sentencePlanMeetings = require('../../mockServer/sentencePlanMeetings/summary/1.json')
+const sentencePlanMeeting = require('../../mockServer/sentencePlanMeetings/minutes/1.json')
 
 const {
   apis: {
@@ -26,6 +28,8 @@ const {
   updateSentencePlanObjectiveAction,
   getInterventions,
   getMotivations,
+  getSentencePlanMeetings,
+  getSentencePlanMeeting,
 } = require('./sentencePlanningApi')
 
 describe('sentencePlanningApi', () => {
@@ -274,6 +278,39 @@ describe('sentencePlanningApi', () => {
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.get(motivationUrl).reply(400)
       await expect(getMotivations(token)).rejects.toThrowError('Bad Request')
+    })
+  })
+
+  describe('getMeetings', () => {
+    describe('getSentencePlanMeetings', () => {
+      const sentencePlanReviewsUrl = `/offenders/${id}/reviews`
+
+      it('should return sentence plan meetings data', async () => {
+        mockedEndpoint.get(sentencePlanReviewsUrl).reply(200, sentencePlanMeetings)
+        const output = await getSentencePlanMeetings(id, token)
+        expect(output).toEqual(sentencePlanMeetings)
+      })
+      it('should throw an error if it does not receive a valid response', async () => {
+        mockedEndpoint.get(sentencePlanReviewsUrl).reply(400)
+        await expect(getSentencePlanMeetings(id, token)).rejects.toThrowError('Bad Request')
+      })
+    })
+  })
+
+  describe('getMeeting', () => {
+    const meetingId = 1
+    describe('getSentencePlanMeeting', () => {
+      const sentencePlanReviewUrl = `/offenders/${id}/reviews/${meetingId}`
+
+      it('should return sentence plan meetings data', async () => {
+        mockedEndpoint.get(sentencePlanReviewUrl).reply(200, sentencePlanMeeting)
+        const output = await getSentencePlanMeeting(id, meetingId, token)
+        expect(output).toEqual(sentencePlanMeeting)
+      })
+      it('should throw an error if it does not receive a valid response', async () => {
+        mockedEndpoint.get(sentencePlanReviewUrl).reply(400)
+        await expect(getSentencePlanMeeting(id, meetingId, token)).rejects.toThrowError('Bad Request')
+      })
     })
   })
 })
