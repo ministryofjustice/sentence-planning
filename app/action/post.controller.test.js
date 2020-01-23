@@ -17,6 +17,9 @@ jest.mock('./interventionList/post.controller', () => ({
 jest.mock('./targetDate/post.controller', () => ({
   postTargetDate: jest.fn(() => ({})),
 }))
+jest.mock('./responsibility/post.controller', () => ({
+  postResponsibility: jest.fn(() => ({})),
+}))
 jest.mock('./get.controller')
 
 let req
