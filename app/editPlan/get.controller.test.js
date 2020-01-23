@@ -31,18 +31,21 @@ describe('getSentencePlanSummary', () => {
   })
 
   describe('editPlan', () => {
+    const incompleteStatus = false
     const completionStatus = true
     const aboutTheIndividualSection = { value: 'section 1' }
     const addObjectivesSection = { value: 'section 2', items: [{ complete: completionStatus }] }
-    const finalInformationSection = { value: 'section 3' }
+    const finalInformationSection = { value: 'section 3', items: [{ complete: completionStatus }] }
+    const finalInformationSectionIncomplete = { value: 'section 3', items: [{ complete: incompleteStatus }] }
     const planSummary = { sections: [aboutTheIndividualSection, addObjectivesSection, finalInformationSection] }
-    beforeEach(() => {
-      getAboutTheIndividual.mockReturnValueOnce(aboutTheIndividualSection)
-      getAddObjectives.mockReturnValueOnce(addObjectivesSection)
-      getFinalInformation.mockReturnValueOnce(finalInformationSection)
-    })
+    const planSummaryIncomplete = {
+      sections: [aboutTheIndividualSection, addObjectivesSection, finalInformationSectionIncomplete],
+    }
     describe('with a valid sentence plan', () => {
       beforeEach(async () => {
+        getAboutTheIndividual.mockReturnValueOnce(aboutTheIndividualSection)
+        getAddObjectives.mockReturnValueOnce(addObjectivesSection)
+        getFinalInformation.mockReturnValueOnce(finalInformationSection)
         getSentencePlan.mockReturnValueOnce(sentencePlan)
         await editPlan(req, res)
       })
@@ -56,7 +59,26 @@ describe('getSentencePlanSummary', () => {
         expect(getFinalInformation).toHaveBeenCalledWith(sentencePlan, path, completionStatus)
       })
       it('should set the correct render value', () => {
-        const expected = { id: 1, token: '1234', planSummary }
+        const expected = { planId: 2, id: 1, token: '1234', planSummary, disableStartButton: false }
+        expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
+      })
+    })
+    describe('with an incomplete sentence plan', () => {
+      beforeEach(async () => {
+        getAboutTheIndividual.mockReturnValueOnce(aboutTheIndividualSection)
+        getAddObjectives.mockReturnValueOnce(addObjectivesSection)
+        getFinalInformation.mockReturnValueOnce(finalInformationSectionIncomplete)
+        getSentencePlan.mockReturnValueOnce(sentencePlan)
+        await editPlan(req, res)
+      })
+      it('should set the correct render value when draft plan is incomplete', () => {
+        const expected = {
+          planId: 2,
+          id: 1,
+          token: '1234',
+          planSummary: planSummaryIncomplete,
+          disableStartButton: true,
+        }
         expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
       })
     })

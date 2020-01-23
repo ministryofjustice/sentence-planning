@@ -15,14 +15,7 @@ const editPlan = async ({ path, params: { id, planId }, session: { 'x-auth-token
       ],
     }
 
-    // if each section has a completed item, do not disable the 'start plan' button
-    const disableStartButton = !planSummary.sections.reduce((planCanBeStarted, section) => {
-      if (planCanBeStarted === false) return planCanBeStarted
-
-      return section.items.some(sectionItem => {
-        return sectionItem.complete === true
-      })
-    }, '')
+    const disableStartButton = !planSummary.sections[2].items[0].complete
 
     res.render(`${__dirname}/index`, { planId, id, token, planSummary, disableStartButton })
   } catch (error) {
