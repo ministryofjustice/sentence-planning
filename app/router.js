@@ -40,6 +40,7 @@ const createSentencePlan = require('../common/middleware/createSentencePlan')
 const { editPlan } = require('./editPlan/get.controller')
 
 const { postStartPlan } = require('./startPlan/post.controller')
+const { postEndPlan } = require('./endPlan/post.controller')
 
 // active plan pages
 const { getHomepage } = require('./activeplan/homepage/get.controller')
@@ -108,12 +109,17 @@ module.exports = app => {
   )
   app.post(`${editPlanRoute}/start-plan`, postStartPlan)
 
+  // end plan
+  app.get(`${activePlanRoute}/end-plan`, (req, res) =>
+    res.render('app/endPlan/index', { planId: req.params.planId, id: req.params.id })
+  )
+  app.post(`${activePlanRoute}/end-plan`, postEndPlan)
+
   // outstanding pages still to be developed
   app.get(
     [
       `${activePlanRoute}/print-full`,
       `${activePlanRoute}/print-simple`,
-      `${activePlanRoute}/end-plan`,
       `${activePlanRoute}/sentence-board-meeting`,
       `${activePlanRoute}/contact-arrangements`,
     ],

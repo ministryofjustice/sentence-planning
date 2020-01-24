@@ -112,6 +112,11 @@ function createMockAPI() {
     return res.sendStatus(200)
   })
 
+  app.post('/sentenceplans/:planid/end', (req, res) => {
+    logger.debug(`MockAPI ending plan ${req.params.planid}`)
+    return res.sendStatus(200)
+  })
+
   app.listen(18081)
 }
 module.exports = { createMockAPI }

@@ -31,6 +31,7 @@ const {
   getSentencePlanMeetings,
   getSentencePlanMeeting,
   startSentencePlan,
+  endSentencePlan,
 } = require('./sentencePlanningApi')
 
 describe('sentencePlanningApi', () => {
@@ -327,6 +328,21 @@ describe('sentencePlanningApi', () => {
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.post(startSentencePlanUrl).reply(400)
       await expect(startSentencePlan(planid, token)).rejects.toThrowError('Bad Request')
+    })
+  })
+
+  describe('endSentencePlan', () => {
+    const planid = '123'
+    const endSentencePlanUrl = `/sentenceplans/${planid}/end`
+
+    it('should return with empty body', async () => {
+      mockedEndpoint.post(endSentencePlanUrl).reply(200)
+      const output = await endSentencePlan(planid, token)
+      expect(output).toEqual({})
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.post(endSentencePlanUrl).reply(400)
+      await expect(endSentencePlan(planid, token)).rejects.toThrowError('Bad Request')
     })
   })
 })
