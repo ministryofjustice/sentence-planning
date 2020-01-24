@@ -24,13 +24,13 @@ describe('start sentence plan', () => {
     render: jest.fn(),
   }
 
-  it('should start the plan when there are no errors', async () => {
+  it('should end the plan when there are no errors', async () => {
     await postEndPlan(req, res)
     expect(endSentencePlan).toHaveBeenCalledWith(123, '1234')
     expect(res.redirect).toHaveBeenCalledWith('/individual-id/456/plans')
   })
 
-  it('should display an error if plan starting fails', async () => {
+  it('should display an error if plan ending fails', async () => {
     const theError = new Error('Error message')
     endSentencePlan.mockImplementation(() => {
       throw theError

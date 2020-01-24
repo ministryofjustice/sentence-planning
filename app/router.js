@@ -104,15 +104,15 @@ module.exports = app => {
   app.get(editPlanRoute, editPlan)
 
   // start plan
-  app.get(`${editPlanRoute}/start-plan`, (req, res) =>
-    res.render('app/startPlan/index', { planId: req.params.planId, id: req.params.id })
-  )
+  app.get(`${editPlanRoute}/start-plan`, ({ params: { planId, id } }, res) => {
+    res.render('app/startPlan/index', { planId, id })
+  })
   app.post(`${editPlanRoute}/start-plan`, postStartPlan)
 
   // end plan
-  app.get(`${activePlanRoute}/end-plan`, (req, res) =>
-    res.render('app/endPlan/index', { planId: req.params.planId, id: req.params.id })
-  )
+  app.get(`${activePlanRoute}/end-plan`, ({ params: { planId, id } }, res) => {
+    res.render('app/endPlan/index', { planId, id })
+  })
   app.post(`${activePlanRoute}/end-plan`, postEndPlan)
 
   // outstanding pages still to be developed
