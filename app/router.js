@@ -39,6 +39,8 @@ const { postAction, actionValidationRules } = require('./action/post.controller'
 const createSentencePlan = require('../common/middleware/createSentencePlan')
 const { editPlan } = require('./editPlan/get.controller')
 
+const { postStartPlan } = require('./startPlan/post.controller')
+
 // active plan pages
 const { getHomepage } = require('./activeplan/homepage/get.controller')
 const { getMeeting } = require('./activeplan/homepage/meetings/get.controller')
@@ -99,6 +101,12 @@ module.exports = app => {
   app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)
   app.get(`${offenderRoute}/edit-plan/new`, createSentencePlan)
   app.get(editPlanRoute, editPlan)
+
+  // start plan
+  app.get(`${editPlanRoute}/start-plan`, (req, res) =>
+    res.render('app/startPlan/index', { planId: req.params.planId, id: req.params.id })
+  )
+  app.post(`${editPlanRoute}/start-plan`, postStartPlan)
 
   // outstanding pages still to be developed
   app.get(

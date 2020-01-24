@@ -64,6 +64,11 @@ const updateSentencePlanObjectiveAction = (sentencePlanId, objectiveId, actionId
   return putData(path, token, action)
 }
 
+const startSentencePlan = (sentencePlanId, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/start`
+  return postData(path, token)
+}
+
 const getInterventions = token => {
   const path = `${url}/interventions`
   return getData(path, token)
@@ -153,4 +158,5 @@ module.exports = {
   getMotivations,
   getSentencePlanMeetings,
   getSentencePlanMeeting,
+  startSentencePlan,
 }
