@@ -89,6 +89,11 @@ const getSentencePlanMeeting = (individualId, meetingId, token) => {
   return getData(path, token)
 }
 
+const endSentencePlan = (sentencePlanId, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/end`
+  return postData(path, token)
+}
+
 const getData = async (path, token) => {
   logger.info(`Calling SentencePlanningApi: ${path}`)
   try {
@@ -159,4 +164,5 @@ module.exports = {
   getSentencePlanMeetings,
   getSentencePlanMeeting,
   startSentencePlan,
+  endSentencePlan,
 }

@@ -1,0 +1,37 @@
+{% extends "common/templates/layout.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set heading = "End active plan" %}
+{% set backurl = "/individual-id/" + id + "/plan/" + planId %}
+
+{% block pageTitle %}
+    {{ heading }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        href: backurl,
+        text: 'Back to plan'
+    }) }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-3">
+                Are you sure you want to end the plan?
+            </h1>
+            <p class="govuk-!-margin-bottom-6">
+                This will finish the plan. It will be marked as completed and then stored. You will not be able to change it again.
+            </p>
+            <form method="post" novalidate>
+                {{ govukButton ({
+                    text: 'Yes, end the plan',
+                    classes: 'govuk-button--warning govuk-!-margin-bottom-3'
+                }) }}
+                <p>or <a class="govuk-link" href="{{ backurl }}">no, go back</a></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}
