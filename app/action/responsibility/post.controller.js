@@ -19,12 +19,11 @@ const validationRules = () => {
       .custom((responsibility = []) =>
         responsibility.reduce((validates, value) => validates && options.includes(value), true)
       ),
-    body('responsibilityOther')
+    body('responsibilityOther', 'Name the person responsible')
       .if((_val, { req: { body: { responsibility = '' } } }) => responsibility.includes('OTHER'))
       .not()
       .isEmpty()
       .isString()
-      .withMessage('Name the person responsible')
       .bail()
       .trim()
       .escape()
