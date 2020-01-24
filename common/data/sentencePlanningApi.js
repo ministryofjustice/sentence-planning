@@ -164,5 +164,5 @@ module.exports = {
   getSentencePlanMeetings,
   getSentencePlanMeeting,
   startSentencePlan,
-  endSentencePlan
+  endSentencePlan,
 }
