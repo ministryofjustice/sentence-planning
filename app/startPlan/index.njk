@@ -1,6 +1,7 @@
 {% extends "common/templates/layout.njk" %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% set heading = "Start plan" %}
 {% set backurl = "/individual-id/" + planId + "/edit-plan/" + planId %}
@@ -11,7 +12,8 @@
 
 {% block beforeContent %}
     {{ govukBackLink({
-        href: backurl
+        href: backurl,
+        text: 'Back to plan'
     }) }}
 {% endblock %}
 
@@ -19,18 +21,18 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
-            <h1 class="govuk-heading-l">
-                {{ heading }}
-            </h1>
-
             <form method="post" novalidate>
-                <p>xxxx content outstanding xxxx</p>
-                {{ govukButton ({
-                    text: 'Yes, start the plan',
-                    href: addMeetingUrl,
-                    classes: 'govuk-button--warning govuk-!-margin-bottom-3'
+                {{ govukWarningText({
+                    text: "You must make sure the OASys risk assessment is closed",
+                    iconFallbackText: "Warning"
                 }) }}
-                <p>or <a class="govuk-link" href="{{ backurl }}">no, go back</a></p>
+                <p>Now you have started a new sentence plan you must make sure the OASys risk assessment is closed. Log into OASys and close the assessment.</p>
+                {{ govukButton ({
+                    text: 'Continue',
+                    href: addMeetingUrl,
+                    classes: 'govuk-!-margin-bottom-3'
+                }) }}
+                <p>or <a class="govuk-link" href="{{ backurl }}">go back</a></p>
             </form>
 
 
