@@ -55,7 +55,7 @@ const validationRules = () => {
   ]
 }
 const postTargetDate = ({ 'target-date-Month': month, 'target-date-Year': year }) => {
-  return { targetDate: new Date(Date.UTC(year, month - 1)).toISOString() }
+  return { targetDate: `${year}-${`0${month}`.substr(-2)}` }
 }
 
 module.exports = { postTargetDate, targetDateValidationRules: validationRules }
