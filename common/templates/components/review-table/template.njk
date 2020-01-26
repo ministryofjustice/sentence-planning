@@ -1,0 +1,21 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "moj/components/badge/macro.njk" import mojBadge -%}
+<div class="{{ params.classes if params.classes else 'govuk-!-margin-bottom-9' }}">
+<h2 class="govuk-heading-m">
+  {{ params.heading }}
+  {% if params.change.link %}
+    <span class="govuk-body" style="float: right;">
+      <a href="{{ params.change.link }}" class="govuk-link">
+        Change
+        {% if params.change.hiddenText %}
+          <span class="govuk-visually-hidden">{{ params.change.hiddenText }}</span>
+        {% endif %}
+      </a>
+    </span>
+  {% endif %}
+</h2>
+{{ govukTable({
+  firstCellIsHeader: true,
+  rows: params.rows
+})}}
+</div>
