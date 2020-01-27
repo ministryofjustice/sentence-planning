@@ -4,8 +4,8 @@ describe('postActionDescriptionIntervention', () => {
   const bodyIntervention = { actionType: 'intervention', intervention: 'Intervention', description: 'Description' }
   const bodyDescription = { actionType: 'description', intervention: 'Intervention', description: 'Description' }
 
-  const returnIntervention = { intervention: 'Intervention', description: '' }
-  const returnDescription = { intervention: '', description: 'Description' }
+  const returnIntervention = { interventionUUID: 'Intervention', description: '' }
+  const returnDescription = { interventionUUID: '', description: 'Description' }
 
   describe('with the intervention button selected', () => {
     it('should return the intervention and discard the description', () => {

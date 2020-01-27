@@ -29,9 +29,9 @@ const validationRules = () => {
       .withMessage('Select an intervention'),
   ]
 }
-const postActionDescriptionIntervention = ({ actionType, intervention = '', description = '' }) => {
-  logger.debug(`extracting actionType ${actionType}, description ${description}, intervention ${intervention}`)
-  return actionType === 'intervention' ? { intervention, description: '' } : { intervention: '', description }
+const postActionDescriptionIntervention = ({ actionType, intervention: interventionUUID = '', description = '' }) => {
+  logger.debug(`extracting actionType ${actionType}, description ${description}, interventionUUID ${interventionUUID}`)
+  return actionType === 'intervention' ? { interventionUUID, description: '' } : { interventionUUID: '', description }
 }
 
 module.exports = { postActionDescriptionIntervention, actionDescriptionInterventionValidationRules: validationRules }
