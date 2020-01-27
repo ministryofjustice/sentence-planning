@@ -35,6 +35,7 @@ const getAboutTheIndividual = ({ comments }, stub) => {
     ],
   }
 }
+
 const actionsComplete = (
   complete,
   { description = '', intervention = '', motivationUUID = '', updated = '', owner = [], ownerOther = '' }
@@ -42,7 +43,7 @@ const actionsComplete = (
   complete &&
   (description.length > 0 || intervention.length > 0) &&
   motivationUUID.length > 0 &&
-  updated.length > 0 &&
+  (updated === null || updated.length > 0) &&
   (owner.length > 0 || ownerOther.length > 0)
 const getAddObjectives = ({ objectives = [] }, stub) => {
   const addedObjectives = objectives.map(({ actions = [], needs = [], description = '', id }, index) => {
@@ -55,7 +56,7 @@ const getAddObjectives = ({ objectives = [] }, stub) => {
     }
     if (description.length === 0 && needs.length === 0) {
       addedObjective.statusText = NOT_STARTED
-    } else if (description.length > 0 && needs.length > 0 && actions.reduce(actionsComplete, true)) {
+    } else if (description.length > 0 && actions.reduce(actionsComplete, true)) {
       addedObjective.statusText = COMPLETED
       addedObjective.complete = true
     }
