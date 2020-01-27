@@ -4,7 +4,7 @@ describe('postResponsibility', () => {
   const responsibilityOther = 'Harold Skimpole'
   describe('with an owner', () => {
     it('should return the responsibility', () => {
-      expect(postResponsibility({ responsibility: ['SERVICE_USER'], responsibilityOther })).toEqual({
+      expect(postResponsibility({ responsibility: 'SERVICE_USER', responsibilityOther })).toEqual({
         owner: ['SERVICE_USER'],
         ownerOther: '',
       })
