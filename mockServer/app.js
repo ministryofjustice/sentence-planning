@@ -99,11 +99,11 @@ function createMockAPI() {
     return getFile('motivations', 'motivations', res)
   })
 
-  app.get('/offenders/:offenderId/reviews', (req, res) => {
-    return getFile('sentencePlanMeetings/summary', req.params.offenderId, res)
+  app.get('/sentenceplans/:planid/reviews', (req, res) => {
+    return getFile('sentencePlanMeetings/summary', req.params.planid, res)
   })
 
-  app.get('/offenders/:offenderId/reviews/:meetingId', (req, res) => {
+  app.get('/sentenceplans/:planid/reviews/:meetingId', (req, res) => {
     return getFile('sentencePlanMeetings/minutes', req.params.meetingId, res)
   })
 
