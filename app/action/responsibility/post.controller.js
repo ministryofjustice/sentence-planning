@@ -32,7 +32,7 @@ const validationRules = () => {
   ]
 }
 const postResponsibility = ({ responsibility: owner = [], responsibilityOther: ownerOther }) => {
-  return { owner, ownerOther: owner.includes('OTHER') ? ownerOther : '' }
+  return { owner: Array.isArray(owner) ? owner : [owner], ownerOther: owner.includes('OTHER') ? ownerOther : '' }
 }
 
 module.exports = { postResponsibility, responsibilityValidationRules: validationRules }
