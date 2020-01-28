@@ -21,7 +21,7 @@ const getObjectiveReview = async (req, res) => {
     session: { 'x-auth-token': token },
   } = req
   const nexturl = path.substring(0, path.lastIndexOf('/'))
-  const backurl = removeUrlLevels(path, 2)
+  const backurl = removeUrlLevels(path, 3)
   const objective = await getSentencePlanObjective(planId, objectiveId, token).catch(error =>
     renderError(`Could not retrieve objective ${objectiveId} for sentence plan ${planId}`, error, res)
   )
