@@ -1,8 +1,10 @@
 const { body } = require('express-validator')
+const { RESPONSIBLE_LIST } = require('../../../common/utils/util')
 
 const errorMessage = 'Select the person responsible'
-const options = ['SERVICE_USER', 'PRACTITIONER', 'OTHER']
 const otherMaxChars = 250
+
+const options = RESPONSIBLE_LIST.map(({ value }) => value)
 
 const validationRules = () => {
   return [

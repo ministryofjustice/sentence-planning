@@ -32,6 +32,7 @@ const { postComments, commentsValidationRules } = require('./comments/post.contr
 
 const { getObjective } = require('./objective/get.controller')
 const { postObjective, objectiveValidationRules } = require('./objective/post.controller')
+const { getObjectiveReview } = require('./objectiveReview/get.controller')
 
 const { getAction } = require('./action/get.controller')
 const { postAction, actionValidationRules } = require('./action/post.controller')
@@ -87,6 +88,7 @@ module.exports = app => {
   // objective
   app.get(editObjectiveRoute, getObjective)
   app.post(editObjectiveRoute, objectiveValidationRules(), validate, postObjective)
+  app.get(`${editObjectiveRoute}/review`, getObjectiveReview)
 
   // actions
   app.get(editActionRoute, getAction)
