@@ -1,5 +1,29 @@
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
 
+const STATUS_LIST = [
+  { text: 'To do', value: 'NOT_STARTED' },
+  { text: 'In progress', value: 'IN_PROGRESS' },
+  { text: 'Paused', value: 'PAUSED' },
+  { text: 'Completed', value: 'COMPLETED' },
+  { text: 'Partially completed', value: 'PARTIALLY_COMPLETED' },
+  { text: 'Abandoned', value: 'ABANDONED' },
+]
+
+const RESPONSIBLE_LIST = [
+  { text: 'Individual', value: 'SERVICE_USER' },
+  { text: 'Offender manager', value: 'PRACTITIONER' },
+  { text: 'Other', value: 'OTHER' },
+]
+
+const getStatusText = status => STATUS_LIST.find(({ value }) => status === value).text
+
+const getYearMonthFromDate = dateString => {
+  const date = new Date(dateString)
+  const month = date.getMonth() + 1
+  const monthName = date.toLocaleString('default', { month: 'long' })
+  return { month, monthName, year: date.getFullYear().toString() }
+}
+
 const isEmptyObject = obj => {
   if (obj === undefined || obj === null) return true
   return !Object.keys(obj).length
@@ -56,4 +80,15 @@ const groupBy = (list, keyGetter) => {
   return sortedObject
 }
 
-module.exports = { isEmptyObject, countWords, removeUrlLevels, sortObject, groupBy, UUID_REGEX }
+module.exports = {
+  getStatusText,
+  getYearMonthFromDate,
+  isEmptyObject,
+  countWords,
+  removeUrlLevels,
+  sortObject,
+  groupBy,
+  UUID_REGEX,
+  STATUS_LIST,
+  RESPONSIBLE_LIST,
+}

@@ -1,0 +1,118 @@
+{% extends "common/templates/layout.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "common/templates/components/review-table/macro.njk" import spReviewTable %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+
+
+{% set heading = "Review objective" %}
+{% set errorHeading = "Error - " + heading %}
+
+{% block pageTitle %}
+    {% if errors %}
+        {{ errorHeading }}
+    {% else %}
+        {{ heading }}
+    {% endif %}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: 'Back to draft plan',
+        href: backurl
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    {# include errorSummary partial #}
+    {{ super() }}
+    {% set objectiveNeeds %}
+      <ul class="govuk-!-padding-left-4 govuk-!-margin-top-0 govuk-!-margin-bottom-0`">
+        {% for need in objective.needs %}
+        <li>{{ need }}</li>
+        {% endfor %}
+      </ul>
+    {% endset %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Review objective</h1>
+            {{ spReviewTable({
+              heading: 'Objective summary',
+              change: { 
+                link: nexturl, 
+                hiddenText: 'objective' 
+              },
+              rows: [[
+                  {
+                    text: "Objective"
+                  },
+                  {
+                    text: objective.description
+                  }
+                ],
+                [
+                  {
+                    text: "Needs"
+                  },
+                  {
+                    html: objectiveNeeds
+                  }
+                ]
+              ]
+            }) }}
+
+            {% for action in objective.actions %}
+              {{ spReviewTable({
+                heading: 'Action ' + loop.index,
+                change: { 
+                  link: nexturl+'/edit-action/'+action.id, 
+                  hiddenText: 'action '+ loop.index
+                },
+                rows: [[
+                    {
+                      text: "Description"
+                    },
+                    {
+                      text: action.description
+                    }
+                  ],
+                  [
+                    {
+                      text: "Due date"
+                    },
+                    {
+                      text: action.targetDate
+                    }
+                  ],
+                  [
+                    {
+                      text: "Motivation"
+                    },
+                    {
+                      text: action.motivation
+                    }
+                  ],
+                  [
+                    {
+                      text: "Responsible Individual"
+                    },
+                    {
+                      text: action.owner
+                    }
+                  ],
+                  [
+                    {
+                      text: "Status"
+                    },
+                    {
+                      text: action.status
+                    }
+                  ]
+                ]
+              }) }}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
