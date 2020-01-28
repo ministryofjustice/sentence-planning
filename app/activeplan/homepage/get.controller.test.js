@@ -38,7 +38,7 @@ describe('showHomepage', () => {
       decisions: 'My decisions comment',
       diversity: 'My responsivity comment',
       needToKnow: 'Their responsivity comment',
-      meetings
+      meetings,
     }
     await getHomepage(req, res)
     expect(req.session.planStarted).toEqual(undefined)
