@@ -7,18 +7,15 @@ jest.mock('../../../common/data/sentencePlanningApi', () => ({
 
 const motivations = [
   {
-    friendlyText: 'In the dark',
-    motivationText: 'text to discard',
+    motivationText: 'In the dark',
     uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa1',
   },
   {
-    friendlyText: 'Doing it',
-    motivationText: 'more text to discard',
+    motivationText: 'Doing it',
     uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa2',
   },
   {
-    friendlyText: 'Off track',
-    motivationText: 'the final text to discard',
+    motivationText: 'Off track',
     uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa3',
   },
 ]
