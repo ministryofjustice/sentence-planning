@@ -152,8 +152,8 @@ describe('getAddObjectives', () => {
             {
               text: 'This is a very interesting objective',
               href: '/major/tom/edit-objective/123',
-              statusText: 'INCOMPLETE',
-              complete: false,
+              statusText: 'COMPLETED',
+              complete: true,
               hrefText: 'Add details',
             },
             {
