@@ -1,47 +1,48 @@
+{% macro displayObjective(item) %}
+  <ul class="app-task-list__items">
+    <li class="app-task-list__item">
+          <span class="app-task-list__task-name">
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
+              {{ item.description }}
+            </h3>
+            <p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-3">x of y actions completed</p>
+            <a href="#" class="govuk-link govuk-link--no-visited-state">
+              View objective and actions
+            </a>
+          </span>
+    </li>
+  </ul>
+{% endmacro %}
+
 <h3 class="govuk-heading-m govuk-!-font-size-27">
   Objectives
 </h3>
 <ul class="app-task-list">
-  <h2 class="app-task-list__section">
-    Active objectives
-  </h2>
-  <li>
-    {%- for item in objectives %}
-      this objective is {{ item.type }}
-      <ul class="app-task-list__items">
-        <li class="app-task-list__item">
-        <span class="app-task-list__task-name">
-          <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
-            {{ item.description }}
-          </h3>
-          <p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-3">0 of 1 actions completed</p>
-          <a href="/offender/goal?goal=goal1" class="govuk-link govuk-link--no-visited-state">
-            View objective and actions
-          </a>
-        </span>
-        </li>
-      </ul>
+  {%- if objectives.active %}
+    <h2 class="app-task-list__section">
+      Active objectives
+    </h2>
+    {%- for item in objectives.active %}
+      {{ displayObjective(item) }}
     {% endfor -%}
-  </li>
+  {% endif -%}
 
+  {%- if objectives.future %}
+    <h2 class="app-task-list__section">
+      Future objectives
+    </h2>
+    {%- for item in objectives.future %}
+      {{ displayObjective(item) }}
+    {% endfor -%}
+  {% endif -%}
 
-  <li>
+  {%- if objectives.closed %}
     <h2 class="app-task-list__section">
       Closed objectives
     </h2>
-    <ul class="app-task-list__items govuk-!-margin-bottom-0">
-      <li class="app-task-list__item">
-        <span class="app-task-list__task-name">
-          <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
-            An example of a closed objective
-          </h3>
-          <p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-3">1 of 1 actions completed</p>
-          <a href="#0" class="govuk-link govuk-link--no-visited-state">
-            View objective and actions
-          </a>
-        </span>
-      </li>
-    </ul>
-  </li>
+    {%- for item in objectives.closed %}
+      {{ displayObjective(item) }}
+    {% endfor -%}
+  {% endif -%}
 </ul>
 

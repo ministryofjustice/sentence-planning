@@ -42,4 +42,18 @@ const sortObject = (key, order = 'asc') => {
   }
 }
 
-module.exports = { isEmptyObject, countWords, removeUrlLevels, sortObject, UUID_REGEX }
+const groupBy = (list, keyGetter) => {
+  const sortedObject = {}
+  list.forEach(item => {
+    const key = keyGetter(item)
+    const collection = sortedObject[key]
+    if (!collection) {
+      sortedObject[key] = [item]
+    } else {
+      collection.push(item)
+    }
+  })
+  return sortedObject
+}
+
+module.exports = { isEmptyObject, countWords, removeUrlLevels, sortObject, groupBy, UUID_REGEX }

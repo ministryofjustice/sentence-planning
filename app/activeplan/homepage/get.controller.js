@@ -1,6 +1,7 @@
 const { logger } = require('../../../common/logging/logger')
 const { getSentencePlan, getSentencePlanMeetings } = require('../../../common/data/sentencePlanningApi')
 const { getCommentText } = require('../../../common/utils/getCommentText')
+const { groupBy } = require('../../../common/utils/util')
 
 const getHomepage = async (req, res) => {
   const {
@@ -22,13 +23,14 @@ const getHomepage = async (req, res) => {
     return res.render('app/error', { error })
   }
 
+  // determine the status of each objective
   objectives = objectives.map(objective => {
     const currentObjective = objective
-    currentObjective.type = 'unsorted'
 
-    if (currentObjective.actions.some(action => ['IN_PROGRESS', 'PAUSED'].includes(action.status))) {
-      currentObjective.type = 'active'
-    } else if (currentObjective.actions.every(action => ['NOT_STARTED'].includes(action.status))) {
+    // objectives default to active if not caught with the rules below
+    currentObjective.type = 'active'
+
+    if (currentObjective.actions.every(action => ['NOT_STARTED'].includes(action.status))) {
       currentObjective.type = 'future'
     } else if (
       currentObjective.actions.every(action =>
@@ -38,6 +40,10 @@ const getHomepage = async (req, res) => {
       currentObjective.type = 'closed'
     }
     return currentObjective
+  })
+
+  objectives = groupBy(objectives, item => {
+    return item.type
   })
 
   // get review meetings
