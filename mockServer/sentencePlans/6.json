@@ -44,6 +44,38 @@
           ],
           "priority": 0,
           "progress": [],
+          "status": "IN_PROGRESS",
+          "updated": "2019-12-04T15:33:28.545Z"
+        },
+        {
+          "id": "string",
+          "intervention": "string",
+          "motivationUUID": "string",
+          "ownerOther": "string",
+          "priority": 0,
+          "progress": [],
+          "status": "COMPLETED",
+          "updated": "2019-12-04T15:33:28.545Z"
+        }
+      ],
+      "description": "This is an active objective",
+      "id": "obj1",
+      "needs": [
+        "care"
+      ],
+      "priority": 0
+    },
+    {
+      "actions": [
+        {
+          "description": "string",
+          "id": "string",
+          "motivationUUID": "string",
+          "owner": [
+            "SERVICE_USER"
+          ],
+          "priority": 0,
+          "progress": [],
           "status": "NOT_STARTED",
           "updated": "2019-12-04T15:33:28.545Z"
         },
@@ -58,8 +90,50 @@
           "updated": "2019-12-04T15:33:28.545Z"
         }
       ],
-      "description": "This is a very interesting objective",
-      "id": "sausages",
+      "description": "This is a future objective",
+      "id": "obj2",
+      "needs": [
+        "care"
+      ],
+      "priority": 0
+    },
+    {
+      "actions": [
+        {
+          "description": "string",
+          "id": "string",
+          "motivationUUID": "string",
+          "owner": [
+            "SERVICE_USER"
+          ],
+          "priority": 0,
+          "progress": [],
+          "status": "COMPLETED",
+          "updated": "2019-12-04T15:33:28.545Z"
+        },
+        {
+          "id": "string",
+          "intervention": "string",
+          "motivationUUID": "string",
+          "ownerOther": "string",
+          "priority": 0,
+          "progress": [],
+          "status": "PARTIALLY_COMPLETED",
+          "updated": "2019-12-04T15:33:28.545Z"
+        },
+        {
+          "id": "string",
+          "intervention": "string",
+          "motivationUUID": "string",
+          "ownerOther": "string",
+          "priority": 0,
+          "progress": [],
+          "status": "ABANDONED",
+          "updated": "2019-12-04T15:33:28.545Z"
+        }
+      ],
+      "description": "This is a completed objective",
+      "id": "obj3",
       "needs": [
         "care"
       ],

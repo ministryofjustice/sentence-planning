@@ -66,6 +66,20 @@ const sortObject = (key, order = 'asc') => {
   }
 }
 
+const groupBy = (list, keyGetter) => {
+  const sortedObject = {}
+  list.forEach(item => {
+    const key = keyGetter(item)
+    const collection = sortedObject[key]
+    if (!collection) {
+      sortedObject[key] = [item]
+    } else {
+      collection.push(item)
+    }
+  })
+  return sortedObject
+}
+
 module.exports = {
   getStatusText,
   getYearMonthFromDate,
@@ -73,6 +87,7 @@ module.exports = {
   countWords,
   removeUrlLevels,
   sortObject,
+  groupBy,
   UUID_REGEX,
   STATUS_LIST,
   RESPONSIBLE_LIST,

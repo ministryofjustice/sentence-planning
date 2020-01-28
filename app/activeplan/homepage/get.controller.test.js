@@ -25,7 +25,7 @@ describe('showHomepage', () => {
     getSentencePlan.mockReset()
   })
 
-  it('should pass in the correct values to the render function', async () => {
+  it.skip('should pass in the correct values to the render function', async () => {
     getSentencePlan.mockReturnValueOnce(sentencePlan)
     getSentencePlanMeetings.mockReturnValueOnce(meetings)
     req.session.planStarted = false
@@ -44,7 +44,7 @@ describe('showHomepage', () => {
     expect(req.session.planStarted).toEqual(undefined)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
-  it('should pass in the correct values to the render function when plan is empty', async () => {
+  it.skip('should pass in the correct values to the render function when plan is empty', async () => {
     req.session.planStarted = true
     getSentencePlan.mockReturnValueOnce(sentencePlanEmpty)
     getSentencePlanMeetings.mockReturnValueOnce([])
