@@ -40,9 +40,7 @@ const getHomepage = async (req, res) => {
     return currentObjective
   })
 
-  objectives = groupBy(objectives, item => {
-    return item.type
-  })
+  objectives = groupBy(objectives, ({ type }) => type)
 
   // get review meetings
   try {
