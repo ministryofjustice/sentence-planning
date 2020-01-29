@@ -26,10 +26,15 @@ describe('showHomepage', () => {
     getSentencePlan.mockReset()
   })
 
-  it.skip('should pass in the correct values to the render function', async () => {
+  it('should pass in the correct values to the render function', async () => {
     getSentencePlan.mockReturnValueOnce(sentencePlan)
     getSentencePlanMeetings.mockReturnValueOnce(meetings)
     req.session.planStarted = false
+    const expectedObjectives = {
+      active: [sentencePlan.objectives[0], sentencePlan.objectives[3]],
+      future: [sentencePlan.objectives[1]],
+      closed: [sentencePlan.objectives[2]],
+    }
     const expected = {
       planId: 12,
       id: 123,
@@ -40,12 +45,13 @@ describe('showHomepage', () => {
       diversity: 'My responsivity comment',
       needToKnow: 'Their responsivity comment',
       meetings,
+      objectives: expectedObjectives,
     }
     await getHomepage(req, res)
     expect(req.session.planStarted).toEqual(undefined)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
-  it.skip('should pass in the correct values to the render function when plan is empty', async () => {
+  it('should pass in the correct values to the render function when plan is empty', async () => {
     req.session.planStarted = true
     getSentencePlan.mockReturnValueOnce(sentencePlanEmpty)
     getSentencePlanMeetings.mockReturnValueOnce([])
@@ -59,6 +65,7 @@ describe('showHomepage', () => {
       diversity: '',
       needToKnow: '',
       meetings: [],
+      objectives: {},
     }
     await getHomepage(req, res)
     expect(req.session.planStarted).toEqual(undefined)
