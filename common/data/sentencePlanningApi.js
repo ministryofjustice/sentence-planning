@@ -95,6 +95,9 @@ const endSentencePlan = (sentencePlanId, token) => {
 }
 
 const getData = async (path, token) => {
+  if (token === undefined) {
+    return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
+  }
   logger.info(`Calling SentencePlanningApi: ${path}`)
   try {
     return await superagent
@@ -109,6 +112,9 @@ const getData = async (path, token) => {
   }
 }
 const postData = async (path, token, data) => {
+  if (token === undefined) {
+    return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
+  }
   logger.info(`Calling SentencePlanningApi: ${path}`)
   try {
     return await superagent
@@ -125,6 +131,9 @@ const postData = async (path, token, data) => {
 }
 
 const putData = async (path, token, data) => {
+  if (token === undefined) {
+    return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
+  }
   logger.info(`Calling SentencePlanningApi: ${path}`)
   try {
     return await superagent

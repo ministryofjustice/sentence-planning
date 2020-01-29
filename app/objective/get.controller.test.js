@@ -80,9 +80,10 @@ describe('getObjective', () => {
       planId: 1,
       objectiveId: 'NEW',
     },
-    session: {
+    headers: {
       'x-auth-token': '1234',
     },
+    session: {},
     body: {},
     errors: {},
     errorSummary: {},

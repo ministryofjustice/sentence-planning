@@ -13,7 +13,8 @@ describe('showHomepage', () => {
       planId: 12,
       id: 123,
     },
-    session: {
+    session: {},
+    headers: {
       'x-auth-token': '1234',
     },
   }

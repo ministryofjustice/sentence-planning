@@ -32,7 +32,7 @@ const postAction = async (req, res) => {
     errors,
     body,
     params: { planId, objectiveId, actionId },
-    session: { 'x-auth-token': token },
+    headers: { 'x-auth-token': token },
   } = req
   // temporarily add values to the action
   const action = {

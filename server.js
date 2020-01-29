@@ -19,7 +19,6 @@ const logger = require('./common/logging/logger')
 const router = require('./app/router')
 const noCache = require('./common/utils/no-cache')
 const correlationHeader = require('./common/middleware/correlation-header')
-const { saveKeycloakHeaders: keycloakHeader, keycloakHeaders } = require('./common/middleware/save-keycloak-headers')
 const addUserInformation = require('./common/middleware/add-user-information')
 const { mdcSetup } = require('./common/logging/logger-mdc')
 const { createMockAPI } = require('./mockServer/app')
@@ -78,8 +77,17 @@ function initialiseGlobalMiddleware(app) {
 
   if (process.env.NODE_ENV === 'local') {
     app.use(allGateKeeperPages, (req, res, next) => {
+      const keycloakHeaders = [
+        'x-auth-name',
+        'x-auth-username',
+        'x-auth-given-name',
+        'x-auth-family-name',
+        'x-auth-email',
+        'x-auth-locations',
+        'x-auth-token',
+      ]
+      logger.info(`Running locally: setting default headers for ${keycloakHeaders}`)
       keycloakHeaders.forEach(headerName => {
-        logger.info(`Running locally: setting default header ${headerName}.`)
         req.headers[headerName] = `Test ${headerName}`
       })
       next()
@@ -88,7 +96,7 @@ function initialiseGlobalMiddleware(app) {
   }
 
   app.use(allGateKeeperPages, correlationHeader)
-  app.use(allGateKeeperPages, keycloakHeader)
+  // app.use(allGateKeeperPages, keycloakHeader)
   app.use(allGateKeeperPages, addUserInformation)
 
   // must be after session since we need session

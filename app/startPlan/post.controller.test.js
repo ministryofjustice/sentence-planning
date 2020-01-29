@@ -11,7 +11,8 @@ beforeEach(() => {
       planId: 123,
       id: 456,
     },
-    session: {
+    session: {},
+    headers: {
       'x-auth-token': '1234',
     },
   }

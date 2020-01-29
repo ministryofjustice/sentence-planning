@@ -8,7 +8,7 @@ const { getResponsibility } = require('./responsibility/get.controller')
 const { getStatus } = require('./status/get.controller')
 
 const getAction = async (
-  { path, errors, errorSummary, body, params: { planId, objectiveId, actionId }, session: { 'x-auth-token': token } },
+  { path, errors, errorSummary, body, params: { planId, objectiveId, actionId }, headers: { 'x-auth-token': token } },
   res
 ) => {
   let action = {}

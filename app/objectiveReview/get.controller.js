@@ -18,7 +18,7 @@ const getObjectiveReview = async (req, res) => {
     errors,
     errorSummary,
     params: { planId, objectiveId },
-    session: { 'x-auth-token': token },
+    headers: { 'x-auth-token': token },
   } = req
   const nexturl = path.substring(0, path.lastIndexOf('/'))
   const backurl = removeUrlLevels(path, 2)

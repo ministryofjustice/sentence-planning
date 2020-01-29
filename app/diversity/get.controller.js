@@ -3,7 +3,7 @@ const { getSentencePlanComments } = require('../../common/data/sentencePlanningA
 const { getCommentText } = require('../../common/utils/getCommentText')
 
 const getDiversity = async (
-  { path, errors, errorSummary, body, renderInfo, params: { planId }, session: { 'x-auth-token': token } },
+  { path, errors, errorSummary, body, renderInfo, params: { planId }, headers: { 'x-auth-token': token } },
   res
 ) => {
   const renderDetails = renderInfo || {}

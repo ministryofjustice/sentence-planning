@@ -16,7 +16,7 @@ describe('getSentencePlanSummary', () => {
       id: 1,
       planId: 2,
     },
-    session: {
+    headers: {
       'x-auth-token': '1234',
     },
   }

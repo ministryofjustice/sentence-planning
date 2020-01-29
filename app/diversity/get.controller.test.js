@@ -12,7 +12,7 @@ describe('getDiversity', () => {
     params: {
       planId: 1234,
     },
-    session: {
+    headers: {
       'x-auth-token': '1234',
     },
     body: {},

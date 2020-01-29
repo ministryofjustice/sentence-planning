@@ -35,7 +35,7 @@ const postDecisions = async (req, res) => {
         commentType: 'YOUR_SUMMARY',
       },
     ]
-    await setSentencePlanComment(req.params.planId, comment, req.session['x-auth-token'])
+    await setSentencePlanComment(req.params.planId, comment, req.headers['x-auth-token'])
     return res.redirect('./comments')
   } catch (error) {
     logger.error(`Could not save sentence plan comments 'YOUR_SUMMARY' for plan ${req.params.planId}, error: ${error}`)

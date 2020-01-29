@@ -31,7 +31,7 @@ describe('getAction', () => {
       objectiveId: '202',
       actionId: 'NEW',
     },
-    session: {
+    headers: {
       'x-auth-token': '1234',
     },
     body: {},

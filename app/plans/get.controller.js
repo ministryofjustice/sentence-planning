@@ -10,7 +10,7 @@ const getPlan = plans => {
   )
 }
 
-const sentencePlanSummary = async ({ params: { id }, session: { 'x-auth-token': token } }, res) => {
+const sentencePlanSummary = async ({ params: { id }, headers: { 'x-auth-token': token } }, res) => {
   try {
     const plans = await getSentencePlanSummary(id, token)
     const renderInfo = {}
