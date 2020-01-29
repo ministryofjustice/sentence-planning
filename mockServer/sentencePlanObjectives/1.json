@@ -35,8 +35,8 @@
   "id": 1,
   "needs": [
     "needsid_accommodation",
-    "needsid_wellbeing",
-    "needsid_inactive"
+    "a9ab6874-96c9-4b85-8b51-86b18b4bf091",
+    "a5023281-408e-4067-9770-3d6151f60505"
   ],
   "priority": 0
 }
