@@ -17,7 +17,7 @@ const getHomepage = async (req, res) => {
 
   // get the sentence plan
   try {
-    ;({ comments, objectives } = await getSentencePlan(planId, token))
+    ;({ comments, objectives = [] } = await getSentencePlan(planId, token))
   } catch (error) {
     logger.error(`Could not retrieve active sentence plan ${planId} for offender ${id}, error: ${error}`)
     return res.render('app/error', { error })
@@ -30,12 +30,10 @@ const getHomepage = async (req, res) => {
     // objectives default to active if not caught with the rules below
     currentObjective.type = 'active'
 
-    if (currentObjective.actions.every(action => ['NOT_STARTED'].includes(action.status))) {
+    if (currentObjective.actions.every(({ status }) => ['NOT_STARTED'].includes(status))) {
       currentObjective.type = 'future'
     } else if (
-      currentObjective.actions.every(action =>
-        ['COMPLETED', 'PARTIALLY_COMPLETED', 'ABANDONED'].includes(action.status)
-      )
+      currentObjective.actions.every(({ status }) => ['COMPLETED', 'PARTIALLY_COMPLETED', 'ABANDONED'].includes(status))
     ) {
       currentObjective.type = 'closed'
     }
