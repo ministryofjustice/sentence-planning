@@ -1,48 +1,39 @@
-{% macro displayObjective(item) %}
-  <ul class="app-task-list__items">
+{% macro displayObjective(objectives, sectionHeading) %}
+<h2 class="app-task-list__section">
+  {{ sectionHeading }}
+</h2>
+<ul class="app-task-list__items">
+  {%- for objective in objectives %}
     <li class="app-task-list__item">
-          <span class="app-task-list__task-name">
-            <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
-              {{ item.description }}
-            </h3>
-            <p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-3">x of y actions completed</p>
-            <a href="#" class="govuk-link govuk-link--no-visited-state">
-              View objective and actions
-            </a>
-          </span>
+      <span class="app-task-list__task-name">
+        <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
+          {{ objective.description }}
+        </h3>
+        <p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-3">x of y actions completed</p>
+        <a href="#" class="govuk-link govuk-link--no-visited-state">
+          View objective and actions
+        </a>
+      </span>
     </li>
-  </ul>
+  {% endfor -%}
+</ul>
 {% endmacro %}
 
 <h3 class="govuk-heading-m govuk-!-font-size-27">
   Objectives
 </h3>
+
 <ul class="app-task-list">
   {%- if objectives.active %}
-    <h2 class="app-task-list__section">
-      Active objectives
-    </h2>
-    {%- for item in objectives.active %}
-      {{ displayObjective(item) }}
-    {% endfor -%}
+    {{ displayObjective(objectives.active, 'Active objectives') }}
   {% endif -%}
 
   {%- if objectives.future %}
-    <h2 class="app-task-list__section">
-      Future objectives
-    </h2>
-    {%- for item in objectives.future %}
-      {{ displayObjective(item) }}
-    {% endfor -%}
+      {{ displayObjective(objectives.future, 'Future objectives') }}
   {% endif -%}
 
   {%- if objectives.closed %}
-    <h2 class="app-task-list__section">
-      Closed objectives
-    </h2>
-    {%- for item in objectives.closed %}
-      {{ displayObjective(item) }}
-    {% endfor -%}
+      {{ displayObjective(objectives.closed, 'Closed objectives') }}
   {% endif -%}
 </ul>
 
