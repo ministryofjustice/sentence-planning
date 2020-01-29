@@ -13,7 +13,7 @@ beforeEach(() => {
     params: {
       planId: 1,
     },
-    session: {
+    headers: {
       'x-auth-token': '1234',
     },
     body: {},
@@ -27,7 +27,7 @@ const expected = {
   params: {
     planId: 1,
   },
-  session: {
+  headers: {
     'x-auth-token': '1234',
   },
   body: {

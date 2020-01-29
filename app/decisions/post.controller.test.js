@@ -14,7 +14,7 @@ beforeEach(() => {
     params: {
       planId: 1,
     },
-    session: {
+    headers: {
       'x-auth-token': '1234',
     },
     body: {},
@@ -26,7 +26,7 @@ beforeEach(() => {
     params: {
       planId: 1,
     },
-    session: {
+    headers: {
       'x-auth-token': '1234',
     },
     body: {

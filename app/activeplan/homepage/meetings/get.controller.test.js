@@ -13,7 +13,7 @@ describe('getDiversity', () => {
       planId: 456,
       meetingId: 789,
     },
-    session: {
+    headers: {
       'x-auth-token': '1234',
     },
   }

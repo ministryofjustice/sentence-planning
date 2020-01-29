@@ -37,7 +37,7 @@ beforeEach(() => {
       objectiveId,
       actionId: 'NEW',
     },
-    session: {
+    headers: {
       'x-auth-token': token,
     },
     body: {

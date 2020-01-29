@@ -35,7 +35,7 @@ const postDiversity = async (req, res) => {
         commentType: 'YOUR_RESPONSIVITY',
       },
     ]
-    await setSentencePlanComment(req.params.planId, comment, req.session['x-auth-token'])
+    await setSentencePlanComment(req.params.planId, comment, req.headers['x-auth-token'])
     return res.redirect('./need-to-know')
   } catch (error) {
     logger.error(

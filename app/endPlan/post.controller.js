@@ -4,7 +4,7 @@ const { endSentencePlan } = require('../../common/data/sentencePlanningApi')
 const postEndPlan = async (req, res) => {
   const {
     params: { planId, id },
-    session: { 'x-auth-token': token },
+    headers: { 'x-auth-token': token },
   } = req
   try {
     await endSentencePlan(planId, token)

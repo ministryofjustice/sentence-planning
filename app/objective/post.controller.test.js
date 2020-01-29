@@ -15,9 +15,10 @@ beforeEach(() => {
       planId: 1,
       objectiveId: 'NEW',
     },
-    session: {
+    headers: {
       'x-auth-token': '1234',
     },
+    session: {},
     body: {},
     renderInfo: null,
   }
@@ -27,11 +28,12 @@ beforeEach(() => {
 
 const expected = {
   path: '/this/is/my/path',
+  session: {},
   params: {
     planId: 1,
     objectiveId: 'NEW',
   },
-  session: {
+  headers: {
     'x-auth-token': '1234',
   },
   body: {
