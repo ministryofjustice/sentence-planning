@@ -32,7 +32,8 @@ const postObjective = async (req, res) => {
     errors,
     body: { objective: objectiveDescription, needs },
     params: { planId, objectiveId },
-    session: { 'x-auth-token': token, noNeedsAvailable = false },
+    headers: { 'x-auth-token': token },
+    session: { noNeedsAvailable = false },
   } = req
 
   if (noNeedsAvailable) {

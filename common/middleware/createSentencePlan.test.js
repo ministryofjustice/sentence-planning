@@ -14,7 +14,7 @@ describe('Create a sentence plan.', () => {
   beforeEach(() => {
     req = {
       params: { id: 1 },
-      session: { 'x-auth-token': 'tolkien' },
+      headers: { 'x-auth-token': 'tolkien' },
       originalUrl: 'fakeUrl/new',
     }
     res = {

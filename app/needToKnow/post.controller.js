@@ -35,7 +35,7 @@ const postNeedToKnow = async (req, res) => {
         commentType: 'THEIR_RESPONSIVITY',
       },
     ]
-    await setSentencePlanComment(req.params.planId, comment, req.session['x-auth-token'])
+    await setSentencePlanComment(req.params.planId, comment, req.headers['x-auth-token'])
     return res.redirect(req.path.substring(0, req.path.lastIndexOf('/')))
   } catch (error) {
     logger.error(

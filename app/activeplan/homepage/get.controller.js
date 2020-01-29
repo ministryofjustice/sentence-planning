@@ -5,8 +5,9 @@ const { groupBy } = require('../../../common/utils/util')
 
 const getHomepage = async (req, res) => {
   const {
-    session: { planStarted = false, 'x-auth-token': token },
+    session: { planStarted = false },
     params: { planId, id },
+    headers: { 'x-auth-token': token },
   } = req
 
   let meetings

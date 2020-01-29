@@ -3,7 +3,7 @@ const { getSentencePlanMeeting } = require('../../../../common/data/sentencePlan
 
 const getMeeting = async (req, res) => {
   const {
-    session: { 'x-auth-token': token },
+    headers: { 'x-auth-token': token },
     params: { planId, id, meetingId },
   } = req
 

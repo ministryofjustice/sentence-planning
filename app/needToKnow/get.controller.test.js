@@ -12,7 +12,7 @@ describe('getNeedToKnow', () => {
     params: {
       planId: 1,
     },
-    session: {
+    headers: {
       'x-auth-token': '1234',
     },
     body: {},

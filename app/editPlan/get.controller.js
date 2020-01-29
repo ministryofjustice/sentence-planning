@@ -2,7 +2,7 @@ const { getSentencePlan } = require('../../common/data/sentencePlanningApi')
 const { getAboutTheIndividual, getAddObjectives, getFinalInformation } = require('./getTaskListData')
 const { logger } = require('../../common/logging/logger')
 
-const editPlan = async ({ path, params: { id, planId }, session: { 'x-auth-token': token } }, res) => {
+const editPlan = async ({ path, params: { id, planId }, headers: { 'x-auth-token': token } }, res) => {
   try {
     const sentencePlan = await getSentencePlan(planId, token)
     const stub = path
