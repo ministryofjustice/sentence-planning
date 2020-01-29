@@ -28,8 +28,8 @@ const expected = {
     planId: 1,
   },
   headers: {
-      'x-auth-token': '1234',
-    },
+    'x-auth-token': '1234',
+  },
   body: {
     needtoknow: 'a need to know comment',
   },
