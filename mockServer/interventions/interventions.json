@@ -23,5 +23,10 @@
     "longDescription": "Long description for Intervention 5",
     "shortDescription": "Intervention 5",
     "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa5"
+  },
+  {
+      "uuid": "29348eac-0034-4fc4-b045-fb3be9c7a28f",
+      "shortDescription": "Thinking Skills - SO",
+      "longDescription": "Thinking skills - sexual"
   }
 ]

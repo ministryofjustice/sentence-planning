@@ -10,17 +10,9 @@
       ],
       "ownerOther": "Uncle Bob",
       "priority": 0,
-      "progress": [
-          {
-              "comment": "string",
-              "created": "2019-12-16T11:51:29.032Z",
-              "createdBy": "string",
-              "motivationUUID": "3fa85f64-5717-4562-b3fc-2c963f66afa3",
-              "status": "NOT_STARTED",
-              "targetDate": "2022-05"
-          }
-      ],
+      "progress": [],
       "status": "NOT_STARTED",
+      "targetDate": "2022-05",
       "updated": "2019-12-16T11:51:29.032Z"
     },
     {
@@ -33,17 +25,9 @@
       ],
       "ownerOther": "",
       "priority": 0,
-      "progress": [
-          {
-              "comment": "string",
-              "created": "2019-12-16T11:51:29.032Z",
-              "createdBy": "string",
-              "motivationUUID": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-              "status": "NOT_STARTED",
-              "targetDate": "2021-04"
-          }
-      ],
+      "progress": [],
       "status": "NOT_STARTED",
+      "targetDate": "2021-04",
       "updated": "2019-12-16T11:51:29.032Z"
     }
   ],

@@ -10,7 +10,7 @@ const getMotivation = async (
     const motivations = await getMotivations(token)
     const currentMotivationUUID = bodyMotivationUUID || actionMotivationUUID || ''
     return {
-      motivationList: motivations.map(({ friendlyText: text, uuid: value }) => ({
+      motivationList: motivations.map(({ motivationText: text, uuid: value }) => ({
         text,
         value,
         checked: value === currentMotivationUUID,

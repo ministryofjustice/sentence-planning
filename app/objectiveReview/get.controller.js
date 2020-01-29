@@ -21,7 +21,7 @@ const getObjectiveReview = async (req, res) => {
     session: { 'x-auth-token': token },
   } = req
   const nexturl = path.substring(0, path.lastIndexOf('/'))
-  const backurl = removeUrlLevels(path, 2)
+  const backurl = removeUrlLevels(path, 3)
   const objective = await getSentencePlanObjective(planId, objectiveId, token).catch(error =>
     renderError(`Could not retrieve objective ${objectiveId} for sentence plan ${planId}`, error, res)
   )
@@ -46,14 +46,7 @@ const getObjectiveReview = async (req, res) => {
     )
   }
   objective.actions = objective.actions.map(action => {
-    const {
-      description,
-      intervention,
-      motivationUUID,
-      owner,
-      ownerOther,
-      progress: [{ targetDate, status }],
-    } = action
+    const { description, intervention, motivationUUID, owner, ownerOther, targetDate, status } = action
     const interventionText =
       intervention && `Intervension: ${interventions.find(({ uuid }) => uuid === intervention).shortDescription}`
     const { monthName, year } = getYearMonthFromDate(targetDate)
@@ -61,7 +54,7 @@ const getObjectiveReview = async (req, res) => {
     const ownerOtherText = ownerOther ? `: ${ownerOther}` : ''
     return {
       description: interventionText || description,
-      motivation: motivations.find(({ uuid }) => uuid === motivationUUID).friendlyText,
+      motivation: motivations.find(({ uuid }) => uuid === motivationUUID).motivationText,
       targetDate: `${monthName} ${year}`,
       owner: `${ownerText}${ownerOtherText}`,
       status: getStatusText(status),

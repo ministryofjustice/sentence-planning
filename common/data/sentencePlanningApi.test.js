@@ -268,7 +268,6 @@ describe('sentencePlanningApi', () => {
     it('should return an motivations list', async () => {
       const motivations = [
         {
-          friendlyText: 'string',
           motivationText: 'string',
           uuid: 'string',
         },
