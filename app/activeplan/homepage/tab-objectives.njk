@@ -9,8 +9,9 @@
         <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
           {{ objective.description }}
         </h3>
-        <p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-3">x of y actions completed</p>
-        <a href="#" class="govuk-link govuk-link--no-visited-state">
+        <p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-3">{{ objective.actionsCompleted }} of {{ objective.actions.length }} actions completed</p>
+          {% set objectiveView = "/individual-id/" + id + "/plan/" + planId + "/objective/" + objective.id%}
+          <a href="{{ objectiveView }}" class="govuk-link govuk-link--no-visited-state">
           View objective and actions
         </a>
       </span>
