@@ -50,7 +50,7 @@ describe('getAction', () => {
 
   it('should set the correct render values when adding a new action', async () => {
     const expected = {
-      backurl: '/this/is',
+      backurl: '/this/is/review',
       nexturl: '/this/is/my',
       errorSummary: {},
       errors: {},
@@ -70,7 +70,7 @@ describe('getAction', () => {
   it('should set the correct render values when editing an action', async () => {
     req.params.actionId = '1'
     const expected = {
-      backurl: '/this/is',
+      backurl: '/this/is/review',
       nexturl: '/this/is/my',
       errorSummary: {},
       errors: {},
