@@ -31,13 +31,9 @@ const getHomepage = async (req, res) => {
     // objectives default to active if not caught with the rules below
     currentObjective.type = 'active'
 
-    currentObjective.actionsCompleted = currentObjective.actions.reduce((total, { status }) => {
-      let currentTotal = total
-      if (['COMPLETED', 'PARTIALLY_COMPLETED', 'ABANDONED'].includes(status)) {
-        currentTotal += 1
-      }
-      return currentTotal
-    }, 0)
+    currentObjective.actionsCompleted = currentObjective.actions.filter(({ status }) =>
+      ['COMPLETED', 'PARTIALLY_COMPLETED', 'ABANDONED'].includes(status)
+    ).length
 
     if (currentObjective.actions.every(({ status }) => ['NOT_STARTED'].includes(status))) {
       currentObjective.type = 'future'
