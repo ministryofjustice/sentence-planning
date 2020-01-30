@@ -46,6 +46,8 @@ const { postEndPlan } = require('./endPlan/post.controller')
 // active plan pages
 const { getHomepage } = require('./activeplan/homepage/get.controller')
 const { getMeeting } = require('./activeplan/homepage/meetings/get.controller')
+const { getContactArrangements } = require('./activeplan/homepage/contactArrangements/get.controller')
+const { postContactArrangements, contactArrangementsValidationRules } = require('./activeplan/homepage/contactArrangements/post.controller')
 
 // Export
 module.exports = app => {
@@ -105,6 +107,15 @@ module.exports = app => {
   app.get(`${offenderRoute}/edit-plan/new`, createSentencePlan)
   app.get(editPlanRoute, editPlan)
 
+  // edit contact arrangements
+  app.get(`${activePlanRoute}/contact-arrangements`, getContactArrangements)
+  app.post(
+    `${activePlanRoute}/contact-arrangements`,
+    contactArrangementsValidationRules(),
+    validate,
+    postContactArrangements
+  )
+
   // start plan
   app.get(`${editPlanRoute}/start-plan`, ({ params: { planId, id } }, res) => {
     res.render('app/startPlan/index', { planId, id })
@@ -123,7 +134,6 @@ module.exports = app => {
       `${activePlanRoute}/print-full`,
       `${activePlanRoute}/print-simple`,
       `${activePlanRoute}/sentence-board-meeting`,
-      `${activePlanRoute}/contact-arrangements`,
       `${activePlanRoute}/objective/*`,
     ],
     (req, res) => res.send('Functionality still to be developed')
