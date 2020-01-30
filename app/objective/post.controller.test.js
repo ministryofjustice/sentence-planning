@@ -10,7 +10,6 @@ let req
 
 beforeEach(() => {
   req = {
-    path: '/this/is/my/path',
     params: {
       planId: 1,
       objectiveId: 'NEW',
@@ -27,7 +26,6 @@ beforeEach(() => {
 })
 
 const expected = {
-  path: '/this/is/my/path',
   session: {},
   params: {
     planId: 1,
@@ -97,7 +95,7 @@ describe('post or update objective', () => {
       '1234'
     )
     expect(addSentencePlanObjective).not.toHaveBeenCalled()
-    expect(res.redirect).toHaveBeenCalledWith('/this/is')
+    expect(res.redirect).toHaveBeenCalledWith('1/review')
   })
 
   it('should redisplay the page when there are errors', async () => {
