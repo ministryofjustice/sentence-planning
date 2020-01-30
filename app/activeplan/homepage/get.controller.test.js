@@ -30,11 +30,22 @@ describe('showHomepage', () => {
     getSentencePlan.mockReturnValueOnce(sentencePlan)
     getSentencePlanMeetings.mockReturnValueOnce(meetings)
     req.session.planStarted = false
-    const expectedObjectives = {
+    let expectedObjectives = {
       active: [sentencePlan.objectives[0], sentencePlan.objectives[3]],
       future: [sentencePlan.objectives[1]],
       closed: [sentencePlan.objectives[2]],
     }
+    expectedObjectives = JSON.stringify(expectedObjectives)
+    expectedObjectives = JSON.parse(expectedObjectives)
+
+    expectedObjectives.active[0].actionsCompleted = 1
+    expectedObjectives.active[0].type = 'active'
+    expectedObjectives.active[1].actionsCompleted = 2
+    expectedObjectives.active[1].type = 'active'
+    expectedObjectives.future[0].actionsCompleted = 0
+    expectedObjectives.future[0].type = 'future'
+    expectedObjectives.closed[0].actionsCompleted = 3
+    expectedObjectives.closed[0].type = 'closed'
     const expected = {
       planId: 12,
       id: 123,

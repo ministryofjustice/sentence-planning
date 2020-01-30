@@ -124,6 +124,7 @@ module.exports = app => {
       `${activePlanRoute}/print-simple`,
       `${activePlanRoute}/sentence-board-meeting`,
       `${activePlanRoute}/contact-arrangements`,
+      `${activePlanRoute}/objective/*`,
     ],
     (req, res) => res.send('Functionality still to be developed')
   )
