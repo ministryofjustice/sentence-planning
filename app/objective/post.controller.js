@@ -2,7 +2,7 @@ const { body } = require('express-validator')
 const { logger } = require('../../common/logging/logger')
 const { addSentencePlanObjective, updateSentencePlanObjective } = require('../../common/data/sentencePlanningApi')
 const { getObjective } = require('./get.controller')
-const { countWords, removeUrlLevels, isEmptyObject } = require('../../common/utils/util')
+const { countWords, isEmptyObject } = require('../../common/utils/util')
 
 const wordsAllowed = 50
 
@@ -28,7 +28,6 @@ const validationRules = () => {
 
 const postObjective = async (req, res) => {
   const {
-    path,
     errors,
     body: { objective: objectiveDescription, needs },
     params: { planId, objectiveId },
@@ -58,7 +57,7 @@ const postObjective = async (req, res) => {
       redirectUrl = `${newObjective.id}/edit-action/NEW`
     } else {
       await updateSentencePlanObjective(planId, objectiveId, objective, token)
-      redirectUrl = removeUrlLevels(path, 2)
+      redirectUrl = `${objectiveId}/review`
     }
     return res.redirect(redirectUrl)
   } catch (error) {
