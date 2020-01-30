@@ -47,7 +47,10 @@ const { postEndPlan } = require('./endPlan/post.controller')
 const { getHomepage } = require('./activeplan/homepage/get.controller')
 const { getMeeting } = require('./activeplan/homepage/meetings/get.controller')
 const { getContactArrangements } = require('./activeplan/homepage/contactArrangements/get.controller')
-const { postContactArrangements, contactArrangementsValidationRules } = require('./activeplan/homepage/contactArrangements/post.controller')
+const {
+  postContactArrangements,
+  contactArrangementsValidationRules,
+} = require('./activeplan/homepage/contactArrangements/post.controller')
 
 // Export
 module.exports = app => {
