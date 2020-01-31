@@ -1,7 +1,7 @@
 const { getTargetDate } = require('./get.controller')
 
 describe('getTargetDate', () => {
-  const action = { progress: [{ targetDate: '1972-05' }] }
+  const action = { targetDate: '1972-05' }
   const body = { 'target-date-Month': '7', 'target-date-Year': '1973' }
 
   const returnBlank = {
