@@ -79,13 +79,13 @@ const getMotivations = token => {
   return getData(path, token)
 }
 
-const getSentencePlanMeetings = (planId, token) => {
-  const path = `${url}/sentenceplans/${planId}/reviews`
+const getSentencePlanMeetings = (id, token) => {
+  const path = `${url}/offenders/${id}/reviews`
   return getData(path, token)
 }
 
-const getSentencePlanMeeting = (planId, meetingId, token) => {
-  const path = `${url}/sentenceplans/${planId}/reviews/${meetingId}`
+const getSentencePlanMeeting = (id, meetingId, token) => {
+  const path = `${url}/offenders/${id}/reviews/${meetingId}`
   return getData(path, token)
 }
 
