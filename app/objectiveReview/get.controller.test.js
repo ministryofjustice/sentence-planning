@@ -181,7 +181,7 @@ describe('getObjectiveReview', () => {
         )
       })
     })
-    describe('errors being thrown when there are data erros', () => {
+    describe('errors being thrown when there are data errors', () => {
       beforeEach(async () => {
         getInterventions.mockImplementation(mockPromise([{ uuid: 'sausages', shortDescription: 'sausages' }]))
         await getObjectiveReview(req, res)

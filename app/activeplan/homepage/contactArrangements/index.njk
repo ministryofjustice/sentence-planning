@@ -1,0 +1,61 @@
+{% extends "common/templates/layout.njk" %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+
+{% set heading = "Contact arrangements" %}
+{% set errorHeading = "Error - " + heading %}
+
+{% block pageTitle %}
+    {% if errors %}
+        {{ errorHeading }}
+    {% else %}
+        {{ heading }}
+    {% endif %}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        href: backurl
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    {# include errorSummary partial #}
+    {{ super() }}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <form method="post" novalidate>
+
+            {{  govukTextarea({
+                id: 'contactArrangements',
+                name: 'contactArrangements',
+                value: contactArrangements,
+                label: {
+                    classes: 'govuk-label--l',
+                    text: heading,
+                    isPageHeading: true
+                },
+                hint: {
+                    text: 'Say how often liaison or contact meetings will happen. Give the names of those involved and include their contact details.'
+                },
+                errorMessage: errors.contactArrangements
+            }) }}
+
+            {% if wordsOver %}
+            <span id="diversity-error" class="govuk-error-message extra-error">
+                You have {{ wordsOver }} words too many</span>
+            {% endif %}
+
+            {{ govukButton({
+                text: 'Save contact arrangements',
+                classes: 'govuk-!-margin-bottom-3'
+            }) }}
+                <p>or <a class="govuk-link" href="{{ backurl }}">cancel</a></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}
