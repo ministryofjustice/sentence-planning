@@ -49,9 +49,9 @@ const getHomepage = async (req, res) => {
 
   // get review meetings
   try {
-    meetings = await getSentencePlanMeetings(planId, token)
+    meetings = await getSentencePlanMeetings(id, token)
   } catch (error) {
-    logger.error(`Could not retrieve meetings for sentence plan ${planId}, error: ${error}`)
+    logger.error(`Could not retrieve meetings for offender ${id}, error: ${error}`)
     return res.render('app/error', { error })
   }
 

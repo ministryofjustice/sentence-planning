@@ -284,7 +284,7 @@ describe('sentencePlanningApi', () => {
 
   describe('getMeetings', () => {
     describe('getSentencePlanMeetings', () => {
-      const sentencePlanReviewsUrl = `/sentenceplans/${id}/reviews`
+      const sentencePlanReviewsUrl = `/offenders/${id}/reviews`
 
       it('should return sentence plan meetings data', async () => {
         mockedEndpoint.get(sentencePlanReviewsUrl).reply(200, sentencePlanMeetings)
@@ -301,7 +301,7 @@ describe('sentencePlanningApi', () => {
   describe('getMeeting', () => {
     const meetingId = 1
     describe('getSentencePlanMeeting', () => {
-      const sentencePlanReviewUrl = `/sentenceplans/${id}/reviews/${meetingId}`
+      const sentencePlanReviewUrl = `/offenders/${id}/reviews/${meetingId}`
 
       it('should return sentence plan meetings data', async () => {
         mockedEndpoint.get(sentencePlanReviewUrl).reply(200, sentencePlanMeeting)
