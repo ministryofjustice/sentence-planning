@@ -1,4 +1,4 @@
-const { countWords, isEmptyObject, removeUrlLevels, sortObject } = require('./util')
+const { countWords, isEmptyObject, removeUrlLevels, sortObject, catchAndReThrowError } = require('./util')
 
 const inputText = "There is a green hill far away - and I shouldn't tell you that really"
 
@@ -84,5 +84,17 @@ describe('sorts an object correctly', () => {
     const expected = input
     input.sort(sortObject('notarealkey', 'desc'))
     expect(input).toStrictEqual(expected)
+  })
+})
+describe('catchAndReThrowError', () => {
+  const initialErrorMessage = 'error message 1'
+  const initialError = new Error(initialErrorMessage)
+  const secondaryErrorMessage = 'error message 2'
+  const throwTheError = () => catchAndReThrowError(initialError, secondaryErrorMessage)
+  it('should throw an Error', () => {
+    expect(throwTheError).toThrow()
+  })
+  it('should concatenate the error message for the new error', () => {
+    expect(throwTheError).toThrowError(`Error: ${initialErrorMessage} ${secondaryErrorMessage}`)
   })
 })

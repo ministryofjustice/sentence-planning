@@ -1,3 +1,5 @@
+const { logger } = require('../logging/logger')
+
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
 
 const STATUS_LIST = [
@@ -80,6 +82,12 @@ const groupBy = (list, keyGetter) => {
   return sortedObject
 }
 
+const catchAndReThrowError = (msg, error) => {
+  const newError = new Error(`${msg} ${error}`)
+  logger.error(newError)
+  throw newError
+}
+
 module.exports = {
   getStatusText,
   getYearMonthFromDate,
@@ -88,6 +96,7 @@ module.exports = {
   removeUrlLevels,
   sortObject,
   groupBy,
+  catchAndReThrowError,
   UUID_REGEX,
   STATUS_LIST,
   RESPONSIBLE_LIST,

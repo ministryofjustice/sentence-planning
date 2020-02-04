@@ -1,6 +1,7 @@
 // Local dependencies
 const healthCheckFactory = require('../common/services/healthcheck')
 const getOffenderDetails = require('../common/middleware/getOffenderDetails')
+const { getObjectiveData } = require('../common/middleware/getObjectiveData')
 const {
   apis: { oauth2, offenderAssessment, sentencePlanning, elite2 },
 } = require('../common/config')
@@ -12,6 +13,7 @@ const editPlanRoute = `${offenderRoute}/edit-plan/:planId(${uuid})`
 const activePlanRoute = `${offenderRoute}/plan/:planId(${uuid})`
 const editObjectiveRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuidOrNewId})`
 const editActionRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuid})/edit-action/:actionId(${uuidOrNewId})`
+const activePlanObjectiveRoute = `${activePlanRoute}/objective/:objectiveId(${uuid})`
 
 const { validate } = require('../common/middleware/validator')
 
@@ -51,6 +53,8 @@ const {
   postContactArrangements,
   contactArrangementsValidationRules,
 } = require('./activeplan/homepage/contactArrangements/post.controller')
+
+const { getObjectiveView } = require('./objectiveView/get.controller')
 
 // Export
 module.exports = app => {
@@ -93,7 +97,8 @@ module.exports = app => {
   // objective
   app.get(editObjectiveRoute, getObjective)
   app.post(editObjectiveRoute, objectiveValidationRules(), validate, postObjective)
-  app.get(`${editObjectiveRoute}/review`, getObjectiveReview)
+  app.get(`${editObjectiveRoute}/review`, getObjectiveData, getObjectiveReview)
+  app.get(activePlanObjectiveRoute, getObjectiveData, getObjectiveView)
 
   // actions
   app.get(editActionRoute, getAction)
