@@ -1,6 +1,6 @@
 const { getYearMonthFromDate } = require('../../../common/utils/util')
 
-const getTargetDate = ({ progress: [{ targetDate = '' } = {}] = [] }, body = {}) => {
+const getTargetDate = ({ targetDate }, body = {}) => {
   let { 'target-date-Month': targetDateMonth = '', 'target-date-Year': targetDateYear = '' } = body
   if (!targetDateMonth && !targetDateYear && targetDate) {
     const { month, year } = getYearMonthFromDate(targetDate)
