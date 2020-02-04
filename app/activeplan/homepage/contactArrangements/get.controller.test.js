@@ -7,29 +7,26 @@ const commentsEmpty = {}
 const commentsPresent = require('../../../../mockServer/sentencePlanComments/1.json')
 
 describe('getContactArrangements', () => {
-  const req = {
-    path: '/this/is/my/path',
-    params: {
-      planId: 1234,
-    },
-    headers: {
-      'x-auth-token': '1234',
-    },
-    body: {},
-    errors: {},
-    errorSummary: {},
-    contactArrangements: null,
-  }
   const res = {
     render: jest.fn(),
   }
+  let req
 
   beforeEach(() => {
-    req.renderInfo = {}
-    delete req.body.contactArrangements
-  })
-
-  beforeEach(() => {
+    req = {
+      path: '/this/is/my/path',
+      params: {
+        planId: 1234,
+      },
+      headers: {
+        'x-auth-token': '1234',
+      },
+      body: {},
+      errors: {},
+      errorSummary: {},
+      contactArrangements: null,
+      renderInfo: {},
+    }
     getSentencePlanComments.mockReset()
   })
 

@@ -18,6 +18,9 @@ beforeEach(() => {
     },
     body: {},
   }
+})
+
+afterEach(() => {
   setSentencePlanComment.mockReset()
 })
 

@@ -5,10 +5,8 @@ const { getContactArrangements } = require('./get.controller')
 
 const validationRules = () => {
   return [
-    body('contactArrangements')
+    body('contactArrangements', 'Enter contact arrangements')
       .isLength({ min: 1 })
-      .withMessage('Enter contact arrangements'),
-    body('contactArrangements')
       .trim()
       .escape(),
   ]
