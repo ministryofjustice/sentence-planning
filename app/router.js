@@ -14,6 +14,8 @@ const activePlanRoute = `${offenderRoute}/plan/:planId(${uuid})`
 const editObjectiveRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuidOrNewId})`
 const editActionRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuid})/edit-action/:actionId(${uuidOrNewId})`
 const activePlanObjectiveRoute = `${activePlanRoute}/objective/:objectiveId(${uuid})`
+const activePlanNewObjectiveRoute = `${activePlanRoute}/edit-objective/:objectiveId(NEW)`
+const activePlanNewActionRoute = `${activePlanObjectiveRoute}/edit-action/:actionId(NEW)`
 
 const { validate } = require('../common/middleware/validator')
 
@@ -99,6 +101,8 @@ module.exports = app => {
   app.post(editObjectiveRoute, objectiveValidationRules(), validate, postObjective)
   app.get(`${editObjectiveRoute}/review`, getObjectiveData, getObjectiveReview)
   app.get(activePlanObjectiveRoute, getObjectiveData, getObjectiveView)
+  app.get(activePlanNewObjectiveRoute, getObjective)
+  app.post(activePlanNewObjectiveRoute, objectiveValidationRules(), validate, postObjective)
 
   // actions
   app.get(editActionRoute, getAction)
@@ -143,6 +147,7 @@ module.exports = app => {
       `${activePlanRoute}/print-simple`,
       `${activePlanRoute}/sentence-board-meeting`,
       `${activePlanRoute}/objective/*`,
+      activePlanNewActionRoute,
     ],
     (req, res) => res.send('Functionality still to be developed')
   )
