@@ -16,6 +16,8 @@ const editActionRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuid})/e
 const activePlanObjectiveRoute = `${activePlanRoute}/objective/:objectiveId(${uuid})`
 const activePlanNewObjectiveRoute = `${activePlanRoute}/edit-objective/:objectiveId(NEW)`
 const activePlanNewActionRoute = `${activePlanObjectiveRoute}/edit-action/:actionId(NEW)`
+const activePlanDisplayMeetingRoute = `${activePlanObjectiveRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`
+const activePlanAddMeetingRoute = `${activePlanObjectiveRoute}/add-sentence-plan-meeting`
 
 const { validate } = require('../common/middleware/validator')
 
@@ -112,9 +114,9 @@ module.exports = app => {
   app.get(activePlanRoute, getHomepage)
 
   // sentence plan meetings
-  app.get(`${activePlanRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`, getMeeting)
-  app.get(`${activePlanRoute}/add-sentence-plan-meeting`, getAddMeeting)
-  app.post(`${activePlanRoute}/add-sentence-plan-meeting`, addMeetingValidationRules(), validate, postAddMeeting)
+  app.get(activePlanDisplayMeetingRoute, getMeeting)
+  app.get(activePlanAddMeetingRoute, getAddMeeting)
+  app.post(activePlanAddMeetingRoute, addMeetingValidationRules(), validate, postAddMeeting)
 
   app.use(offenderRoute, getOffenderDetails)
   app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)
