@@ -53,9 +53,12 @@ const postAction = async (req, res) => {
     } else {
       await updateSentencePlanObjectiveAction(planId, objectiveId, actionId, action, token)
     }
-    const nextUrl =
-      body.addAnotherAction !== '' ? `${removeUrlLevels(path, 2)}/review` : `${removeUrlLevels(path, 1)}/NEW`
-    return res.redirect(nextUrl)
+    if (body.addAnotherAction === '') {
+      return res.redirect(`${removeUrlLevels(path, 1)}/NEW`)
+    }
+    return res.redirect(
+      `${removeUrlLevels(path, 2)}${path.match(/\/plan\/[0-9a-zA-Z-]+\/objective\//g) ? '' : '/review'}`
+    )
   } catch (error) {
     logger.error(`Could not save action ${actionId}, for objective ${objectiveId} and plan ${planId}, error: ${error}`)
     return res.render('app/error', { error })
