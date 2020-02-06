@@ -5,19 +5,19 @@ const {
 } = require('../../common/data/sentencePlanningApi')
 const { getAction } = require('./get.controller')
 const returnedAction = require('../../mockServer/sentencePlanActions/1.json')
-const { postActionDescriptionIntervention } = require('./interventionList/post.controller')
+const { postActionDescriptionIntervention } = require('../partials/interventionList/post.controller')
 
 jest.mock('../../common/data/sentencePlanningApi', () => ({
   addSentencePlanObjectiveAction: jest.fn(),
   updateSentencePlanObjectiveAction: jest.fn(),
 }))
-jest.mock('./interventionList/post.controller', () => ({
+jest.mock('../partials/interventionList/post.controller', () => ({
   postActionDescriptionIntervention: jest.fn(() => ({})),
 }))
-jest.mock('./targetDate/post.controller', () => ({
+jest.mock('../partials/targetDate/post.controller', () => ({
   postTargetDate: jest.fn(() => ({})),
 }))
-jest.mock('./responsibility/post.controller', () => ({
+jest.mock('../partials/responsibility/post.controller', () => ({
   postResponsibility: jest.fn(() => ({})),
 }))
 jest.mock('./get.controller')
