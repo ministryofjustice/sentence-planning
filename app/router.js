@@ -97,16 +97,14 @@ module.exports = app => {
   app.post(`${editPlanRoute}/comments`, commentsValidationRules(), validate, postComments)
 
   // objective
-  app.get(editObjectiveRoute, getObjective)
-  app.post(editObjectiveRoute, objectiveValidationRules(), validate, postObjective)
+  app.get([editObjectiveRoute, activePlanNewObjectiveRoute], getObjective)
+  app.post([editObjectiveRoute, activePlanNewObjectiveRoute], objectiveValidationRules(), validate, postObjective)
   app.get(`${editObjectiveRoute}/review`, getObjectiveData, getObjectiveReview)
   app.get(activePlanObjectiveRoute, getObjectiveData, getObjectiveView)
-  app.get(activePlanNewObjectiveRoute, getObjective)
-  app.post(activePlanNewObjectiveRoute, objectiveValidationRules(), validate, postObjective)
 
   // actions
-  app.get(editActionRoute, getAction)
-  app.post(editActionRoute, actionValidationRules(), validate, postAction)
+  app.get([editActionRoute, activePlanNewActionRoute], getAction)
+  app.post([editActionRoute, activePlanNewActionRoute], actionValidationRules(), validate, postAction)
 
   // active plan homepage
   app.get(activePlanRoute, getHomepage)
@@ -147,7 +145,6 @@ module.exports = app => {
       `${activePlanRoute}/print-simple`,
       `${activePlanRoute}/sentence-board-meeting`,
       `${activePlanRoute}/objective/*`,
-      activePlanNewActionRoute,
     ],
     (req, res) => res.send('Functionality still to be developed')
   )
