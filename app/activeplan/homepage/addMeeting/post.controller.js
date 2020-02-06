@@ -3,17 +3,7 @@ const { logger } = require('../../../../common/logging/logger')
 const { addSentencePlanMeeting } = require('../../../../common/data/sentencePlanningApi')
 const { getAddMeeting } = require('./get.controller')
 const { BLANK_ERROR } = require('../../../../common/utils/formatErrors')
-
-const isValidDate = (day, month, year) => {
-  const date = new Date()
-  date.setFullYear(year, month - 1, day)
-
-  return (
-    date.getFullYear() === parseInt(year, 10) &&
-    date.getMonth() === parseInt(month, 10) - 1 &&
-    date.getDate() === parseInt(day, 10)
-  )
-}
+const { isValidDate } = require('../../../../common/utils/util')
 
 const validationRules = () => {
   const currentDate = new Date()

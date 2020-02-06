@@ -88,6 +88,22 @@ const catchAndReThrowError = (msg, error) => {
   throw newError
 }
 
+const isValidDate = (day, month, year) => {
+  try {
+    const date = new Date()
+    date.setFullYear(year, month - 1, day)
+
+    return (
+      date.getFullYear() === parseInt(year, 10) &&
+      date.getMonth() === parseInt(month, 10) - 1 &&
+      date.getDate() === parseInt(day, 10)
+    )
+  } catch (error) {
+    logger.error(`Valid date check error for day:${day}, month:${month}, year:${year}, error: ${error}`)
+    return false
+  }
+}
+
 module.exports = {
   getStatusText,
   getYearMonthFromDate,
@@ -96,6 +112,7 @@ module.exports = {
   removeUrlLevels,
   sortObject,
   groupBy,
+  isValidDate,
   catchAndReThrowError,
   UUID_REGEX,
   STATUS_LIST,
