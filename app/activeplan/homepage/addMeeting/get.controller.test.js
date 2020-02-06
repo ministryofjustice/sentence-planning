@@ -1,85 +1,54 @@
-const { getContactArrangements } = require('./get.controller')
-const { getSentencePlanComments } = require('../../../../common/data/sentencePlanningApi')
-
-jest.mock('../../../../common/data/sentencePlanningApi')
-
-const commentsEmpty = {}
-const commentsPresent = require('../../../../mockServer/sentencePlanComments/1.json')
+const { getAddMeeting } = require('./get.controller')
 
 describe('getContactArrangements', () => {
-  const req = {
-    path: '/this/is/my/path',
-    params: {
-      planId: 1234,
-    },
-    headers: {
-      'x-auth-token': '1234',
-    },
-    body: {},
-    errors: {},
-    errorSummary: {},
-    contactArrangements: null,
-  }
   const res = {
     render: jest.fn(),
   }
+  let req
 
   beforeEach(() => {
-    req.renderInfo = {}
-    delete req.body.contactArrangements
+    req = {
+      path: '/this/is/my/path',
+      params: {
+        planId: 1234,
+      },
+      body: {},
+      errors: {},
+      errorSummary: {},
+      renderInfo: {},
+    }
   })
 
-  beforeEach(() => {
-    getSentencePlanComments.mockReset()
-  })
-
-  it('should set the correct render values when there are no existing comments', async () => {
+  it('should set the correct render values when there are no existing meeting details', async () => {
     const expected = {
-      backurl: '/this/is/my#contact',
-      errorSummary: {},
-      contactArrangements: '',
-      errors: {},
-    }
-    getSentencePlanComments.mockReturnValueOnce(commentsEmpty)
-    await getContactArrangements(req, res)
-    expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
-  })
-  it('should set the correct render values when there are existing comments', async () => {
-    delete req.body.contactArrangements
-    const expected = {
-      backurl: '/this/is/my#contact',
-      contactArrangements: 'Contact arrangements added for this plan',
+      backurl: '/this/is/my#meetings',
       errorSummary: {},
       errors: {},
+      meetingDateDay: '',
+      meetingDateMonth: '',
+      meetingDateYear: '',
     }
-    getSentencePlanComments.mockReturnValueOnce(commentsPresent)
-    await getContactArrangements(req, res)
+    await getAddMeeting(req, res)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
-  it('should pass through any renderInfo or contact information', async () => {
-    req.body.contactArrangements = 'A random contact arrangement comment'
-    req.renderInfo = {
-      testItem1: true,
-      textItem: 'hello',
+  it('should set the correct render values when meeting details are passed in', async () => {
+    req.body = {
+      comments: 'a comment',
+      attendees: 'some attendees',
+      'meeting-date-Day': '1',
+      'meeting-date-Month': '12',
+      'meeting-date-Year': '2018',
     }
     const expected = {
-      backurl: '/this/is/my#contact',
-      contactArrangements: 'A random contact arrangement comment',
+      backurl: '/this/is/my#meetings',
       errorSummary: {},
       errors: {},
-      testItem1: true,
-      textItem: 'hello',
+      ...req.body,
+      meetingDateDay: '1',
+      meetingDateMonth: '12',
+      meetingDateYear: '2018',
     }
-    getSentencePlanComments.mockReturnValueOnce(commentsPresent)
-    await getContactArrangements(req, res)
+    await getAddMeeting(req, res)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
-  })
-  it('should display an error if comments are not available', async () => {
-    const theError = new Error('Error message')
-    getSentencePlanComments.mockImplementation(() => {
-      throw theError
-    })
-    await getContactArrangements(req, res)
-    expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
   })
 })

@@ -1,6 +1,6 @@
-const { postContactArrangements } = require('./post.controller')
-const { setSentencePlanComment } = require('../../../../common/data/sentencePlanningApi')
-const { getContactArrangements } = require('./get.controller')
+const { postAddMeeting } = require('./post.controller')
+const { addSentencePlanMeeting } = require('../../../../common/data/sentencePlanningApi')
+const { getAddMeeting } = require('./get.controller')
 
 jest.mock('../../../../common/data/sentencePlanningApi')
 jest.mock('./get.controller')
@@ -16,9 +16,18 @@ beforeEach(() => {
     headers: {
       'x-auth-token': '1234',
     },
-    body: {},
+    body: {
+      comments: 'a comment',
+      attendees: 'some attendees',
+      'meeting-date-Day': '1',
+      'meeting-date-Month': '12',
+      'meeting-date-year': '2019',
+    },
   }
-  setSentencePlanComment.mockReset()
+})
+
+afterEach(() => {
+  addSentencePlanMeeting.mockReset()
 })
 
 const expected = {
@@ -30,14 +39,18 @@ const expected = {
     'x-auth-token': '1234',
   },
   body: {
-    contactArrangements: 'a contact arrangements comment',
+    comments: 'a comment',
+    attendees: 'some attendees',
+    'meeting-date-Day': '1',
+    'meeting-date-Month': '12',
+    'meeting-date-year': '2019',
   },
   errors: {
     errors: [
       {
         location: 'body',
         msg: 'Error message',
-        param: 'contactArrangements',
+        param: 'comments',
         value: '',
       },
     ],
@@ -50,39 +63,37 @@ describe('postContactArrangements', () => {
     render: jest.fn(),
   }
 
-  it('should save the contact entry when there are no errors', async () => {
-    req.body.contactArrangements = 'a contact arrangement comment'
-    await postContactArrangements(req, res)
-    expect(setSentencePlanComment).toHaveBeenCalledWith(
+  it('should save the meeting when there are no errors', async () => {
+    await postAddMeeting(req, res)
+    expect(addSentencePlanMeeting).toHaveBeenCalledWith(
       1,
-      [{ comment: 'a contact arrangement comment', commentType: 'LIAISON_ARRANGEMENTS' }],
+      { attendees: 'some attendees', comments: 'a comment', meetingDate: '2001-12-01T00:00:00.000Z' },
       '1234'
     )
-    expect(res.redirect).toHaveBeenCalledWith('/this/is/my#contact')
+    expect(res.redirect).toHaveBeenCalledWith('/this/is/my#meetings')
   })
 
   it('should redisplay the page when there are errors', async () => {
-    req.body.contactArrangements = 'a contact arrangements comment'
     req.errors = {
       errors: [
         {
           value: '',
           msg: 'Error message',
-          param: 'contactArrangements',
+          param: 'comments',
           location: 'body',
         },
       ],
     }
-    await postContactArrangements(req, res)
-    expect(setSentencePlanComment).not.toHaveBeenCalled()
-    expect(getContactArrangements).toHaveBeenCalledWith(expected, res)
+    await postAddMeeting(req, res)
+    expect(addSentencePlanMeeting).not.toHaveBeenCalled()
+    expect(getAddMeeting).toHaveBeenCalledWith(expected, res)
   })
-  it('should display an error if comments saving fails', async () => {
+  it('should display an error if meeting saving fails', async () => {
     const theError = new Error('Error message')
-    setSentencePlanComment.mockImplementation(() => {
+    addSentencePlanMeeting.mockImplementation(() => {
       throw theError
     })
-    await postContactArrangements(req, res)
+    await postAddMeeting(req, res)
     expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
   })
 })

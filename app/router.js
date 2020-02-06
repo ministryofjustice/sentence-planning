@@ -113,8 +113,8 @@ module.exports = app => {
 
   // sentence plan meetings
   app.get(`${activePlanRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`, getMeeting)
-  app.get(`${activePlanRoute}/sentence-plan-meeting`, getAddMeeting)
-  app.post(`${activePlanRoute}/sentence-plan-meeting`, addMeetingValidationRules(), validate, postAddMeeting)
+  app.get(`${activePlanRoute}/add-sentence-plan-meeting`, getAddMeeting)
+  app.post(`${activePlanRoute}/add-sentence-plan-meeting`, addMeetingValidationRules(), validate, postAddMeeting)
 
   app.use(offenderRoute, getOffenderDetails)
   app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)

@@ -46,7 +46,7 @@ const validationRules = () => {
       .withMessage('Day must be a number between 1 and 31'),
     body('meeting-date-Month')
       .custom(anyPresent)
-      .withMessage('Enter the meeting date')
+      .withMessage(BLANK_ERROR)
       .bail()
       .not()
       .isEmpty()
@@ -60,7 +60,7 @@ const validationRules = () => {
       .bail()
       .not()
       .isEmpty()
-      .withMessage('Enter the meeting date')
+      .withMessage('Enter the year for the meeting')
       .bail()
       .isLength({ min: 4, max: 4 })
       .withMessage('Year must be a 4-digit number')
@@ -124,9 +124,9 @@ const postAddMeeting = async (req, res) => {
       meetingDate,
     }
     await addSentencePlanMeeting(planId, meeting, token)
-    return res.redirect(`${path.substring(0, path.lastIndexOf('/'))}#contact`)
+    return res.redirect(`${path.substring(0, path.lastIndexOf('/'))}#meetings`)
   } catch (error) {
-    logger.error(`Could not save sentence plan comments 'LIAISON_ARRANGEMENTS' for plan ${planId}, error: ${error}`)
+    logger.error(`Could not save sentence plan meeting for plan ${planId}, error: ${error}`)
     return res.render('app/error', { error })
   }
 }
