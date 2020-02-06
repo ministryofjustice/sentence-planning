@@ -10,6 +10,7 @@ let req
 
 beforeEach(() => {
   req = {
+    path: 'individual-id/1/edit-plan/1/edit-objective/1',
     params: {
       planId: 1,
       objectiveId: 'NEW',
@@ -26,6 +27,7 @@ beforeEach(() => {
 })
 
 const expected = {
+  path: 'individual-id/1/edit-plan/1/edit-objective/1',
   session: {},
   params: {
     planId: 1,
@@ -156,5 +158,18 @@ describe('post or update objective', () => {
     })
     await controller.postObjective(req, res)
     expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
+  })
+  it('should alter the redirect render', async () => {
+    req.path = 'individual-id/1/plan/1/edit-objective/NEW'
+    req.body.objective = 'The objective description'
+    req.body.needs = ['needsid_ete', 'needsid_finance']
+    addSentencePlanObjective.mockReturnValueOnce(returnedObjective)
+    await controller.postObjective(req, res)
+    expect(addSentencePlanObjective).toHaveBeenCalledWith(
+      1,
+      { description: 'The objective description', needs: ['needsid_ete', 'needsid_finance'] },
+      '1234'
+    )
+    expect(res.redirect).toHaveBeenCalledWith('individual-id/1/plan/1/objective/1/edit-action/NEW')
   })
 })

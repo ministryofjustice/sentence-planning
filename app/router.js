@@ -1,6 +1,7 @@
 // Local dependencies
 const healthCheckFactory = require('../common/services/healthcheck')
 const getOffenderDetails = require('../common/middleware/getOffenderDetails')
+const { getObjectiveData } = require('../common/middleware/getObjectiveData')
 const {
   apis: { oauth2, offenderAssessment, sentencePlanning, elite2 },
 } = require('../common/config')
@@ -12,6 +13,9 @@ const editPlanRoute = `${offenderRoute}/edit-plan/:planId(${uuid})`
 const activePlanRoute = `${offenderRoute}/plan/:planId(${uuid})`
 const editObjectiveRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuidOrNewId})`
 const editActionRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuid})/edit-action/:actionId(${uuidOrNewId})`
+const activePlanObjectiveRoute = `${activePlanRoute}/objective/:objectiveId(${uuid})`
+const activePlanNewObjectiveRoute = `${activePlanRoute}/edit-objective/:objectiveId(NEW)`
+const activePlanNewActionRoute = `${activePlanObjectiveRoute}/edit-action/:actionId(NEW)`
 
 const { validate } = require('../common/middleware/validator')
 
@@ -54,6 +58,8 @@ const {
   contactArrangementsValidationRules,
 } = require('./activeplan/homepage/contactArrangements/post.controller')
 
+const { getObjectiveView } = require('./objectiveView/get.controller')
+
 // Export
 module.exports = app => {
   app.get('/health', (req, res, next) => {
@@ -93,13 +99,14 @@ module.exports = app => {
   app.post(`${editPlanRoute}/comments`, commentsValidationRules(), validate, postComments)
 
   // objective
-  app.get(editObjectiveRoute, getObjective)
-  app.post(editObjectiveRoute, objectiveValidationRules(), validate, postObjective)
-  app.get(`${editObjectiveRoute}/review`, getObjectiveReview)
+  app.get([editObjectiveRoute, activePlanNewObjectiveRoute], getObjective)
+  app.post([editObjectiveRoute, activePlanNewObjectiveRoute], objectiveValidationRules(), validate, postObjective)
+  app.get(`${editObjectiveRoute}/review`, getObjectiveData, getObjectiveReview)
+  app.get(activePlanObjectiveRoute, getObjectiveData, getObjectiveView)
 
   // actions
-  app.get(editActionRoute, getAction)
-  app.post(editActionRoute, actionValidationRules(), validate, postAction)
+  app.get([editActionRoute, activePlanNewActionRoute], getAction)
+  app.post([editActionRoute, activePlanNewActionRoute], actionValidationRules(), validate, postAction)
 
   // active plan homepage
   app.get(activePlanRoute, getHomepage)

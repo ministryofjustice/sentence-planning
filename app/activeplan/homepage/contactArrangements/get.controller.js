@@ -6,16 +6,21 @@ const getContactArrangements = async (
   { path, errors, errorSummary, body, renderInfo, params: { planId }, headers: { 'x-auth-token': token } },
   res
 ) => {
-  const renderDetails = renderInfo || {}
-  renderDetails.backurl = `${path.substring(0, path.lastIndexOf('/'))}#contact`
+  const backurl = `${path.substring(0, path.lastIndexOf('/'))}#contact`
   try {
-    const comments = await getSentencePlanComments(planId, token)
-    if (body.contactArrangements !== undefined) {
-      renderDetails.contactArrangements = body.contactArrangements
-    } else {
-      renderDetails.contactArrangements = getCommentText(comments, 'LIAISON_ARRANGEMENTS')
+    let { contactArrangements } = body
+    if (contactArrangements === undefined) {
+      const comments = await getSentencePlanComments(planId, token)
+      contactArrangements = getCommentText(comments, 'LIAISON_ARRANGEMENTS')
     }
-    return res.render(`${__dirname}/index`, { ...body, errors, errorSummary, ...renderDetails })
+    return res.render(`${__dirname}/index`, {
+      ...body,
+      errors,
+      errorSummary,
+      ...renderInfo,
+      backurl,
+      contactArrangements,
+    })
   } catch (error) {
     logger.error(`Could not retrieve sentence plan comments for ${planId}, error: ${error}`)
     return res.render('app/error', { error })

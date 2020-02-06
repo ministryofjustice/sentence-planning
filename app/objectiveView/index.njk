@@ -2,11 +2,14 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "common/templates/components/review-table/macro.njk" import spReviewTable %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "moj/components/button-menu/macro.njk" import mojButtonMenu %}
 
 
 
-{% set heading = "Review objective" %}
+{% set heading = "Objective and actions" %}
 {% set errorHeading = "Error - " + heading %}
+{% set buttonClasses='moj-button-menu__item moj-page-header-actions__action' %}
+{% set secondaryButtonClasses='govuk-button--secondary ' + buttonClasses %}
 
 {% block pageTitle %}
     {% if errors %}
@@ -27,6 +30,32 @@
 
     {# include errorSummary partial #}
     {{ super() }}
+    <div class="moj-page-header-actions">
+      <div class="moj-page-header-actions__title">
+        <h2 class="govuk-heading-l">
+          {{ heading }}
+        </h2>
+      </div>
+
+      <div class="moj-page-header-actions__actions moj-button-menu__float-right">
+        {{ mojButtonMenu({
+          classes: 'objective-menu',
+          items: [{
+            text: 'Add another action',
+            href: nextUrl+'/add-action',
+            classes: secondaryButtonClasses
+          }, {
+            text: 'Re-order actions ',
+            href: nextUrl+'/order-actions',
+            classes: secondaryButtonClasses
+          }, {
+            text: 'Close Objective',
+            href: nextUrl+'/Close',
+            classes: buttonClasses
+          }]
+        }) }}
+      </div>
+    </div>
     {% set objectiveNeeds %}
       <ul class="govuk-!-padding-left-4 govuk-!-margin-top-0 govuk-!-margin-bottom-0`">
         {% for need in objective.needs %}
@@ -37,13 +66,8 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l">Review objective</h1>
             {{ spReviewTable({
-              heading: 'Objective summary',
-              change: { 
-                link: nextUrl, 
-                hiddenText: 'objective' 
-              },
+              heading: 'Objective Details',
               rows: [[
                   {
                     text: "Objective"
@@ -66,10 +90,6 @@
             {% for action in objective.actions %}
               {{ spReviewTable({
                 heading: 'Action ' + loop.index,
-                change: { 
-                  link: nextUrl+'/edit-action/'+action.id, 
-                  hiddenText: 'action '+ loop.index
-                },
                 rows: [[
                     {
                       text: "Description"
@@ -112,13 +132,26 @@
                   ]
                 ]
               }) }}
+              {{ govukButton({
+                text: 'Update action',
+                href: nextUrl+'/update-action/'+action.id,
+                classes: 'govuk-button--secondary govuk-!-margin-bottom-9'
+              }) }}
             {% endfor %}
         </div>
     </div>
+{% endblock %}
 
-    {{ govukButton({
-      text: 'Save & Continue',
-      href: backUrl,
-      classes: 'govuk-!-margin-bottom-3'
-    }) }}
+{% block bodyEnd %}
+    {{ super() }}
+    <script src="/javascripts/jquery-3.4.1.min.js"></script>
+    <script src="/javascripts/all-moj.min.js"></script>
+    <script>
+      new MOJFrontend.ButtonMenu({
+        container: $('.objective-menu'),
+        buttonText: 'Options',
+        buttonClasses: 'govuk-button--primary moj-button-menu__toggle-button--primary'
+      });
+    </script>
+
 {% endblock %}

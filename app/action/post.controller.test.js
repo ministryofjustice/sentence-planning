@@ -111,6 +111,16 @@ describe('add a new action', () => {
       expect(res.redirect).toHaveBeenCalledWith('/this/is/review')
     })
   })
+  describe('with an active plan', () => {
+    it('should save the new action and redirect to the active plan "Objective and actions" page', async () => {
+      const expectedAction = { ...returnedAction }
+      req.path = '/plan/1/objective/edit-action/NEW'
+      await postAction(req, res)
+      expect(addSentencePlanObjectiveAction).toHaveBeenCalledWith(planId, objectiveId, expectedAction, token)
+      expect(updateSentencePlanObjectiveAction).not.toHaveBeenCalled()
+      expect(res.redirect).toHaveBeenCalledWith('/plan/1/objective')
+    })
+  })
 })
 describe('update an existing action', () => {
   describe('when the user wants to "Add another action"', () => {

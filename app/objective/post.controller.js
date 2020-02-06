@@ -2,7 +2,7 @@ const { body } = require('express-validator')
 const { logger } = require('../../common/logging/logger')
 const { addSentencePlanObjective, updateSentencePlanObjective } = require('../../common/data/sentencePlanningApi')
 const { getObjective } = require('./get.controller')
-const { countWords, isEmptyObject } = require('../../common/utils/util')
+const { countWords, isEmptyObject, removeUrlLevels } = require('../../common/utils/util')
 
 const wordsAllowed = 50
 
@@ -28,6 +28,7 @@ const validationRules = () => {
 
 const postObjective = async (req, res) => {
   const {
+    path,
     errors,
     body: { objective: objectiveDescription, needs },
     params: { planId, objectiveId },
@@ -51,13 +52,15 @@ const postObjective = async (req, res) => {
       needs,
     }
 
-    let redirectUrl
+    let redirectUrl = path.match(/\/plan\/[0-9a-zA-Z-]+\/edit-objective\/NEW+$/g)
+      ? `${removeUrlLevels(path, 2)}/objective/`
+      : ''
     if (objectiveId.toLowerCase() === 'new') {
       const newObjective = await addSentencePlanObjective(planId, objective, token)
-      redirectUrl = `${newObjective.id}/edit-action/NEW`
+      redirectUrl += `${newObjective.id}/edit-action/NEW`
     } else {
       await updateSentencePlanObjective(planId, objectiveId, objective, token)
-      redirectUrl = `${objectiveId}/review`
+      redirectUrl += `${objectiveId}/review`
     }
     return res.redirect(redirectUrl)
   } catch (error) {
