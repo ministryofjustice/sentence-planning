@@ -1,0 +1,126 @@
+{% extends "common/templates/layout.njk" %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+
+{% set heading = "Sentence plan meeting" %}
+{% set errorHeading = "Error - " + heading %}
+
+{% set meetingDateDayError %}
+    {% if errors['meeting-date-Day'] %}
+        <div id='meeting-date-Day-error'>{{ errors['meeting-date-Day'].text }}</div>
+    {% endif %}
+{% endset %}
+{% set meetingDateMonthError %}
+    {% if errors['meeting-date-Month'] %}
+        <div id='meeting-date-Month-error'>{{ errors['meeting-date-Month'].text }}</div>
+    {% endif %}
+{% endset %}
+{% set meetingDateYearError %}
+    {% if errors['meeting-date-Year'] %}
+        <div id='meeting-date-Year-error'>{{ errors['meeting-date-Year'].text }}</div>
+    {% endif %}
+{% endset %}
+{% if meetingDateDayError or meetingDateMonthError or meetingDateYearError %}
+    {% set meetingDateError = {html: meetingDateDayError+meetingDateMonthError+meetingDateYearError}%}
+{% endif %}
+
+{% block pageTitle %}
+    {% if errors %}
+        {{ errorHeading }}
+    {% else %}
+        {{ heading }}
+    {% endif %}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        href: backurl,
+        text: 'Back to plan'
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    {# include errorSummary partial #}
+    {{ super() }}
+
+    <div class="moj-page-header-actions">
+        <div class="moj-page-header-actions__title">
+            <h2 class="govuk-heading-l">
+                {{ heading }}
+            </h2>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <form method="post" novalidate>
+
+            {{  govukTextarea({
+                id: 'comments',
+                name: 'comments',
+                value: comments | safe,
+                label: {
+                    classes: 'govuk-label--m',
+                    text: 'Comments',
+                    isPageHeading: false
+                },
+                errorMessage: errors.comments
+            }) }}
+
+            {{  govukTextarea({
+                id: 'attendees',
+                name: 'attendees',
+                value: attendees | safe,
+                label: {
+                    classes: 'govuk-label--m',
+                    text: 'Attendees',
+                    isPageHeading: false
+                },
+                errorMessage: errors.attendees
+            }) }}
+
+
+            {{ govukDateInput({
+                id: "meeting-date",
+                namePrefix: "meeting-date",
+                fieldset: {
+                    legend: {
+                        text: "Date of meeting",
+                        classes: "govuk-fieldset__legend--m"
+                    }
+                },
+                items: [
+                    {
+                        name: "Day",
+                        classes: "govuk-input--width-2",
+                        value: meetingDateDay
+                    },
+                    {
+                        name: "Month",
+                        classes: "govuk-input--width-2",
+                        value: meetingDateMonth
+                    },
+                    {
+                        name: "Year",
+                        classes: "govuk-input--width-4",
+                        value: meetingDateYear
+                    }
+                ],
+                errorMessage: meetingDateError
+            }) }}
+
+
+
+            {{ govukButton({
+                text: 'Save meeting',
+                classes: 'govuk-!-margin-bottom-3'
+            }) }}
+                <p>or <a class="govuk-link" href="{{ backurl }}">cancel</a></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}

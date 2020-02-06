@@ -89,6 +89,11 @@ const getSentencePlanMeeting = (planId, meetingId, token) => {
   return getData(path, token)
 }
 
+const addSentencePlanMeeting = (sentencePlanId, meeting, token) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/reviews`
+  return postData(path, token, meeting)
+}
+
 const endSentencePlan = (sentencePlanId, token) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/end`
   return postData(path, token)
@@ -172,6 +177,7 @@ module.exports = {
   getMotivations,
   getSentencePlanMeetings,
   getSentencePlanMeeting,
+  addSentencePlanMeeting,
   startSentencePlan,
   endSentencePlan,
 }
