@@ -69,7 +69,7 @@ const validationRules = () => {
               body: { 'meeting-date-Month': month },
             },
           }
-        ) => new Date(year, month - 1) <= new Date(currentYear, currentDate.getMonth())
+        ) => new Date(year, month - 1) <= currentDate
       )
       .withMessage('Meeting date must be in the past')
       .bail()

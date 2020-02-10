@@ -57,11 +57,16 @@ const expected = {
   },
 }
 
-describe('postContactArrangements', () => {
+describe('postAddMeeting', () => {
   const res = {
     redirect: jest.fn(),
     render: jest.fn(),
   }
+
+  afterEach(() => {
+    res.redirect.mockReset()
+    res.render.mockReset()
+  })
 
   it('should save the meeting when there are no errors', async () => {
     await postAddMeeting(req, res)
