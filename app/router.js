@@ -16,8 +16,8 @@ const editActionRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuid})/e
 const activePlanObjectiveRoute = `${activePlanRoute}/objective/:objectiveId(${uuid})`
 const activePlanNewObjectiveRoute = `${activePlanRoute}/edit-objective/:objectiveId(NEW)`
 const activePlanNewActionRoute = `${activePlanObjectiveRoute}/edit-action/:actionId(NEW)`
-const activePlanDisplayMeetingRoute = `${activePlanObjectiveRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`
-const activePlanAddMeetingRoute = `${activePlanObjectiveRoute}/add-sentence-plan-meeting`
+const activePlanDisplayMeetingRoute = `${activePlanRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`
+const activePlanAddMeetingRoute = `${activePlanRoute}/add-sentence-plan-meeting`
 
 const { validate } = require('../common/middleware/validator')
 
