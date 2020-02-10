@@ -36,7 +36,7 @@
                         Comments
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        {{ meeting.comments }}
+                        {{ meeting.comments  | safe }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -44,7 +44,7 @@
                         Attendees
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        {{ meeting.attendees }}
+                        {{ meeting.attendees  | safe }}
                     </dd>
                 </div>
             </dl>

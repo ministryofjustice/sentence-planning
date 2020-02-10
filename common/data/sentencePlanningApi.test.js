@@ -30,6 +30,7 @@ const {
   getMotivations,
   getSentencePlanMeetings,
   getSentencePlanMeeting,
+  addSentencePlanMeeting,
   startSentencePlan,
   endSentencePlan,
 } = require('./sentencePlanningApi')
@@ -312,6 +313,26 @@ describe('sentencePlanningApi', () => {
         mockedEndpoint.get(sentencePlanReviewUrl).reply(400)
         await expect(getSentencePlanMeeting(id, meetingId, token)).rejects.toThrowError('Bad Request')
       })
+    })
+  })
+
+  describe('addSentencePlanMeeting', () => {
+    const planid = '1'
+    const sentencePlansAddMeetingUrl = `/sentenceplans/${planid}/reviews`
+    const data = {
+      comments: 'Description of the meeting',
+      attendees: 'these are the attendees',
+      dateOfBoard: '2020-02-03T00:00:00.000Z',
+    }
+
+    it('should save meeting', async () => {
+      mockedEndpoint.post(sentencePlansAddMeetingUrl).reply(200, {})
+      const output = await addSentencePlanMeeting(planid, data, token)
+      expect(output).toEqual({})
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.post(sentencePlansAddMeetingUrl).reply(400)
+      await expect(addSentencePlanMeeting(planid, data, token)).rejects.toThrowError('Bad Request')
     })
   })
 
