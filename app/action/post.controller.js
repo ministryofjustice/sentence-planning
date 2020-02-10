@@ -10,11 +10,11 @@ const mockAction = require('../../mockServer/sentencePlanActions/1.json')
 const {
   postActionDescriptionIntervention,
   actionDescriptionInterventionValidationRules,
-} = require('./interventionList/post.controller')
-const { postTargetDate, targetDateValidationRules } = require('./targetDate/post.controller')
-const { motivationValidationRules } = require('./motivations/post.controller')
-const { postResponsibility, responsibilityValidationRules } = require('./responsibility/post.controller')
-const { statusValidationRules } = require('./status/post.controller')
+} = require('../partials/interventionList/post.controller')
+const { postTargetDate, targetDateValidationRules } = require('../partials/targetDate/post.controller')
+const { motivationValidationRules } = require('../partials/motivations/post.controller')
+const { postResponsibility, responsibilityValidationRules } = require('../partials/responsibility/post.controller')
+const { statusValidationRules } = require('../partials/status/post.controller')
 
 const validationRules = () => {
   return [

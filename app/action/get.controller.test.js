@@ -1,23 +1,23 @@
 const { getAction } = require('./get.controller')
 const { getSentencePlanObjectiveAction } = require('../../common/data/sentencePlanningApi')
-const { getActionDescriptionIntervention } = require('./interventionList/get.controller')
+const { getActionDescriptionIntervention } = require('../partials/interventionList/get.controller')
 
 jest.mock('../../common/data/sentencePlanningApi', () => ({
   getSentencePlanObjectiveAction: jest.fn(),
 }))
-jest.mock('./interventionList/get.controller', () => ({
+jest.mock('../partials/interventionList/get.controller', () => ({
   getActionDescriptionIntervention: jest.fn(() => ({ intervention: '', description: '' })),
 }))
-jest.mock('./targetDate/get.controller', () => ({
+jest.mock('../partials/targetDate/get.controller', () => ({
   getTargetDate: jest.fn(() => ({ targetDateMonth: '', targetDateYear: '' })),
 }))
-jest.mock('./motivations/get.controller', () => ({
+jest.mock('../partials/motivations/get.controller', () => ({
   getMotivation: jest.fn(() => ({ motivationList: [] })),
 }))
-jest.mock('./responsibility/get.controller', () => ({
+jest.mock('../partials/responsibility/get.controller', () => ({
   getResponsibility: jest.fn(() => ({ responsibility: ['OTHER'], responsibilityOther: '' })),
 }))
-jest.mock('./status/get.controller', () => ({
+jest.mock('../partials/status/get.controller', () => ({
   getStatus: jest.fn(() => ({ status: 'NOT_STARTED' })),
 }))
 
