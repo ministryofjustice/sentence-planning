@@ -111,7 +111,7 @@ const postAddMeeting = async (req, res) => {
     const meeting = {
       comments,
       attendees,
-      meetingDate,
+      dateOfBoard: meetingDate,
     }
     await addSentencePlanMeeting(planId, meeting, token)
     return res.redirect(`${path.substring(0, path.lastIndexOf('/'))}#meetings`)

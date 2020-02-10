@@ -72,7 +72,7 @@ describe('postAddMeeting', () => {
     await postAddMeeting(req, res)
     expect(addSentencePlanMeeting).toHaveBeenCalledWith(
       1,
-      { attendees: 'some attendees', comments: 'a comment', meetingDate: '2001-12-01T00:00:00.000Z' },
+      { attendees: 'some attendees', comments: 'a comment', dateOfBoard: '2001-12-01T00:00:00.000Z' },
       '1234'
     )
     expect(res.redirect).toHaveBeenCalledWith('/this/is/my#meetings')
