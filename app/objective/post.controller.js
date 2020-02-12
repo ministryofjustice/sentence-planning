@@ -35,6 +35,7 @@ const validationRules = () => {
     body('objective')
       .isLength({ min: 1 })
       .withMessage('Describe the objective')
+      .bail()
       .custom(value => {
         return countWords(value) <= wordsAllowed
       })
