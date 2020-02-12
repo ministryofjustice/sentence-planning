@@ -4,11 +4,14 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 
 
 {% set heading = "Add an objective" %}
 {% set errorHeading = "Error - " + heading %}
+{% set needsHeading = "Needs identified in OASys related to this objective" %}
+
 
 {% block pageTitle %}
     {% if errors %}
@@ -56,25 +59,61 @@
                 You have {{ wordsOver }} words too many</span>
             {% endif %}
 
-            <div class="govuk-form-group">
-                {{ govukCheckboxes({
-                    idPrefix: "needs",
-                    name: "needs",
-                    classes: "govuk-checkboxes--small",
-                    fieldset: {
-                        legend: {
-                            text: "Needs identified in OASys related to this objective",
-                            isPageHeading: false,
-                            classes: "govuk-fieldset__legend govuk-fieldset__legend--m"
-                        }
-                    },
-                    hint: {
-                        text: "Select all that apply."
-                    },
-                    items: displayNeeds,
-                    errorMessage: errors.needs
-                }) }}
-            </div>
+
+    {% if displayNeeds | length %}
+        <div class="govuk-form-group">
+            {{ govukCheckboxes({
+                idPrefix: "needs",
+                name: "needs",
+                classes: "govuk-checkboxes--small",
+                fieldset: {
+                    legend: {
+                        text: needsHeading,
+                        isPageHeading: false,
+                        classes: "govuk-fieldset__legend govuk-fieldset__legend--m"
+                    }
+                },
+                hint: {
+                    text: "Select all that apply."
+                },
+                items: displayNeeds,
+                errorMessage: errors.needs
+            }) }}
+        </div>
+
+{% else %}
+
+    <h2 class="govuk-fieldset__legend govuk-fieldset__legend govuk-fieldset__legend--m">
+        {{ needsHeading }}
+    </h2>
+    <p>No criminogenic needs have been identified in OASys.</p>
+    <div class="govuk-inset-text">
+        <div class="govuk-form-group">
+            {{ govukCheckboxes({
+                idPrefix: "noNeedsConfirmation",
+                name: "noNeedsConfirmation",
+                classes: "govuk-checkboxes--small",
+                fieldset: {
+                    legend: {
+                        text: needsHeading,
+                        isPageHeading: false,
+                        classes: "govuk-visually-hidden"
+                    }
+                },
+                items: [
+                    {
+                        value:'confirm',
+                        html: '<p>Tick to confirm you have completed the risk assessment. <p class="govuk-!-margin-bottom-0">If the risk assessment was not completed, return to OASys and finish it before continuing. '
+                    }
+                ],
+                errorMessage: errors.noNeedsConfirmation
+            }) }}
+        </div>
+    </div>
+
+
+
+    {% endif %}
 
             {{ govukButton({
                 text: 'Continue',

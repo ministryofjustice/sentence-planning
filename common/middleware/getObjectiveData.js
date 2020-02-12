@@ -27,7 +27,11 @@ const getObjectiveData = async (req, res, next) => {
       const needs = await getSentencePlanNeeds(planId, token).catch(error =>
         catchAndReThrowError(`Could not retrieve needs for sentence plan ${planId}`, error)
       )
-      objective.needs = objective.needs.map(need => needs.find(({ id }) => id === need).name)
+      if (needs.length === 0) {
+        objective.needs = []
+      } else {
+        objective.needs = objective.needs.map(need => needs.find(({ id }) => id === need).name)
+      }
     }
     // only get intervention data if there is an action with an intervention
     const hasInterventions = !objective.actions.every(({ intervention }) => !intervention)

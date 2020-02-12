@@ -27,13 +27,20 @@
 
     {# include errorSummary partial #}
     {{ super() }}
-    {% set objectiveNeeds %}
-      <ul class="govuk-!-padding-left-4 govuk-!-margin-top-0 govuk-!-margin-bottom-0`">
-        {% for need in objective.needs %}
-        <li>{{ need }}</li>
-        {% endfor %}
-      </ul>
-    {% endset %}
+
+    {% if objective.needs | length %}
+        {% set objectiveNeeds %}
+            <ul class="govuk-!-padding-left-4 govuk-!-margin-top-0 govuk-!-margin-bottom-0`">
+                {% for need in objective.needs %}
+                    <li>{{ need }}</li>
+                {% endfor %}
+            </ul>
+        {% endset %}
+    {% else %}
+        {% set objectiveNeeds %}
+            The OASys assessment identified no needs
+        {% endset %}
+    {% endif %}
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
