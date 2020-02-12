@@ -8,6 +8,7 @@ const {
 const interventionsMockData = require('../../mockServer/interventions/interventions.json')
 const motivationsMockData = require('../../mockServer/motivations/motivations.json')
 const needsMock = require('../../mockServer/sentencePlanNeeds/1.json')
+const noNeedsMock = require('../../mockServer/sentencePlanNeeds/4.json')
 const objectiveMockDataJSON = JSON.stringify(require('../../mockServer/sentencePlanObjectives/1.json'))
 
 jest.mock('../../common/data/sentencePlanningApi', () => ({
@@ -80,6 +81,20 @@ describe('getObjectiveData', () => {
       expect(next).toHaveBeenCalled()
     })
   })
+
+  describe('With no needs being returned', () => {
+    beforeEach(async () => {
+      getSentencePlanNeeds.mockImplementation(mockPromise(noNeedsMock))
+      await getObjectiveData(req, res, next)
+    })
+    it('it should request the needs data', async () => {
+      expect(getSentencePlanNeeds).toHaveBeenCalledWith(planId, token)
+    })
+    it('it should populate the renderInfo with no needs', async () => {
+      expect(req.renderInfo.objective.needs).toEqual([])
+    })
+  })
+
   describe('With objective data with no needs or interventions', () => {
     beforeEach(async () => {
       objectiveMockData.needs = null
