@@ -34,13 +34,11 @@ const validationRules = () => {
   return [
     body('objective')
       .isLength({ min: 1 })
-      .withMessage('Describe the objective'),
-    body('objective')
+      .withMessage('Describe the objective')
       .custom(value => {
         return countWords(value) <= wordsAllowed
       })
-      .withMessage('Objective description must be 50 words or fewer'),
-    body('objective')
+      .withMessage('Objective description must be 50 words or fewer')
       .trim()
       .escape(),
     body('needs')
@@ -48,11 +46,11 @@ const validationRules = () => {
       .withMessage(BLANK_ERROR)
       .bail()
       .isLength({ min: 1 })
-      .withMessage('Select the needs for this objective'),
-    body('needs').toArray(),
-    body('noNeedsConfirmation')
-      .custom(confirmNoNeeds)
-      .withMessage('You must confirm that you have completed the OASys risk assessment'),
+      .withMessage('Select the needs for this objective')
+      .toArray(),
+    body('noNeedsConfirmation', 'You must confirm that you have completed the OASys risk assessment').custom(
+      confirmNoNeeds
+    ),
   ]
 }
 
