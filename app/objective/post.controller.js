@@ -40,6 +40,7 @@ const validationRules = () => {
         return countWords(value) <= wordsAllowed
       })
       .withMessage('Objective description must be 50 words or fewer')
+      .bail()
       .trim()
       .escape(),
     body('needs')
@@ -48,6 +49,7 @@ const validationRules = () => {
       .bail()
       .isLength({ min: 1 })
       .withMessage('Select the needs for this objective')
+      .bail()
       .toArray(),
     body('noNeedsConfirmation', 'You must confirm that you have completed the OASys risk assessment').custom(
       confirmNoNeeds
