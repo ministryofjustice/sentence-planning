@@ -16,6 +16,8 @@ const editActionRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuid})/e
 const activePlanObjectiveRoute = `${activePlanRoute}/objective/:objectiveId(${uuid})`
 const activePlanNewObjectiveRoute = `${activePlanRoute}/edit-objective/:objectiveId(NEW)`
 const activePlanNewActionRoute = `${activePlanObjectiveRoute}/edit-action/:actionId(NEW)`
+const activePlanDisplayMeetingRoute = `${activePlanRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`
+const activePlanAddMeetingRoute = `${activePlanRoute}/add-sentence-plan-meeting`
 
 const { validate } = require('../common/middleware/validator')
 
@@ -49,7 +51,9 @@ const { postEndPlan } = require('./endPlan/post.controller')
 
 // active plan pages
 const { getHomepage } = require('./activeplan/homepage/get.controller')
-const { getMeeting } = require('./activeplan/homepage/meetings/get.controller')
+const { getMeeting } = require('./activeplan/homepage/displayMeeting/get.controller')
+const { getAddMeeting } = require('./activeplan/homepage/addMeeting/get.controller')
+const { postAddMeeting, addMeetingValidationRules } = require('./activeplan/homepage/addMeeting/post.controller')
 const { getContactArrangements } = require('./activeplan/homepage/contactArrangements/get.controller')
 const {
   postContactArrangements,
@@ -110,7 +114,9 @@ module.exports = app => {
   app.get(activePlanRoute, getHomepage)
 
   // sentence plan meetings
-  app.get(`${activePlanRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`, getMeeting)
+  app.get(activePlanDisplayMeetingRoute, getMeeting)
+  app.get(activePlanAddMeetingRoute, getAddMeeting)
+  app.post(activePlanAddMeetingRoute, addMeetingValidationRules(), validate, postAddMeeting)
 
   app.use(offenderRoute, getOffenderDetails)
   app.get([offenderRoute, `${offenderRoute}/plans`], sentencePlanSummary)
@@ -140,12 +146,7 @@ module.exports = app => {
 
   // outstanding pages still to be developed
   app.get(
-    [
-      `${activePlanRoute}/print-full`,
-      `${activePlanRoute}/print-simple`,
-      `${activePlanRoute}/sentence-board-meeting`,
-      `${activePlanRoute}/objective/*`,
-    ],
+    [`${activePlanRoute}/print-full`, `${activePlanRoute}/print-simple`, `${activePlanRoute}/objective/*`],
     (req, res) => res.send('Functionality still to be developed')
   )
 

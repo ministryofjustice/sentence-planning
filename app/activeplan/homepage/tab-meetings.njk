@@ -4,7 +4,7 @@
   Sentence plan meetings
 </h3>
 
-{% if meetings %}
+{% if meetings | length %}
   <ul class="govuk-list">
     {%- for item in meetings | sort(attribute='dateOfBoard') %}
     <li>
@@ -14,7 +14,7 @@
   </ul>
 
   {{ govukButton ({
-    text: 'Add another review',
+    text: 'Add another meeting',
     href: addMeetingUrl,
     classes: 'govuk-button--secondary'
   }) }}

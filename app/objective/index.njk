@@ -39,7 +39,7 @@
             {{  govukCharacterCount({
                 id: 'objective',
                 name: 'objective',
-                value: description,
+                value: description | safe,
                 label: {
                     classes: 'govuk-label--m',
                     text: 'Objective description'

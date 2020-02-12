@@ -1,4 +1,4 @@
-const { countWords, isEmptyObject, removeUrlLevels, sortObject, catchAndReThrowError } = require('./util')
+const { countWords, isEmptyObject, removeUrlLevels, sortObject, catchAndReThrowError, isValidDate } = require('./util')
 
 const inputText = "There is a green hill far away - and I shouldn't tell you that really"
 
@@ -96,5 +96,18 @@ describe('catchAndReThrowError', () => {
   })
   it('should concatenate the error message for the new error', () => {
     expect(throwTheError).toThrowError(`Error: ${initialErrorMessage} ${secondaryErrorMessage}`)
+  })
+})
+
+describe('should check if date is valid', () => {
+  it('likes a valid date input', () => {
+    expect(isValidDate(1, 10, 2015)).toEqual(true)
+  })
+  it('returns false when an invalid date is input', () => {
+    expect(isValidDate(31, 9, 2015)).toEqual(false)
+    expect(isValidDate(29, 2, 2015)).toEqual(false)
+  })
+  it('return false when nonsense is put in', () => {
+    expect(isValidDate('fish fingers', 'chips', 'peas')).toEqual(false)
   })
 })
