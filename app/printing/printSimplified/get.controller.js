@@ -1,7 +1,7 @@
 const { logger } = require('../../../common/logging/logger')
 const { removeUrlLevels } = require('../../../common/utils/util')
 
-const printFullSentencePlan = async ({ path, params: { id, planId } }, res) => {
+const printSimplifiedSentencePlan = async ({ path, params: { id, planId } }, res) => {
   try {
     const backUrl = removeUrlLevels(path, 1)
     res.render(`${__dirname}/index`, { backUrl })
@@ -11,4 +11,4 @@ const printFullSentencePlan = async ({ path, params: { id, planId } }, res) => {
   }
 }
 
-module.exports = { printFullSentencePlan }
+module.exports = { printSimplifiedSentencePlan }

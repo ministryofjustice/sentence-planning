@@ -1,6 +1,6 @@
-const { printFullSentencePlan } = require('./get.controller')
+const { printSimplifiedSentencePlan } = require('./get.controller')
 
-describe('printFullSentencePlan', () => {
+describe('printSimplifiedSentencePlan', () => {
   const req = {
     path: 'lead/me/up/the/garden/path',
     params: {
@@ -19,7 +19,7 @@ describe('printFullSentencePlan', () => {
       const expected = {
         backUrl: 'lead/me/up/the/garden',
       }
-      await printFullSentencePlan(req, res)
+      await printSimplifiedSentencePlan(req, res)
       expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
     })
 

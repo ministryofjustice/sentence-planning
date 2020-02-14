@@ -26,58 +26,18 @@
 
             <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
-            <span class="govuk-caption-l govuk-!-margin-top-5">Sentence plan</span>
+            <span class="govuk-caption-l govuk-!-margin-top-5">My progress</span>
             <h1 class="govuk-heading-l govuk-!-margin-bottom-0">
                 {{ offender.firstname }} {{ offender.lastname }}
             </h1>
 
-            <h2 class="govuk-heading-m / govuk-!-margin-top-6 govuk-!-margin-bottom-2">
-                Plan summary
-            </h2>
-            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Responsivity
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        {{ data['diversity'] | nl2br | safe }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        They need us to know
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        {{ data['offender-summary'] | nl2br | safe }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Your decisions
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        {{ data['practitioner-comment'] | nl2br | safe }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Individual&rsquo;s comments
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        {{ data['offender-comment'] | nl2br | safe }}
-                    </dd>
-                </div>
-            </dl>
-
-
             <h2 class="govuk-heading-m / govuk-!-margin-top-4 govuk-!-margin-bottom-2">
-                Working on {{ "2" if data['goal2-added'] else "1" }} objectives
+                I&rsquo;m working on {{ "2 objectives" if data['goal2-added'] else "1 objective" }}
             </h2>
 
             <h3 class="govuk-heading-s">
                 {{ data['goal1-description'] | nl2br | safe }}
             </h3>
-
             {{ govukTable({
                 firstCellIsHeader: false,
                 head: [
@@ -175,8 +135,9 @@
             {% endif %}
 
 
+
             <h2 class="govuk-heading-m / govuk-!-margin-top-9 govuk-!-margin-bottom-2">
-                Completed 1 objective
+                I&rsquo;ve completed 1 objective
             </h2>
             <h3 class="govuk-heading-s">
                 An example objective which has been completed
@@ -213,6 +174,8 @@
                     ]
                 ]
             }) }}
+
+
         </div>
     </div>
 {% endblock %}
