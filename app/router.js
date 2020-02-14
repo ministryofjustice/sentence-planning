@@ -59,6 +59,7 @@ const {
   postContactArrangements,
   contactArrangementsValidationRules,
 } = require('./activeplan/homepage/contactArrangements/post.controller')
+const { printFullSentencePlan } = require('./printing/printFull/get.controller')
 
 const { getObjectiveView } = require('./objectiveView/get.controller')
 
@@ -144,9 +145,12 @@ module.exports = app => {
   })
   app.post(`${activePlanRoute}/end-plan`, postEndPlan)
 
+  // printing
+  app.get(`${activePlanRoute}/print-full`, printFullSentencePlan)
+
   // outstanding pages still to be developed
   app.get(
-    [`${activePlanRoute}/print-full`, `${activePlanRoute}/print-simple`, `${activePlanRoute}/objective/*`],
+    [`${activePlanRoute}/print-simple`, `${activePlanRoute}/objective/*`],
     (req, res) => res.send('Functionality still to be developed')
   )
 
