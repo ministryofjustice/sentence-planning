@@ -16,6 +16,7 @@ const editActionRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuid})/e
 const activePlanObjectiveRoute = `${activePlanRoute}/objective/:objectiveId(${uuid})`
 const activePlanNewObjectiveRoute = `${activePlanRoute}/edit-objective/:objectiveId(NEW)`
 const activePlanNewActionRoute = `${activePlanObjectiveRoute}/edit-action/:actionId(NEW)`
+const activePlanUpdateActionRoute = `${activePlanObjectiveRoute}/update-action/:actionId(${uuid})`
 const activePlanDisplayMeetingRoute = `${activePlanRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`
 const activePlanAddMeetingRoute = `${activePlanRoute}/add-sentence-plan-meeting`
 
@@ -59,6 +60,9 @@ const {
   postContactArrangements,
   contactArrangementsValidationRules,
 } = require('./activeplan/homepage/contactArrangements/post.controller')
+
+const { getActionUpdate } = require('./actionUpdate/get.controller')
+const { postActionUpdate, actionUpdateValidationRules } = require('./actionUpdate/post.controller')
 
 const { getObjectiveView } = require('./objectiveView/get.controller')
 
@@ -109,6 +113,10 @@ module.exports = app => {
   // actions
   app.get([editActionRoute, activePlanNewActionRoute], getAction)
   app.post([editActionRoute, activePlanNewActionRoute], actionValidationRules(), validate, postAction)
+
+  // action update
+  app.get(activePlanUpdateActionRoute, getActionUpdate)
+  app.post(activePlanUpdateActionRoute, actionUpdateValidationRules(), validate, postActionUpdate)
 
   // active plan homepage
   app.get(activePlanRoute, getHomepage)

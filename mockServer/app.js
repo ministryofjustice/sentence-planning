@@ -91,6 +91,11 @@ function createMockAPI() {
     return getFile('sentencePlanActions', req.params.objectiveid, res)
   })
 
+  app.post('/sentenceplans/:planid/objectives/:objectiveid/actions/:actionId/progress', (req, res) => {
+    logger.debug(`MockAPI saving new action progress ${JSON.stringify(req.body)}`)
+    return res.sendStatus(200)
+  })
+
   app.get('/interventions', (req, res) => {
     return getFile('interventions', 'interventions', res)
   })

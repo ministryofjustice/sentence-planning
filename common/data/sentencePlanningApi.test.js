@@ -26,6 +26,7 @@ const {
   addSentencePlanObjectiveAction,
   getSentencePlanObjectiveAction,
   updateSentencePlanObjectiveAction,
+  addSentencePlanObjectiveActionProgress,
   getInterventions,
   getMotivations,
   getSentencePlanMeetings,
@@ -236,6 +237,32 @@ describe('sentencePlanningApi', () => {
           mockedEndpoint.get(actionIdUrl).reply(400)
           await expect(
             getSentencePlanObjectiveAction(sentencePlanId, objectiveId, actionId, token)
+          ).rejects.toThrowError('Bad Request')
+        })
+      })
+
+      describe('addSentencePlanObjectiveActionProgress', () => {
+        const progressUrl = `${actionIdUrl}/progress`
+        const progressSuccess = {
+          body: {},
+          statusCode: '100 CONTINUE',
+          statusCodeValue: 0,
+        }
+        it('should return an action', async () => {
+          mockedEndpoint.post(progressUrl, data).reply(200, progressSuccess)
+          const output = await addSentencePlanObjectiveActionProgress(
+            sentencePlanId,
+            objectiveId,
+            actionId,
+            data,
+            token
+          )
+          expect(output).toEqual(progressSuccess)
+        })
+        it('should throw an error if it does not receive a valid response', async () => {
+          mockedEndpoint.post(progressUrl, data).reply(400)
+          await expect(
+            addSentencePlanObjectiveActionProgress(sentencePlanId, objectiveId, actionId, data, token)
           ).rejects.toThrowError('Bad Request')
         })
       })

@@ -1,22 +1,62 @@
 const { getStatus } = require('./get.controller')
 
-describe('getStatus', () => {
-  const actionStatus = { status: 'NOT_STARTED' }
-  const bodyStatus = { status: 'IN_PROGRESS' }
+jest.mock('../../../common/utils/util', () => ({
+  STATUS_LIST: [
+    { text: 'AT', value: 'AV', initialStatus: true },
+    { text: 'BT', value: 'BV', initialStatus: true },
+    { text: 'CT', value: 'CV' },
+  ],
+}))
 
-  describe('a blank action', () => {
-    it('should return the status', () => {
-      expect(getStatus({}, {})).toEqual({ status: '' })
+describe('getStatus', () => {
+  const actionStatusValue = 'AV'
+  const bodyStatusValue = 'BV'
+  const actionStatus = { status: actionStatusValue }
+  const bodyStatus = { status: bodyStatusValue }
+  describe('in action definitions', () => {
+    it('should return only the initial status items', () => {
+      const expectedStatusItems = [
+        { text: 'AT', value: 'AV', checked: false },
+        { text: 'BT', value: 'BV', checked: false },
+      ]
+      expect(getStatus({}, {}, true)).toEqual({ status: '', statusItems: expectedStatusItems })
+    })
+    describe('should return persisted values', () => {
+      it('should return the processed motivationList', () => {
+        const expectedStatusItems = [
+          { text: 'AT', value: 'AV', checked: true },
+          { text: 'BT', value: 'BV', checked: false },
+        ]
+        expect(getStatus(actionStatus, {}, true)).toEqual({
+          status: actionStatusValue,
+          statusItems: expectedStatusItems,
+        })
+      })
+    })
+    describe('Values from the body should override persisted ones', () => {
+      it('should return the processed body values', () => {
+        const expectedStatusItems = [
+          { text: 'AT', value: 'AV', checked: false },
+          { text: 'BT', value: 'BV', checked: true },
+        ]
+        expect(getStatus(actionStatus, bodyStatus, true)).toEqual({
+          status: bodyStatusValue,
+          statusItems: expectedStatusItems,
+        })
+      })
     })
   })
-  describe('should return persisted values', () => {
-    it('should return the processed motivationList', () => {
-      expect(getStatus(actionStatus, {})).toEqual(actionStatus)
+  describe('in action progress', () => {
+    let expectedStatusItems
+    beforeEach(() => {
+      expectedStatusItems = [
+        { text: 'AT', value: 'AV', checked: false },
+        { text: 'BT', value: 'BV', checked: false },
+        { text: 'CT', value: 'CV', checked: false },
+      ]
     })
-  })
-  describe('Values from the body should override persisted ones', () => {
-    it('should return the processed body values', () => {
-      expect(getStatus(actionStatus, bodyStatus)).toEqual(bodyStatus)
+    it('should return all status items', () => {
+      expect(getStatus({}, {})).toEqual({ status: '', statusItems: expectedStatusItems })
     })
   })
 })
