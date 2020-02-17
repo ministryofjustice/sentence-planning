@@ -80,6 +80,20 @@ describe('getObjectiveData', () => {
       expect(next).toHaveBeenCalled()
     })
   })
+
+  describe('With no needs being returned', () => {
+    beforeEach(async () => {
+      getSentencePlanNeeds.mockImplementation(mockPromise([]))
+      await getObjectiveData(req, res, next)
+    })
+    it('it should request the needs data', async () => {
+      expect(getSentencePlanNeeds).toHaveBeenCalledWith(planId, token)
+    })
+    it('it should populate the renderInfo with no needs', async () => {
+      expect(req.renderInfo.objective.needs).toEqual([])
+    })
+  })
+
   describe('With objective data with no needs or interventions', () => {
     beforeEach(async () => {
       objectiveMockData.needs = null
