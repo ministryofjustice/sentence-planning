@@ -2,14 +2,11 @@ const { logger } = require('../../common/logging/logger')
 const { getSentencePlanComments } = require('../../common/data/sentencePlanningApi')
 const { getCommentText } = require('../../common/utils/getCommentText')
 
-const getDiversity = async (
-  { path, errors, errorSummary, body, renderInfo, params: { planId }, headers: { 'x-auth-token': token } },
-  res
-) => {
+const getDiversity = async ({ path, errors, errorSummary, body, renderInfo, params: { planId }, tokens }, res) => {
   const renderDetails = renderInfo || {}
   renderDetails.backurl = path.substring(0, path.lastIndexOf('/'))
   try {
-    const comments = await getSentencePlanComments(planId, token)
+    const comments = await getSentencePlanComments(planId, tokens)
     if (body.diversity !== undefined) {
       renderDetails.diversity = body.diversity
     } else {

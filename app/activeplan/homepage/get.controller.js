@@ -5,9 +5,9 @@ const { groupBy } = require('../../../common/utils/util')
 
 const getHomepage = async (req, res) => {
   const {
+    tokens,
     session: { planStarted = false },
     params: { planId, id },
-    headers: { 'x-auth-token': token },
   } = req
 
   let meetings
@@ -18,7 +18,7 @@ const getHomepage = async (req, res) => {
 
   // get the sentence plan
   try {
-    ;({ comments, objectives = [] } = await getSentencePlan(planId, token))
+    ;({ comments, objectives = [] } = await getSentencePlan(planId, tokens))
   } catch (error) {
     logger.error(`Could not retrieve active sentence plan ${planId} for offender ${id}, error: ${error}`)
     return res.render('app/error', { error })
@@ -49,7 +49,7 @@ const getHomepage = async (req, res) => {
 
   // get review meetings
   try {
-    meetings = await getSentencePlanMeetings(id, token)
+    meetings = await getSentencePlanMeetings(id, tokens)
   } catch (error) {
     logger.error(`Could not retrieve meetings for offender ${id}, error: ${error}`)
     return res.render('app/error', { error })

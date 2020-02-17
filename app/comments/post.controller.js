@@ -23,22 +23,29 @@ const validationRules = () => {
 }
 
 const postComments = async (req, res) => {
-  if (req.errors) {
-    const wordsOver = countWords(req.body.comments) - wordsAllowed
+  const {
+    errors,
+    body: { comments = '' },
+    tokens,
+    path,
+    params: { planId },
+  } = req
+  if (errors) {
+    const wordsOver = countWords(comments) - wordsAllowed
     req.renderInfo = { wordsOver: wordsOver > 0 ? wordsOver : 0 }
     return getComments(req, res)
   }
   try {
     const comment = [
       {
-        comment: req.body.comments,
+        comment: comments,
         commentType: 'THEIR_SUMMARY',
       },
     ]
-    await setSentencePlanComment(req.params.planId, comment, req.headers['x-auth-token'])
-    return res.redirect(req.path.substring(0, req.path.lastIndexOf('/')))
+    await setSentencePlanComment(planId, comment, tokens)
+    return res.redirect(path.substring(0, path.lastIndexOf('/')))
   } catch (error) {
-    logger.error(`Could not save sentence plan comments 'THEIR_SUMMARY' for plan ${req.params.planId}, error: ${error}`)
+    logger.error(`Could not save sentence plan comments 'THEIR_SUMMARY' for plan ${planId}, error: ${error}`)
     return res.render('app/error', { error })
   }
 }

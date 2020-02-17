@@ -10,21 +10,21 @@ const { catchAndReThrowError, getYearMonthFromDate, getStatusText, RESPONSIBLE_L
 const getObjectiveData = async (req, res, next) => {
   try {
     const {
+      tokens,
       errors,
       errorSummary,
       params: { planId, objectiveId },
-      headers: { 'x-auth-token': token },
       renderInfo,
     } = req
-    const objective = await getSentencePlanObjective(planId, objectiveId, token).catch(error =>
+    const objective = await getSentencePlanObjective(planId, objectiveId, tokens).catch(error =>
       catchAndReThrowError(`Could not retrieve objective ${objectiveId} for sentence plan ${planId}`, error)
     )
-    const motivations = await getMotivations(token).catch(error =>
+    const motivations = await getMotivations(tokens).catch(error =>
       catchAndReThrowError(`Could not retrieve motivation list`, error)
     )
     // only get needs data if there is an action with needs
     if (objective.needs && objective.needs.length > 0) {
-      const needs = await getSentencePlanNeeds(planId, token).catch(error =>
+      const needs = await getSentencePlanNeeds(planId, tokens).catch(error =>
         catchAndReThrowError(`Could not retrieve needs for sentence plan ${planId}`, error)
       )
       if (needs.length === 0) {
@@ -37,7 +37,7 @@ const getObjectiveData = async (req, res, next) => {
     const hasInterventions = !objective.actions.every(({ intervention }) => !intervention)
     let interventions = []
     if (hasInterventions) {
-      interventions = await getInterventions(token).catch(error =>
+      interventions = await getInterventions(tokens).catch(error =>
         catchAndReThrowError(`Could not retrieve objective ${objectiveId} for sentence plan ${planId}`, error)
       )
     }

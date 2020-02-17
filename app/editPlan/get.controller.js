@@ -2,9 +2,9 @@ const { getSentencePlan } = require('../../common/data/sentencePlanningApi')
 const { getAboutTheIndividual, getAddObjectives, getFinalInformation } = require('./getTaskListData')
 const { logger } = require('../../common/logging/logger')
 
-const editPlan = async ({ path, params: { id, planId }, headers: { 'x-auth-token': token } }, res) => {
+const editPlan = async ({ path, params: { id, planId }, tokens }, res) => {
   try {
-    const sentencePlan = await getSentencePlan(planId, token)
+    const sentencePlan = await getSentencePlan(planId, tokens)
     const stub = path
     const objectivesSection = getAddObjectives(sentencePlan, stub)
     const planSummary = {
@@ -17,7 +17,7 @@ const editPlan = async ({ path, params: { id, planId }, headers: { 'x-auth-token
 
     const disableStartButton = !planSummary.sections[2].items[0].complete
 
-    res.render(`${__dirname}/index`, { planId, id, token, planSummary, disableStartButton })
+    res.render(`${__dirname}/index`, { planId, id, tokens, planSummary, disableStartButton })
   } catch (error) {
     logger.error(`Could not retrieve sentence plan for ${id}, error: ${error}`)
     res.render('app/error', { error })
