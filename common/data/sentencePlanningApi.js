@@ -99,7 +99,7 @@ const endSentencePlan = (sentencePlanId, tokens) => {
   return postData(path, tokens)
 }
 
-const getData = async (path, { authorisationToken, sessionKey }) => {
+const getData = async (path, { authorisationToken, sessionKey = '' }) => {
   if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
   }
@@ -117,7 +117,7 @@ const getData = async (path, { authorisationToken, sessionKey }) => {
     return logError(error)
   }
 }
-const postData = async (path, { authorisationToken, sessionKey }, data) => {
+const postData = async (path, { authorisationToken, sessionKey = '' }, data) => {
   if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
   }
@@ -137,7 +137,7 @@ const postData = async (path, { authorisationToken, sessionKey }, data) => {
   }
 }
 
-const putData = async (path, { authorisationToken, sessionKey }, data) => {
+const putData = async (path, { authorisationToken, sessionKey = '' }, data) => {
   if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
   }
