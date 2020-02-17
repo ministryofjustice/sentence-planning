@@ -1,0 +1,181 @@
+{% extends "common/templates/print-layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% set heading = "Print sentence plan" %}
+
+{% block pageTitle %}
+    {{ heading }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        href: backUrl,
+        text: 'Back to plan'
+    }) }}
+{% endblock %}
+
+{% block content %}
+    {% include "common/templates/includes/print-styles.njk" %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% include "common/templates/includes/moj-svg.njk" %}
+            <p class="govuk-heading-m print-header-org">HMPPS</p>
+
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+            <span class="govuk-caption-l govuk-!-margin-top-5">My progress</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-0">
+                {{ offender.firstname }} {{ offender.lastname }}
+            </h1>
+
+            <h2 class="govuk-heading-m / govuk-!-margin-top-4 govuk-!-margin-bottom-2">
+                I&rsquo;m working on {{ "2 objectives" if data['goal2-added'] else "1 objective" }}
+            </h2>
+
+            <h3 class="govuk-heading-s">
+                {{ data['goal1-description'] | nl2br | safe }}
+            </h3>
+            {{ govukTable({
+                firstCellIsHeader: false,
+                head: [
+                    {
+                        text: "Action"
+                    },
+                    {
+                        text: "Due date",
+                        format: "numeric"
+                    },
+                    {
+                        text: "Status",
+                        format: "numeric"
+                    }
+                ],
+                rows: [
+                    [
+                        {
+                            text: data['goal1-step1-intervention-type'] if data['goal1-step1-intervention'] == 'Yes' else data['goal1-step1-description']
+                        },
+                        {
+                            text: goal1step1DueDate | date("MMMM YYYY"),
+                            format: "numeric"
+                        },
+                        {
+                            text: data['goal1-step1-status'],
+                            format: "numeric"
+                        }
+                    ],
+                    [
+                        {
+                            text: data['goal1-step2-intervention-type'] if data['goal1-step2-intervention'] == 'Yes' else data['goal1-step2-description']
+                        },
+                        {
+                            text: goal1step2DueDate | date("MMMM YYYY"),
+                            format: "numeric"
+                        },
+                        {
+                            text: data['goal1-step2-status'],
+                            format: "numeric"
+                        }
+                    ]
+                ]
+            }) }}
+
+            {% if data['goal2-added'] %}
+                <h3 class="govuk-heading-s">
+                    {{ data['goal2-description'] | nl2br | safe }}
+                </h3>
+                {{ govukTable({
+                    firstCellIsHeader: false,
+                    classes: 'govuk-!-top-bottom-4',
+                    head: [
+                        {
+                            text: "Action"
+                        },
+                        {
+                            text: "Due date",
+                            format: "numeric"
+                        },
+                        {
+                            text: "Status",
+                            format: "numeric"
+                        }
+                    ],
+                    rows: [
+                        [
+                            {
+                                text: data['goal2-step1-intervention-type'] if data['goal2-step1-intervention'] == 'Yes' else data['goal2-step1-description']
+                            },
+                            {
+                                text: goal2step1DueDate | date("MMMM YYYY"),
+                                format: "numeric"
+                            },
+                            {
+                                text: data['goal2-step1-status'],
+                                format: "numeric"
+                            }
+                        ],
+                        [
+                            {
+                                text: data['goal2-step2-intervention-type'] if data['goal2-step2-intervention'] == 'Yes' else data['goal2-step2-description']
+                            },
+                            {
+                                text: goal2step2DueDate | date("MMMM YYYY"),
+                                format: "numeric"
+                            },
+                            {
+                                text: data['goal2-step2-status'],
+                                format: "numeric"
+                            }
+                        ]
+                    ]
+                }) }}
+            {% endif %}
+
+
+
+            <h2 class="govuk-heading-m / govuk-!-margin-top-9 govuk-!-margin-bottom-2">
+                I&rsquo;ve completed 1 objective
+            </h2>
+            <h3 class="govuk-heading-s">
+                An example objective which has been completed
+            </h3>
+            {{ govukTable({
+                firstCellIsHeader: false,
+                head: [
+                    {
+                        text: "Action"
+                    },
+                    {
+                        text: "Status",
+                        format: "numeric"
+                    }
+                ],
+                rows: [
+                    [
+                        {
+                            text: "Intervention: Thinking Skills Programme (TSP)"
+                        },
+                        {
+                            text: "Complete",
+                            format: "numeric"
+                        }
+                    ],
+                    [
+                        {
+                            text: "Intervention: A – Z"
+                        },
+                        {
+                            text: "Complete",
+                            format: "numeric"
+                        }
+                    ]
+                ]
+            }) }}
+
+
+        </div>
+    </div>
+{% endblock %}
