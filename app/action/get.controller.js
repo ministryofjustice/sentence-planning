@@ -8,14 +8,7 @@ const { getResponsibility } = require('../partials/responsibility/get.controller
 const { getStatus } = require('../partials/status/get.controller')
 
 const getAction = async (
-  {
-    tokens,
-    path,
-    errors,
-    errorSummary,
-    body,
-    params: { planId, objectiveId, actionId },
-  },
+  { tokens, path, errors, errorSummary, body, params: { planId, objectiveId, actionId } },
   res
 ) => {
   let action = {}
