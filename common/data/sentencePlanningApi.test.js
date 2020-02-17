@@ -43,7 +43,7 @@ describe('sentencePlanningApi', () => {
     nock.cleanAll()
   })
   let mockedEndpoint
-  const token = '1234'
+  const tokens = { authorisationToken: 'mytoken', sessionKey: 'mysessionkey' }
   const id = '123458'
 
   describe('getSentencePlanSummary', () => {
@@ -51,12 +51,12 @@ describe('sentencePlanningApi', () => {
 
     it('should return sentence plan summary data', async () => {
       mockedEndpoint.get(sentencePlansUrl).reply(200, summaryPlanResponse)
-      const output = await getSentencePlanSummary(id, token)
+      const output = await getSentencePlanSummary(id, tokens)
       expect(output).toEqual(summaryPlanResponse)
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.get(sentencePlansUrl).reply(400)
-      await expect(getSentencePlanSummary(id, token)).rejects.toThrowError('Bad Request')
+      await expect(getSentencePlanSummary(id, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -65,12 +65,12 @@ describe('sentencePlanningApi', () => {
 
     it('should return new sentence plan data', async () => {
       mockedEndpoint.post(sentencePlanUrl).reply(200, summaryPlanResponse)
-      const output = await createSentencePlan(id, token)
+      const output = await createSentencePlan(id, tokens)
       expect(output).toEqual(summaryPlanResponse)
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.post(sentencePlanUrl).reply(400)
-      await expect(createSentencePlan(id, token)).rejects.toThrowError('Bad Request')
+      await expect(createSentencePlan(id, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -80,12 +80,12 @@ describe('sentencePlanningApi', () => {
 
     it('should return a sentence plan', async () => {
       mockedEndpoint.get(sentencePlansUrl).reply(200, sentencePlan)
-      const output = await getSentencePlan(planId, token)
+      const output = await getSentencePlan(planId, tokens)
       expect(output).toEqual(sentencePlan)
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.get(sentencePlansUrl).reply(400)
-      await expect(getSentencePlan(planId, token)).rejects.toThrowError('Bad Request')
+      await expect(getSentencePlan(planId, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -95,12 +95,12 @@ describe('sentencePlanningApi', () => {
 
     it('should return sentence plan comments data', async () => {
       mockedEndpoint.get(sentencePlansCommentsUrl).reply(200, sentencePlanComments)
-      const output = await getSentencePlanComments(planid, token)
+      const output = await getSentencePlanComments(planid, tokens)
       expect(output).toEqual(sentencePlanComments)
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.get(sentencePlansCommentsUrl).reply(400)
-      await expect(getSentencePlanComments(planid, token)).rejects.toThrowError('Bad Request')
+      await expect(getSentencePlanComments(planid, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -116,12 +116,12 @@ describe('sentencePlanningApi', () => {
 
     it('should return sentence plan summary data', async () => {
       mockedEndpoint.put(sentencePlansCommentsUrl).reply(200, {})
-      const output = await setSentencePlanComment(planid, data, token)
+      const output = await setSentencePlanComment(planid, data, tokens)
       expect(output).toEqual({})
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.put(sentencePlansCommentsUrl).reply(400)
-      await expect(setSentencePlanComment(planid, data, token)).rejects.toThrowError('Bad Request')
+      await expect(setSentencePlanComment(planid, data, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -132,12 +132,12 @@ describe('sentencePlanningApi', () => {
 
     it('should return objective data', async () => {
       mockedEndpoint.get(sentencePlansObjectiveUrl).reply(200, sentencePlanObjective)
-      const output = await getSentencePlanObjective(planid, objectiveid, token)
+      const output = await getSentencePlanObjective(planid, objectiveid, tokens)
       expect(output).toEqual(sentencePlanObjective)
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.get(sentencePlansObjectiveUrl).reply(400)
-      await expect(getSentencePlanObjective(planid, objectiveid, token)).rejects.toThrowError('Bad Request')
+      await expect(getSentencePlanObjective(planid, objectiveid, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -148,12 +148,12 @@ describe('sentencePlanningApi', () => {
 
     it('should save objective', async () => {
       mockedEndpoint.post(sentencePlansObjectiveUrl).reply(200, {})
-      const output = await addSentencePlanObjective(planid, data, token)
+      const output = await addSentencePlanObjective(planid, data, tokens)
       expect(output).toEqual({})
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.post(sentencePlansObjectiveUrl).reply(400)
-      await expect(addSentencePlanObjective(planid, data, token)).rejects.toThrowError('Bad Request')
+      await expect(addSentencePlanObjective(planid, data, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -165,12 +165,12 @@ describe('sentencePlanningApi', () => {
 
     it('should update objective', async () => {
       mockedEndpoint.put(sentencePlansObjectiveUrl).reply(200, {})
-      const output = await updateSentencePlanObjective(planid, objectiveid, data, token)
+      const output = await updateSentencePlanObjective(planid, objectiveid, data, tokens)
       expect(output).toEqual({})
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.put(sentencePlansObjectiveUrl).reply(400)
-      await expect(updateSentencePlanObjective(planid, objectiveid, data, token)).rejects.toThrowError('Bad Request')
+      await expect(updateSentencePlanObjective(planid, objectiveid, data, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -180,12 +180,12 @@ describe('sentencePlanningApi', () => {
 
     it('should return needs data', async () => {
       mockedEndpoint.get(sentencePlanNeedsUrl).reply(200, sentencePlanNeeds)
-      const output = await getSentencePlanNeeds(planid, token)
+      const output = await getSentencePlanNeeds(planid, tokens)
       expect(output).toEqual(sentencePlanNeeds)
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.get(sentencePlanNeedsUrl).reply(400)
-      await expect(getSentencePlanNeeds(planid, token)).rejects.toThrowError('Bad Request')
+      await expect(getSentencePlanNeeds(planid, tokens)).rejects.toThrowError('Bad Request')
     })
   })
   describe('concerning actions', () => {
@@ -197,12 +197,12 @@ describe('sentencePlanningApi', () => {
     describe('addSentencePlanObjectiveAction', () => {
       it('should return a 200 status code', async () => {
         mockedEndpoint.post(sentencePlansUrl).reply(200, {})
-        const output = await addSentencePlanObjectiveAction(sentencePlanId, objectiveId, data, token)
+        const output = await addSentencePlanObjectiveAction(sentencePlanId, objectiveId, data, tokens)
         expect(output).toEqual({})
       })
       it('should throw an error if it does not receive a valid response', async () => {
         mockedEndpoint.post(sentencePlansUrl).reply(400)
-        await expect(addSentencePlanObjectiveAction(sentencePlanId, objectiveId, data, token)).rejects.toThrowError(
+        await expect(addSentencePlanObjectiveAction(sentencePlanId, objectiveId, data, tokens)).rejects.toThrowError(
           'Bad Request'
         )
       })
@@ -215,13 +215,13 @@ describe('sentencePlanningApi', () => {
       describe('updateSentencePlanObjectiveAction', () => {
         it('should return an action', async () => {
           mockedEndpoint.put(actionIdUrl, data).reply(200, sentencePlanAction)
-          const output = await updateSentencePlanObjectiveAction(sentencePlanId, objectiveId, actionId, data, token)
+          const output = await updateSentencePlanObjectiveAction(sentencePlanId, objectiveId, actionId, data, tokens)
           expect(output).toEqual(sentencePlanAction)
         })
         it('should throw an error if it does not receive a valid response', async () => {
           mockedEndpoint.put(actionIdUrl, data).reply(400)
           await expect(
-            updateSentencePlanObjectiveAction(sentencePlanId, objectiveId, actionId, data, token)
+            updateSentencePlanObjectiveAction(sentencePlanId, objectiveId, actionId, data, tokens)
           ).rejects.toThrowError('Bad Request')
         })
       })
@@ -229,13 +229,13 @@ describe('sentencePlanningApi', () => {
       describe('getSentencePlanObjectiveAction', () => {
         it('should return an action', async () => {
           mockedEndpoint.get(actionIdUrl).reply(200, sentencePlanAction)
-          const output = await getSentencePlanObjectiveAction(sentencePlanId, objectiveId, actionId, token)
+          const output = await getSentencePlanObjectiveAction(sentencePlanId, objectiveId, actionId, tokens)
           expect(output).toEqual(sentencePlanAction)
         })
         it('should throw an error if it does not receive a valid response', async () => {
           mockedEndpoint.get(actionIdUrl).reply(400)
           await expect(
-            getSentencePlanObjectiveAction(sentencePlanId, objectiveId, actionId, token)
+            getSentencePlanObjectiveAction(sentencePlanId, objectiveId, actionId, tokens)
           ).rejects.toThrowError('Bad Request')
         })
       })
@@ -254,12 +254,12 @@ describe('sentencePlanningApi', () => {
         },
       ]
       mockedEndpoint.get(interventionsUrl).reply(200, interventions)
-      const output = await getInterventions(token)
+      const output = await getInterventions(tokens)
       expect(output).toEqual(interventions)
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.get(interventionsUrl).reply(400)
-      await expect(getInterventions(token)).rejects.toThrowError('Bad Request')
+      await expect(getInterventions(tokens)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -274,12 +274,12 @@ describe('sentencePlanningApi', () => {
         },
       ]
       mockedEndpoint.get(motivationUrl).reply(200, motivations)
-      const output = await getMotivations(token)
+      const output = await getMotivations(tokens)
       expect(output).toEqual(motivations)
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.get(motivationUrl).reply(400)
-      await expect(getMotivations(token)).rejects.toThrowError('Bad Request')
+      await expect(getMotivations(tokens)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -289,12 +289,12 @@ describe('sentencePlanningApi', () => {
 
       it('should return sentence plan meetings data', async () => {
         mockedEndpoint.get(sentencePlanReviewsUrl).reply(200, sentencePlanMeetings)
-        const output = await getSentencePlanMeetings(id, token)
+        const output = await getSentencePlanMeetings(id, tokens)
         expect(output).toEqual(sentencePlanMeetings)
       })
       it('should throw an error if it does not receive a valid response', async () => {
         mockedEndpoint.get(sentencePlanReviewsUrl).reply(400)
-        await expect(getSentencePlanMeetings(id, token)).rejects.toThrowError('Bad Request')
+        await expect(getSentencePlanMeetings(id, tokens)).rejects.toThrowError('Bad Request')
       })
     })
   })
@@ -306,12 +306,12 @@ describe('sentencePlanningApi', () => {
 
       it('should return sentence plan meetings data', async () => {
         mockedEndpoint.get(sentencePlanReviewUrl).reply(200, sentencePlanMeeting)
-        const output = await getSentencePlanMeeting(id, meetingId, token)
+        const output = await getSentencePlanMeeting(id, meetingId, tokens)
         expect(output).toEqual(sentencePlanMeeting)
       })
       it('should throw an error if it does not receive a valid response', async () => {
         mockedEndpoint.get(sentencePlanReviewUrl).reply(400)
-        await expect(getSentencePlanMeeting(id, meetingId, token)).rejects.toThrowError('Bad Request')
+        await expect(getSentencePlanMeeting(id, meetingId, tokens)).rejects.toThrowError('Bad Request')
       })
     })
   })
@@ -327,12 +327,12 @@ describe('sentencePlanningApi', () => {
 
     it('should save meeting', async () => {
       mockedEndpoint.post(sentencePlansAddMeetingUrl).reply(200, {})
-      const output = await addSentencePlanMeeting(planid, data, token)
+      const output = await addSentencePlanMeeting(planid, data, tokens)
       expect(output).toEqual({})
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.post(sentencePlansAddMeetingUrl).reply(400)
-      await expect(addSentencePlanMeeting(planid, data, token)).rejects.toThrowError('Bad Request')
+      await expect(addSentencePlanMeeting(planid, data, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -342,12 +342,12 @@ describe('sentencePlanningApi', () => {
 
     it('should return with empty body', async () => {
       mockedEndpoint.post(startSentencePlanUrl).reply(200)
-      const output = await startSentencePlan(planid, token)
+      const output = await startSentencePlan(planid, tokens)
       expect(output).toEqual({})
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.post(startSentencePlanUrl).reply(400)
-      await expect(startSentencePlan(planid, token)).rejects.toThrowError('Bad Request')
+      await expect(startSentencePlan(planid, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 
@@ -357,12 +357,12 @@ describe('sentencePlanningApi', () => {
 
     it('should return with empty body', async () => {
       mockedEndpoint.post(endSentencePlanUrl).reply(200)
-      const output = await endSentencePlan(planid, token)
+      const output = await endSentencePlan(planid, tokens)
       expect(output).toEqual({})
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.post(endSentencePlanUrl).reply(400)
-      await expect(endSentencePlan(planid, token)).rejects.toThrowError('Bad Request')
+      await expect(endSentencePlan(planid, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 })

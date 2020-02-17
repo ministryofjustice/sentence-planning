@@ -7,6 +7,8 @@ const sentencePlanEmpty = {}
 const sentencePlan = require('../../../mockServer/sentencePlans/6.json')
 const meetings = require('../../../mockServer/sentencePlanMeetings/summary/1.json')
 
+const tokens = { authorisationToken: 'mytoken' }
+
 describe('showHomepage', () => {
   const req = {
     params: {
@@ -14,9 +16,7 @@ describe('showHomepage', () => {
       id: 123,
     },
     session: {},
-    headers: {
-      'x-auth-token': '1234',
-    },
+    tokens,
   }
   const res = {
     render: jest.fn(),

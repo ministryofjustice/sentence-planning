@@ -23,6 +23,8 @@ jest.mock('../partials/status/get.controller', () => ({
 
 const actionPresent = require('../../mockServer/sentencePlanActions/1.json')
 
+const tokens = { authorisationToken: 'mytoken' }
+
 describe('getAction', () => {
   const req = {
     path: '/this/is/my/path',
@@ -31,9 +33,7 @@ describe('getAction', () => {
       objectiveId: '202',
       actionId: 'NEW',
     },
-    headers: {
-      'x-auth-token': '1234',
-    },
+    tokens,
     body: {},
     errors: {},
     errorSummary: {},

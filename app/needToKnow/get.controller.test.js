@@ -6,15 +6,15 @@ jest.mock('../../common/data/sentencePlanningApi')
 const commentsEmpty = {}
 const commentsPresent = require('../../mockServer/sentencePlanComments/1.json')
 
+const tokens = { authorisationToken: 'mytoken' }
+
 describe('getNeedToKnow', () => {
   const req = {
     path: '/this/is/my/path',
     params: {
       planId: 1,
     },
-    headers: {
-      'x-auth-token': '1234',
-    },
+    tokens,
     body: {},
     errors: {},
     errorSummary: {},
