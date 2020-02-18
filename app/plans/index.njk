@@ -8,58 +8,55 @@
 {% endblock %}
 
 {% block content %}
-    <div class="govuk-grid-row">
-        <p class="govuk-grid-column-full">
-            <h1 class="govuk-visually-hidden">
-                Offender plans:
-            </h1>
-            {% if planType == 'none' %}
-                {# no current plan #}
-                <div class="moj-page-header-actions">
-                    <div class="moj-page-header-actions__title">
-                        <h1 class="govuk-heading-l">
-                            {{ heading }}
-                        </h1>
-                    </div>
+    <p class="govuk-grid-column-full">
+        <h1 class="govuk-visually-hidden">
+            Offender plans:
+        </h1>
+        {% if planType == 'none' %}
+            {# no current plan #}
+            <div class="moj-page-header-actions">
+                <div class="moj-page-header-actions__title">
+                    <h1 class="govuk-heading-l">
+                        {{ heading }}
+                    </h1>
                 </div>
-                <p>There is no active plan</p>
+            </div>
+            <p>There is no active plan</p>
 
-                {{ govukButton({
-                    text: 'Create a new plan',
-                    href: "/individual-id/" + individualId + "/edit-plan/new"
-                }) }}
-            {% elseif planType == 'draft' %}
-                {# plan in draft #}
-                <div class="moj-page-header-actions">
-                    <div class="moj-page-header-actions__title">
-                        <h1 class="govuk-heading-l">
-                            {{ heading }}
-                        </h1>
-                    </div>
+            {{ govukButton({
+                text: 'Create a new plan',
+                href: "/individual-id/" + individualId + "/edit-plan/new"
+            }) }}
+        {% elseif planType == 'draft' %}
+            {# plan in draft #}
+            <div class="moj-page-header-actions">
+                <div class="moj-page-header-actions__title">
+                    <h1 class="govuk-heading-l">
+                        {{ heading }}
+                    </h1>
                 </div>
-                <p>There is a draft plan</p>
+            </div>
+            <p>There is a draft plan</p>
 
-                {{ govukButton({
-                    text: 'Continue',
-                    href: "/individual-id/" + individualId + "/edit-plan/" + currentPlan.planId
-                }) }}
-            {% else %}
-                {# active plan #}
-                <div class="moj-page-header-actions">
-                    <div class="moj-page-header-actions__title">
-                        <h1 class="govuk-heading-l">
-                            {{ heading }}
-                        </h1>
-                    </div>
+            {{ govukButton({
+                text: 'Continue',
+                href: "/individual-id/" + individualId + "/edit-plan/" + currentPlan.planId
+            }) }}
+        {% else %}
+            {# active plan #}
+            <div class="moj-page-header-actions">
+                <div class="moj-page-header-actions__title">
+                    <h1 class="govuk-heading-l">
+                        {{ heading }}
+                    </h1>
                 </div>
-                <p>There is an active plan.</p>
+            </div>
+            <p>There is an active plan.</p>
 
-                {{ govukButton({
-                    text: 'Update plan',
-                    href: "/individual-id/" + individualId + "/plan/" + currentPlan.planId
-                }) }}
-            {% endif %}
-        </div>
-
+            {{ govukButton({
+                text: 'Update plan',
+                href: "/individual-id/" + individualId + "/plan/" + currentPlan.planId
+            }) }}
+        {% endif %}
     </div>
 {% endblock %}

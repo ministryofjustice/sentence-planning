@@ -60,6 +60,8 @@ const {
   postContactArrangements,
   contactArrangementsValidationRules,
 } = require('./activeplan/homepage/contactArrangements/post.controller')
+const { printFullSentencePlan } = require('./printing/printFull/get.controller')
+const { printSimplifiedSentencePlan } = require('./printing/printSimplified/get.controller')
 
 const { getActionUpdate } = require('./actionUpdate/get.controller')
 const { postActionUpdate, actionUpdateValidationRules } = require('./actionUpdate/post.controller')
@@ -152,11 +154,12 @@ module.exports = app => {
   })
   app.post(`${activePlanRoute}/end-plan`, postEndPlan)
 
+  // printing
+  app.get(`${activePlanRoute}/print-full`, printFullSentencePlan)
+  app.get(`${activePlanRoute}/print-simple`, printSimplifiedSentencePlan)
+
   // outstanding pages still to be developed
-  app.get(
-    [`${activePlanRoute}/print-full`, `${activePlanRoute}/print-simple`, `${activePlanRoute}/objective/*`],
-    (req, res) => res.send('Functionality still to be developed')
-  )
+  app.get([`${activePlanRoute}/objective/*`], (req, res) => res.send('Functionality still to be developed'))
 
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }
