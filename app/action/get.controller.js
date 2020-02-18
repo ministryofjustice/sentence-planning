@@ -8,18 +8,18 @@ const { getResponsibility } = require('../partials/responsibility/get.controller
 const { getStatus } = require('../partials/status/get.controller')
 
 const getAction = async (
-  { path, errors, errorSummary, body, params: { planId, objectiveId, actionId }, headers: { 'x-auth-token': token } },
+  { tokens, path, errors, errorSummary, body, params: { planId, objectiveId, actionId } },
   res
 ) => {
   let action = {}
   try {
     if (actionId.toLowerCase() !== 'new') {
-      action = await getSentencePlanObjectiveAction(planId, objectiveId, actionId, token)
+      action = await getSentencePlanObjectiveAction(planId, objectiveId, actionId, tokens)
     }
     const nexturl = path.substring(0, path.lastIndexOf('/'))
     const backurl = `${removeUrlLevels(path, 2)}/review`
-    const actionDescriptionIntervention = await getActionDescriptionIntervention(action, body, token)
-    const { motivationList } = await getMotivation(action, body, token)
+    const actionDescriptionIntervention = await getActionDescriptionIntervention(action, body, tokens)
+    const { motivationList } = await getMotivation(action, body, tokens)
     return res.render(`${__dirname}/index`, {
       ...body,
       errors,

@@ -14,11 +14,11 @@ const getInterventionText = async (token, intervention) => {
 }
 
 const getActionUpdate = async (
-  { path, errors, errorSummary, body, params: { planId, objectiveId, actionId }, headers: { 'x-auth-token': token } },
+  { path, errors, errorSummary, body, params: { planId, objectiveId, actionId }, tokens },
   res
 ) => {
   try {
-    const action = await getSentencePlanObjectiveAction(planId, objectiveId, actionId, token).catch(error =>
+    const action = await getSentencePlanObjectiveAction(planId, objectiveId, actionId, tokens).catch(error =>
       catchAndReThrowError(
         `Could not retrieve action ${actionId} for objective ${objectiveId}, sentence plan ${planId}`,
         error
@@ -26,8 +26,8 @@ const getActionUpdate = async (
     )
     const backUrl = `${removeUrlLevels(path, 2)}`
     const { intervention, description } = action
-    const actionText = intervention ? await getInterventionText(token, intervention) : description
-    const { motivationList } = await getMotivation(action, body, token).catch(error =>
+    const actionText = intervention ? await getInterventionText(tokens, intervention) : description
+    const { motivationList } = await getMotivation(action, body, tokens).catch(error =>
       catchAndReThrowError(`Could not retrieve motivation list`, error)
     )
     return res.render(`${__dirname}/index`, {

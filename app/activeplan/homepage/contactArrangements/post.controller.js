@@ -14,10 +14,10 @@ const validationRules = () => {
 
 const postContactArrangements = async (req, res) => {
   const {
+    tokens,
     path,
     errors,
     params: { planId },
-    headers: { 'x-auth-token': token },
     body: { contactArrangements },
   } = req
   if (errors) {
@@ -30,7 +30,7 @@ const postContactArrangements = async (req, res) => {
         commentType: 'LIAISON_ARRANGEMENTS',
       },
     ]
-    await setSentencePlanComment(planId, comment, token)
+    await setSentencePlanComment(planId, comment, tokens)
     return res.redirect(`${path.substring(0, path.lastIndexOf('/'))}#contact`)
   } catch (error) {
     logger.error(`Could not save sentence plan comments 'LIAISON_ARRANGEMENTS' for plan ${planId}, error: ${error}`)

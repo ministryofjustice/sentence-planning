@@ -11,6 +11,7 @@ describe('getContactArrangements', () => {
     render: jest.fn(),
   }
   let req
+  const tokens = { authorisationToken: 'mytoken' }
 
   beforeEach(() => {
     req = {
@@ -18,9 +19,7 @@ describe('getContactArrangements', () => {
       params: {
         planId: 1234,
       },
-      headers: {
-        'x-auth-token': '1234',
-      },
+      tokens,
       body: {},
       errors: {},
       errorSummary: {},

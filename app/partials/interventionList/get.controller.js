@@ -4,10 +4,10 @@ const { logger } = require('../../../common/logging/logger')
 const getActionDescriptionIntervention = async (
   { intervention: actionIntervention = '', description: actionDescription = '' },
   { actionType = '', intervention: bodyIntervention = '', description: bodyDescription = '' },
-  token
+  tokens
 ) => {
   try {
-    const interventions = await getInterventions(token)
+    const interventions = await getInterventions(tokens)
     let intervention = actionIntervention
     let description = actionDescription
     let interventionChecked = !!actionIntervention

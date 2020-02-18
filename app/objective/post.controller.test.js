@@ -7,6 +7,7 @@ jest.mock('../../common/data/sentencePlanningApi')
 jest.mock('./get.controller')
 
 let req
+const tokens = { authorisationToken: 'mytoken' }
 
 beforeEach(() => {
   req = {
@@ -15,9 +16,7 @@ beforeEach(() => {
       planId: 1,
       objectiveId: 'NEW',
     },
-    headers: {
-      'x-auth-token': '1234',
-    },
+    tokens,
     session: {},
     body: {},
     renderInfo: null,
@@ -33,9 +32,7 @@ const expected = {
     planId: 1,
     objectiveId: 'NEW',
   },
-  headers: {
-    'x-auth-token': '1234',
-  },
+  tokens,
   body: {
     objective: 'The objective description',
     needs: ['needsid_ete', 'needsid_finance'],
@@ -78,7 +75,7 @@ describe('post or update objective', () => {
     expect(addSentencePlanObjective).toHaveBeenCalledWith(
       1,
       { description: 'The objective description', needs: ['needsid_ete', 'needsid_finance'] },
-      '1234'
+      tokens
     )
     expect(updateSentencePlanObjective).not.toHaveBeenCalled()
     expect(res.redirect).toHaveBeenCalledWith('1/edit-action/NEW')
@@ -94,7 +91,7 @@ describe('post or update objective', () => {
       1,
       '1',
       { description: 'The objective description', needs: ['needsid_ete'] },
-      '1234'
+      tokens
     )
     expect(addSentencePlanObjective).not.toHaveBeenCalled()
     expect(res.redirect).toHaveBeenCalledWith('1/review')
@@ -168,7 +165,7 @@ describe('post or update objective', () => {
     expect(addSentencePlanObjective).toHaveBeenCalledWith(
       1,
       { description: 'The objective description', needs: ['needsid_ete', 'needsid_finance'] },
-      '1234'
+      tokens
     )
     expect(res.redirect).toHaveBeenCalledWith('individual-id/1/plan/1/objective/1/edit-action/NEW')
   })

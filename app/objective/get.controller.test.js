@@ -11,6 +11,8 @@ const needsEmpty = []
 const needs = require('../../mockServer/sentencePlanNeeds/2.json')
 const needsInactive = require('../../mockServer/sentencePlanNeeds/3.json')
 
+const tokens = { authorisationToken: 'mytoken' }
+
 const displayNeeds = [
   {
     html: 'Accommodation - <span class="risk"> Risk of serious harm</span>',
@@ -80,9 +82,7 @@ describe('getObjective', () => {
       planId: 1,
       objectiveId: 'NEW',
     },
-    headers: {
-      'x-auth-token': '1234',
-    },
+    tokens,
     session: {},
     body: {},
     errors: {},

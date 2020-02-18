@@ -16,7 +16,9 @@ jest.mock('./get.controller')
 let req
 let res
 
-const token = '1234'
+const token = {
+  authorisationToken: 'mytoken',
+}
 const planId = '1'
 const objectiveId = '2'
 const actionId = '404'
@@ -37,9 +39,7 @@ beforeEach(() => {
       objectiveId,
       actionId,
     },
-    headers: {
-      'x-auth-token': token,
-    },
+    tokens: token,
     body: {
       comment: progress.comment,
       motivation: progress.motivationUUID,

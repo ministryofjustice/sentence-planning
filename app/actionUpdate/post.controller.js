@@ -36,7 +36,7 @@ const postActionUpdate = async (req, res) => {
     errors,
     body: bodyData,
     params: { planId, objectiveId, actionId },
-    headers: { 'x-auth-token': token },
+    tokens,
   } = req
   if (errors) {
     return getActionUpdate(req, res)
@@ -50,7 +50,7 @@ const postActionUpdate = async (req, res) => {
       ...postResponsibility(bodyData),
       status: bodyData.status,
     }
-    await addSentencePlanObjectiveActionProgress(planId, objectiveId, actionId, progress, token).catch(error =>
+    await addSentencePlanObjectiveActionProgress(planId, objectiveId, actionId, progress, tokens).catch(error =>
       catchAndReThrowError(
         `Could not persist progress for action ${actionId} for objective ${objectiveId}, sentence plan ${planId}`,
         error

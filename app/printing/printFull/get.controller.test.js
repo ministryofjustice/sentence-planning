@@ -1,14 +1,14 @@
 const { printFullSentencePlan } = require('./get.controller')
 
+const tokens = { authorisationToken: 'mytoken' }
+
 describe('printFullSentencePlan', () => {
   const req = {
     path: 'lead/me/up/the/garden/path',
     params: {
       id: 1,
     },
-    headers: {
-      'x-auth-token': '1234',
-    },
+    tokens,
   }
   const res = {
     render: jest.fn(),

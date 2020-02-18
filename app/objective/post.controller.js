@@ -59,11 +59,11 @@ const validationRules = () => {
 
 const postObjective = async (req, res) => {
   const {
+    tokens,
     path,
     errors,
     body: { objective: objectiveDescription, needs = '' },
     params: { planId, objectiveId },
-    headers: { 'x-auth-token': token },
     session: { noNeedsAvailable = false },
   } = req
 
@@ -87,10 +87,10 @@ const postObjective = async (req, res) => {
       ? `${removeUrlLevels(path, 2)}/objective/`
       : ''
     if (objectiveId.toLowerCase() === 'new') {
-      const newObjective = await addSentencePlanObjective(planId, objective, token)
+      const newObjective = await addSentencePlanObjective(planId, objective, tokens)
       redirectUrl += `${newObjective.id}/edit-action/NEW`
     } else {
-      await updateSentencePlanObjective(planId, objectiveId, objective, token)
+      await updateSentencePlanObjective(planId, objectiveId, objective, tokens)
       redirectUrl += `${objectiveId}/review`
     }
     return res.redirect(redirectUrl)

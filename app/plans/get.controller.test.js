@@ -19,9 +19,6 @@ describe('getSentencePlanSummary', () => {
     params: {
       id: 1,
     },
-    headers: {
-      'x-auth-token': '1234',
-    },
   }
   const res = {
     render: jest.fn(),

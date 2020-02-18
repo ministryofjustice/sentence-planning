@@ -20,6 +20,9 @@ describe('getActionUpdate', () => {
   let req
   let res
   let expected
+  const token = {
+    authorisationToken: 'mytoken',
+  }
   beforeEach(() => {
     getInterventions.mockImplementation(
       mockPromise([{ shortDescription: interventionText, uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa4' }])
@@ -35,9 +38,7 @@ describe('getActionUpdate', () => {
         objectiveId: '202',
         actionId: '1',
       },
-      headers: {
-        'x-auth-token': '1234',
-      },
+      tokens: token,
       body: {},
       errors: {},
       errorSummary: {},

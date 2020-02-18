@@ -3,14 +3,14 @@ const { getSentencePlanComments } = require('../../../../common/data/sentencePla
 const { getCommentText } = require('../../../../common/utils/getCommentText')
 
 const getContactArrangements = async (
-  { path, errors, errorSummary, body, renderInfo, params: { planId }, headers: { 'x-auth-token': token } },
+  { tokens, path, errors, errorSummary, body, renderInfo, params: { planId } },
   res
 ) => {
   const backurl = `${path.substring(0, path.lastIndexOf('/'))}#contact`
   try {
     let { contactArrangements } = body
     if (contactArrangements === undefined) {
-      const comments = await getSentencePlanComments(planId, token)
+      const comments = await getSentencePlanComments(planId, tokens)
       contactArrangements = getCommentText(comments, 'LIAISON_ARRANGEMENTS')
     }
     return res.render(`${__dirname}/index`, {

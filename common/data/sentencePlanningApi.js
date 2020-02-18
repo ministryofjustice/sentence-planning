@@ -6,113 +6,114 @@ const {
   },
 } = require('../config')
 
-const createSentencePlan = (individualId, token) => {
+const createSentencePlan = (individualId, tokens) => {
   const path = `${url}/offenders/${individualId}/sentenceplans`
-  return postData(path, token)
+  return postData(path, tokens)
 }
-const getSentencePlan = (sentencePlanId, token) => {
+const getSentencePlan = (sentencePlanId, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}`
-  return getData(path, token)
+  return getData(path, tokens)
 }
-const getSentencePlanSummary = (individualId, token) => {
+const getSentencePlanSummary = (individualId, tokens) => {
   const path = `${url}/offenders/${individualId}/sentenceplans`
-  return getData(path, token)
+  return getData(path, tokens)
 }
 
-const getSentencePlanComments = (sentencePlanId, token) => {
+const getSentencePlanComments = (sentencePlanId, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/comments`
-  return getData(path, token)
+  return getData(path, tokens)
 }
 
-const setSentencePlanComment = (sentencePlanId, comment, token) => {
+const setSentencePlanComment = (sentencePlanId, comment, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/comments`
-  return putData(path, token, comment)
+  return putData(path, tokens, comment)
 }
 
-const getSentencePlanObjective = (sentencePlanId, objectiveId, token) => {
+const getSentencePlanObjective = (sentencePlanId, objectiveId, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}`
-  return getData(path, token)
+  return getData(path, tokens)
 }
 
-const addSentencePlanObjective = (sentencePlanId, objective, token) => {
+const addSentencePlanObjective = (sentencePlanId, objective, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives`
-  return postData(path, token, objective)
+  return postData(path, tokens, objective)
 }
 
-const updateSentencePlanObjective = (sentencePlanId, objectiveId, objective, token) => {
+const updateSentencePlanObjective = (sentencePlanId, objectiveId, objective, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}`
-  return putData(path, token, objective)
+  return putData(path, tokens, objective)
 }
 
-const getSentencePlanNeeds = (sentencePlanId, token) => {
+const getSentencePlanNeeds = (sentencePlanId, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/needs`
-  return getData(path, token)
+  return getData(path, tokens)
 }
 
-const addSentencePlanObjectiveAction = (sentencePlanId, objectiveId, action, token) => {
+const addSentencePlanObjectiveAction = (sentencePlanId, objectiveId, action, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/actions`
-  return postData(path, token, action)
+  return postData(path, tokens, action)
 }
 
-const getSentencePlanObjectiveAction = (sentencePlanId, objectiveId, actionId, token) => {
+const getSentencePlanObjectiveAction = (sentencePlanId, objectiveId, actionId, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/actions/${actionId}`
-  return getData(path, token)
+  return getData(path, tokens)
 }
 
-const updateSentencePlanObjectiveAction = (sentencePlanId, objectiveId, actionId, action, token) => {
+const updateSentencePlanObjectiveAction = (sentencePlanId, objectiveId, actionId, action, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/actions/${actionId}`
-  return putData(path, token, action)
+  return putData(path, tokens, action)
 }
 
-const addSentencePlanObjectiveActionProgress = (sentencePlanId, objectiveId, actionId, progress, token) => {
+const addSentencePlanObjectiveActionProgress = (sentencePlanId, objectiveId, actionId, progress, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/actions/${actionId}/progress`
-  return postData(path, token, progress)
+  return postData(path, tokens, progress)
 }
 
-const startSentencePlan = (sentencePlanId, token) => {
+const startSentencePlan = (sentencePlanId, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/start`
-  return postData(path, token)
+  return postData(path, tokens)
 }
 
-const getInterventions = token => {
+const getInterventions = tokens => {
   const path = `${url}/interventions`
-  return getData(path, token)
+  return getData(path, tokens)
 }
 
-const getMotivations = token => {
+const getMotivations = tokens => {
   const path = `${url}/motivation`
-  return getData(path, token)
+  return getData(path, tokens)
 }
 
-const getSentencePlanMeetings = (id, token) => {
+const getSentencePlanMeetings = (id, tokens) => {
   const path = `${url}/offenders/${id}/reviews`
-  return getData(path, token)
+  return getData(path, tokens)
 }
 
-const getSentencePlanMeeting = (id, meetingId, token) => {
+const getSentencePlanMeeting = (id, meetingId, tokens) => {
   const path = `${url}/offenders/${id}/reviews/${meetingId}`
-  return getData(path, token)
+  return getData(path, tokens)
 }
 
-const addSentencePlanMeeting = (sentencePlanId, meeting, token) => {
+const addSentencePlanMeeting = (sentencePlanId, meeting, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/reviews`
-  return postData(path, token, meeting)
+  return postData(path, tokens, meeting)
 }
 
-const endSentencePlan = (sentencePlanId, token) => {
+const endSentencePlan = (sentencePlanId, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/end`
-  return postData(path, token)
+  return postData(path, tokens)
 }
 
-const getData = async (path, token) => {
-  if (token === undefined) {
+const getData = async (path, { authorisationToken, sessionKey = '' }) => {
+  if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
   }
   logger.info(`Calling SentencePlanningApi: ${path}`)
   try {
     return await superagent
       .get(path)
-      .auth(token, { type: 'bearer' })
+      .auth(authorisationToken, { type: 'bearer' })
+      .set('X-Session-Id', sessionKey)
       .timeout(timeout)
       .then(response => {
         return response.body
@@ -121,8 +122,8 @@ const getData = async (path, token) => {
     return logError(error)
   }
 }
-const postData = async (path, token, data) => {
-  if (token === undefined) {
+const postData = async (path, { authorisationToken, sessionKey = '' }, data) => {
+  if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
   }
   logger.info(`Calling SentencePlanningApi: ${path}`)
@@ -130,7 +131,8 @@ const postData = async (path, token, data) => {
     return await superagent
       .post(path)
       .send(data)
-      .auth(token, { type: 'bearer' })
+      .auth(authorisationToken, { type: 'bearer' })
+      .set('X-Session-Id', sessionKey)
       .timeout(timeout)
       .then(response => {
         return response.body
@@ -140,8 +142,8 @@ const postData = async (path, token, data) => {
   }
 }
 
-const putData = async (path, token, data) => {
-  if (token === undefined) {
+const putData = async (path, { authorisationToken, sessionKey = '' }, data) => {
+  if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
   }
   logger.info(`Calling SentencePlanningApi: ${path}`)
@@ -149,7 +151,8 @@ const putData = async (path, token, data) => {
     return await superagent
       .put(path)
       .send(data)
-      .auth(token, { type: 'bearer' })
+      .auth(authorisationToken, { type: 'bearer' })
+      .set('X-Session-Id', sessionKey)
       .timeout(timeout)
       .then(response => {
         return response.body

@@ -7,15 +7,15 @@ jest.mock('./get.controller')
 
 let req
 
+const tokens = { authorisationToken: 'mytoken' }
+
 beforeEach(() => {
   req = {
     path: '/this/is/my/path',
     params: {
       planId: 1,
     },
-    headers: {
-      'x-auth-token': '1234',
-    },
+    tokens,
     body: {},
   }
 })
@@ -29,9 +29,7 @@ const expected = {
   params: {
     planId: 1,
   },
-  headers: {
-    'x-auth-token': '1234',
-  },
+  tokens,
   body: {
     contactArrangements: 'a contact arrangements comment',
   },
@@ -59,7 +57,7 @@ describe('postContactArrangements', () => {
     expect(setSentencePlanComment).toHaveBeenCalledWith(
       1,
       [{ comment: 'a contact arrangement comment', commentType: 'LIAISON_ARRANGEMENTS' }],
-      '1234'
+      tokens
     )
     expect(res.redirect).toHaveBeenCalledWith('/this/is/my#contact')
   })
