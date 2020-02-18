@@ -28,7 +28,7 @@ const getAction = async (
       ...getTargetDate(action, body),
       motivationList,
       ...getResponsibility(action, body),
-      ...getStatus(action, body),
+      ...getStatus(action, body, true),
       nexturl,
       backurl,
     })

@@ -3,8 +3,8 @@ const { logger } = require('../logging/logger')
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
 
 const STATUS_LIST = [
-  { text: 'To do', value: 'NOT_STARTED' },
-  { text: 'In progress', value: 'IN_PROGRESS' },
+  { text: 'To do', value: 'NOT_STARTED', initialStatus: true },
+  { text: 'In progress', value: 'IN_PROGRESS', initialStatus: true },
   { text: 'Paused', value: 'PAUSED' },
   { text: 'Completed', value: 'COMPLETED' },
   { text: 'Partially completed', value: 'PARTIALLY_COMPLETED' },

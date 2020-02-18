@@ -1,9 +1,11 @@
 const { body } = require('express-validator')
+const { STATUS_LIST } = require('../../../common/utils/util')
 
-const validationRules = () => {
+const validationRules = initial => {
+  const statusList = STATUS_LIST.filter(({ initialStatus }) => !initial || initialStatus).map(({ value }) => value)
   return [
     body('status')
-      .isIn(['NOT_STARTED', 'IN_PROGRESS'])
+      .isIn(statusList)
       .withMessage('Choose a status'),
   ]
 }
