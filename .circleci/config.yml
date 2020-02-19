@@ -53,11 +53,23 @@ executors:
     docker:
       - image: circleci/node:10.15.3-browsers
     working_directory: ~/app
+  owasp:
+    docker:
+      - image: circleci/openjdk:11-jdk-browsers
+    working_directory: ~/app
+  sonar-scanner:
+    docker:
+      - image: sonarsource/sonar-scanner-cli:4.2
+        environment:
+          SONAR_HOST_URL: https://pcs-sonarqube.apps.live-1.cloud-platform.service.justice.gov.uk/
+          SONAR_PROJECT_KEY: sentence-planning
+    working_directory: ~/app
 
 orbs:
   aws-cli: circleci/aws-cli@0.1.18
   kubernetes: circleci/kubernetes@0.10.1
   helm: circleci/helm@0.2.3
+  owasp: entur/owasp@0.0.6
 
 jobs:
   build:
@@ -138,6 +150,113 @@ jobs:
              docker push mojdigitalstudio/sentence-planning:$APP_VERSION
              docker push mojdigitalstudio/sentence-planning:latest
             fi
+
+  owasp-scan:
+    executor: owasp
+    environment:
+      version_url: "https://jeremylong.github.io/DependencyCheck/current.txt"
+      executable_url: "https://dl.bintray.com/jeremy-long/owasp/dependency-check-VERSION-release.zip"
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/app
+      - owasp/with_commandline:
+          version: ""
+          cache_key: default
+          steps:
+            - owasp/generate_cache_keys:
+                cache_key: commmandline-default-cache-key-v6
+            - owasp/restore_owasp_cache
+            - run:
+                name: Update OWASP Dependency-Check Database
+                command: |
+                  ~/.owasp/dependency-check/bin/dependency-check.sh \
+                    --data ~/.owasp/dependency-check-data \
+                    --updateonly
+            - owasp/store_owasp_cache:
+                cve_data_directory: ~/.owasp/dependency-check-data
+            - run:
+                name: Run OWASP Dependency-Check Analyzer
+                command: |
+                  mkdir -p build/reports/owasp
+                  ~/.owasp/dependency-check/bin/dependency-check.sh \
+                    --data ~/.owasp/dependency-check-data \
+                    --format ALL \
+                    --noupdate \
+                    --scan ./ \
+                    --suppression ./dependency-check-suppress.xml \
+                    --disableAssembly \
+                    --out build/reports/owasp \
+            - persist_to_workspace:
+                root: .
+                paths:
+                  - build/reports/owasp
+
+  trivy-scan:
+    executor: deployer
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Fetch latest image
+          command: |
+            docker pull mojdigitalstudio/sentence-planning:latest
+            docker tag mojdigitalstudio/sentence-planning:latest mojdigitalstudio/sentence-planning:trivy-scan
+      - run:
+          name: Install trivy
+          command: |
+            VERSION=$(
+                curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | \
+                grep '"tag_name":' | \
+                sed -E 's/.*"v([^"]+)".*/\1/'
+            )
+            wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz
+            tar zxvf trivy_${VERSION}_Linux-64bit.tar.gz
+            sudo mv trivy /usr/local/bin
+      - run:
+          name: Scan the local image with trivy
+          command: |
+            mkdir -p build/reports/trivy
+            trivy \
+              --exit-code 0 \
+              --no-progress \
+              -f json \
+              -o build/reports/trivy/report.json \
+              -s "HIGH,CRITICAL" \
+              "mojdigitalstudio/sentence-planning:trivy-scan"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build/reports/trivy
+
+  sonar-scan:
+    executor: sonar-scanner
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Run sonar scan
+          command: |
+            set -euo pipefail
+            declare -a args
+            add_env_var_as_env_prop() {
+              if [ "$1" ]; then
+                args+=("-D$2=$1")
+              fi
+            }
+            add_env_var_as_env_prop "${SONAR_LOGIN:-}" "sonar.login"
+            add_env_var_as_env_prop "${SONAR_PASSWORD:-}" "sonar.password"
+            add_env_var_as_env_prop "${SONAR_USER_HOME:-}" "sonar.userHome"
+            add_env_var_as_env_prop "${SONAR_PROJECT_BASE_DIR:-}" "sonar.projectBaseDir"
+            add_env_var_as_env_prop "${SONAR_PROJECT_KEY:-}" "sonar.projectKey"
+            PROJECT_BASE_DIR="$PWD"
+            if [ "${SONAR_PROJECT_BASE_DIR:-}" ]; then
+              PROJECT_BASE_DIR="${SONAR_PROJECT_BASE_DIR}"
+            fi
+            export SONAR_USER_HOME="$PROJECT_BASE_DIR/.sonar"
+            sonar-scanner "${args[@]}"
+
   deploy_dev:
     executor: deployer
     steps:
@@ -156,6 +275,28 @@ jobs:
 
 workflows:
   version: 2
+  scheduled:
+    triggers:
+      - schedule:
+          cron: "0 7 * * 1-5"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build:
+          filters:
+            tags:
+              ignore: /.*/
+      - owasp-scan:
+          requires:
+            - build
+      - trivy-scan
+      - sonar-scan:
+          requires:
+            - build
+            - owasp-scan
+            - trivy-scan
   build-test-and-deploy:
     jobs:
       - build:
