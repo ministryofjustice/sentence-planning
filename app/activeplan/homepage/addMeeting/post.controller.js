@@ -91,10 +91,10 @@ const validationRules = () => {
 
 const postAddMeeting = async (req, res) => {
   const {
+    tokens,
     path,
     errors,
     params: { planId },
-    headers: { 'x-auth-token': token },
     body: {
       comments = '',
       attendees = '',
@@ -111,9 +111,9 @@ const postAddMeeting = async (req, res) => {
     const meeting = {
       comments,
       attendees,
-      meetingDate,
+      dateOfBoard: meetingDate,
     }
-    await addSentencePlanMeeting(planId, meeting, token)
+    await addSentencePlanMeeting(planId, meeting, tokens)
     return res.redirect(`${path.substring(0, path.lastIndexOf('/'))}#meetings`)
   } catch (error) {
     logger.error(`Could not save sentence plan meeting for plan ${planId}, error: ${error}`)

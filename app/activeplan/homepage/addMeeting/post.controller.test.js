@@ -6,6 +6,7 @@ jest.mock('../../../../common/data/sentencePlanningApi')
 jest.mock('./get.controller')
 
 let req
+const tokens = { authorisationToken: 'mytoken' }
 
 beforeEach(() => {
   req = {
@@ -13,9 +14,7 @@ beforeEach(() => {
     params: {
       planId: 1,
     },
-    headers: {
-      'x-auth-token': '1234',
-    },
+    tokens,
     body: {
       comments: 'a comment',
       attendees: 'some attendees',
@@ -35,9 +34,7 @@ const expected = {
   params: {
     planId: 1,
   },
-  headers: {
-    'x-auth-token': '1234',
-  },
+  tokens,
   body: {
     comments: 'a comment',
     attendees: 'some attendees',
@@ -72,8 +69,8 @@ describe('postAddMeeting', () => {
     await postAddMeeting(req, res)
     expect(addSentencePlanMeeting).toHaveBeenCalledWith(
       1,
-      { attendees: 'some attendees', comments: 'a comment', meetingDate: '2001-12-01T00:00:00.000Z' },
-      '1234'
+      { attendees: 'some attendees', comments: 'a comment', dateOfBoard: '2001-12-01T00:00:00.000Z' },
+      tokens
     )
     expect(res.redirect).toHaveBeenCalledWith('/this/is/my#meetings')
   })

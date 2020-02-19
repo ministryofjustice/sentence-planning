@@ -41,7 +41,7 @@ const getToken = async () => {
     } = response
     return accessToken
   } catch (error) {
-    logger.warn(`Could not retrive token; ${error}`)
+    logger.warn(`Could not retrieve token; ${error}`)
     return null
   }
 }

@@ -3,13 +3,13 @@ const { getSentencePlanMeeting } = require('../../../../common/data/sentencePlan
 
 const getMeeting = async (req, res) => {
   const {
-    headers: { 'x-auth-token': token },
+    tokens,
     params: { planId, id, meetingId },
   } = req
 
   // get the sentence plan
   try {
-    const meeting = await getSentencePlanMeeting(id, meetingId, token)
+    const meeting = await getSentencePlanMeeting(id, meetingId, tokens)
     return res.render(`${__dirname}/index`, {
       backurl: `/individual-id/${id}/plan/${planId}#meetings`,
       meeting,

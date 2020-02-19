@@ -4,10 +4,10 @@ const { logger } = require('../../../common/logging/logger')
 const getMotivation = async (
   { motivationUUID: actionMotivationUUID = '' },
   { motivation: bodyMotivationUUID = '' },
-  token
+  tokens
 ) => {
   try {
-    const motivations = await getMotivations(token)
+    const motivations = await getMotivations(tokens)
     const currentMotivationUUID = bodyMotivationUUID || actionMotivationUUID || ''
     return {
       motivationList: motivations.map(({ motivationText: text, uuid: value }) => ({

@@ -2,10 +2,7 @@ const { logger } = require('../../common/logging/logger')
 const { getSentencePlanComments } = require('../../common/data/sentencePlanningApi')
 const { getCommentText } = require('../../common/utils/getCommentText')
 
-const getNeedToKnow = async (
-  { path, errors, errorSummary, body, renderInfo, params: { planId }, headers: { 'x-auth-token': token } },
-  res
-) => {
+const getNeedToKnow = async ({ tokens, path, errors, errorSummary, body, renderInfo, params: { planId } }, res) => {
   const renderDetails = renderInfo || {}
 
   renderDetails.nexturl = path.substring(0, path.lastIndexOf('/'))
@@ -15,7 +12,7 @@ const getNeedToKnow = async (
     if (body.needtoknow !== undefined) {
       renderDetails.needtoknow = body.needtoknow
     } else {
-      const comments = await getSentencePlanComments(planId, token)
+      const comments = await getSentencePlanComments(planId, tokens)
       renderDetails.needtoknow = getCommentText(comments, 'THEIR_RESPONSIVITY')
     }
     return res.render(`${__dirname}/index`, { ...body, errors, errorSummary, ...renderDetails })

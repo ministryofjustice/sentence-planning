@@ -16,8 +16,9 @@ const editActionRoute = `${editPlanRoute}/edit-objective/:objectiveId(${uuid})/e
 const activePlanObjectiveRoute = `${activePlanRoute}/objective/:objectiveId(${uuid})`
 const activePlanNewObjectiveRoute = `${activePlanRoute}/edit-objective/:objectiveId(NEW)`
 const activePlanNewActionRoute = `${activePlanObjectiveRoute}/edit-action/:actionId(NEW)`
-const activePlanDisplayMeetingRoute = `${activePlanObjectiveRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`
-const activePlanAddMeetingRoute = `${activePlanObjectiveRoute}/add-sentence-plan-meeting`
+const activePlanUpdateActionRoute = `${activePlanObjectiveRoute}/update-action/:actionId(${uuid})`
+const activePlanDisplayMeetingRoute = `${activePlanRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`
+const activePlanAddMeetingRoute = `${activePlanRoute}/add-sentence-plan-meeting`
 
 const { validate } = require('../common/middleware/validator')
 
@@ -59,6 +60,11 @@ const {
   postContactArrangements,
   contactArrangementsValidationRules,
 } = require('./activeplan/homepage/contactArrangements/post.controller')
+const { printFullSentencePlan } = require('./printing/printFull/get.controller')
+const { printSimplifiedSentencePlan } = require('./printing/printSimplified/get.controller')
+
+const { getActionUpdate } = require('./actionUpdate/get.controller')
+const { postActionUpdate, actionUpdateValidationRules } = require('./actionUpdate/post.controller')
 
 const { getObjectiveView } = require('./objectiveView/get.controller')
 
@@ -110,6 +116,10 @@ module.exports = app => {
   app.get([editActionRoute, activePlanNewActionRoute], getAction)
   app.post([editActionRoute, activePlanNewActionRoute], actionValidationRules(), validate, postAction)
 
+  // action update
+  app.get(activePlanUpdateActionRoute, getActionUpdate)
+  app.post(activePlanUpdateActionRoute, actionUpdateValidationRules(), validate, postActionUpdate)
+
   // active plan homepage
   app.get(activePlanRoute, getHomepage)
 
@@ -144,11 +154,12 @@ module.exports = app => {
   })
   app.post(`${activePlanRoute}/end-plan`, postEndPlan)
 
+  // printing
+  app.get(`${activePlanRoute}/print-full`, printFullSentencePlan)
+  app.get(`${activePlanRoute}/print-simple`, printSimplifiedSentencePlan)
+
   // outstanding pages still to be developed
-  app.get(
-    [`${activePlanRoute}/print-full`, `${activePlanRoute}/print-simple`, `${activePlanRoute}/objective/*`],
-    (req, res) => res.send('Functionality still to be developed')
-  )
+  app.get([`${activePlanRoute}/objective/*`], (req, res) => res.send('Functionality still to be developed'))
 
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }

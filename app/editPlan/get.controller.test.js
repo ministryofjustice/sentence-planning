@@ -2,6 +2,8 @@ const { editPlan } = require('./get.controller')
 const { getSentencePlan } = require('../../common/data/sentencePlanningApi')
 const { getAboutTheIndividual, getAddObjectives, getFinalInformation } = require('./getTaskListData')
 
+const tokens = { authorisationToken: 'mytoken' }
+
 jest.mock('../../common/data/sentencePlanningApi', () => ({
   getSentencePlan: jest.fn(),
 }))
@@ -16,9 +18,7 @@ describe('getSentencePlanSummary', () => {
       id: 1,
       planId: 2,
     },
-    headers: {
-      'x-auth-token': '1234',
-    },
+    tokens,
   }
   const res = {
     render: jest.fn(),
@@ -59,7 +59,7 @@ describe('getSentencePlanSummary', () => {
         expect(getFinalInformation).toHaveBeenCalledWith(sentencePlan, path, completionStatus)
       })
       it('should set the correct render value', () => {
-        const expected = { planId: 2, id: 1, token: '1234', planSummary, disableStartButton: false }
+        const expected = { planId: 2, id: 1, tokens, planSummary, disableStartButton: false }
         expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
       })
     })
@@ -75,7 +75,7 @@ describe('getSentencePlanSummary', () => {
         const expected = {
           planId: 2,
           id: 1,
-          token: '1234',
+          tokens,
           planSummary: planSummaryIncomplete,
           disableStartButton: true,
         }

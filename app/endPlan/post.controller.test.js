@@ -4,6 +4,7 @@ const { endSentencePlan } = require('../../common/data/sentencePlanningApi')
 jest.mock('../../common/data/sentencePlanningApi')
 
 let req
+const tokens = { authorisationToken: 'mytoken' }
 
 beforeEach(() => {
   req = {
@@ -11,9 +12,7 @@ beforeEach(() => {
       planId: 123,
       id: 456,
     },
-    headers: {
-      'x-auth-token': '1234',
-    },
+    tokens,
   }
   endSentencePlan.mockReset()
 })
@@ -26,7 +25,7 @@ describe('start sentence plan', () => {
 
   it('should end the plan when there are no errors', async () => {
     await postEndPlan(req, res)
-    expect(endSentencePlan).toHaveBeenCalledWith(123, '1234')
+    expect(endSentencePlan).toHaveBeenCalledWith(123, tokens)
     expect(res.redirect).toHaveBeenCalledWith('/individual-id/456/plans')
   })
 

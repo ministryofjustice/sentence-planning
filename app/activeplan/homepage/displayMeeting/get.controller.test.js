@@ -5,6 +5,8 @@ jest.mock('../../../../common/data/sentencePlanningApi')
 
 const meetingData = require('../../../../mockServer/sentencePlanMeetings/minutes/1.json')
 
+const tokens = { authorisationToken: 'mytoken' }
+
 describe('getDiversity', () => {
   const req = {
     path: '/this/is/my/path',
@@ -13,9 +15,7 @@ describe('getDiversity', () => {
       planId: 456,
       meetingId: 789,
     },
-    headers: {
-      'x-auth-token': '1234',
-    },
+    tokens,
   }
   const res = {
     render: jest.fn(),

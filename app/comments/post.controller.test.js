@@ -6,6 +6,7 @@ jest.mock('../../common/data/sentencePlanningApi')
 jest.mock('./get.controller')
 
 let req
+const tokens = { authorisationToken: 'mytoken' }
 
 beforeEach(() => {
   req = {
@@ -13,9 +14,7 @@ beforeEach(() => {
     params: {
       planId: 1,
     },
-    headers: {
-      'x-auth-token': '1234',
-    },
+    tokens,
     body: {},
     renderInfo: null,
   }
@@ -27,9 +26,7 @@ const expected = {
   params: {
     planId: 1,
   },
-  headers: {
-    'x-auth-token': '1234',
-  },
+  tokens,
   body: {
     comments: 'an individual’s comment',
   },
@@ -60,7 +57,7 @@ describe('postComments', () => {
     expect(setSentencePlanComment).toHaveBeenCalledWith(
       1,
       [{ comment: 'an individual’s comment', commentType: 'THEIR_SUMMARY' }],
-      '1234'
+      tokens
     )
     expect(res.redirect).toHaveBeenCalledWith('/this/is/my')
   })

@@ -25,12 +25,12 @@ describe('getObjectiveData', () => {
   }
   const planId = '11111111-1111-1111-1111-111111111111'
   const objectiveId = '2222222-2222-2222-2222-222222222222'
-  const token = 'token-1234'
+  const tokens = { authorisationToken: 'mytoken' }
   const req = {
     errors: null,
     errorSummary: null,
     params: { planId, objectiveId },
-    headers: { 'x-auth-token': token },
+    tokens,
   }
   const mockPromise = (data, error) => () => new Promise((resolve, reject) => (error ? reject(error) : resolve(data)))
 
@@ -57,16 +57,16 @@ describe('getObjectiveData', () => {
       await getObjectiveData(req, res, next)
     })
     it('it should request the sentence plan objective', async () => {
-      expect(getSentencePlanObjective).toHaveBeenCalledWith(planId, objectiveId, token)
+      expect(getSentencePlanObjective).toHaveBeenCalledWith(planId, objectiveId, tokens)
     })
     it('it should request the intervention data', async () => {
-      expect(getInterventions).toHaveBeenCalledWith(token)
+      expect(getInterventions).toHaveBeenCalledWith(tokens)
     })
     it('it should request the motivation data', async () => {
-      expect(getMotivations).toHaveBeenCalledWith(token)
+      expect(getMotivations).toHaveBeenCalledWith(tokens)
     })
     it('it should request the needs data', async () => {
-      expect(getSentencePlanNeeds).toHaveBeenCalledWith(planId, token)
+      expect(getSentencePlanNeeds).toHaveBeenCalledWith(planId, tokens)
     })
     it('it should populate the renderInfo', async () => {
       const expectedRenderDetails = {
@@ -80,6 +80,20 @@ describe('getObjectiveData', () => {
       expect(next).toHaveBeenCalled()
     })
   })
+
+  describe('With no needs being returned', () => {
+    beforeEach(async () => {
+      getSentencePlanNeeds.mockImplementation(mockPromise([]))
+      await getObjectiveData(req, res, next)
+    })
+    it('it should request the needs data', async () => {
+      expect(getSentencePlanNeeds).toHaveBeenCalledWith(planId, tokens)
+    })
+    it('it should populate the renderInfo with no needs', async () => {
+      expect(req.renderInfo.objective.needs).toEqual([])
+    })
+  })
+
   describe('With objective data with no needs or interventions', () => {
     beforeEach(async () => {
       objectiveMockData.needs = null
@@ -91,13 +105,13 @@ describe('getObjectiveData', () => {
       await getObjectiveData(req, res, next)
     })
     it('it should request the sentence plan objective', async () => {
-      expect(getSentencePlanObjective).toHaveBeenCalledWith(planId, objectiveId, token)
+      expect(getSentencePlanObjective).toHaveBeenCalledWith(planId, objectiveId, tokens)
     })
     it('it should not request the intervention data', async () => {
       expect(getInterventions).not.toHaveBeenCalled()
     })
     it('it should request the motivation data', async () => {
-      expect(getMotivations).toHaveBeenCalledWith(token)
+      expect(getMotivations).toHaveBeenCalledWith(tokens)
     })
     it('it should not request the needs data', async () => {
       expect(getSentencePlanNeeds).not.toHaveBeenCalled()
@@ -122,7 +136,7 @@ describe('getObjectiveData', () => {
         await getObjectiveData(req, res, next)
       })
       it('it should request the sentence plan objective', async () => {
-        expect(getSentencePlanObjective).toHaveBeenCalledWith(planId, objectiveId, token)
+        expect(getSentencePlanObjective).toHaveBeenCalledWith(planId, objectiveId, tokens)
       })
       it('should render the error page', async () => {
         expect(renderMock).toHaveBeenCalledWith(
@@ -139,7 +153,7 @@ describe('getObjectiveData', () => {
         await getObjectiveData(req, res, next)
       })
       it('it should request the interventions', async () => {
-        expect(getInterventions).toHaveBeenCalledWith(token)
+        expect(getInterventions).toHaveBeenCalledWith(tokens)
       })
       it('should render the error page', async () => {
         expect(renderMock).toHaveBeenCalledWith(
@@ -156,7 +170,7 @@ describe('getObjectiveData', () => {
         await getObjectiveData(req, res, next)
       })
       it('it should request the motivations', async () => {
-        expect(getMotivations).toHaveBeenCalledWith(token)
+        expect(getMotivations).toHaveBeenCalledWith(tokens)
       })
       it('should render the error page', async () => {
         expect(renderMock).toHaveBeenCalledWith(
@@ -173,7 +187,7 @@ describe('getObjectiveData', () => {
         await getObjectiveData(req, res, next)
       })
       it('it should request the needs', async () => {
-        expect(getSentencePlanNeeds).toHaveBeenCalledWith(planId, token)
+        expect(getSentencePlanNeeds).toHaveBeenCalledWith(planId, tokens)
       })
       it('should render the error page', async () => {
         expect(renderMock).toHaveBeenCalledWith(
@@ -190,7 +204,7 @@ describe('getObjectiveData', () => {
         await getObjectiveData(req, res, next)
       })
       it('it should request the needs', async () => {
-        expect(getSentencePlanNeeds).toHaveBeenCalledWith(planId, token)
+        expect(getSentencePlanNeeds).toHaveBeenCalledWith(planId, tokens)
       })
       it('should render the error page', async () => {
         expect(renderMock).toHaveBeenCalledWith(

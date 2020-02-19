@@ -4,10 +4,10 @@ const { startSentencePlan } = require('../../common/data/sentencePlanningApi')
 const postStartPlan = async (req, res) => {
   const {
     params: { planId, id },
-    headers: { 'x-auth-token': token },
+    tokens,
   } = req
   try {
-    await startSentencePlan(planId, token)
+    await startSentencePlan(planId, tokens)
     req.session.planStarted = true
     return res.redirect(`/individual-id/${id}/plan/${planId}`)
   } catch (error) {

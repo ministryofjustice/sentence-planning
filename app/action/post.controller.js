@@ -28,11 +28,11 @@ const validationRules = () => {
 
 const postAction = async (req, res) => {
   const {
+    tokens,
     path,
     errors,
     body,
     params: { planId, objectiveId, actionId },
-    headers: { 'x-auth-token': token },
   } = req
   // temporarily add values to the action
   const action = {
@@ -49,9 +49,9 @@ const postAction = async (req, res) => {
 
   try {
     if (actionId.toLowerCase() === 'new') {
-      await addSentencePlanObjectiveAction(planId, objectiveId, action, token)
+      await addSentencePlanObjectiveAction(planId, objectiveId, action, tokens)
     } else {
-      await updateSentencePlanObjectiveAction(planId, objectiveId, actionId, action, token)
+      await updateSentencePlanObjectiveAction(planId, objectiveId, actionId, action, tokens)
     }
     if (body.addAnotherAction === '') {
       return res.redirect(`${removeUrlLevels(path, 1)}/NEW`)

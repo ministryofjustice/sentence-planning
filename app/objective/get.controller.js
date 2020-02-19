@@ -4,13 +4,13 @@ const { removeUrlLevels, sortObject } = require('../../common/utils/util')
 
 const getObjective = async (req, res) => {
   const {
+    tokens,
     path,
     errors,
     errorSummary,
     body: { objective = null, needs = [] },
     renderInfo,
     params: { planId, objectiveId },
-    headers: { 'x-auth-token': token },
   } = req
   const nexturl = path.substring(0, path.lastIndexOf('/'))
   const backurl = removeUrlLevels(path, 2)
@@ -23,7 +23,7 @@ const getObjective = async (req, res) => {
       displayObjective.description = objective
       displayObjective.needs = needs
     } else if (objectiveId.toLowerCase() !== 'new') {
-      const savedObjective = await getSentencePlanObjective(planId, objectiveId, token)
+      const savedObjective = await getSentencePlanObjective(planId, objectiveId, tokens)
 
       // convert need to an array if only one has been passed back
       if (savedObjective.needs && !(savedObjective.needs instanceof Array)) {
@@ -38,7 +38,7 @@ const getObjective = async (req, res) => {
 
   // get all the needs that apply to this sentence plan
   try {
-    const displayNeeds = await getSentencePlanNeeds(planId, token)
+    const displayNeeds = await getSentencePlanNeeds(planId, tokens)
 
     // if there are no needs, put flag into session so we don't insist the user selects one in the validation
     if (displayNeeds.length === 0) {

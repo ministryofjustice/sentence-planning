@@ -9,12 +9,13 @@ jest.mock('../data/sentencePlanningApi', () => ({
 describe('Create a sentence plan.', () => {
   let req
   let res
+  const tokens = { authorisationToken: 'mytoken' }
   const redirectMock = jest.fn()
   const renderMock = jest.fn()
   beforeEach(() => {
     req = {
       params: { id: 1 },
-      headers: { 'x-auth-token': 'tolkien' },
+      tokens,
       originalUrl: 'fakeUrl/new',
     }
     res = {
