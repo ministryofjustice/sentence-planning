@@ -72,6 +72,7 @@ services:
       - DATABASE_ENDPOINT=postgres:5432
       - OAUTH_ROOT_URL=http://oauth:8080/auth
       - ASSESSMENT_API_URI_ROOT=http://offender-assessment-api:8080
+      - SPRING_PROFILES_ACTIVE=disableauthorisation
 
 networks:
   hmpps:
