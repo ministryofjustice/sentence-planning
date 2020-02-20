@@ -49,7 +49,7 @@ const getAddObjectives = ({ objectives = [] }, stub) => {
     let complete = false
 
     if (description) {
-      if (actions.reduce(actionsComplete, true)) {
+      if (actions.length > 0 && actions.reduce(actionsComplete, true)) {
         statusText = COMPLETED
         href = `${stub}/edit-objective/${id}/review`
         complete = true

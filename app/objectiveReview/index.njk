@@ -122,7 +122,12 @@
             {% endfor %}
         </div>
     </div>
-
+    {{ govukButton({
+      name: 'addAnotherAction',
+      text: 'Add another action' if objective.actions | length else 'Add an action',
+      classes: 'govuk-button--secondary govuk-!-margin-bottom-3',
+      href: nextUrl+'/edit-action/NEW'
+    }) }}
     {{ govukButton({
       text: 'Save & Continue',
       href: backUrl,
