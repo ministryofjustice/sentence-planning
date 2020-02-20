@@ -20,6 +20,7 @@ gatekeeper:
 
 ingress:
   enabled: true
+  enable_whitelist: true
   host: preprod.sentence-planning.service.justice.gov.uk
   path: /
   cert_secret: sentence-planning-cert
