@@ -132,12 +132,6 @@ describe('getAddObjectives', () => {
                 {
                   description: 'string',
                   id: 'string',
-                  motivationUUID: 'string',
-                  owner: ['SERVICE_USER'],
-                  priority: 0,
-                  progress: [],
-                  status: 'NOT_STARTED',
-                  updated: '2019-12-04T15:33:28.545Z',
                 },
               ],
               description: 'This is a very interesting objective',
@@ -152,8 +146,8 @@ describe('getAddObjectives', () => {
             {
               text: 'This is a very interesting objective',
               href: '/major/tom/edit-objective/123',
-              statusText: 'COMPLETED',
-              complete: true,
+              statusText: 'INCOMPLETE',
+              complete: false,
               hrefText: 'Add details',
             },
             {
@@ -182,7 +176,7 @@ describe('getAddObjectives', () => {
                   priority: 0,
                   progress: [],
                   status: 'NOT_STARTED',
-                  updated: '2019-12-04T15:33:28.545Z',
+                  targetDate: '1066-10',
                 },
               ],
               description: 'This is a very interesting objective',
@@ -196,7 +190,7 @@ describe('getAddObjectives', () => {
           items: [
             {
               text: 'This is a very interesting objective',
-              href: '/major/tom/edit-objective/123',
+              href: '/major/tom/edit-objective/123/review',
               statusText: 'COMPLETED',
               complete: true,
               hrefText: 'Add details',
@@ -227,7 +221,7 @@ describe('getAddObjectives', () => {
                   priority: 0,
                   progress: [],
                   status: 'NOT_STARTED',
-                  updated: '2019-12-04T15:33:28.545Z',
+                  targetDate: '1066-10',
                 },
               ],
               description: 'This is a very interesting objective',
@@ -244,7 +238,7 @@ describe('getAddObjectives', () => {
                   priority: 0,
                   progress: [],
                   status: 'NOT_STARTED',
-                  updated: '2019-12-04T15:33:28.545Z',
+                  targetDate: '1066-10',
                 },
               ],
               description: 'This is a very interesting objective',
@@ -258,14 +252,14 @@ describe('getAddObjectives', () => {
           items: [
             {
               text: 'This is a very interesting objective',
-              href: '/major/tom/edit-objective/123',
+              href: '/major/tom/edit-objective/123/review',
               statusText: 'COMPLETED',
               complete: true,
               hrefText: 'Add details',
             },
             {
               text: 'This is a very interesting objective',
-              href: '/major/tom/edit-objective/123',
+              href: '/major/tom/edit-objective/123/review',
               statusText: 'COMPLETED',
               complete: true,
               hrefText: 'Add details',

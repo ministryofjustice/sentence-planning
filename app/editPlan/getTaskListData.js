@@ -38,29 +38,26 @@ const getAboutTheIndividual = ({ comments }, stub) => {
 
 const actionsComplete = (
   complete,
-  { description = '', intervention = '', motivationUUID = '', updated = '', owner = [], ownerOther = '' }
-) =>
-  complete &&
-  (description.length > 0 || intervention.length > 0) &&
-  motivationUUID.length > 0 &&
-  (updated === null || updated.length > 0) &&
-  (owner.length > 0 || ownerOther.length > 0)
+  { description = '', intervention = '', motivationUUID = '', targetDate = '', owner = [], status = '' }
+) => complete && (description || intervention) && motivationUUID && targetDate && status && owner.length > 0
+
 const getAddObjectives = ({ objectives = [] }, stub) => {
-  const addedObjectives = objectives.map(({ actions = [], needs = [], description = '', id }, index) => {
-    const addedObjective = {
-      text: description.length > 0 ? description : `Add objective ${index + 1}`,
-      hrefText: ADD_DETAILS,
-      href: `${stub}/edit-objective/${id}`,
-      statusText: INCOMPLETE,
-      complete: false,
+  const addedObjectives = objectives.map(({ actions = [], description = '', id }, index) => {
+    const text = description.length > 0 ? description : `Add objective ${index + 1}`
+    let href = `${stub}/edit-objective/${id}`
+    let statusText = NOT_STARTED
+    let complete = false
+
+    if (description) {
+      if (actions.reduce(actionsComplete, true)) {
+        statusText = COMPLETED
+        href = `${stub}/edit-objective/${id}/review`
+        complete = true
+      } else {
+        statusText = INCOMPLETE
+      }
     }
-    if (description.length === 0 && needs.length === 0) {
-      addedObjective.statusText = NOT_STARTED
-    } else if (description.length > 0 && actions.reduce(actionsComplete, true)) {
-      addedObjective.statusText = COMPLETED
-      addedObjective.complete = true
-    }
-    return addedObjective
+    return { text, hrefText: ADD_DETAILS, href, statusText, complete }
   })
 
   const addAnotherObjective =
@@ -78,7 +75,6 @@ const getAddObjectives = ({ objectives = [] }, stub) => {
           statusText: NOT_STARTED,
           complete: false,
         }
-
   return {
     heading: {
       text: 'Add objectives',
