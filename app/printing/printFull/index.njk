@@ -3,6 +3,37 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
+{% macro displayObjectiveSection(objectives, sectionHeading, strapline) %}
+<h2 class="app-task-list__section">
+  {{ sectionHeading }}
+</h2>
+<p>{{ strapline }}</p>
+<ul class="app-task-list__items">
+  {%- for objective in objectives %}
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
+          {{ objective.description }}
+    </h3>
+    {{ govukTable({
+        firstCellIsHeader: false,
+        head: [
+            {
+                text: "Action"
+            },
+            {
+                text: "Due date",
+                format: "numeric"
+            },
+            {
+                text: "Status",
+                format: "numeric"
+            }
+        ],
+        rows: objective.actionsDisplay
+    }) }}
+  {% endfor -%}
+</ul>
+{% endmacro %}
+
 {% set heading = "Print sentence plan" %}
 
 {% block pageTitle %}
@@ -12,7 +43,8 @@
 {% block beforeContent %}
     {{ govukBackLink({
         href: backUrl,
-        text: 'Back to plan'
+        text: 'Back to plan',
+        classes: 'no-print'
     }) }}
 {% endblock %}
 
@@ -28,46 +60,72 @@
 
             <span class="govuk-caption-l govuk-!-margin-top-5">Sentence plan</span>
             <h1 class="govuk-heading-l govuk-!-margin-bottom-0">
-                {{ offender.firstname }} {{ offender.lastname }}
+                {{ offenderDetails.fullName }}
             </h1>
 
             <h2 class="govuk-heading-m / govuk-!-margin-top-6 govuk-!-margin-bottom-2">
                 Plan summary
             </h2>
+
+            <h3 class="govuk-heading-s / govuk-!-margin-top-6 govuk-!-margin-bottom-2">
+                Responsivity
+            </h3>
+            
             <dl class="govuk-summary-list govuk-!-margin-bottom-9">
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                        Responsivity
+                        Response to Diversity Factors:
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        {{ data['diversity'] | nl2br | safe }}
+                        {{ diversity | nl2br | safe }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                        They need us to know
+                        They want us to know:
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        {{ data['offender-summary'] | nl2br | safe }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Your decisions
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        {{ data['practitioner-comment'] | nl2br | safe }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Individual&rsquo;s comments
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        {{ data['offender-comment'] | nl2br | safe }}
+                        {{ needToKnow | nl2br | safe }}
                     </dd>
                 </div>
             </dl>
+
+            <h3 class="govuk-heading-s / govuk-!-margin-bottom-2">
+                Plan Comments
+            </h3>
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+                
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Your decisions:
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ decisions | nl2br | safe }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Individual&rsquo;s comments:
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ comments | nl2br | safe }}
+                    </dd>
+                </div>
+            </dl>
+
+            <ul class="app-task-list">
+  {%- if objectives.active %}
+    {{ displayObjectiveSection(objectives.active, 'Active objectives', 'I am working towards the following objective(s)') }}
+  {% endif -%}
+
+  {%- if objectives.future %}
+      {{ displayObjectiveSection(objectives.future, 'Future objectives', 'I will work on the following objective(s)') }}
+  {% endif -%}
+
+  {%- if objectives.closed %}
+      {{ displayObjectiveSection(objectives.closed, 'Completed objectives', 'I have completed the following objective(s):') }}
+  {% endif -%}
+</ul>
 
 
             <h2 class="govuk-heading-m / govuk-!-margin-top-4 govuk-!-margin-bottom-2">
