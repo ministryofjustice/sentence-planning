@@ -36,11 +36,7 @@ const printFullSentencePlan = async ({ path, params: { id, planId }, tokens }, r
       }
 
       const actionsDisplayList = currentObjective.actions.map(action => {
-        const { monthName, year } = getYearMonthFromDate(action.updated)
-
-        const displayStatus = getStatusText(action.status)
-
-        console.log(displayStatus)
+        const { monthName, year } = getYearMonthFromDate(action.targetDate)
 
         const retVal = [
           { text: action.description },
