@@ -10,9 +10,19 @@
 <p>{{ strapline }}</p>
 <ul class="app-task-list__items">
   {%- for objective in objectives %}
+    {% switch objective.type %}
+        {% case 'future' %}
+            {% set dateHeader = "Target date" %}
+        {% case 'closed' %}
+            {% set dateHeader = "Completed date" %}
+        {% default %}
+            {% set dateHeader = "Due date" %}
+    {% endswitch %}
+
     <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
           {{ objective.description }}
     </h3>
+    
     {{ govukTable({
         firstCellIsHeader: false,
         head: [
@@ -20,7 +30,7 @@
                 text: "Action"
             },
             {
-                text: "Due date",
+                text: dateHeader,
                 format: "numeric"
             },
             {
@@ -34,7 +44,7 @@
 </ul>
 {% endmacro %}
 
-{% set heading = "Print sentence plan" %}
+{% set heading = "Print full sentence plan" %}
 
 {% block pageTitle %}
     {{ heading }}
