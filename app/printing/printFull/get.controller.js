@@ -2,6 +2,7 @@ const { logger } = require('../../../common/logging/logger')
 const { removeUrlLevels, groupBy, getYearMonthFromDate, getStatusText } = require('../../../common/utils/util')
 const { getCommentText } = require('../../../common/utils/getCommentText')
 const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
+const { COMMENT_TYPES, ACTION_STATUS_TYPES } = require('../../../common/utils/constants')
 
 const printFullSentencePlan = async ({ path, params: { id, planId }, tokens }, res) => {
   try {
@@ -25,11 +26,15 @@ const printFullSentencePlan = async ({ path, params: { id, planId }, tokens }, r
       // objectives default to active if not caught with the rules below
       currentObjective.type = 'active'
 
-      if (currentObjective.actions.every(({ status }) => ['NOT_STARTED'].includes(status))) {
+      if (currentObjective.actions.every(({ status }) => [ACTION_STATUS_TYPES.NOT_STARTED].includes(status))) {
         currentObjective.type = 'future'
       } else if (
         currentObjective.actions.every(({ status }) =>
-          ['COMPLETED', 'PARTIALLY_COMPLETED', 'ABANDONED'].includes(status)
+          [
+            ACTION_STATUS_TYPES.COMPLETED,
+            ACTION_STATUS_TYPES.PARTIALLY_COMPLETED,
+            ACTION_STATUS_TYPES.ABANDONED,
+          ].includes(status)
         )
       ) {
         currentObjective.type = 'closed'
@@ -55,10 +60,10 @@ const printFullSentencePlan = async ({ path, params: { id, planId }, tokens }, r
 
     return res.render(`${__dirname}/index`, {
       backUrl,
-      diversity: getCommentText(comments, 'YOUR_RESPONSIVITY'),
-      decisions: getCommentText(comments, 'YOUR_SUMMARY'),
-      needToKnow: getCommentText(comments, 'THEIR_RESPONSIVITY'),
-      comments: getCommentText(comments, 'THEIR_SUMMARY'),
+      diversity: getCommentText(comments, COMMENT_TYPES.YOUR_RESPONSIVITY),
+      decisions: getCommentText(comments, COMMENT_TYPES.YOUR_SUMMARY),
+      needToKnow: getCommentText(comments, COMMENT_TYPES.THEIR_RESPONSIVITY),
+      comments: getCommentText(comments, COMMENT_TYPES.THEIR_SUMMARY),
       objectives,
     })
   } catch (error) {

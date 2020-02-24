@@ -1,20 +1,21 @@
 const { logger } = require('../logging/logger')
+const { ACTION_STATUS_TYPES, ACTION_RESPONSIBLE_TYPES } = require('./constants')
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
 
 const STATUS_LIST = [
-  { text: 'To do', value: 'NOT_STARTED', initialStatus: true },
-  { text: 'In progress', value: 'IN_PROGRESS', initialStatus: true },
-  { text: 'Paused', value: 'PAUSED' },
-  { text: 'Completed', value: 'COMPLETED' },
-  { text: 'Partially completed', value: 'PARTIALLY_COMPLETED' },
-  { text: 'Abandoned', value: 'ABANDONED' },
+  { text: 'To do', value: ACTION_STATUS_TYPES.NOT_STARTED, initialStatus: true },
+  { text: 'In progress', value: ACTION_STATUS_TYPES.IN_PROGRESS, initialStatus: true },
+  { text: 'Paused', value: ACTION_STATUS_TYPES.PAUSED },
+  { text: 'Completed', value: ACTION_STATUS_TYPES.COMPLETED },
+  { text: 'Partially completed', value: ACTION_STATUS_TYPES.PARTIALLY_COMPLETED },
+  { text: 'Abandoned', value: ACTION_STATUS_TYPES.ABANDONED },
 ]
 
 const RESPONSIBLE_LIST = [
-  { text: 'Individual', value: 'SERVICE_USER' },
-  { text: 'Offender manager', value: 'PRACTITIONER' },
-  { text: 'Other', value: 'OTHER' },
+  { text: 'Individual', value: ACTION_RESPONSIBLE_TYPES.SERVICE_USER },
+  { text: 'Offender manager', value: ACTION_RESPONSIBLE_TYPES.PRACTITIONER },
+  { text: 'Other', value: ACTION_RESPONSIBLE_TYPES.OTHER },
 ]
 
 const getStatusText = status => STATUS_LIST.find(({ value }) => status === value).text
