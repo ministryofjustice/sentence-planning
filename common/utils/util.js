@@ -1,22 +1,11 @@
 const { logger } = require('../logging/logger')
-const { ACTION_STATUS_TYPES, ACTION_RESPONSIBLE_TYPES } = require('./constants')
+const {
+  ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, ABANDONED },
+  STATUS_LIST,
+  RESPONSIBLE_LIST,
+} = require('./constants')
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
-
-const STATUS_LIST = [
-  { simplifiedText: 'Not started', text: 'To do', value: ACTION_STATUS_TYPES.NOT_STARTED, initialStatus: true },
-  { simplifiedText: 'Doing it', text: 'In progress', value: ACTION_STATUS_TYPES.IN_PROGRESS, initialStatus: true },
-  { simplifiedText: 'Paused', text: 'Paused', value: ACTION_STATUS_TYPES.PAUSED },
-  { simplifiedText: 'Finished', text: 'Completed', value: ACTION_STATUS_TYPES.COMPLETED },
-  { simplifiedText: 'Did some', text: 'Partially completed', value: ACTION_STATUS_TYPES.PARTIALLY_COMPLETED },
-  { simplifiedText: 'Stopped', text: 'Abandoned', value: ACTION_STATUS_TYPES.ABANDONED },
-]
-
-const RESPONSIBLE_LIST = [
-  { text: 'Individual', value: ACTION_RESPONSIBLE_TYPES.SERVICE_USER },
-  { text: 'Offender manager', value: ACTION_RESPONSIBLE_TYPES.PRACTITIONER },
-  { text: 'Other', value: ACTION_RESPONSIBLE_TYPES.OTHER },
-]
 
 const getStatusText = status => STATUS_LIST.find(({ value }) => status === value).text
 const getSimplifiedStatusText = status => STATUS_LIST.find(({ value }) => status === value).simplifiedText
@@ -106,7 +95,37 @@ const isValidDate = (day, month, year) => {
   }
 }
 
+const hasClosedStatus = status => {
+  const result = [COMPLETED, PARTIALLY_COMPLETED, ABANDONED].includes(status)
+  return result
+}
+
+const getObjectiveType = objective => {
+  // objectives default to active if not caught with the other rules below
+  let type = 'active'
+  if (objective.actions.every(({ status }) => status === NOT_STARTED)) {
+    type = 'future'
+  } else if (objective.actions.every(({ status }) => hasClosedStatus(status))) {
+    type = 'closed'
+  }
+  return type
+}
+
+const formatObjectiveActionsForPrintDisplay = actions => {
+  return actions.map(action => {
+    const { monthName, year } = getYearMonthFromDate(action.targetDate)
+    return [
+      { text: action.description },
+      { text: `${monthName} ${year}`, format: 'numeric' },
+      { text: getStatusText(action.status), format: 'numeric' },
+    ]
+  })
+}
+
 module.exports = {
+  formatObjectiveActionsForPrintDisplay,
+  getObjectiveType,
+  hasClosedStatus,
   getStatusText,
   getSimplifiedStatusText,
   getYearMonthFromDate,

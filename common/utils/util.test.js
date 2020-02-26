@@ -1,4 +1,17 @@
-const { countWords, isEmptyObject, removeUrlLevels, sortObject, catchAndReThrowError, isValidDate } = require('./util')
+const {
+  countWords,
+  isEmptyObject,
+  removeUrlLevels,
+  sortObject,
+  catchAndReThrowError,
+  isValidDate,
+  hasClosedStatus,
+  getObjectiveType,
+  formatObjectiveActionsForPrintDisplay,
+} = require('./util')
+const {
+  ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, PAUSED, IN_PROGRESS, ABANDONED },
+} = require('./constants')
 
 const inputText = "There is a green hill far away - and I shouldn't tell you that really"
 
@@ -109,5 +122,104 @@ describe('should check if date is valid', () => {
   })
   it('return false when nonsense is put in', () => {
     expect(isValidDate('fish fingers', 'chips', 'peas')).toEqual(false)
+  })
+})
+
+describe('should check if a status is a closed one', () => {
+  it('correctly determines a closed status', () => {
+    expect(hasClosedStatus(COMPLETED)).toEqual(true)
+    expect(hasClosedStatus(ABANDONED)).toEqual(true)
+    expect(hasClosedStatus(PARTIALLY_COMPLETED)).toEqual(true)
+    expect(hasClosedStatus(NOT_STARTED)).toEqual(false)
+    expect(hasClosedStatus(PAUSED)).toEqual(false)
+    expect(hasClosedStatus(IN_PROGRESS)).toEqual(false)
+  })
+})
+
+describe('should return the correct type for an objective', () => {
+  it('defaults to active', () => {
+    const objective = {
+      actions: [
+        {
+          status: 'IN_PROGRESS',
+        },
+        {
+          status: 'nonsense',
+        },
+      ],
+    }
+    expect(getObjectiveType(objective)).toEqual('active')
+  })
+  it('correctly determines an active objective', () => {
+    const objective = {
+      actions: [
+        {
+          status: 'IN_PROGRESS',
+        },
+        {
+          status: 'COMPLETED',
+        },
+      ],
+    }
+    expect(getObjectiveType(objective)).toEqual('active')
+  })
+  it('correctly determines a future objective', () => {
+    const objective = {
+      actions: [
+        {
+          status: 'NOT_STARTED',
+        },
+        {
+          status: 'NOT_STARTED',
+        },
+      ],
+    }
+    expect(getObjectiveType(objective)).toEqual('future')
+  })
+  it('correctly determines a completed objective', () => {
+    const objective = {
+      actions: [
+        {
+          status: 'ABANDONED',
+        },
+        {
+          status: 'COMPLETED',
+        },
+        {
+          status: 'PARTIALLY_COMPLETED',
+        },
+      ],
+    }
+    expect(getObjectiveType(objective)).toEqual('closed')
+  })
+})
+
+describe('should format actions so they can be displayed by the print template', () => {
+  it('correctly determines a closed status', () => {
+    const actions = [
+      {
+        description: 'Not started action description text',
+        status: 'NOT_STARTED',
+        targetDate: '2022-09',
+      },
+      {
+        description: 'Completed action description text',
+        status: 'COMPLETED',
+        targetDate: '2020-03',
+      },
+    ]
+    const expected = [
+      [
+        { text: 'Not started action description text' },
+        { text: 'September 2022', format: 'numeric' },
+        { text: 'To do', format: 'numeric' },
+      ],
+      [
+        { text: 'Completed action description text' },
+        { text: 'March 2020', format: 'numeric' },
+        { text: 'Completed', format: 'numeric' },
+      ],
+    ]
+    expect(formatObjectiveActionsForPrintDisplay(actions)).toEqual(expected)
   })
 })
