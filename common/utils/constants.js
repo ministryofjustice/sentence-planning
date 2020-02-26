@@ -36,10 +36,17 @@ const RESPONSIBLE_LIST = [
   { text: 'Other', value: ACTION_RESPONSIBLE_TYPES.OTHER },
 ]
 
+const OBJECTIVE_TYPES = {
+  ACTIVE: 'active',
+  FUTURE: 'future',
+  CLOSED: 'closed',
+}
+
 module.exports = Object.freeze({
   COMMENT_TYPES,
   ACTION_STATUS_TYPES,
   ACTION_RESPONSIBLE_TYPES,
   STATUS_LIST,
   RESPONSIBLE_LIST,
+  OBJECTIVE_TYPES,
 })

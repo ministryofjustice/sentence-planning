@@ -4,6 +4,7 @@ const {
   ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, ABANDONED },
   STATUS_LIST,
   RESPONSIBLE_LIST,
+  OBJECTIVE_TYPES: { ACTIVE, CLOSED, FUTURE },
 } = require('./constants')
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
@@ -100,24 +101,24 @@ const hasClosedStatus = status => {
   return result
 }
 
-const getObjectiveType = objective => {
+const getObjectiveType = ({ actions }) => {
   // objectives default to active if not caught with the other rules below
-  let type = 'active'
-  if (objective.actions.every(({ status }) => status === NOT_STARTED)) {
-    type = 'future'
-  } else if (objective.actions.every(({ status }) => hasClosedStatus(status))) {
-    type = 'closed'
+  let type = ACTIVE
+  if (actions.every(({ status }) => status === NOT_STARTED)) {
+    type = FUTURE
+  } else if (actions.every(({ status }) => hasClosedStatus(status))) {
+    type = CLOSED
   }
   return type
 }
 
 const formatObjectiveActionsForPrintDisplay = actions => {
-  return actions.map(action => {
-    const { monthName, year } = getYearMonthFromDate(action.targetDate)
+  return actions.map(({ description, status, targetDate }) => {
+    const { monthName, year } = getYearMonthFromDate(targetDate)
     return [
-      { text: action.description },
+      { text: description },
       { text: `${monthName} ${year}`, format: 'numeric' },
-      { text: getStatusText(action.status), format: 'numeric' },
+      { text: getStatusText(status), format: 'numeric' },
     ]
   })
 }
