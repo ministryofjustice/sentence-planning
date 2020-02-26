@@ -1,5 +1,5 @@
 const { body } = require('express-validator')
-const { UUID_REGEX } = require('../../../common/utils/util')
+const { UUID_REGEX } = require('../../../common/utils/constants')
 
 const validationRules = () => {
   return [

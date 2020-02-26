@@ -2,11 +2,10 @@ const { logger } = require('../../../common/logging/logger')
 const {
   removeUrlLevels,
   groupBy,
-  getYearMonthFromDate,
-  getSimplifiedStatusText,
+  getObjectiveType,
+  formatObjectiveActionsForPrintDisplay,
 } = require('../../../common/utils/util')
 const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
-const { ACTION_STATUS_TYPES } = require('../../../common/utils/constants')
 
 const printSimplifiedSentencePlan = async ({ path, params: { id, planId }, tokens }, res) => {
   try {
@@ -22,40 +21,12 @@ const printSimplifiedSentencePlan = async ({ path, params: { id, planId }, token
       return res.render('app/error', { error })
     }
 
-    // determine the status of each objective
-    objectives = objectives.map(objective => {
+    objectives.forEach(objective => {
       const currentObjective = objective
 
-      // objectives default to active if not caught with the rules below
-      currentObjective.type = 'active'
+      currentObjective.type = getObjectiveType(currentObjective)
+      currentObjective.actionsDisplay = formatObjectiveActionsForPrintDisplay(currentObjective.actions, true)
 
-      if (currentObjective.actions.every(({ status }) => [ACTION_STATUS_TYPES.NOT_STARTED].includes(status))) {
-        currentObjective.type = 'future'
-      } else if (
-        currentObjective.actions.every(({ status }) =>
-          [
-            ACTION_STATUS_TYPES.COMPLETED,
-            ACTION_STATUS_TYPES.PARTIALLY_COMPLETED,
-            ACTION_STATUS_TYPES.ABANDONED,
-          ].includes(status)
-        )
-      ) {
-        currentObjective.type = 'closed'
-      }
-
-      const actionsDisplayList = currentObjective.actions.map(action => {
-        const { monthName, year } = getYearMonthFromDate(action.targetDate)
-
-        const retVal = [
-          { text: action.description },
-          { text: `${monthName} ${year}`, format: 'numeric' },
-          { text: getSimplifiedStatusText(action.status), format: 'numeric' },
-        ]
-
-        return retVal
-      })
-
-      currentObjective.actionsDisplay = actionsDisplayList
       return currentObjective
     })
 

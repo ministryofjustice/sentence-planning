@@ -5,8 +5,6 @@ const {
   RESPONSIBLE_LIST,
 } = require('./constants')
 
-const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
-
 const getStatusText = status => STATUS_LIST.find(({ value }) => status === value).text
 const getSimplifiedStatusText = status => STATUS_LIST.find(({ value }) => status === value).simplifiedText
 
@@ -111,13 +109,14 @@ const getObjectiveType = objective => {
   return type
 }
 
-const formatObjectiveActionsForPrintDisplay = actions => {
+const formatObjectiveActionsForPrintDisplay = (actions, printoutSimple = false) => {
   return actions.map(action => {
     const { monthName, year } = getYearMonthFromDate(action.targetDate)
+    const statusText = printoutSimple ? getSimplifiedStatusText(action.status) : getStatusText(action.status)
     return [
       { text: action.description },
       { text: `${monthName} ${year}`, format: 'numeric' },
-      { text: getStatusText(action.status), format: 'numeric' },
+      { text: statusText, format: 'numeric' },
     ]
   })
 }
@@ -136,7 +135,6 @@ module.exports = {
   groupBy,
   isValidDate,
   catchAndReThrowError,
-  UUID_REGEX,
   STATUS_LIST,
   RESPONSIBLE_LIST,
 }
