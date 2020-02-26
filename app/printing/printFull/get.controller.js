@@ -1,8 +1,15 @@
 const { logger } = require('../../../common/logging/logger')
-const { removeUrlLevels, groupBy, getYearMonthFromDate, getStatusText } = require('../../../common/utils/util')
 const { getCommentText } = require('../../../common/utils/getCommentText')
+const {
+  removeUrlLevels,
+  groupBy,
+  getObjectiveType,
+  formatObjectiveActionsForDisplay,
+} = require('../../../common/utils/util')
 const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
-const { COMMENT_TYPES, ACTION_STATUS_TYPES } = require('../../../common/utils/constants')
+const {
+  COMMENT_TYPES: { YOUR_RESPONSIVITY, YOUR_SUMMARY, THEIR_RESPONSIVITY, THEIR_SUMMARY },
+} = require('../../../common/utils/constants')
 
 const printFullSentencePlan = async ({ path, params: { id, planId }, tokens }, res) => {
   try {
@@ -19,40 +26,12 @@ const printFullSentencePlan = async ({ path, params: { id, planId }, tokens }, r
       return res.render('app/error', { error })
     }
 
-    // determine the status of each objective
-    objectives = objectives.map(objective => {
+    objectives.forEach(objective => {
       const currentObjective = objective
 
-      // objectives default to active if not caught with the rules below
-      currentObjective.type = 'active'
+      currentObjective.type = getObjectiveType(currentObjective)
+      currentObjective.actionsDisplay = formatObjectiveActionsForDisplay(currentObjective)
 
-      if (currentObjective.actions.every(({ status }) => [ACTION_STATUS_TYPES.NOT_STARTED].includes(status))) {
-        currentObjective.type = 'future'
-      } else if (
-        currentObjective.actions.every(({ status }) =>
-          [
-            ACTION_STATUS_TYPES.COMPLETED,
-            ACTION_STATUS_TYPES.PARTIALLY_COMPLETED,
-            ACTION_STATUS_TYPES.ABANDONED,
-          ].includes(status)
-        )
-      ) {
-        currentObjective.type = 'closed'
-      }
-
-      const actionsDisplayList = currentObjective.actions.map(action => {
-        const { monthName, year } = getYearMonthFromDate(action.targetDate)
-
-        const retVal = [
-          { text: action.description },
-          { text: `${monthName} ${year}`, format: 'numeric' },
-          { text: getStatusText(action.status), format: 'numeric' },
-        ]
-
-        return retVal
-      })
-
-      currentObjective.actionsDisplay = actionsDisplayList
       return currentObjective
     })
 
@@ -60,10 +39,10 @@ const printFullSentencePlan = async ({ path, params: { id, planId }, tokens }, r
 
     return res.render(`${__dirname}/index`, {
       backUrl,
-      diversity: getCommentText(comments, COMMENT_TYPES.YOUR_RESPONSIVITY),
-      decisions: getCommentText(comments, COMMENT_TYPES.YOUR_SUMMARY),
-      needToKnow: getCommentText(comments, COMMENT_TYPES.THEIR_RESPONSIVITY),
-      comments: getCommentText(comments, COMMENT_TYPES.THEIR_SUMMARY),
+      diversity: getCommentText(comments, YOUR_RESPONSIVITY),
+      decisions: getCommentText(comments, YOUR_SUMMARY),
+      needToKnow: getCommentText(comments, THEIR_RESPONSIVITY),
+      comments: getCommentText(comments, THEIR_SUMMARY),
       objectives,
     })
   } catch (error) {
