@@ -4,7 +4,7 @@ const {
   removeUrlLevels,
   groupBy,
   getObjectiveType,
-  formatObjectiveActionsForDisplay,
+  formatObjectiveActionsForPrintDisplay,
 } = require('../../../common/utils/util')
 const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
 const {
@@ -30,7 +30,7 @@ const printFullSentencePlan = async ({ path, params: { id, planId }, tokens }, r
       const currentObjective = objective
 
       currentObjective.type = getObjectiveType(currentObjective)
-      currentObjective.actionsDisplay = formatObjectiveActionsForDisplay(currentObjective)
+      currentObjective.actionsDisplay = formatObjectiveActionsForPrintDisplay(currentObjective.actions)
 
       return currentObjective
     })

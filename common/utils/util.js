@@ -1,26 +1,12 @@
 const { logger } = require('../logging/logger')
 // const { ACTION_STATUS_TYPES, ACTION_RESPONSIBLE_TYPES } = require('./constants')
 const {
-  ACTION_RESPONSIBLE_TYPES: { SERVICE_USER, PRACTITIONER, OTHER },
-  ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, PAUSED, IN_PROGRESS, ABANDONED },
+  ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, ABANDONED },
+  STATUS_LIST,
+  RESPONSIBLE_LIST,
 } = require('./constants')
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
-
-const STATUS_LIST = [
-  { text: 'To do', value: NOT_STARTED, initialStatus: true },
-  { text: 'In progress', value: IN_PROGRESS, initialStatus: true },
-  { text: 'Paused', value: PAUSED },
-  { text: 'Completed', value: COMPLETED },
-  { text: 'Partially completed', value: PARTIALLY_COMPLETED },
-  { text: 'Abandoned', value: ABANDONED },
-]
-
-const RESPONSIBLE_LIST = [
-  { text: 'Individual', value: SERVICE_USER },
-  { text: 'Offender manager', value: PRACTITIONER },
-  { text: 'Other', value: OTHER },
-]
 
 const getStatusText = status => STATUS_LIST.find(({ value }) => status === value).text
 
@@ -125,8 +111,8 @@ const getObjectiveType = objective => {
   return type
 }
 
-const formatObjectiveActionsForDisplay = objective => {
-  return objective.actions.map(action => {
+const formatObjectiveActionsForPrintDisplay = actions => {
+  return actions.map(action => {
     const { monthName, year } = getYearMonthFromDate(action.targetDate)
     return [
       { text: action.description },
@@ -137,7 +123,7 @@ const formatObjectiveActionsForDisplay = objective => {
 }
 
 module.exports = {
-  formatObjectiveActionsForDisplay,
+  formatObjectiveActionsForPrintDisplay,
   getObjectiveType,
   hasClosedStatus,
   getStatusText,
