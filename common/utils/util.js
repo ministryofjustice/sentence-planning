@@ -1,21 +1,13 @@
 const { logger } = require('../logging/logger')
+// const { ACTION_STATUS_TYPES, ACTION_RESPONSIBLE_TYPES } = require('./constants')
+const {
+  ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, ABANDONED },
+  STATUS_LIST,
+  RESPONSIBLE_LIST,
+  OBJECTIVE_TYPES: { ACTIVE, CLOSED, FUTURE },
+} = require('./constants')
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
-
-const STATUS_LIST = [
-  { text: 'To do', value: 'NOT_STARTED', initialStatus: true },
-  { text: 'In progress', value: 'IN_PROGRESS', initialStatus: true },
-  { text: 'Paused', value: 'PAUSED' },
-  { text: 'Completed', value: 'COMPLETED' },
-  { text: 'Partially completed', value: 'PARTIALLY_COMPLETED' },
-  { text: 'Abandoned', value: 'ABANDONED' },
-]
-
-const RESPONSIBLE_LIST = [
-  { text: 'Individual', value: 'SERVICE_USER' },
-  { text: 'Offender manager', value: 'PRACTITIONER' },
-  { text: 'Other', value: 'OTHER' },
-]
 
 const getStatusText = status => STATUS_LIST.find(({ value }) => status === value).text
 
@@ -104,7 +96,37 @@ const isValidDate = (day, month, year) => {
   }
 }
 
+const hasClosedStatus = status => {
+  const result = [COMPLETED, PARTIALLY_COMPLETED, ABANDONED].includes(status)
+  return result
+}
+
+const getObjectiveType = ({ actions }) => {
+  // objectives default to active if not caught with the other rules below
+  let type = ACTIVE
+  if (actions.every(({ status }) => status === NOT_STARTED)) {
+    type = FUTURE
+  } else if (actions.every(({ status }) => hasClosedStatus(status))) {
+    type = CLOSED
+  }
+  return type
+}
+
+const formatObjectiveActionsForPrintDisplay = actions => {
+  return actions.map(({ description, status, targetDate }) => {
+    const { monthName, year } = getYearMonthFromDate(targetDate)
+    return [
+      { text: description },
+      { text: `${monthName} ${year}`, format: 'numeric' },
+      { text: getStatusText(status), format: 'numeric' },
+    ]
+  })
+}
+
 module.exports = {
+  formatObjectiveActionsForPrintDisplay,
+  getObjectiveType,
+  hasClosedStatus,
   getStatusText,
   getYearMonthFromDate,
   isEmptyObject,

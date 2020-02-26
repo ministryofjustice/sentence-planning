@@ -76,3 +76,10 @@ p {
   vertical-align: middle!important;
   margin: 0!important;
 }
+
+@media print
+{    
+    .no-print, .no-print * {
+        display: none !important;
+    }
+}

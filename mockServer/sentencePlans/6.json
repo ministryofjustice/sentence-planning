@@ -36,8 +36,8 @@
     {
       "actions": [
         {
-          "description": "string",
-          "id": "string",
+          "description": "In progress action description text",
+          "id": "act1",
           "motivationUUID": "string",
           "owner": [
             "SERVICE_USER"
@@ -45,16 +45,19 @@
           "priority": 0,
           "progress": [],
           "status": "IN_PROGRESS",
+          "targetDate": "2020-08",
           "updated": "2019-12-04T15:33:28.545Z"
         },
         {
-          "id": "string",
+          "description": "Completed action 2 description text",
+          "id": "act2",
           "intervention": "string",
           "motivationUUID": "string",
           "ownerOther": "string",
           "priority": 0,
           "progress": [],
           "status": "COMPLETED",
+          "targetDate": "2020-04",
           "updated": "2019-12-04T15:33:28.545Z"
         }
       ],
@@ -68,8 +71,8 @@
     {
       "actions": [
         {
-          "description": "string",
-          "id": "string",
+          "description": "Not started action 1 description text",
+          "id": "act3",
           "motivationUUID": "string",
           "owner": [
             "SERVICE_USER"
@@ -77,16 +80,19 @@
           "priority": 0,
           "progress": [],
           "status": "NOT_STARTED",
+          "targetDate": "2020-11",
           "updated": "2019-12-04T15:33:28.545Z"
         },
         {
-          "id": "string",
+          "description": "Not started action 2 description text",
+          "id": "act4",
           "intervention": "string",
           "motivationUUID": "string",
           "ownerOther": "string",
           "priority": 0,
           "progress": [],
           "status": "NOT_STARTED",
+          "targetDate": "2021-04",
           "updated": "2019-12-04T15:33:28.545Z"
         }
       ],
@@ -100,8 +106,8 @@
     {
       "actions": [
         {
-          "description": "string",
-          "id": "string",
+          "description": "Completed action description text",
+          "id": "act5",
           "motivationUUID": "string",
           "owner": [
             "SERVICE_USER"
@@ -109,26 +115,31 @@
           "priority": 0,
           "progress": [],
           "status": "COMPLETED",
+          "targetDate": "2020-01",
           "updated": "2019-12-04T15:33:28.545Z"
         },
         {
-          "id": "string",
+          "description": "Partially completed action 1 description text",
+          "id": "act6",
           "intervention": "string",
           "motivationUUID": "string",
           "ownerOther": "string",
           "priority": 0,
           "progress": [],
           "status": "PARTIALLY_COMPLETED",
+          "targetDate": "2021-02",
           "updated": "2019-12-04T15:33:28.545Z"
         },
         {
-          "id": "string",
+          "description": "Abandoned action description text",
+          "id": "act7",
           "intervention": "string",
           "motivationUUID": "string",
           "ownerOther": "string",
           "priority": 0,
           "progress": [],
           "status": "ABANDONED",
+          "targetDate": "2020-12",
           "updated": "2019-12-04T15:33:28.545Z"
         }
       ],
@@ -142,8 +153,8 @@
     {
       "actions": [
         {
-          "description": "string",
-          "id": "string",
+          "description": "Not started action description text",
+          "id": "act8",
           "motivationUUID": "string",
           "owner": [
             "SERVICE_USER"
@@ -151,26 +162,31 @@
           "priority": 0,
           "progress": [],
           "status": "NOT_STARTED",
+          "targetDate": "2022-09",
           "updated": "2019-12-04T15:33:28.545Z"
         },
         {
-          "id": "string",
+          "description": "Completed action description text",
+          "id": "act9",
           "intervention": "string",
           "motivationUUID": "string",
           "ownerOther": "string",
           "priority": 0,
           "progress": [],
           "status": "COMPLETED",
+          "targetDate": "2020-03",
           "updated": "2019-12-04T15:33:28.545Z"
         },
         {
-          "id": "string",
+          "description": "Abandoned action description text",
+          "id": "act10",
           "intervention": "string",
           "motivationUUID": "string",
           "ownerOther": "string",
           "priority": 0,
           "progress": [],
           "status": "ABANDONED",
+          "targetDate": "2021-02",
           "updated": "2019-12-04T15:33:28.545Z"
         }
       ],
