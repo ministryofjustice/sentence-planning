@@ -58,5 +58,20 @@
                 href: "/individual-id/" + individualId + "/plan/" + currentPlan.planId
             }) }}
         {% endif %}
-    </div>
+    
+    {% if completedPlans %}
+    <hr class="govuk-section-break section-break-large">
+    <h2 class="govuk-heading-m">
+        Previous plans
+      </h2>
+      {{ completedPlans | dump }}
+      <ul class="govuk-list">
+      {% for plan in completedPlans %}
+        <li>
+          <a class="govuk-link" href="#">Plan closed {{ plan.completedDate | date("DD MMMM YYYY") }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      </div>
 {% endblock %}
