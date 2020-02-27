@@ -22,7 +22,6 @@
                 </div>
             </div>
             <p>There is no active plan</p>
-
             {{ govukButton({
                 text: 'Create a new plan',
                 href: "/individual-id/" + individualId + "/edit-plan/new"
@@ -58,20 +57,27 @@
                 href: "/individual-id/" + individualId + "/plan/" + currentPlan.planId
             }) }}
         {% endif %}
-    
-    {% if completedPlans %}
-    <hr class="govuk-section-break section-break-large">
-    <h2 class="govuk-heading-m">
-        Previous plans
-      </h2>
-      {{ completedPlans | dump }}
-      <ul class="govuk-list">
-      {% for plan in completedPlans %}
-        <li>
-          <a class="govuk-link" href="#">Plan closed {{ plan.completedDate | date("DD MMMM YYYY") }}</a>
-        </li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-      </div>
+
+        {% if completedPlans.length %}
+            <hr class="govuk-section-break section-break-large">
+            <h2 class="govuk-heading-m">
+                Previous plans
+            </h2>
+            
+            <ul class="govuk-list">
+                {% for plan in completedPlans %}
+
+                    {% if plan.legacy %}
+                        {% set planUrl = 'previous-plan/' + plan.planId %}
+                    {% else %}
+                        {% set planUrl = 'plan/' + plan.planId %}
+                    {% endif %}
+
+                    <li>
+                        <a class="govuk-link" href="{{ planUrl }}">Plan closed {{ plan.completedDate | date("DD MMMM YYYY") }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 {% endblock %}
