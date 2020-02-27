@@ -8,7 +8,7 @@ const tokens = { authorisationToken: 'mytoken' }
 const sentencePlanEmpty = {}
 const sentencePlan = require('../../../mockServer/sentencePlans/6.json')
 
-describe('printFullSentencePlan', () => {
+describe('printSimplifiedSentencePlan', () => {
   const req = {
     path: 'lead/me/up/the/garden/path',
     params: {

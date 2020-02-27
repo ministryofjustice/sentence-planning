@@ -23,11 +23,8 @@ const printSimplifiedSentencePlan = async ({ path, params: { id, planId }, token
 
     objectives.forEach(objective => {
       const currentObjective = objective
-
       currentObjective.type = getObjectiveType(currentObjective)
       currentObjective.actionsDisplay = formatObjectiveActionsForPrintDisplay(currentObjective.actions, true)
-
-      return currentObjective
     })
 
     objectives = groupBy(objectives, ({ type }) => type)
