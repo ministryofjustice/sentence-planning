@@ -110,10 +110,10 @@ const getObjectiveType = ({ actions }) => {
   return type
 }
 
-const formatObjectiveActionsForPrintDisplay = (actions, printoutSimple = false) => {
+const formatObjectiveActionsForPrintDisplay = (actions, useSimplifiedText = false) => {
   return actions.map(({ description, status, targetDate }) => {
     const { monthName, year } = getYearMonthFromDate(targetDate)
-    const statusText = printoutSimple ? getSimplifiedStatusText(status) : getStatusText(status)
+    const statusText = useSimplifiedText ? getSimplifiedStatusText(status) : getStatusText(status)
     return [
       { text: description },
       { text: `${monthName} ${year}`, format: 'numeric' },
