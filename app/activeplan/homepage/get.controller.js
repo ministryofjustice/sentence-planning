@@ -1,7 +1,10 @@
 const { logger } = require('../../../common/logging/logger')
 const { getSentencePlan, getSentencePlanMeetings } = require('../../../common/data/sentencePlanningApi')
 const { getCommentText } = require('../../../common/utils/getCommentText')
-const { groupBy } = require('../../../common/utils/util')
+const { groupBy, getObjectiveType, hasClosedStatus } = require('../../../common/utils/util')
+const {
+  COMMENT_TYPES: { YOUR_RESPONSIVITY, YOUR_SUMMARY, THEIR_RESPONSIVITY, THEIR_SUMMARY, LIAISON_ARRANGEMENTS },
+} = require('../../../common/utils/constants')
 
 const getHomepage = async (req, res) => {
   const {
@@ -28,20 +31,9 @@ const getHomepage = async (req, res) => {
   objectives = objectives.map(objective => {
     const currentObjective = objective
 
-    // objectives default to active if not caught with the rules below
-    currentObjective.type = 'active'
+    currentObjective.actionsCompleted = currentObjective.actions.filter(({ status }) => hasClosedStatus(status)).length
 
-    currentObjective.actionsCompleted = currentObjective.actions.filter(({ status }) =>
-      ['COMPLETED', 'PARTIALLY_COMPLETED', 'ABANDONED'].includes(status)
-    ).length
-
-    if (currentObjective.actions.every(({ status }) => ['NOT_STARTED'].includes(status))) {
-      currentObjective.type = 'future'
-    } else if (
-      currentObjective.actions.every(({ status }) => ['COMPLETED', 'PARTIALLY_COMPLETED', 'ABANDONED'].includes(status))
-    ) {
-      currentObjective.type = 'closed'
-    }
+    currentObjective.type = getObjectiveType(currentObjective)
     return currentObjective
   })
 
@@ -60,11 +52,11 @@ const getHomepage = async (req, res) => {
     id,
     planStarted,
     objectives,
-    contactArrangements: getCommentText(comments, 'LIAISON_ARRANGEMENTS'),
-    diversity: getCommentText(comments, 'YOUR_RESPONSIVITY'),
-    decisions: getCommentText(comments, 'YOUR_SUMMARY'),
-    needToKnow: getCommentText(comments, 'THEIR_RESPONSIVITY'),
-    comments: getCommentText(comments, 'THEIR_SUMMARY'),
+    contactArrangements: getCommentText(comments, LIAISON_ARRANGEMENTS),
+    diversity: getCommentText(comments, YOUR_RESPONSIVITY),
+    decisions: getCommentText(comments, YOUR_SUMMARY),
+    needToKnow: getCommentText(comments, THEIR_RESPONSIVITY),
+    comments: getCommentText(comments, THEIR_SUMMARY),
     meetings,
   })
 }

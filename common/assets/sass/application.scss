@@ -82,3 +82,10 @@ p {
   margin-bottom: 20px;
   border: 4px solid #1d70b8;
 }
+
+@media print
+{    
+    .no-print, .no-print * {
+        display: none !important;
+    }
+}
