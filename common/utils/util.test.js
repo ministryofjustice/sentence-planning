@@ -195,19 +195,20 @@ describe('should return the correct type for an objective', () => {
 })
 
 describe('should format actions so they can be displayed by the print template', () => {
-  it('correctly determines a closed status', () => {
-    const actions = [
-      {
-        description: 'Not started action description text',
-        status: 'NOT_STARTED',
-        targetDate: '2022-09',
-      },
-      {
-        description: 'Completed action description text',
-        status: 'COMPLETED',
-        targetDate: '2020-03',
-      },
-    ]
+  const actions = [
+    {
+      description: 'Not started action description text',
+      status: 'NOT_STARTED',
+      targetDate: '2022-09',
+    },
+    {
+      description: 'Completed action description text',
+      status: 'COMPLETED',
+      targetDate: '2020-03',
+    },
+  ]
+
+  it('returns actions in the correct format', () => {
     const expected = [
       [
         { text: 'Not started action description text' },
@@ -221,5 +222,21 @@ describe('should format actions so they can be displayed by the print template',
       ],
     ]
     expect(formatObjectiveActionsForPrintDisplay(actions)).toEqual(expected)
+  })
+
+  it('returns actions in the correct format with simplified status text', () => {
+    const expected = [
+      [
+        { text: 'Not started action description text' },
+        { text: 'September 2022', format: 'numeric' },
+        { text: 'Not started', format: 'numeric' },
+      ],
+      [
+        { text: 'Completed action description text' },
+        { text: 'March 2020', format: 'numeric' },
+        { text: 'Finished', format: 'numeric' },
+      ],
+    ]
+    expect(formatObjectiveActionsForPrintDisplay(actions, true)).toEqual(expected)
   })
 })

@@ -1,5 +1,4 @@
 const { logger } = require('../logging/logger')
-// const { ACTION_STATUS_TYPES, ACTION_RESPONSIBLE_TYPES } = require('./constants')
 const {
   ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, ABANDONED },
   STATUS_LIST,
@@ -7,9 +6,8 @@ const {
   OBJECTIVE_TYPES: { ACTIVE, CLOSED, FUTURE },
 } = require('./constants')
 
-const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
-
 const getStatusText = status => STATUS_LIST.find(({ value }) => status === value).text
+const getSimplifiedStatusText = status => STATUS_LIST.find(({ value }) => status === value).simplifiedText
 
 const getYearMonthFromDate = dateString => {
   const date = new Date(dateString)
@@ -112,13 +110,14 @@ const getObjectiveType = ({ actions }) => {
   return type
 }
 
-const formatObjectiveActionsForPrintDisplay = actions => {
+const formatObjectiveActionsForPrintDisplay = (actions, useSimplifiedText = false) => {
   return actions.map(({ description, status, targetDate }) => {
     const { monthName, year } = getYearMonthFromDate(targetDate)
+    const statusText = useSimplifiedText ? getSimplifiedStatusText(status) : getStatusText(status)
     return [
       { text: description },
       { text: `${monthName} ${year}`, format: 'numeric' },
-      { text: getStatusText(status), format: 'numeric' },
+      { text: statusText, format: 'numeric' },
     ]
   })
 }
@@ -128,6 +127,7 @@ module.exports = {
   getObjectiveType,
   hasClosedStatus,
   getStatusText,
+  getSimplifiedStatusText,
   getYearMonthFromDate,
   isEmptyObject,
   countWords,
@@ -136,7 +136,6 @@ module.exports = {
   groupBy,
   isValidDate,
   catchAndReThrowError,
-  UUID_REGEX,
   STATUS_LIST,
   RESPONSIBLE_LIST,
 }

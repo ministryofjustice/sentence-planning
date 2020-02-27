@@ -45,7 +45,7 @@ module.exports = {
     offenderAssessment: {
       url: get('OASYSAPI_ENDPOINT_URL', 'http://localhost:8081', true),
       timeout: {
-        response: get('OASYSAPII_ENDPOINT_TIMEOUT_RESPONSE', 30000, true),
+        response: get('OASYSAPI_ENDPOINT_TIMEOUT_RESPONSE', 30000, true),
         deadline: get('OASYSAPI_ENDPOINT_TIMEOUT_DEADLINE', 35000, true),
       },
       agent: {
