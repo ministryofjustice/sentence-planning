@@ -3,6 +3,7 @@ const {
   ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, ABANDONED },
   STATUS_LIST,
   RESPONSIBLE_LIST,
+  OBJECTIVE_TYPES: { ACTIVE, CLOSED, FUTURE },
 } = require('./constants')
 
 const getStatusText = status => STATUS_LIST.find(({ value }) => status === value).text
@@ -98,23 +99,23 @@ const hasClosedStatus = status => {
   return result
 }
 
-const getObjectiveType = objective => {
+const getObjectiveType = ({ actions }) => {
   // objectives default to active if not caught with the other rules below
-  let type = 'active'
-  if (objective.actions.every(({ status }) => status === NOT_STARTED)) {
-    type = 'future'
-  } else if (objective.actions.every(({ status }) => hasClosedStatus(status))) {
-    type = 'closed'
+  let type = ACTIVE
+  if (actions.every(({ status }) => status === NOT_STARTED)) {
+    type = FUTURE
+  } else if (actions.every(({ status }) => hasClosedStatus(status))) {
+    type = CLOSED
   }
   return type
 }
 
 const formatObjectiveActionsForPrintDisplay = (actions, printoutSimple = false) => {
-  return actions.map(action => {
-    const { monthName, year } = getYearMonthFromDate(action.targetDate)
-    const statusText = printoutSimple ? getSimplifiedStatusText(action.status) : getStatusText(action.status)
+  return actions.map(({ description, status, targetDate }) => {
+    const { monthName, year } = getYearMonthFromDate(targetDate)
+    const statusText = printoutSimple ? getSimplifiedStatusText(status) : getStatusText(status)
     return [
-      { text: action.description },
+      { text: description },
       { text: `${monthName} ${year}`, format: 'numeric' },
       { text: statusText, format: 'numeric' },
     ]

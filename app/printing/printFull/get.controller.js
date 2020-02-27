@@ -31,8 +31,6 @@ const printFullSentencePlan = async ({ path, params: { id, planId }, tokens }, r
 
       currentObjective.type = getObjectiveType(currentObjective)
       currentObjective.actionsDisplay = formatObjectiveActionsForPrintDisplay(currentObjective.actions)
-
-      return currentObjective
     })
 
     objectives = groupBy(objectives, ({ type }) => type)
