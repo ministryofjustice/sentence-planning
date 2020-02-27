@@ -53,10 +53,6 @@ executors:
     docker:
       - image: circleci/node:10.15.3-browsers
     working_directory: ~/app
-  owasp:
-    docker:
-      - image: circleci/openjdk:11-jdk-browsers
-    working_directory: ~/app
   sonar-scanner:
     docker:
       - image: sonarsource/sonar-scanner-cli:4.2
