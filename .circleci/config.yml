@@ -69,7 +69,6 @@ orbs:
   aws-cli: circleci/aws-cli@0.1.18
   kubernetes: circleci/kubernetes@0.10.1
   helm: circleci/helm@0.2.3
-  owasp: entur/owasp@0.0.6
 
 jobs:
   build:
@@ -151,84 +150,6 @@ jobs:
              docker push mojdigitalstudio/sentence-planning:latest
             fi
 
-  owasp-scan:
-    executor: owasp
-    environment:
-      version_url: "https://jeremylong.github.io/DependencyCheck/current.txt"
-      executable_url: "https://dl.bintray.com/jeremy-long/owasp/dependency-check-VERSION-release.zip"
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/app
-      - owasp/with_commandline:
-          version: ""
-          cache_key: default
-          steps:
-            - owasp/generate_cache_keys:
-                cache_key: commmandline-default-cache-key-v6
-            - owasp/restore_owasp_cache
-            - run:
-                name: Update OWASP Dependency-Check Database
-                command: |
-                  ~/.owasp/dependency-check/bin/dependency-check.sh \
-                    --data ~/.owasp/dependency-check-data \
-                    --updateonly
-            - owasp/store_owasp_cache:
-                cve_data_directory: ~/.owasp/dependency-check-data
-            - run:
-                name: Run OWASP Dependency-Check Analyzer
-                command: |
-                  mkdir -p build/reports/owasp
-                  ~/.owasp/dependency-check/bin/dependency-check.sh \
-                    --data ~/.owasp/dependency-check-data \
-                    --format ALL \
-                    --noupdate \
-                    --scan ./ \
-                    --suppression ./dependency-check-suppress.xml \
-                    --disableAssembly \
-                    --out build/reports/owasp \
-            - persist_to_workspace:
-                root: .
-                paths:
-                  - build/reports/owasp
-
-  trivy-scan:
-    executor: deployer
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Fetch latest image
-          command: |
-            docker pull mojdigitalstudio/sentence-planning:latest
-            docker tag mojdigitalstudio/sentence-planning:latest mojdigitalstudio/sentence-planning:trivy-scan
-      - run:
-          name: Install trivy
-          command: |
-            VERSION=$(
-                curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | \
-                grep '"tag_name":' | \
-                sed -E 's/.*"v([^"]+)".*/\1/'
-            )
-            wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz
-            tar zxvf trivy_${VERSION}_Linux-64bit.tar.gz
-            sudo mv trivy /usr/local/bin
-      - run:
-          name: Scan the local image with trivy
-          command: |
-            mkdir -p build/reports/trivy
-            trivy \
-              --exit-code 0 \
-              --no-progress \
-              -f json \
-              -o build/reports/trivy/report.json \
-              -s "HIGH,CRITICAL" \
-              "mojdigitalstudio/sentence-planning:trivy-scan"
-      - persist_to_workspace:
-          root: .
-          paths:
-            - build/reports/trivy
-
   sonar-scan:
     executor: sonar-scanner
     steps:
@@ -288,15 +209,9 @@ workflows:
           filters:
             tags:
               ignore: /.*/
-      - owasp-scan:
-          requires:
-            - build
-      - trivy-scan
       - sonar-scan:
           requires:
             - build
-            - owasp-scan
-            - trivy-scan
   build-test-and-deploy:
     jobs:
       - build:
