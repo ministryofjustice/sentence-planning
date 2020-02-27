@@ -22,12 +22,12 @@ const ACTION_RESPONSIBLE_TYPES = {
 }
 
 const STATUS_LIST = [
-  { text: 'To do', value: ACTION_STATUS_TYPES.NOT_STARTED, initialStatus: true },
-  { text: 'In progress', value: ACTION_STATUS_TYPES.IN_PROGRESS, initialStatus: true },
-  { text: 'Paused', value: ACTION_STATUS_TYPES.PAUSED },
-  { text: 'Completed', value: ACTION_STATUS_TYPES.COMPLETED },
-  { text: 'Partially completed', value: ACTION_STATUS_TYPES.PARTIALLY_COMPLETED },
-  { text: 'Abandoned', value: ACTION_STATUS_TYPES.ABANDONED },
+  { simplifiedText: 'Not started', text: 'To do', value: ACTION_STATUS_TYPES.NOT_STARTED, initialStatus: true },
+  { simplifiedText: 'Doing it', text: 'In progress', value: ACTION_STATUS_TYPES.IN_PROGRESS, initialStatus: true },
+  { simplifiedText: 'Paused', text: 'Paused', value: ACTION_STATUS_TYPES.PAUSED },
+  { simplifiedText: 'Finished', text: 'Completed', value: ACTION_STATUS_TYPES.COMPLETED },
+  { simplifiedText: 'Did some', text: 'Partially completed', value: ACTION_STATUS_TYPES.PARTIALLY_COMPLETED },
+  { simplifiedText: 'Stopped', text: 'Abandoned', value: ACTION_STATUS_TYPES.ABANDONED },
 ]
 
 const RESPONSIBLE_LIST = [
@@ -35,6 +35,8 @@ const RESPONSIBLE_LIST = [
   { text: 'Offender manager', value: ACTION_RESPONSIBLE_TYPES.PRACTITIONER },
   { text: 'Other', value: ACTION_RESPONSIBLE_TYPES.OTHER },
 ]
+
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
 
 const OBJECTIVE_TYPES = {
   ACTIVE: 'active',
@@ -48,5 +50,6 @@ module.exports = Object.freeze({
   ACTION_RESPONSIBLE_TYPES,
   STATUS_LIST,
   RESPONSIBLE_LIST,
+  UUID_REGEX,
   OBJECTIVE_TYPES,
 })
