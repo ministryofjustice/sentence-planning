@@ -1,33 +1,47 @@
 const { logger } = require('../../common/logging/logger')
 const { getSentencePlanSummary } = require('../../common/data/sentencePlanningApi')
 const { isEmptyObject } = require('../../common/utils/util')
+const {
+  PLAN_TYPES: { ACTIVE, DRAFT, NONE },
+} = require('../../common/utils/constants')
 
-const getPlan = plans => {
+const isValid = str => str !== '' && str !== undefined && str !== null
+
+const getPlan = (plans = {}) => {
   if (isEmptyObject(plans)) return {}
-  return (
-    plans.find(({ completedDate }) => completedDate === '' || completedDate === undefined || completedDate === null) ||
-    {}
-  )
+  return plans.find(({ completedDate }) => !isValid(completedDate)) || {}
+}
+
+const getCompletedPlans = plans => {
+  if (isEmptyObject(plans)) return {}
+  return plans.filter(({ completedDate }) => isValid(completedDate))
+}
+
+const getPlanType = (plan = {}) => {
+  let planType = ACTIVE
+  if (isEmptyObject(plan)) {
+    planType = NONE
+  } else if (plan.draft) {
+    planType = DRAFT
+  }
+  return planType
 }
 
 const sentencePlanSummary = async ({ tokens, params: { id } }, res) => {
   try {
     const plans = await getSentencePlanSummary(id, tokens)
-    const renderInfo = {}
-    renderInfo.individualId = id
-    renderInfo.currentPlan = getPlan(plans)
-    renderInfo.planType = 'active'
-    if (isEmptyObject(renderInfo.currentPlan)) {
-      renderInfo.planType = 'none'
-    } else if (renderInfo.currentPlan.draft) {
-      renderInfo.planType = 'draft'
-    }
+    const currentPlan = getPlan(plans)
 
-    res.render(`${__dirname}/index`, renderInfo)
+    res.render(`${__dirname}/index`, {
+      individualId: id,
+      currentPlan,
+      planType: getPlanType(currentPlan),
+      completedPlans: getCompletedPlans(plans),
+    })
   } catch (error) {
     logger.error(`Could not retrieve sentence plan summary for ${id}, error: ${error}`)
     res.render('app/error', { error })
   }
 }
 
-module.exports = { sentencePlanSummary }
+module.exports = { sentencePlanSummary, getPlan, getCompletedPlans, getPlanType }
