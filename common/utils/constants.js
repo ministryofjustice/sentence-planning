@@ -44,6 +44,12 @@ const OBJECTIVE_TYPES = {
   CLOSED: 'closed',
 }
 
+const PLAN_TYPES = {
+  ACTIVE: 'active',
+  DRAFT: 'draft',
+  NONE: 'none',
+}
+
 module.exports = Object.freeze({
   COMMENT_TYPES,
   ACTION_STATUS_TYPES,
@@ -52,4 +58,5 @@ module.exports = Object.freeze({
   RESPONSIBLE_LIST,
   UUID_REGEX,
   OBJECTIVE_TYPES,
+  PLAN_TYPES,
 })

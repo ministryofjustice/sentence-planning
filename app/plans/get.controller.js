@@ -1,28 +1,29 @@
 const { logger } = require('../../common/logging/logger')
 const { getSentencePlanSummary } = require('../../common/data/sentencePlanningApi')
 const { isEmptyObject } = require('../../common/utils/util')
+const {
+  PLAN_TYPES: { ACTIVE, DRAFT, NONE },
+} = require('../../common/utils/constants')
+
+const isValid = str => str !== '' && str !== undefined && str !== null
 
 const getPlan = (plans = {}) => {
   if (isEmptyObject(plans)) return {}
-  return (
-    plans.find(({ completedDate }) => completedDate === '' || completedDate === undefined || completedDate === null) ||
-    {}
-  )
+  return plans.find(({ completedDate }) => !isValid(completedDate)) || {}
 }
+
 
 const getCompletedPlans = plans => {
   if (isEmptyObject(plans)) return {}
-  return plans.filter(
-    ({ completedDate }) => completedDate !== '' && completedDate !== undefined && completedDate !== null
-  )
+  return plans.filter(({ completedDate }) => isValid(completedDate))
 }
 
 const getPlanType = (plan = {}) => {
-  let planType = 'active'
+  let planType = ACTIVE
   if (isEmptyObject(plan)) {
-    planType = 'none'
+    planType = NONE
   } else if (plan.draft) {
-    planType = 'draft'
+    planType = DRAFT
   }
   return planType
 }
