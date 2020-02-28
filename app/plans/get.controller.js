@@ -12,7 +12,6 @@ const getPlan = (plans = {}) => {
   return plans.find(({ completedDate }) => !isValid(completedDate)) || {}
 }
 
-
 const getCompletedPlans = plans => {
   if (isEmptyObject(plans)) return {}
   return plans.filter(({ completedDate }) => isValid(completedDate))
