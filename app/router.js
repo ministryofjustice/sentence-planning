@@ -40,6 +40,7 @@ const { postComments, commentsValidationRules } = require('./comments/post.contr
 const { getObjective } = require('./objective/get.controller')
 const { postObjective, objectiveValidationRules } = require('./objective/post.controller')
 const { getObjectiveReview } = require('./objectiveReview/get.controller')
+const { getCloseObjective } = require('./objectiveClose/get.controller')
 
 const { getAction } = require('./action/get.controller')
 const { postAction, actionValidationRules } = require('./action/post.controller')
@@ -110,6 +111,7 @@ module.exports = app => {
   app.get([editObjectiveRoute, activePlanNewObjectiveRoute], getObjective)
   app.post([editObjectiveRoute, activePlanNewObjectiveRoute], objectiveValidationRules(), validate, postObjective)
   app.get(`${editObjectiveRoute}/review`, getObjectiveData, getObjectiveReview)
+  app.get(`${activePlanObjectiveRoute}/close`, getObjectiveData, getCloseObjective)
   app.get(activePlanObjectiveRoute, getObjectiveData, getObjectiveView)
 
   // actions

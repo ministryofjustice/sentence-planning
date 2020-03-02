@@ -1,0 +1,60 @@
+{% extends "common/templates/layout.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+
+{% set heading = "Review objective" %}
+{% set errorHeading = "Error - " + heading %}
+
+{% block pageTitle %}
+  {% if errors %}
+    {{ errorHeading }}
+  {% else %}
+    {{ heading }}
+  {% endif %}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+        text: 'Back to objective',
+        href: backUrl
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+  {# include errorSummary partial #}
+  {{ super() }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">
+        <span class="govuk-caption-l">Close objective</span>
+        {{ objective.description }}
+      </h1>
+
+  {{  govukCharacterCount({
+    id: 'objective',
+    name: 'objective',
+    value: description | safe,
+    label: {
+        classes: 'govuk-label--m',
+        text: 'Explain why the objective can be closed'
+    },
+    maxwords: 250,
+    errorMessage: errors.objective
+  }) }}
+  {% if wordsOver %}
+    <span id="objective-error" class="govuk-error-message extra-error">
+      You have {{ wordsOver }} words too many</span>
+  {% endif %}
+  {{ govukButton({
+        name: 'closeObjective',
+        text: 'Close objective',
+        classes: 'govuk-!-margin-bottom-3'
+    }) }}
+  <p>or <a class="govuk-link" href="{{ backUrl }}">cancel</a>
+  </p>
+      </div>
+  </div>
+{% endblock %}
