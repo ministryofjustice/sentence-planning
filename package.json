@@ -82,7 +82,7 @@
     "staticify": "^3.3.4",
     "superagent": "^5.1.0",
     "throng": "4.0.x",
-    "uuid": "^3.3.3",
+    "uuid": "^3.4.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {
