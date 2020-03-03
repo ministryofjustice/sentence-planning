@@ -13,7 +13,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     {{ if .Values.ingress.enable_whitelist }}nginx.ingress.kubernetes.io/whitelist-source-range: {{ include "app.joinListWithComma" .Values.whitelist | quote }}{{ end }}
-    {{ include "modsecurity.args" . }}
+    {{ include "modsecurity.args" . | nindent 4 }}
 spec:
   tls:
     - hosts:

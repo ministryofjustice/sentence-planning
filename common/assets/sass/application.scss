@@ -77,6 +77,12 @@ p {
   margin: 0!important;
 }
 
+.section-break-large {
+  margin-top: govuk-spacing(9);
+  margin-bottom: govuk-spacing(4);
+  border: 4px solid $govuk-brand-colour;
+}
+
 @media print
 {    
     .no-print, .no-print * {

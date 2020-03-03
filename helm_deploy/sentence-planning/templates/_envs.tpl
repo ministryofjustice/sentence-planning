@@ -13,7 +13,7 @@ env:
     valueFrom:
       secretKeyRef:
         name: sentence-planning
-        key: API_CLIENT_CREDENTIALS_SECRET
+        key: API_CLIENT_SECRET
   - name: SESSION_SECRET
     valueFrom:
       secretKeyRef:
