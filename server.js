@@ -15,6 +15,7 @@ const helmet = require('helmet')
 // Local dependencies
 const argv = require('minimist')(process.argv.slice(2))
 const staticify = require('staticify')(join(__dirname, 'public'))
+const { mojDate } = require('./node_modules/@ministryofjustice/frontend/moj/filters/all.js')()
 const logger = require('./common/logging/logger')
 const router = require('./app/router')
 const noCache = require('./common/utils/no-cache')
@@ -129,6 +130,7 @@ function initialiseTemplateEngine(app) {
 
   // add custom nunjucks filters
   nunjucksEnvironment.addFilter('date', dateFilter)
+  nunjucksEnvironment.addFilter('mojDate', mojDate)
 
   // Set view engine
   app.set('view engine', 'njk')
