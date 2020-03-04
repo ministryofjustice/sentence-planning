@@ -1,9 +1,10 @@
-const { sentencePlanSummary } = require('./get.controller')
+const { sentencePlanSummary, getPlan, getPlanType, getCompletedPlans } = require('./get.controller')
 
 const activePlan = require('../../mockServer/sentencePlanSummary/11033.json')
 const noActivePlan = require('../../mockServer/sentencePlanSummary/11034.json')
 const draftPlan = require('../../mockServer/sentencePlanSummary/11035.json')
 const emptyObject = require('../../mockServer/sentencePlanSummary/11032.json')
+const noCompletedPlans = require('../../mockServer/sentencePlanSummary/11036.json')
 const { getSentencePlanSummary } = require('../../common/data/sentencePlanningApi')
 
 jest.mock('../../common/data/sentencePlanningApi.js', () => ({
@@ -24,20 +25,54 @@ describe('getSentencePlanSummary', () => {
     render: jest.fn(),
   }
 
+  describe('select the current plan', () => {
+    test('should select the active plan', () => {
+      expect(getPlan(activePlan)).toEqual(activePlan[1])
+    })
+    test('should select the draft plan', () => {
+      expect(getPlan(draftPlan)).toEqual(draftPlan[1])
+    })
+    test('should select no active or draft plan', () => {
+      expect(getPlan(noActivePlan)).toEqual({})
+    })
+    test('should cope with no input', () => {
+      expect(getPlan()).toEqual({})
+    })
+  })
+
+  describe('compile the completed plans', () => {
+    test('should select the completed plans', () => {
+      expect(getCompletedPlans(activePlan)).toEqual([activePlan[0], activePlan[2]])
+    })
+
+    test('should select no completed plans', () => {
+      expect(getCompletedPlans(noCompletedPlans)).toEqual([])
+    })
+  })
+
+  describe('determine the plan type', () => {
+    test('should identify an active plan', () => {
+      expect(getPlanType(activePlan[1])).toEqual('active')
+    })
+    test('should identify a draft plan', () => {
+      expect(getPlanType(draftPlan[1])).toEqual('draft')
+    })
+    test('should identify neither active nor draft', () => {
+      expect(getPlanType({})).toEqual('none')
+    })
+  })
+
   describe('set up rendering', () => {
     it('should set the correct render values when there is an active plan', async () => {
       req.params.id = 11033
       getSentencePlanSummary.mockReturnValueOnce(activePlan)
+      const currentPlan = activePlan[1]
+      const completedPlans = [activePlan[0], activePlan[2]]
       const expected = {
-        currentPlan: {
-          completedDate: '',
-          createdDate: '2019-02-27',
-          draft: false,
-          legacy: false,
-          planId: '2345',
-        },
+        currentPlan,
         individualId: 11033,
         planType: 'active',
+        completedPlans,
       }
       await sentencePlanSummary(req, res)
       expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
@@ -45,15 +80,13 @@ describe('getSentencePlanSummary', () => {
     it('should set the correct render values when there is a draft plan', async () => {
       req.params.id = 11035
       getSentencePlanSummary.mockReturnValueOnce(draftPlan)
+      const currentPlan = draftPlan[1]
+      const completedPlans = [draftPlan[0], draftPlan[2]]
       const expected = {
-        currentPlan: {
-          createdDate: '2019-02-27',
-          draft: true,
-          legacy: false,
-          planId: '2345',
-        },
+        currentPlan,
         individualId: 11035,
         planType: 'draft',
+        completedPlans,
       }
       await sentencePlanSummary(req, res)
       expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
@@ -61,10 +94,13 @@ describe('getSentencePlanSummary', () => {
     it('should set the correct render values when there is no active or draft plan', async () => {
       req.params.id = 11034
       getSentencePlanSummary.mockReturnValueOnce(noActivePlan)
+      const currentPlan = {}
+      const completedPlans = noActivePlan
       const expected = {
-        currentPlan: {},
+        currentPlan,
         individualId: 11034,
         planType: 'none',
+        completedPlans,
       }
       await sentencePlanSummary(req, res)
       expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
@@ -76,6 +112,7 @@ describe('getSentencePlanSummary', () => {
         currentPlan: {},
         individualId: 11032,
         planType: 'none',
+        completedPlans: {},
       }
       await sentencePlanSummary(req, res)
       expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)

@@ -1,7 +1,7 @@
 const { body } = require('express-validator')
 const { countWords } = require('../../../common/utils/util')
 const { logger } = require('../../../common/logging/logger')
-const { UUID_REGEX } = require('../../../common/utils/util')
+const { UUID_REGEX } = require('../../../common/utils/constants')
 
 const wordsAllowed = 50
 

@@ -155,11 +155,11 @@ module.exports = app => {
   app.post(`${activePlanRoute}/end-plan`, postEndPlan)
 
   // printing
-  app.get(`${activePlanRoute}/print-full`, printFullSentencePlan)
-  app.get(`${activePlanRoute}/print-simple`, printSimplifiedSentencePlan)
+  app.get(`${activePlanRoute}/print-full-plan`, printFullSentencePlan)
+  app.get(`${activePlanRoute}/print-plan`, printSimplifiedSentencePlan)
 
   // outstanding pages still to be developed
-  app.get([`${activePlanRoute}/objective/*`], (req, res) => res.send('Functionality still to be developed'))
+  app.get([`${offenderRoute}/previous-plan/*`], (req, res) => res.send('Functionality still to be developed'))
 
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }
