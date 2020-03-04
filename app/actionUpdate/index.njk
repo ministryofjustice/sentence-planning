@@ -3,7 +3,8 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
-{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "govuk/components/summary-list/macro.njk" import govukSummaryList -%}
+{% from "common/templates/components/key-value-timeline/macro.njk" import spTimeline %}
 
 {% set heading = "Update action" %}
 {% set errorHeading = "Error - " + heading %}
@@ -18,7 +19,7 @@
 
 {% block beforeContent %}
     {{ govukBackLink({
-        href: backurl
+        href: backUrl
     }) }}
 {% endblock %}
 
@@ -28,44 +29,50 @@
     {{ super() }}
 
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <div class="govuk-!-padding-bottom-2">
-              {{ govukTable({
-                  rows: [
-                    [
-                      {
-                        text: "Action"
-                      },
-                      {
-                        text: actionText | safe
-                      }
-                    ]
+      <div class="govuk-grid-column-two-thirds">
+          <div class="govuk-!-padding-bottom-2">
+            {{ govukSummaryList({
+                rows: [
+                  {
+                    key: {
+                      text: "Action"
+                    },
+                    value: {
+                      text: actionText | safe
+                    }
                   ]
-                }) }}
-            </div>
-            <h1 class="govuk-heading-l">Update action</h1>
-            <form method="post" novalidate>
-              {% include "../partials/status/index.njk" %}
-              {% include "../partials/targetDate/index.njk" %}
-              {% include "../partials/motivations/index.njk" %}
-              {% include "../partials/responsibility/index.njk" %}
-              {{  govukCharacterCount({
-                  id: 'comment',
-                  name: 'comment',
-                  value: comment,
-                  label: {
-                    classes: 'govuk-label--s',
-                    text: 'Comment'
-                  },
-                  maxwords: 250,
-                  errorMessage: errors.comment
+                }
               }) }}
-              {{ govukButton({
-                  name: 'saveUpdate',
-                  text: 'Save update'
-              }) }}
-              <p>or <a class="govuk-link" href="{{ backurl }}">cancel</a></p>
-            </form>
-        </div>
+          </div>
+          <h1 class="govuk-heading-l">Update action</h1>
+          <form method="post" novalidate>
+            {% include "../partials/status/index.njk" %}
+            {% include "../partials/targetDate/index.njk" %}
+            {% include "../partials/motivations/index.njk" %}
+            {% include "../partials/responsibility/index.njk" %}
+            {{  govukCharacterCount({
+                id: 'comment',
+                name: 'comment',
+                value: comment,
+                label: {
+                  classes: 'govuk-label--s',
+                  text: 'Comment'
+                },
+                maxwords: 250,
+                errorMessage: errors.comment
+            }) }}
+            {{ govukButton({
+                name: 'saveUpdate',
+                text: 'Save update'
+            }) }}
+            <p>or <a class="govuk-link" href="{{ backUrl }}">cancel</a></p>
+          </form>
+      </div>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+        {{ spTimeline(timelineData) }}
+      </div>
     </div>
 {% endblock %}
