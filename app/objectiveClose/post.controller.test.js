@@ -1,7 +1,6 @@
 const { postCloseObjective } = require('./post.controller')
 const { updateSentencePlanObjectiveClose } = require('../../common/data/sentencePlanningApi')
 const { getCloseObjective } = require('./get.controller')
-const returnedObjective = require('../../mockServer/sentencePlanObjectives/1.json')
 
 jest.mock('../../common/data/sentencePlanningApi')
 jest.mock('./get.controller')

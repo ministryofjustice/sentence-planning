@@ -31,12 +31,7 @@ const postCloseObjective = async (req, res) => {
     params: { planId, objectiveId },
   } = req
 
-  console.log('req.path')
-  console.log(req.path)
-
   if (!isEmptyObject(errors)) {
-    // const wordsOver = countWords(closeReason) - wordsAllowed
-    // req.renderInfo = Object.assign(renderInfo, { wordsOver: wordsOver > 0 ? wordsOver : 0 })
     return getCloseObjective(req, res)
   }
 
