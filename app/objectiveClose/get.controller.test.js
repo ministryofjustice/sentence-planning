@@ -6,8 +6,8 @@ describe('getObjectiveReview', () => {
     render: renderMock,
   }
   const renderInfo = { bang: 'And the dirt is gone' }
-  const path = 'to/enlightenment/3/2/1'
-  const backUrl = 'to/enlightenment/3'
+  const path = 'of/least/resistance/2/1'
+  const backUrl = 'of/least/resistance'
   const errors = {}
   const errorSummary = {}
   const req = { path, renderInfo, errors, errorSummary }
@@ -16,8 +16,8 @@ describe('getObjectiveReview', () => {
     renderMock.mockReset()
   })
 
-  describe('With fully populated objective data', () => {
-    it('it should render the page', async () => {
+  describe('display the page', () => {
+    test('it should render the page', async () => {
       await getCloseObjective(req, res)
       const expected = { ...renderInfo, backUrl, body: {}, errorSummary, errors }
       expect(renderMock).toHaveBeenCalledWith(`${__dirname}/index`, expected)

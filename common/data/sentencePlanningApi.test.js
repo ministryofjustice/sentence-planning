@@ -34,6 +34,7 @@ const {
   addSentencePlanMeeting,
   startSentencePlan,
   endSentencePlan,
+  updateSentencePlanObjectiveClose,
 } = require('./sentencePlanningApi')
 
 describe('sentencePlanningApi', () => {
@@ -390,6 +391,23 @@ describe('sentencePlanningApi', () => {
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.post(endSentencePlanUrl).reply(400)
       await expect(endSentencePlan(planid, tokens)).rejects.toThrowError('Bad Request')
+    })
+  })
+
+  describe('closeSentencePlanObjective', () => {
+    const planId = '1'
+    const objectiveId = '2'
+    const sentencePlansObjectiveCloseUrl = `/sentenceplans/${planId}/objectives/${objectiveId}/close`
+    const data = [{ comment: 'Objective closure reason' }]
+
+    it('should close objective', async () => {
+      mockedEndpoint.post(sentencePlansObjectiveCloseUrl).reply(200, {})
+      const output = await updateSentencePlanObjectiveClose(planId, objectiveId, data, tokens)
+      expect(output).toEqual({})
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.post(sentencePlansObjectiveCloseUrl).reply(400)
+      await expect(updateSentencePlanObjectiveClose(planId, objectiveId, data, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 })

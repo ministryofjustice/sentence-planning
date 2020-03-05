@@ -113,13 +113,7 @@ module.exports = app => {
   app.post([editObjectiveRoute, activePlanNewObjectiveRoute], objectiveValidationRules(), validate, postObjective)
   app.get(`${editObjectiveRoute}/review`, getObjectiveData, getObjectiveReview)
   app.get(`${activePlanObjectiveRoute}/close`, getObjectiveData, getCloseObjective)
-  app.post(
-    `${activePlanObjectiveRoute}/close`,
-    getObjectiveData,
-    closeObjectiveValidationRules(),
-    validate,
-    postCloseObjective
-  )
+  app.post(`${activePlanObjectiveRoute}/close`, closeObjectiveValidationRules(), validate, postCloseObjective)
   app.get(activePlanObjectiveRoute, getObjectiveData, getObjectiveView)
 
   // actions
