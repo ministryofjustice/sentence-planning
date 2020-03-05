@@ -407,7 +407,9 @@ describe('sentencePlanningApi', () => {
     })
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.post(sentencePlansObjectiveCloseUrl).reply(400)
-      await expect(updateSentencePlanObjectiveClose(planId, objectiveId, data, tokens)).rejects.toThrowError('Bad Request')
+      await expect(updateSentencePlanObjectiveClose(planId, objectiveId, data, tokens)).rejects.toThrowError(
+        'Bad Request'
+      )
     })
   })
 })
