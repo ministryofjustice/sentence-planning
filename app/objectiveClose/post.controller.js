@@ -10,7 +10,7 @@ const validationRules = () => {
   return [
     body('closeReason')
       .isLength({ min: 1 })
-      .withMessage('Enter a reason')
+      .withMessage('Enter a reason for closing the objective')
       .bail()
       .custom(value => {
         return countWords(value) <= wordsAllowed
@@ -29,22 +29,28 @@ const postCloseObjective = async (req, res) => {
     errors,
     body: { closeReason },
     params: { planId, objectiveId },
-    renderInfo,
   } = req
 
+  console.log('req.path')
+  console.log(req.path)
+
   if (!isEmptyObject(errors)) {
-    const wordsOver = countWords(closeReason) - wordsAllowed
-    req.renderInfo = Object.assign(renderInfo, { wordsOver: wordsOver > 0 ? wordsOver : 0 })
+    // const wordsOver = countWords(closeReason) - wordsAllowed
+    // req.renderInfo = Object.assign(renderInfo, { wordsOver: wordsOver > 0 ? wordsOver : 0 })
     return getCloseObjective(req, res)
   }
 
   try {
-    const closeReasonText = {
-      closeReason,
-    }
-    await updateSentencePlanObjectiveClose(planId, objectiveId, closeReasonText, tokens)
-    const redirectUrl = removeUrlLevels(path, 3)
-    return `${res.redirect(redirectUrl)}#objectives`
+    await updateSentencePlanObjectiveClose(
+      planId,
+      objectiveId,
+      {
+        comment: closeReason,
+      },
+      tokens
+    )
+    const redirectUrl = `${removeUrlLevels(path, 3)}#objectives`
+    return `${res.redirect(redirectUrl)}`
   } catch (error) {
     logger.error(`Could not close sentence plan objective ${objectiveId} for plan ${planId}, error: ${error}`)
     return res.render('app/error', { error })

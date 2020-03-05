@@ -1,15 +1,16 @@
-const { getObjectiveReview } = require('./get.controller')
+const { getCloseObjective } = require('./get.controller')
 
 describe('getObjectiveReview', () => {
   const renderMock = jest.fn()
   const res = {
     render: renderMock,
   }
-  const renderInfo = { flash: 'Ah Ah, saviour of the universe' }
+  const renderInfo = { bang: 'And the dirt is gone' }
   const path = 'to/enlightenment/3/2/1'
-  const nextUrl = 'to/enlightenment/3/2'
-  const backUrl = 'to/enlightenment'
-  const req = { path, renderInfo }
+  const backUrl = 'to/enlightenment/3'
+  const errors = {}
+  const errorSummary = {}
+  const req = { path, renderInfo, errors, errorSummary }
 
   afterEach(() => {
     renderMock.mockReset()
@@ -17,8 +18,8 @@ describe('getObjectiveReview', () => {
 
   describe('With fully populated objective data', () => {
     it('it should render the page', async () => {
-      await getObjectiveReview(req, res)
-      const expected = { ...renderInfo, nextUrl, backUrl }
+      await getCloseObjective(req, res)
+      const expected = { ...renderInfo, backUrl, body: {}, errorSummary, errors }
       expect(renderMock).toHaveBeenCalledWith(`${__dirname}/index`, expected)
     })
   })
