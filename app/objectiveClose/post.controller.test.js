@@ -9,6 +9,11 @@ let req
 let expected
 const tokens = { authorisationToken: 'mytoken' }
 
+afterEach(() => {
+  updateSentencePlanObjectiveClose.mockReset()
+  getCloseObjective.mockReset()
+})
+
 beforeEach(() => {
   req = {
     path: 'individual-id/1/plan/2/objective/3/close',
@@ -20,8 +25,7 @@ beforeEach(() => {
       objectiveId: 3,
     },
   }
-  updateSentencePlanObjectiveClose.mockReset()
-  getCloseObjective.mockReset()
+
   expected = {
     path: 'individual-id/1/plan/2#objectives',
     session: {},
