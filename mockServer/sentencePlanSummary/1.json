@@ -3,7 +3,7 @@
     "planId": "1234",
     "createdDate": "2015-02-27",
     "completedDate": "2016-02-27",
-    "legacy": true,
+    "legacy": false,
     "draft": false
   },
   {
