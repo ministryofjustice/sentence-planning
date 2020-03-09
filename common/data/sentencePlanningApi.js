@@ -39,6 +39,11 @@ const addSentencePlanObjective = (sentencePlanId, objective, tokens) => {
   return postData(path, tokens, objective)
 }
 
+const updateSentencePlanObjectiveClose = (sentencePlanId, objectiveId, reason, tokens) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/close`
+  return postData(path, tokens, reason)
+}
+
 const updateSentencePlanObjective = (sentencePlanId, objectiveId, objective, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}`
   return putData(path, tokens, objective)
@@ -189,4 +194,5 @@ module.exports = {
   addSentencePlanMeeting,
   startSentencePlan,
   endSentencePlan,
+  updateSentencePlanObjectiveClose,
 }

@@ -83,6 +83,11 @@ function createMockAPI() {
     return res.sendStatus(200)
   })
 
+  app.post('/sentenceplans/:planid/objectives/:objectiveid/close', (req, res) => {
+    logger.debug(`MockAPI closing objective ${req.params.objectiveid} - ${JSON.stringify(req.body)}`)
+    return res.sendStatus(200)
+  })
+
   app.put('/sentenceplans/:planid/objectives/:objectiveid/actions/:actionId', (req, res) => {
     if (req.params.actionId === 999) {
       res.sendStatus(400)

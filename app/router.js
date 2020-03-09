@@ -17,6 +17,7 @@ const activePlanObjectiveRoute = `${activePlanRoute}/objective/:objectiveId(${uu
 const activePlanNewObjectiveRoute = `${activePlanRoute}/edit-objective/:objectiveId(NEW)`
 const activePlanNewActionRoute = `${activePlanObjectiveRoute}/edit-action/:actionId(NEW)`
 const activePlanUpdateActionRoute = `${activePlanObjectiveRoute}/update-action/:actionId(${uuid})`
+const activePlanCloseObjectiveRoute = `${activePlanObjectiveRoute}/close`
 const activePlanDisplayMeetingRoute = `${activePlanRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`
 const activePlanAddMeetingRoute = `${activePlanRoute}/add-sentence-plan-meeting`
 
@@ -40,6 +41,8 @@ const { postComments, commentsValidationRules } = require('./comments/post.contr
 const { getObjective } = require('./objective/get.controller')
 const { postObjective, objectiveValidationRules } = require('./objective/post.controller')
 const { getObjectiveReview } = require('./objectiveReview/get.controller')
+const { getCloseObjective } = require('./objectiveClose/get.controller')
+const { postCloseObjective, closeObjectiveValidationRules } = require('./objectiveClose/post.controller')
 
 const { getAction } = require('./action/get.controller')
 const { postAction, actionValidationRules } = require('./action/post.controller')
@@ -111,6 +114,8 @@ module.exports = app => {
   app.get([editObjectiveRoute, activePlanNewObjectiveRoute], getObjective)
   app.post([editObjectiveRoute, activePlanNewObjectiveRoute], objectiveValidationRules(), validate, postObjective)
   app.get(`${editObjectiveRoute}/review`, getObjectiveData, getObjectiveReview)
+  app.get(activePlanCloseObjectiveRoute, getObjectiveData, getCloseObjective)
+  app.post(activePlanCloseObjectiveRoute, closeObjectiveValidationRules(), validate, postCloseObjective)
   app.get(activePlanObjectiveRoute, getObjectiveData, getObjectiveView)
 
   // actions
