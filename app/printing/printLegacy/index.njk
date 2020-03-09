@@ -1,0 +1,125 @@
+{% extends "common/templates/print-layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% macro displayDefinition(key, value) %}
+    <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            {{ key }}
+        </dt>
+        <dd class="govuk-summary-list__value">
+            {{ value | safe }}
+        </dd>
+    </div>
+{% endmacro %}
+
+{% macro displayObjectiveSection(objectives, sectionHeading, strapline) %}
+<h2 class="app-task-list__section">
+  {{ sectionHeading }}
+</h2>
+<p>{{ strapline }}</p>
+<ul class="app-task-list__items">
+  {%- for objective in objectives %}
+    {% switch objective.type %}
+        {% case 'future' %}
+            {% set dateHeader = "Target date" %}
+        {% case 'closed' %}
+            {% set dateHeader = "Completed date" %}
+        {% default %}
+            {% set dateHeader = "Due date" %}
+    {% endswitch %}
+
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
+          {{ objective.description }}
+    </h3>
+    
+    {{ govukTable({
+        firstCellIsHeader: false,
+        head: [
+            {
+                text: "Action"
+            },
+            {
+                text: dateHeader,
+                format: "numeric"
+            },
+            {
+                text: "Status",
+                format: "numeric"
+            }
+        ],
+        rows: objective.actionsDisplay
+    }) }}
+  {% endfor -%}
+</ul>
+{% endmacro %}
+
+{% set heading = "Print full sentence plan" %}
+
+{% block pageTitle %}
+    {{ heading }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        href: backUrl,
+        text: 'Back to plan',
+        classes: 'no-print'
+    }) }}
+
+    <a href='javascript:window.print()' style="float:right; margin-top:10px" class="govuk-button no-print">Print plan</a>
+{% endblock %}
+
+{% block content %}
+    {% include "common/templates/includes/print-styles.njk" %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% include "common/templates/includes/moj-svg.njk" %}
+            <p class="govuk-heading-m print-header-org">HMPPS</p>
+
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+            <span class="govuk-caption-l govuk-!-margin-top-5">Sentence plan</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-0">
+                {{ offenderDetails.fullName }}
+            </h1>
+
+            <h2 class="govuk-heading-m / govuk-!-margin-top-6 govuk-!-margin-bottom-2">
+                Objectives
+            </h2>
+
+        <ul class="app-task-list">
+            {% for planItem in legacyPlan %}
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+                {{ displayDefinition('Date created:', planItem.createdDate | date('DD MMMM YYYY')) }} 
+                {{ displayDefinition('Date completed:', planItem.completedDate | date('DD MMMM YYYY')) }} 
+                
+                
+            </dl>
+
+            <h3 class="govuk-heading-s / govuk-!-margin-top-6 govuk-!-margin-bottom-2">
+                Objectives
+            </h3>
+                {% for objectives in planItem.objectives %}
+                    <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+                    {# objectives.criminogenicNeeds #}
+                        {{ displayDefinition('Objective description:', objectives.objectiveDescription) }} 
+                        {{ displayDefinition('Objective type:', objectives.objectiveType.description ) }} 
+                        {{ displayDefinition('How measured:', objectives.howMeasured) }} 
+                        {{ displayDefinition('Criminogenic needs:', 'one<br>two<br>three') }} 
+                        {{ displayDefinition('Interventions:', 'one<br>two<br>three') }} 
+
+                        
+                    </dl>
+
+                {% endfor %}
+
+                {{ planItem.objectives | dump }}
+            {% endfor %}
+
+
+
+    </div>
+{% endblock %}
