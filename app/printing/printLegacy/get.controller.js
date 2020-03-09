@@ -7,7 +7,7 @@ const {
 
 const printLegacySentencePlan = async ({ path, params: { id, planId }, tokens }, res) => {
   try {
-    const backUrl = removeUrlLevels(path, 1)
+    const backUrl = `${removeUrlLevels(path, 2)}/plans`
 
     let legacyPlan
 

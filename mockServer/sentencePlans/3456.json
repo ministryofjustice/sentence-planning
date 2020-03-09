@@ -1,178 +1,573 @@
-[
-  {
-      "oasysSetId": 2114597,
-      "createdDate": "2012-10-16T10:18:48",
-      "completedDate": "2012-06-13T13:09:26",
-      "objectives": [
-          {
-              "criminogenicNeeds": [
-                  {
-                      "code": "I2A",
-                      "description": "Attitude to victim",
-                      "priority": 1
-                  }
-              ],
-              "interventions": [
-                  {
-                      "copiedForward": false,
-                      "timescale": {
-                          "code": "ONE_MONTH",
-                          "description": "One Month"
-                      },
-                      "interventionCode": "IV1",
-                      "interventionDescription": "Aggression Replacement Training (ART)"
-                  }
-              ],
-              "objectiveType": {
-                  "code": "CURRENT",
-                  "description": "Current"
-              },
-              "objectiveCode": "100",
-              "objectiveDescription": "Increased ability to secure/maintain tenancy",
-              "howMeasured": "tEST"
-          }
-      ]
-  },
-  {
-      "oasysSetId": 9465346,
-      "createdDate": "2020-03-06T09:12:51",
-      "objectives": [
-          {
-              "criminogenicNeeds": [
-                  {
-                      "code": "I2A",
-                      "description": "Attitude to victim",
-                      "priority": 1
-                  }
-              ],
-              "interventions": [
-                  {
-                      "copiedForward": true,
-                      "timescale": {
-                          "code": "ONE_MONTH",
-                          "description": "One Month"
-                      },
-                      "interventionCode": "IV1",
-                      "interventionDescription": "Aggression Replacement Training (ART)"
-                  }
-              ],
-              "objectiveType": {
-                  "code": "CURRENT",
-                  "description": "Current"
-              },
-              "howMeasured": "tEST"
-          },
-          {
-              "criminogenicNeeds": [
-                  {
-                      "code": "I5A",
-                      "description": "Money management",
-                      "priority": 1
-                  },
-                  {
-                      "code": "IHD",
-                      "description": "Risk to public",
-                      "priority": 2
-                  },
-                  {
-                      "code": "IHA",
-                      "description": "Risk to children",
-                      "priority": 3
-                  },
-                  {
-                      "code": "IHC",
-                      "description": "Risk to staff",
-                      "priority": 4
-                  }
-              ],
-              "interventions": [
-                  {
-                      "copiedForward": false,
-                      "interventionComment": "test",
-                      "timescale": {
-                          "code": "SIXTEEN_WEEKS",
-                          "description": "Sixteen Weeks"
-                      },
-                      "interventionCode": "V1",
-                      "interventionDescription": "Accommodation advocacy"
-                  },
-                  {
-                      "copiedForward": false,
-                      "interventionComment": "test",
-                      "timescale": {
-                          "code": "ONE_WEEK",
-                          "description": "One Week"
-                      },
-                      "interventionCode": "VII7",
-                      "interventionDescription": "Alcohol treatment"
-                  },
-                  {
-                      "copiedForward": false,
-                      "interventionComment": "test",
-                      "timescale": {
-                          "code": "ONE_MONTH",
-                          "description": "One Month"
-                      },
-                      "interventionCode": "IV6",
-                      "interventionDescription": "Drink Impaired Drivers (DIDS)"
-                  }
-              ],
-              "objectiveType": {
-                  "code": "CURRENT",
-                  "description": "Current"
-              },
-              "howMeasured": "test"
-          },
-          {
-              "criminogenicNeeds": [
-                  {
-                      "code": "IHB",
-                      "description": "Risk to prisoners",
-                      "priority": 1
-                  },
-                  {
-                      "code": "I6A",
-                      "description": "Relationships",
-                      "priority": 2
-                  },
-                  {
-                      "code": "IHH",
-                      "description": "Escape/abscond risk",
-                      "priority": 3
-                  },
-                  {
-                      "code": "I9A",
-                      "description": "Violent behaviour related to alcohol (inc drink driving)",
-                      "priority": 4
-                  }
-              ],
-              "interventions": [
-                  {
-                      "copiedForward": false,
-                      "interventionComment": "test",
-                      "timescale": {
-                          "code": "ONE_WEEK",
-                          "description": "One Week"
-                      },
-                      "interventionCode": "VI12",
-                      "interventionDescription": "Motivational work counselling"
-                  },
-                  {
-                      "copiedForward": true,
-                      "timescale": {
-                          "code": "ONE_MONTH",
-                          "description": "One Month"
-                      },
-                      "interventionCode": "IV1",
-                      "interventionDescription": "Aggression Replacement Training (ART)"
-                  }
-              ],
-              "objectiveType": {
-                  "code": "FUTURE",
-                  "description": "Future"
-              },
-              "howMeasured": "test"
-          }
-      ]
-  }
-]
+{
+    "oasysSetId": 9465346,
+    "createdDate": "2020-03-06T09:12:51",
+    "objectives": [
+        {
+            "criminogenicNeeds": [
+                {
+                    "code": "I2A",
+                    "description": "Attitude to victim",
+                    "priority": 1
+                }
+            ],
+            "interventions": [
+                {
+                    "copiedForward": true,
+                    "timescale": {
+                        "code": "ONE_MONTH",
+                        "description": "One Month"
+                    },
+                    "interventionCode": "IV1",
+                    "interventionDescription": "Aggression Replacement Training (ART)",
+                    "whoDoingWork": {
+                        "code": "IX2",
+                        "description": "Probation Staff"
+                    }
+                }
+            ],
+            "objectiveMeasure": {
+                "status": {
+                    "code": "RII",
+                    "description": "Ongoing"
+                }
+            },
+            "objectiveType": {
+                "code": "CURRENT",
+                "description": "Current"
+            },
+            "objectiveCode": "500",
+            "objectiveDescription": "Increased assertiveness skills",
+            "howMeasured": "tEST"
+        },
+        {
+            "criminogenicNeeds": [
+                {
+                    "code": "IHB",
+                    "description": "Risk to prisoners",
+                    "priority": 1
+                },
+                {
+                    "code": "I6A",
+                    "description": "Relationships",
+                    "priority": 2
+                },
+                {
+                    "code": "IHH",
+                    "description": "Escape/abscond risk",
+                    "priority": 3
+                },
+                {
+                    "code": "I9A",
+                    "description": "Violent behaviour related to alcohol (inc drink driving)",
+                    "priority": 4
+                }
+            ],
+            "interventions": [
+                {
+                    "copiedForward": false,
+                    "interventionComment": "test",
+                    "timescale": {
+                        "code": "ONE_WEEK",
+                        "description": "One Week"
+                    },
+                    "interventionCode": "VI12",
+                    "interventionDescription": "Motivational work counselling",
+                    "whoDoingWork": {
+                        "code": "IX2",
+                        "description": "Probation Staff",
+                        "comments": "test"
+                    }
+                },
+                {
+                    "copiedForward": true,
+                    "timescale": {
+                        "code": "ONE_MONTH",
+                        "description": "One Month"
+                    },
+                    "interventionCode": "IV1",
+                    "interventionDescription": "Aggression Replacement Training (ART)",
+                    "whoDoingWork": {
+                        "code": "IX2",
+                        "description": "Probation Staff"
+                    }
+                }
+            ],
+            "objectiveMeasure": {
+                "comments": "test",
+                "status": {
+                    "code": "R",
+                    "description": "Not Started"
+                }
+            },
+            "objectiveType": {
+                "code": "FUTURE",
+                "description": "Future"
+            },
+            "objectiveCode": "10300",
+            "objectiveDescription": "Improved awareness of appropriate/legitimate behaviour",
+            "howMeasured": "test"
+        },
+        {
+            "criminogenicNeeds": [
+                {
+                    "code": "I5A",
+                    "description": "Money management",
+                    "priority": 1
+                },
+                {
+                    "code": "IHD",
+                    "description": "Risk to public",
+                    "priority": 2
+                },
+                {
+                    "code": "IHA",
+                    "description": "Risk to children",
+                    "priority": 3
+                },
+                {
+                    "code": "IHC",
+                    "description": "Risk to staff",
+                    "priority": 4
+                }
+            ],
+            "interventions": [
+                {
+                    "copiedForward": false,
+                    "interventionComment": "test",
+                    "timescale": {
+                        "code": "SIXTEEN_WEEKS",
+                        "description": "Sixteen Weeks"
+                    },
+                    "interventionCode": "V1",
+                    "interventionDescription": "Accommodation advocacy",
+                    "whoDoingWork": {
+                        "code": "IX2",
+                        "description": "Probation Staff",
+                        "comments": "test"
+                    }
+                },
+                {
+                    "copiedForward": false,
+                    "interventionComment": "test",
+                    "timescale": {
+                        "code": "SIXTEEN_WEEKS",
+                        "description": "Sixteen Weeks"
+                    },
+                    "interventionCode": "V1",
+                    "interventionDescription": "Accommodation advocacy",
+                    "whoDoingWork": {
+                        "code": "IX2",
+                        "description": "Probation Staff",
+                        "comments": "test"
+                    }
+                },
+                {
+                    "copiedForward": false,
+                    "interventionComment": "test",
+                    "timescale": {
+                        "code": "SIXTEEN_WEEKS",
+                        "description": "Sixteen Weeks"
+                    },
+                    "interventionCode": "V1",
+                    "interventionDescription": "Accommodation advocacy",
+                    "whoDoingWork": {
+                        "code": "IX2",
+                        "description": "Probation Staff",
+                        "comments": "test"
+                    }
+                },
+                {
+                    "copiedForward": false,
+                    "interventionComment": "test",
+                    "timescale": {
+                        "code": "ONE_WEEK",
+                        "description": "One Week"
+                    },
+                    "interventionCode": "VII7",
+                    "interventionDescription": "Alcohol treatment",
+                    "whoDoingWork": {
+                        "code": "IX3",
+                        "description": "Psychologist",
+                        "comments": "A much longer comment to check the layout still works okay"
+                    }
+                },
+                {
+                    "copiedForward": false,
+                    "interventionComment": "test",
+                    "timescale": {
+                        "code": "ONE_WEEK",
+                        "description": "One Week"
+                    },
+                    "interventionCode": "VII7",
+                    "interventionDescription": "Alcohol treatment",
+                    "whoDoingWork": {
+                        "code": "IX3",
+                        "description": "Psychologist",
+                        "comments": "test"
+                    }
+                },
+                {
+                    "copiedForward": false,
+                    "interventionComment": "test",
+                    "timescale": {
+                        "code": "ONE_WEEK",
+                        "description": "One Week"
+                    },
+                    "interventionCode": "VII7",
+                    "interventionDescription": "Alcohol treatment",
+                    "whoDoingWork": {
+                        "code": "IX3",
+                        "description": "Psychologist",
+                        "comments": "test"
+                    }
+                },
+                {
+                    "copiedForward": false,
+                    "interventionComment": "test",
+                    "timescale": {
+                        "code": "ONE_MONTH",
+                        "description": "One Month"
+                    },
+                    "interventionCode": "IV6",
+                    "interventionDescription": "Drink Impaired Drivers (DIDS)",
+                    "whoDoingWork": {
+                        "code": "IX7",
+                        "description": "Offender",
+                        "comments": "test"
+                    }
+                },
+                {
+                    "copiedForward": false,
+                    "interventionComment": "test",
+                    "timescale": {
+                        "code": "ONE_MONTH",
+                        "description": "One Month"
+                    },
+                    "interventionCode": "IV6",
+                    "interventionDescription": "Drink Impaired Drivers (DIDS)",
+                    "whoDoingWork": {
+                        "code": "IX7",
+                        "description": "Offender",
+                        "comments": "test"
+                    }
+                },
+                {
+                    "copiedForward": false,
+                    "interventionComment": "test",
+                    "timescale": {
+                        "code": "ONE_MONTH",
+                        "description": "One Month"
+                    },
+                    "interventionCode": "IV6",
+                    "interventionDescription": "Drink Impaired Drivers (DIDS)",
+                    "whoDoingWork": {
+                        "code": "IX7",
+                        "description": "Offender",
+                        "comments": "test"
+                    }
+                }
+            ],
+            "objectiveMeasure": {
+                "comments": "test",
+                "status": {
+                    "code": "RII",
+                    "description": "Ongoing"
+                }
+            },
+            "objectiveType": {
+                "code": "CURRENT",
+                "description": "Current"
+            },
+            "objectiveCode": "100",
+            "objectiveDescription": "Increased ability to secure/maintain tenancy",
+            "howMeasured": "test"
+        }
+    ],
+    "questions": {
+        "IP.23": {
+            "refQuestionId": 1615,
+            "refQuestionCode": "IP.23",
+            "oasysQuestionId": 7690118,
+            "displayOrder": 230,
+            "questionText": "Date signed",
+            "answer": {
+                "freeFormText": "13/06/2012"
+            }
+        },
+        "IP.25": {
+            "refQuestionId": 1617,
+            "refQuestionCode": "IP.25",
+            "oasysQuestionId": 7690135,
+            "displayOrder": 250,
+            "questionText": "Do you have any other comments on this plan",
+            "answer": {}
+        },
+        "IP.27": {
+            "refQuestionId": 1619,
+            "refQuestionCode": "IP.27",
+            "oasysQuestionId": 7690136,
+            "displayOrder": 270,
+            "questionText": "Position",
+            "answer": {
+                "freeFormText": "test"
+            }
+        },
+        "IP.1": {
+            "refQuestionId": 1603,
+            "refQuestionCode": "IP.1",
+            "oasysQuestionId": 7690119,
+            "displayOrder": 10,
+            "questionText": "Has the self-assessment form been completed",
+            "answer": {
+                "refAnswerId": 1846,
+                "refAnswerCode": "YES",
+                "oasysAnswerId": 7979199,
+                "displayOrder": 10,
+                "staticText": "Yes",
+                "qaRawScore": 0
+            }
+        },
+        "IP.2": {
+            "refQuestionId": 1604,
+            "refQuestionCode": "IP.2",
+            "oasysQuestionId": 7690124,
+            "displayOrder": 10,
+            "questionText": "What are the key issues that have been identified",
+            "answer": {}
+        },
+        "IP.5": {
+            "refQuestionId": 1637,
+            "refQuestionCode": "IP.5",
+            "oasysQuestionId": 7690125,
+            "displayOrder": 30,
+            "questionText": "Indicate the work to be carried out to increase the offender's motivation",
+            "answer": {}
+        },
+        "IP.20": {
+            "refQuestionId": 1612,
+            "refQuestionCode": "IP.20",
+            "oasysQuestionId": 7690113,
+            "displayOrder": 195,
+            "questionText": "Name",
+            "answer": {
+                "freeFormText": "Kim killen"
+            }
+        },
+        "IP.6": {
+            "refQuestionId": 1638,
+            "refQuestionCode": "IP.6",
+            "oasysQuestionId": 7690126,
+            "displayOrder": 40,
+            "questionText": "Factors that may inhibit change",
+            "answer": {}
+        },
+        "IP.4": {
+            "refQuestionId": 1636,
+            "refQuestionCode": "IP.4",
+            "oasysQuestionId": 7690121,
+            "displayOrder": 20,
+            "questionText": "Does the offender have the capacity to change and reduce offending",
+            "answer": {
+                "refAnswerId": 1855,
+                "refAnswerCode": "1",
+                "oasysAnswerId": 7979201,
+                "displayOrder": 10,
+                "staticText": "Not at all",
+                "qaRawScore": 0
+            }
+        },
+        "IP.21": {
+            "refQuestionId": 1613,
+            "refQuestionCode": "IP.21",
+            "oasysQuestionId": 7690115,
+            "displayOrder": 210,
+            "questionText": "Has the offender signed the plan",
+            "answer": {
+                "refAnswerId": 1850,
+                "refAnswerCode": "YES",
+                "oasysAnswerId": 7979196,
+                "displayOrder": 10,
+                "staticText": "Yes"
+            }
+        },
+        "IP.9": {
+            "refQuestionId": 1633,
+            "refQuestionCode": "IP.9",
+            "oasysQuestionId": 7690123,
+            "displayOrder": 90,
+            "questionText": "Is the location of the victim important in managing the case",
+            "answer": {
+                "refAnswerId": 1862,
+                "refAnswerCode": "YES",
+                "oasysAnswerId": 7979203,
+                "displayOrder": 10,
+                "staticText": "Yes"
+            }
+        },
+        "IP.7": {
+            "refQuestionId": 1639,
+            "refQuestionCode": "IP.7",
+            "oasysQuestionId": 7690127,
+            "displayOrder": 50,
+            "questionText": "Positive factors to be maintained or developed",
+            "answer": {}
+        },
+        "IP.8": {
+            "refQuestionId": 1640,
+            "refQuestionCode": "IP.8",
+            "oasysQuestionId": 7690122,
+            "displayOrder": 50,
+            "questionText": "Level under incentive and earned privileges scheme",
+            "answer": {
+                "refAnswerId": 1859,
+                "refAnswerCode": "110",
+                "oasysAnswerId": 7979202,
+                "displayOrder": 20,
+                "staticText": "Standard",
+                "qaRawScore": 0
+            }
+        },
+        "IP.17.t": {
+            "refQuestionId": 1610,
+            "refQuestionCode": "IP.17.t",
+            "oasysQuestionId": 7690133,
+            "displayOrder": 20,
+            "questionText": " ",
+            "answer": {}
+        },
+        "IP.12": {
+            "refQuestionId": 1606,
+            "refQuestionCode": "IP.12",
+            "oasysQuestionId": 7690130,
+            "displayOrder": 120,
+            "questionText": "Record details of the offender's discriminatory behaviour.  Does this flow from racist / sexist / homophobic attitudes which need to be addressed",
+            "answer": {}
+        },
+        "IP.15": {
+            "refQuestionId": 1607,
+            "refQuestionCode": "IP.15",
+            "oasysQuestionId": 7690131,
+            "displayOrder": 150,
+            "questionText": "Where work will involve someone other than the case manager / personal officer give name and contact details, frequency and nature of liaison, etc. ",
+            "answer": {}
+        },
+        "IP.37": {
+            "refQuestionId": 1626,
+            "refQuestionCode": "IP.37",
+            "oasysQuestionId": 7690117,
+            "displayOrder": 370,
+            "questionText": "Was there a public protection conference",
+            "answer": {
+                "refAnswerId": 1853,
+                "refAnswerCode": "NO",
+                "oasysAnswerId": 7979198,
+                "displayOrder": 20,
+                "staticText": "No"
+            }
+        },
+        "IP.36": {
+            "refQuestionId": 1625,
+            "refQuestionCode": "IP.36",
+            "oasysQuestionId": 7690137,
+            "displayOrder": 360,
+            "questionText": "Chair of board name and position",
+            "answer": {
+                "freeFormText": "test"
+            }
+        },
+        "IP.17": {
+            "refQuestionId": 1609,
+            "refQuestionCode": "IP.17",
+            "oasysQuestionId": 7690114,
+            "displayOrder": 170,
+            "questionText": "Do you agree with the proposed plan (if no, explain why below)",
+            "answer": {
+                "refAnswerId": 1848,
+                "refAnswerCode": "YES",
+                "oasysAnswerId": 7979195,
+                "displayOrder": 10,
+                "staticText": "Yes"
+            }
+        },
+        "IP.39": {
+            "refQuestionId": 1628,
+            "refQuestionCode": "IP.39",
+            "oasysQuestionId": 7690139,
+            "displayOrder": 390,
+            "questionText": "Name of chair of conference",
+            "answer": {
+                "freeFormText": "test"
+            }
+        },
+        "IP.16": {
+            "refQuestionId": 1608,
+            "refQuestionCode": "IP.16",
+            "oasysQuestionId": 7690132,
+            "displayOrder": 160,
+            "questionText": "i.e. reporting arrangements - who should the offender see and when",
+            "answer": {}
+        },
+        "IP.38": {
+            "refQuestionId": 1627,
+            "refQuestionCode": "IP.38",
+            "oasysQuestionId": 7690138,
+            "displayOrder": 380,
+            "questionText": "Date",
+            "answer": {
+                "freeFormText": "10/12/2012"
+            }
+        },
+        "IP.19": {
+            "refQuestionId": 1611,
+            "refQuestionCode": "IP.19",
+            "oasysQuestionId": 7690134,
+            "displayOrder": 190,
+            "questionText": "Do you have any other comments on this plan",
+            "answer": {}
+        },
+        "IP3": {
+            "refQuestionId": 1635,
+            "refQuestionCode": "IP3",
+            "oasysQuestionId": 7690120,
+            "displayOrder": 30,
+            "questionText": "Is the offender motivated to address offending\n",
+            "answer": {
+                "refAnswerId": 1864,
+                "refAnswerCode": "1",
+                "oasysAnswerId": 7979200,
+                "displayOrder": 20,
+                "staticText": "Quite motivated"
+            }
+        },
+        "IP.11": {
+            "refQuestionId": 1605,
+            "refQuestionCode": "IP.11",
+            "oasysQuestionId": 7690129,
+            "displayOrder": 115,
+            "questionText": "Record relevant details of the offender's experience of discrimination.  Are there issues which need to be addressed now or in the future",
+            "answer": {}
+        },
+        "IP.33": {
+            "refQuestionId": 1622,
+            "refQuestionCode": "IP.33",
+            "oasysQuestionId": 7690116,
+            "displayOrder": 330,
+            "questionText": "Was there a sentence planning board",
+            "answer": {
+                "refAnswerId": 1851,
+                "refAnswerCode": "NO",
+                "oasysAnswerId": 7979197,
+                "displayOrder": 20,
+                "staticText": "No"
+            }
+        },
+        "IP.10": {
+            "refQuestionId": 1634,
+            "refQuestionCode": "IP.10",
+            "oasysQuestionId": 7690128,
+            "displayOrder": 100,
+            "questionText": "Indicate what work needs to be done on the offender's awareness of the impact of the offence on the victim",
+            "answer": {}
+        }
+    }
+}

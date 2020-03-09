@@ -83,6 +83,12 @@ p {
   border: 4px solid $govuk-brand-colour;
 }
 
+.section-break-medium {
+  margin-top: govuk-spacing(3);
+  margin-bottom: govuk-spacing(4);
+  border: 2px solid $govuk-brand-colour;
+}
+
 @media print
 {    
     .no-print, .no-print * {

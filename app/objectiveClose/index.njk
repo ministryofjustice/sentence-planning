@@ -32,7 +32,7 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l">
         <span class="govuk-caption-l">Close objective</span>
-        {{ objective.description }}
+        {{ objective.description | safe }}
       </h1>
  <form method="post" novalidate>
       {{  govukCharacterCount({
