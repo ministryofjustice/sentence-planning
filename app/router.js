@@ -2,6 +2,8 @@
 const healthCheckFactory = require('../common/services/healthcheck')
 const getOffenderDetails = require('../common/middleware/getOffenderDetails')
 const { getObjectiveData } = require('../common/middleware/getObjectiveData')
+const { getActionData } = require('../common/middleware/getActionData')
+const { getActionTimelineData, getObjectiveTimelineData } = require('../common/middleware/getTimelineData')
 const {
   apis: { oauth2, offenderAssessment, sentencePlanning, elite2 },
 } = require('../common/config')
@@ -115,14 +117,14 @@ module.exports = app => {
   app.get(`${editObjectiveRoute}/review`, getObjectiveData, getObjectiveReview)
   app.get(activePlanCloseObjectiveRoute, getObjectiveData, getCloseObjective)
   app.post(activePlanCloseObjectiveRoute, closeObjectiveValidationRules(), validate, postCloseObjective)
-  app.get(activePlanObjectiveRoute, getObjectiveData, getObjectiveView)
+  app.get(activePlanObjectiveRoute, getObjectiveData, getObjectiveTimelineData, getObjectiveView)
 
   // actions
   app.get([editActionRoute, activePlanNewActionRoute], getAction)
   app.post([editActionRoute, activePlanNewActionRoute], actionValidationRules(), validate, postAction)
 
   // action update
-  app.get(activePlanUpdateActionRoute, getActionUpdate)
+  app.get(activePlanUpdateActionRoute, getActionData, getActionTimelineData, getActionUpdate)
   app.post(activePlanUpdateActionRoute, actionUpdateValidationRules(), validate, postActionUpdate)
 
   // active plan homepage

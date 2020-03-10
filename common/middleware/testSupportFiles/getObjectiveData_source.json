@@ -1,0 +1,42 @@
+{
+  "actions": [
+    {
+      "description": "",
+      "id": "1",
+      "intervention": "3fa85f64-5717-4562-b3fc-2c963f66afa4",
+      "motivationUUID": "3fa85f64-5717-4562-b3fc-2c963f66afa3",
+      "owner": [
+          "SERVICE_USER", "OTHER"
+      ],
+      "ownerOther": "Uncle Bob",
+      "priority": 0,
+      "progress": [],
+      "status": "NOT_STARTED",
+      "targetDate": "2022-05",
+      "updated": "2019-12-16T11:51:29.032Z"
+    },
+    {
+      "description": "This is the description of an action",
+      "id": "2",
+      "intervention": "",
+      "motivationUUID": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "owner": [
+          "SERVICE_USER"
+      ],
+      "ownerOther": "",
+      "priority": 0,
+      "progress": [],
+      "status": "NOT_STARTED",
+      "targetDate": "2021-04",
+      "updated": "2019-12-16T11:51:29.032Z"
+    }
+  ],
+  "description": "newly created objective",
+  "id": 1,
+  "needs": [
+    "needsid_accommodation",
+    "a9ab6874-96c9-4b85-8b51-86b18b4bf091",
+    "a5023281-408e-4067-9770-3d6151f60505"
+  ],
+  "priority": 0
+}
