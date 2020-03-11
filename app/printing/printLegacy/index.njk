@@ -14,7 +14,7 @@
     </div>
 {% endmacro %}
 
-{% set heading = "Display OASys sentence plan" %}
+{% set heading = "OASys sentence plan" %}
 
 {% block pageTitle %}
     {{ heading }}
@@ -27,12 +27,11 @@
         classes: 'no-print'
     }) }}
 
-    <a href='javascript:window.print()' style="float:right; margin-top:10px" class="govuk-button no-print">Print plan</a>
+    <a href='javascript:window.print()' class="govuk-button no-print sp-print-button">Print plan</a>
 {% endblock %}
 
 {% block content %}
     {# {% include "common/templates/includes/print-styles.njk" %} #}
-
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
@@ -44,90 +43,81 @@
                 {{ offenderDetails.fullName }}
             </h1>
 
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+                {{ displayDefinition('Date plan created:', legacyPlan.createdDate | date('DD MMMM YYYY')) }}
+                {{ displayDefinition('Date plan completed:', legacyPlan.completedDate | date('DD MMMM YYYY')) }}
+            </dl>
 
-        <ul class="app-task-list">
 
-                <dl class="govuk-summary-list govuk-!-margin-bottom-9">
-                    {{ displayDefinition('Date plan created:', legacyPlan.createdDate | date('DD MMMM YYYY')) }} 
-                    {{ displayDefinition('Date plan completed:', legacyPlan.completedDate | date('DD MMMM YYYY')) }} 
+            {% for objective in legacyPlan.objectives %}
+            <div class="print-group">
+                {% if not loop.first %}
+                    <hr class="govuk-section-break section-break-medium">
+                {% endif %}
+                
+                <h3 class="govuk-heading-m govuk-!-margin-bottom-2">
+                    Objective: {{ objective.objectiveDescription }}
+                </h3>
+
+                <dl class="govuk-summary-list govuk-!-margin-bottom-6">
+
+                    {{ displayDefinition('Type:', objective.objectiveType.description ) }}
+                    {{ displayDefinition('How measured:', objective.howMeasured) }}
+                    {{ displayDefinition('Status:', objective.objectiveMeasure.status.description) }}
+
+                    {% set criminogenicNeeds %}
+                    <ul class="govuk-list govuk-list--bullet legacyneeds--bullet">
+                        {% for need in objective.criminogenicNeeds %}
+                            <li class="govuk-!-margin-bottom-0">
+                                {{ need.description }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {% endset %}
+                    {{ displayDefinition('Criminogenic needs:', criminogenicNeeds) }}
                 </dl>
 
-                <h2 class="govuk-heading-m / govuk-!-margin-top-6 govuk-!-margin-bottom-2">
-                    Objectives
-                </h2>
-                
-                {% for objective in legacyPlan.objectives %}
-                    {% if not loop.first %}
-                        <hr class="govuk-section-break section-break-medium">
-                    {% endif %}
-                    <h3 class="govuk-heading-m govuk-!-margin-bottom-2">
-                        {{ objective.objectiveDescription }}
-                    </h3>
-                 
-                        
-                    <dl class="govuk-summary-list govuk-!-margin-bottom-9">
-                         
-                        {{ displayDefinition('Objective type:', objective.objectiveType.description ) }} 
-                        {{ displayDefinition('How measured:', objective.howMeasured) }} 
-                        {{ displayDefinition('Objective status:', objective.objectiveMeasure.status.description) }} 
+                <h3 class="govuk-heading-m / govuk-!-margin-top-6 govuk-!-margin-bottom-2">
+                        Interventions
+                </h3>
 
-                        {% set criminogenicNeeds %}
-                        <ul class="govuk-list govuk-list--bullet govuk-!-font-size-16 legacyneeds--bullet">
-                            {% for need in objective.criminogenicNeeds %}
-                                <li class="govuk-!-margin-bottom-0">
-                                    {{ need.description }}
-                                </li>
-                            {% endfor %}
-                            </ul>
-                        {% endset %}
-                        {{ displayDefinition('Criminogenic needs:', criminogenicNeeds) }} 
-                    </dl>
+                <table class="govuk-table">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header">Description</th>
+                            <th scope="col" class="govuk-table__header ">Timescale</th>
+                            <th scope="col" class="govuk-table__header ">Who</th>
+                            <th scope="col" class="govuk-table__header ">Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                        {% for intervention in objective.interventions %}
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">{{ intervention.interventionDescription }}</td>
+                                <td class="govuk-table__cell ">{{ intervention.timescale.description }}</td>
+                                <td class="govuk-table__cell ">{{ intervention.whoDoingWork.description }}</td>
+                                <td class="govuk-table__cell ">{{ intervention.whoDoingWork.comments }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
 
-                    <h3 class="govuk-heading-s / govuk-!-margin-top-6 govuk-!-margin-bottom-2">
-                        Objective interventions
-                    </h3>
-                    {# {% for intervention in objective.interventions %}
-                        <dl class="govuk-summary-list govuk-!-margin-bottom-9">
-                            {{ displayDefinition('Description:', intervention.interventionDescription) }} 
-                            {{ displayDefinition('Timescale:', intervention.timescale.description) }} 
-                            {% set whoDoing %}
-                                {{ intervention.whoDoingWork.description }}
-                                {% if intervention.whoDoingWork.comments %}
-                                    <br>{{ intervention.whoDoingWork.comments }}
-                                {% endif %}
-                            {% endset %}
-                            {{ displayDefinition('Who doing work:', whoDoing) }} 
-                        </dl>
-                    {% endfor %} #}
+        <hr class="govuk-section-break section-break-large">
 
+        <h2 class="govuk-heading-l / govuk-!-margin-top-6 ">
+            Additional information
+        </h2>
 
-                    <table class="govuk-table">
+    <dl class="govuk-summary-list govuk-!-margin-bottom-9 legacy-sentenceplan-questions ">
+    {% for question in legacyPlan.questions | sort(attribute="displayOrder") %}
+        {% set ans = question.answer.staticText or question.answer.freeFormText or '(no answer recorded)' %}
+        <div>
+            <p class="govuk-!-font-weight-bold govuk-!-margin-bottom-0">{{ question.questionText }}</p>
+            <p>{{ ans }}</p>
+        </div>
+   {% endfor %}
+    </dl>
 
-  <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header">Description</th>
-      <th scope="col" class="govuk-table__header ">Timescale</th>
-      <th scope="col" class="govuk-table__header ">Who doing work</th>
-      <th scope="col" class="govuk-table__header ">Comments</th>
-    </tr>
-  </thead>
-  <tbody class="govuk-table__body">
-  {% for intervention in objective.interventions %}
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell">{{ intervention.interventionDescription }}</td>
-          <td class="govuk-table__cell ">{{ intervention.timescale.description }}</td>
-          <td class="govuk-table__cell ">{{ intervention.whoDoingWork.description }}</td>
-          <td class="govuk-table__cell ">{{ intervention.whoDoingWork.comments }}</td>
-        </tr>
-{% endfor %}
-  </tbody>
-</table>
-                    
-                {% endfor %}
-                <hr class="govuk-section-break section-break-large">
-                {# {{ planItem.objectives | dump }} #}
-
-
-
-    </div>
 {% endblock %}

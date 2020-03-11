@@ -95,3 +95,11 @@ p {
         display: none !important;
     }
 }
+
+.sp-print-button {
+  float: right;
+  margin-top: 10px;
+}
+.print-group {
+  break-inside: avoid;
+}

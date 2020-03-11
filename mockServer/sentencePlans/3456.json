@@ -150,36 +150,6 @@
                     "copiedForward": false,
                     "interventionComment": "test",
                     "timescale": {
-                        "code": "SIXTEEN_WEEKS",
-                        "description": "Sixteen Weeks"
-                    },
-                    "interventionCode": "V1",
-                    "interventionDescription": "Accommodation advocacy",
-                    "whoDoingWork": {
-                        "code": "IX2",
-                        "description": "Probation Staff",
-                        "comments": "test"
-                    }
-                },
-                {
-                    "copiedForward": false,
-                    "interventionComment": "test",
-                    "timescale": {
-                        "code": "SIXTEEN_WEEKS",
-                        "description": "Sixteen Weeks"
-                    },
-                    "interventionCode": "V1",
-                    "interventionDescription": "Accommodation advocacy",
-                    "whoDoingWork": {
-                        "code": "IX2",
-                        "description": "Probation Staff",
-                        "comments": "test"
-                    }
-                },
-                {
-                    "copiedForward": false,
-                    "interventionComment": "test",
-                    "timescale": {
                         "code": "ONE_WEEK",
                         "description": "One Week"
                     },
@@ -189,66 +159,6 @@
                         "code": "IX3",
                         "description": "Psychologist",
                         "comments": "A much longer comment to check the layout still works okay"
-                    }
-                },
-                {
-                    "copiedForward": false,
-                    "interventionComment": "test",
-                    "timescale": {
-                        "code": "ONE_WEEK",
-                        "description": "One Week"
-                    },
-                    "interventionCode": "VII7",
-                    "interventionDescription": "Alcohol treatment",
-                    "whoDoingWork": {
-                        "code": "IX3",
-                        "description": "Psychologist",
-                        "comments": "test"
-                    }
-                },
-                {
-                    "copiedForward": false,
-                    "interventionComment": "test",
-                    "timescale": {
-                        "code": "ONE_WEEK",
-                        "description": "One Week"
-                    },
-                    "interventionCode": "VII7",
-                    "interventionDescription": "Alcohol treatment",
-                    "whoDoingWork": {
-                        "code": "IX3",
-                        "description": "Psychologist",
-                        "comments": "test"
-                    }
-                },
-                {
-                    "copiedForward": false,
-                    "interventionComment": "test",
-                    "timescale": {
-                        "code": "ONE_MONTH",
-                        "description": "One Month"
-                    },
-                    "interventionCode": "IV6",
-                    "interventionDescription": "Drink Impaired Drivers (DIDS)",
-                    "whoDoingWork": {
-                        "code": "IX7",
-                        "description": "Offender",
-                        "comments": "test"
-                    }
-                },
-                {
-                    "copiedForward": false,
-                    "interventionComment": "test",
-                    "timescale": {
-                        "code": "ONE_MONTH",
-                        "description": "One Month"
-                    },
-                    "interventionCode": "IV6",
-                    "interventionDescription": "Drink Impaired Drivers (DIDS)",
-                    "whoDoingWork": {
-                        "code": "IX7",
-                        "description": "Offender",
-                        "comments": "test"
                     }
                 },
                 {
@@ -426,14 +336,6 @@
                 "staticText": "Standard",
                 "qaRawScore": 0
             }
-        },
-        "IP.17.t": {
-            "refQuestionId": 1610,
-            "refQuestionCode": "IP.17.t",
-            "oasysQuestionId": 7690133,
-            "displayOrder": 20,
-            "questionText": " ",
-            "answer": {}
         },
         "IP.12": {
             "refQuestionId": 1606,
