@@ -14,6 +14,10 @@ const getSentencePlan = (sentencePlanId, tokens) => {
   const path = `${url}/sentenceplans/${sentencePlanId}`
   return getData(path, tokens)
 }
+const getOasysSentencePlan = (individualId, sentencePlanId, tokens) => {
+  const path = `${url}/offenders/${individualId}/sentenceplans/${sentencePlanId}`
+  return getData(path, tokens)
+}
 const getSentencePlanSummary = (individualId, tokens) => {
   const path = `${url}/offenders/${individualId}/sentenceplans`
   return getData(path, tokens)
@@ -176,6 +180,7 @@ const logError = error => {
 module.exports = {
   createSentencePlan,
   getSentencePlan,
+  getOasysSentencePlan,
   getSentencePlanSummary,
   getSentencePlanComments,
   setSentencePlanComment,

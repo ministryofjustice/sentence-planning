@@ -1,6 +1,6 @@
 const { logger } = require('../../../common/logging/logger')
 const { removeUrlLevels } = require('../../../common/utils/util')
-const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
+const { getOasysSentencePlan } = require('../../../common/data/sentencePlanningApi')
 
 const printLegacySentencePlan = async ({ path, params: { id, planId }, tokens }, res) => {
   try {
@@ -8,14 +8,15 @@ const printLegacySentencePlan = async ({ path, params: { id, planId }, tokens },
 
     let legacyPlan
 
-    // get the sentence plan
+    // get the OASys sentence plan
     try {
-      legacyPlan = await getSentencePlan(planId, tokens)
+      legacyPlan = await getOasysSentencePlan(id, planId, tokens)
     } catch (error) {
       logger.error(`Could not retrieve OASys sentence plan ${planId} for offender ${id}, error: ${error}`)
       return res.render('app/error', { error })
     }
 
+    // convert the questions object in the plan to an array so nunjucks can sort it
     const { questions } = legacyPlan
     legacyPlan.questions = Object.keys(questions).map(key => {
       return questions[key]
