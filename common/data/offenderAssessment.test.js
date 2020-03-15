@@ -24,10 +24,8 @@ describe('offenderAssessment', () => {
       oasysOffenderId: 11032,
       familyName: 'Shakey',
       forename1: 'Bernard',
-      identifiers: {
-        crn: 'S000001',
-        nomisId: 'A0000AB',
-      },
+      crn: 'S000001',
+      nomisId: 'A0000AB'
     }
     beforeEach(() => {
       fakeOffenderAssessmentAPI = nock(url).matchHeader('authorization', `Bearer ${token}`)

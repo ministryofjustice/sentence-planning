@@ -8,10 +8,8 @@ describe('service offenderDetails', () => {
     mockOffenderData = {
       familyName: 'Shakey',
       forename1: 'Bernard',
-      identifiers: {
-        crn: 'S000001',
-        nomisId: 'A0000AB',
-      },
+      crn: 'S000001',
+      nomisId: 'A0000AB',
       unnecessary: 'values',
     }
   })
@@ -41,7 +39,7 @@ describe('service offenderDetails', () => {
   describe('without certain optional data', () => {
     let offenderDetails
     beforeEach(async () => {
-      mockOffenderData.identifiers = { crn: 'S000002' }
+      mockOffenderData = { crn: 'S000002' }
       const offenderDetailsService = createOffenderDetailsService({ getOffenderData: getOffenderDataMock })
       offenderDetails = await offenderDetailsService.getOffenderDetails(417)
     })
@@ -58,9 +56,7 @@ describe('service offenderDetails', () => {
     beforeEach(() => {
       mockOffenderData = {
         forename1: 'Bernard',
-        identifiers: {
-          nomisId: 'A0000AB',
-        },
+        nomisId: 'A0000AB',
       }
       const offenderDetailsService = createOffenderDetailsService({ getOffenderData: getOffenderDataMock })
       offenderDetails = offenderDetailsService.getOffenderDetails(417)

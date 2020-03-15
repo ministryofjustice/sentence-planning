@@ -8,7 +8,8 @@ module.exports = function createOffenderDetailsService({ getOffenderData }) {
       const {
         familyName,
         forename1,
-        identifiers: { crn = null, nomisId: noms = null },
+        crn,
+        nomisId,
       } = await getOffenderData(oasysOffenderId)
       if (!familyName || !forename1) throw new Error('Required offender details could not be found')
       return {
