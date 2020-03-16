@@ -165,8 +165,5 @@ module.exports = app => {
   app.get(`${activePlanRoute}/print-plan`, printSimplifiedSentencePlan)
   app.get(`${offenderRoute}/previous-plan/:planId(${uuid})`, printLegacySentencePlan)
 
-  // outstanding pages still to be developed
-  app.get([`${offenderRoute}/previous-plan/*`], (req, res) => res.send('Functionality still to be developed'))
-
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }
