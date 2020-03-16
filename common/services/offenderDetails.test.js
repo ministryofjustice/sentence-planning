@@ -39,7 +39,7 @@ describe('service offenderDetails', () => {
   describe('without certain optional data', () => {
     let offenderDetails
     beforeEach(async () => {
-      mockOffenderData = { crn: 'S000002' }
+      mockOffenderData.crn = 'S000002'
       const offenderDetailsService = createOffenderDetailsService({ getOffenderData: getOffenderDataMock })
       offenderDetails = await offenderDetailsService.getOffenderDetails(417)
     })
