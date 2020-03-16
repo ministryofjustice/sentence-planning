@@ -25,7 +25,7 @@ describe('offenderAssessment', () => {
       familyName: 'Shakey',
       forename1: 'Bernard',
       crn: 'S000001',
-      nomisId: 'A0000AB'
+      nomisId: 'A0000AB',
     }
     beforeEach(() => {
       fakeOffenderAssessmentAPI = nock(url).matchHeader('authorization', `Bearer ${token}`)
