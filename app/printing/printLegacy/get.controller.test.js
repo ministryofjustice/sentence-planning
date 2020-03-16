@@ -50,13 +50,13 @@ describe('displayOasysSentencePlan', () => {
           refQuestionId: 1603,
         },
       ]
-      let expectedObjectives = JSON.stringify(oasysPlan)
-      expectedObjectives = JSON.parse(expectedObjectives)
+      let planCopy = JSON.stringify(oasysPlan)
+      planCopy = JSON.parse(planCopy)
+      planCopy.questions = expectedQuestions
       const expected = {
         backUrl: 'lead/me/up/the/plans',
-        legacyPlan: expectedObjectives,
+        legacyPlan: planCopy,
       }
-      expected.legacyPlan.questions = expectedQuestions
       getOasysSentencePlan.mockReturnValueOnce(oasysPlan)
       await printLegacySentencePlan(req, res)
       expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
