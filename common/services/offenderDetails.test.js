@@ -27,7 +27,7 @@ describe('service offenderDetails', () => {
         expect(offenderDetails).toEqual({
           fullName: 'Bernard Shakey',
           crn: 'S000001',
-          nomisId: 'A0000AB',
+          noms: 'A0000AB',
         })
       })
       it('should call the data service once and pass the id', () => {
@@ -47,7 +47,7 @@ describe('service offenderDetails', () => {
       expect(offenderDetails).toEqual({
         fullName: 'Bernard Shakey',
         crn: 'S000002',
-        nomisId: null,
+        noms: null,
       })
     })
   })

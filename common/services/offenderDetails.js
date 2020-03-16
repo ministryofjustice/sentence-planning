@@ -5,12 +5,12 @@ const capitalizeName = name => `${name.charAt().toUpperCase()}${name.slice(1).to
 module.exports = function createOffenderDetailsService({ getOffenderData }) {
   const getOffenderDetails = async oasysOffenderId => {
     try {
-      const { familyName, forename1, crn, nomisId } = await getOffenderData(oasysOffenderId)
+      const { familyName, forename1, crn = null, nomisId: noms = null } = await getOffenderData(oasysOffenderId)
       if (!familyName || !forename1) throw new Error('Required offender details could not be found')
       return {
         fullName: `${capitalizeName(forename1)} ${capitalizeName(familyName)}`,
         crn,
-        nomisId,
+        noms,
       }
     } catch (error) {
       logger.error(error, 'Error during getOffenderDetails')
