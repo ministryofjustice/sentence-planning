@@ -1,15 +1,12 @@
-const { printFullSentencePlan } = require('./get.controller')
-const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
-const { expectedObjectives } = require('./testSupportFiles/expectedObjectives')
-
-const sentencePlan = require('../../../mockServer/sentencePlans/6.json')
+const { printLegacySentencePlan } = require('./get.controller')
+const { getOasysSentencePlan } = require('../../../common/data/sentencePlanningApi')
 
 jest.mock('../../../common/data/sentencePlanningApi')
 
 const tokens = { authorisationToken: 'mytoken' }
-const sentencePlanEmpty = {}
+let oasysPlan
 
-describe('printFullSentencePlan', () => {
+describe('displayOasysSentencePlan', () => {
   const req = {
     path: 'lead/me/up/the/garden/path',
     params: {
@@ -23,43 +20,54 @@ describe('printFullSentencePlan', () => {
   }
 
   beforeEach(() => {
-    getSentencePlan.mockReset()
+    getOasysSentencePlan.mockReset()
+    oasysPlan = {
+      oasysSetId: 9465346,
+      createdDate: '2020-03-06T09:12:51',
+      objectives: [
+        {
+          objectiveData: 'blah blah',
+        },
+      ],
+      questions: {
+        'IP.29': {
+          refQuestionId: 1621,
+        },
+        'IP.1': {
+          refQuestionId: 1603,
+        },
+      },
+    }
   })
 
-  describe('show print page', () => {
+  describe('show OASys plan', () => {
     it('should set the correct render values when getting a full sentence plan', async () => {
+      const expectedQuestions = [
+        {
+          refQuestionId: 1621,
+        },
+        {
+          refQuestionId: 1603,
+        },
+      ]
+      let expectedObjectives = JSON.stringify(oasysPlan)
+      expectedObjectives = JSON.parse(expectedObjectives)
       const expected = {
-        backUrl: 'lead/me/up/the/garden',
-        comments: 'Their summary comment',
-        decisions: 'My decisions comment',
-        diversity: 'My responsivity comment',
-        needToKnow: 'Their responsivity comment',
-        objectives: expectedObjectives,
+        backUrl: 'lead/me/up/the/plans',
+        legacyPlan: expectedObjectives,
       }
-      getSentencePlan.mockReturnValueOnce(sentencePlan)
-      await printFullSentencePlan(req, res)
-      expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
-    })
-    it('should pass in the correct values to the render function when plan is empty', async () => {
-      getSentencePlan.mockReturnValueOnce(sentencePlanEmpty)
-      const expected = {
-        backUrl: 'lead/me/up/the/garden',
-        comments: '',
-        decisions: '',
-        diversity: '',
-        needToKnow: '',
-        objectives: {},
-      }
-      await printFullSentencePlan(req, res)
+      expected.legacyPlan.questions = expectedQuestions
+      getOasysSentencePlan.mockReturnValueOnce(oasysPlan)
+      await printLegacySentencePlan(req, res)
       expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
     })
 
     it('should display an error if plan is not available', async () => {
       const theError = new Error('Error message')
-      getSentencePlan.mockImplementation(() => {
+      getOasysSentencePlan.mockImplementation(() => {
         throw theError
       })
-      await printFullSentencePlan(req, res)
+      await printLegacySentencePlan(req, res)
       expect(res.render).toHaveBeenCalledWith(`app/error`, { error: theError })
     })
   })
