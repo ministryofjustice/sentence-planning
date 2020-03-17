@@ -6,15 +6,8 @@ const printLegacySentencePlan = async ({ path, params: { id, planId }, tokens },
   try {
     const backUrl = `${removeUrlLevels(path, 2)}/plans`
 
-    let legacyPlan
-
     // get the OASys sentence plan
-    try {
-      legacyPlan = await getOasysSentencePlan(id, planId, tokens)
-    } catch (error) {
-      logger.error(`Could not retrieve OASys sentence plan ${planId} for offender ${id}, error: ${error}`)
-      return res.render('app/error', { error })
-    }
+    const legacyPlan = await getOasysSentencePlan(id, planId, tokens)
 
     // convert the questions object in the plan to an array so nunjucks can sort it
     const { questions } = legacyPlan
