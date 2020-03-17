@@ -20,7 +20,6 @@ describe('displayOasysSentencePlan', () => {
   }
 
   beforeEach(() => {
-    getOasysSentencePlan.mockReset()
     oasysPlan = {
       oasysSetId: 9465346,
       createdDate: '2020-03-06T09:12:51',
@@ -38,6 +37,10 @@ describe('displayOasysSentencePlan', () => {
         },
       },
     }
+  })
+
+  afterEach(() => {
+    getOasysSentencePlan.mockReset()
   })
 
   describe('show OASys plan', () => {
