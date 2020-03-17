@@ -67,9 +67,11 @@ describe('displayOasysSentencePlan', () => {
       getOasysSentencePlan.mockImplementation(() => {
         throw theError
       })
-      const expectedError = new Error(['An error occurred whilst trying to display the sentence plan. Error: API error'])
+      const expectedError = new Error([
+        'An error occurred whilst trying to display the sentence plan. Error: API error',
+      ])
       await printLegacySentencePlan(req, res)
-      expect(res.render).toHaveBeenCalledWith(`app/error`, { "error": expectedError })
+      expect(res.render).toHaveBeenCalledWith(`app/error`, { error: expectedError })
     })
   })
 })
