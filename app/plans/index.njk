@@ -65,8 +65,7 @@
             </h2>
             
             <ul class="govuk-list">
-                {% for plan in completedPlans %}
-
+                {% for plan in completedPlans | sort(reverse=true, attribute="completedDate") %}
                     {% if plan.legacy %}
                         {% set planUrl = 'previous-plan/' + plan.planId %}
                     {% else %}
