@@ -2,7 +2,6 @@ const { logger } = require('../logging/logger')
 const {
   ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, ABANDONED },
   STATUS_LIST,
-  RESPONSIBLE_LIST,
   OBJECTIVE_TYPES: { ACTIVE, CLOSED, FUTURE },
 } = require('./constants')
 
@@ -122,6 +121,9 @@ const formatObjectiveActionsForPrintDisplay = (actions, useSimplifiedText = fals
   })
 }
 
+const getInterventionText = (intervention, interventionList) =>
+  interventionList.find(({ uuid }) => uuid === intervention).shortDescription
+
 module.exports = {
   formatObjectiveActionsForPrintDisplay,
   getObjectiveType,
@@ -136,6 +138,5 @@ module.exports = {
   groupBy,
   isValidDate,
   catchAndReThrowError,
-  STATUS_LIST,
-  RESPONSIBLE_LIST,
+  getInterventionText,
 }
