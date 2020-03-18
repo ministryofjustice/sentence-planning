@@ -1,4 +1,4 @@
-const { STATUS_LIST } = require('../../../common/utils/util')
+const { STATUS_LIST } = require('../../../common/utils/constants')
 
 const getStatus = ({ status: actionStatus = '' }, { status: bodyStatus = '' }, initial) => {
   const status = bodyStatus || actionStatus

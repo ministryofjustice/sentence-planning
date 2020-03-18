@@ -27,19 +27,22 @@
   {% else %}
     {% set itemCreatedBy = '' %}
   {% endif %}
+  {% if item.created %}
+    {% set itemCreated = { timestamp: item.created, type: "datetime" } %}
+  {% else %}
+    {% set itemCreated = null %}
+  {% endif %}
   {% set items = (
     items.push({
       label: {
         text: item.type
       },
       html: itemHtml,
-      datetime: {
-        timestamp: item.created,
-        type: "datetime"
-      },
+      datetime: itemCreated,
       byline: itemCreatedBy
     }), items) %}
 {% endfor %}
+
 {{ mojTimeline({
     items: items
   })
