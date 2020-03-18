@@ -67,6 +67,7 @@ const {
 } = require('./activeplan/homepage/contactArrangements/post.controller')
 const { printFullSentencePlan } = require('./printing/printFull/get.controller')
 const { printSimplifiedSentencePlan } = require('./printing/printSimplified/get.controller')
+const { printLegacySentencePlan } = require('./printing/printLegacy/get.controller')
 
 const { getActionUpdate } = require('./actionUpdate/get.controller')
 const { postActionUpdate, actionUpdateValidationRules } = require('./actionUpdate/post.controller')
@@ -164,9 +165,7 @@ module.exports = app => {
   // printing
   app.get(`${activePlanRoute}/print-full-plan`, printFullSentencePlan)
   app.get(`${activePlanRoute}/print-plan`, printSimplifiedSentencePlan)
-
-  // outstanding pages still to be developed
-  app.get([`${offenderRoute}/previous-plan/*`], (req, res) => res.send('Functionality still to be developed'))
+  app.get(`${offenderRoute}/previous-plan/:planId(${uuid})`, printLegacySentencePlan)
 
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }
