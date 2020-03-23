@@ -132,6 +132,40 @@ describe('getObjective', () => {
     expect(req.session.noNeedsAvailable).toEqual(true)
     expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
   })
+  it('sets flag in session when there are no active needs', async () => {
+    const needsAllInactive = [
+      {
+        active: false,
+        flaggedAsNeed: true,
+        id: 'needsid_inactive',
+        name: 'Inactive but previously selected need description',
+        overThreshold: false,
+        riskOfHarm: false,
+        riskOfReoffending: false,
+      },
+      {
+        active: false,
+        flaggedAsNeed: true,
+        id: 'needsid_hide',
+        name: 'Inactive need description',
+        overThreshold: false,
+        riskOfHarm: false,
+        riskOfReoffending: false,
+      },
+    ]
+    getSentencePlanNeeds.mockReturnValueOnce(needsAllInactive)
+    const expected = {
+      backurl: '/this/is',
+      nexturl: '/this/is/my',
+      errorSummary: {},
+      errors: {},
+      description: '',
+      displayNeeds: [],
+    }
+    await controller.getObjective(req, res)
+    expect(req.session.noNeedsAvailable).toEqual(true)
+    expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
+  })
   it('should set the correct render values when editing an objective', async () => {
     getSentencePlanNeeds.mockReturnValueOnce(needs)
     req.params.objectiveId = '1'
