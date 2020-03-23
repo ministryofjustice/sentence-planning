@@ -59,6 +59,23 @@
           "status": "COMPLETED",
           "targetDate": "2020-04",
           "updated": "2019-12-04T15:33:28.545Z"
+        },
+        {
+          "id": "8d7b6471-13ef-4bfd-847f-c51446f9a286",
+          "owner": [
+            "SERVICE_USER",
+            "PRACTITIONER"
+          ],
+          "ownerOther": "",
+          "description": "",
+          "status": "NOT_STARTED",
+          "intervention": "3ae22f1e-fba6-4331-8d75-e8b7e34f17af",
+          "motivationUUID": "55f90269-1d93-4a9a-921a-7bae73f3bf07",
+          "priority": 0,
+          "created": "2020-03-18T10:41:58.091869",
+          "updated": null,
+          "targetDate": "2021-12",
+          "progress": []
         }
       ],
       "description": "This is an active objective",
