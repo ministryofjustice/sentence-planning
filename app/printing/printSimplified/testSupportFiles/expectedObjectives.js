@@ -9,9 +9,20 @@ let expectedObjectives = {
 expectedObjectives = JSON.stringify(expectedObjectives)
 expectedObjectives = JSON.parse(expectedObjectives)
 expectedObjectives.active[0].type = 'active'
+expectedObjectives.active[0].actions[0].actionText = expectedObjectives.active[0].actions[0].description
+expectedObjectives.active[0].actions[1].actionText = expectedObjectives.active[0].actions[1].description
+expectedObjectives.active[0].actions[2].actionText = 'Intervention 2'
 expectedObjectives.active[1].type = 'active'
+expectedObjectives.active[1].actions[0].actionText = expectedObjectives.active[1].actions[0].description
+expectedObjectives.active[1].actions[1].actionText = expectedObjectives.active[1].actions[1].description
+expectedObjectives.active[1].actions[2].actionText = expectedObjectives.active[1].actions[2].description
 expectedObjectives.future[0].type = 'future'
+expectedObjectives.future[0].actions[0].actionText = expectedObjectives.future[0].actions[0].description
+expectedObjectives.future[0].actions[1].actionText = expectedObjectives.future[0].actions[1].description
 expectedObjectives.closed[0].type = 'closed'
+expectedObjectives.closed[0].actions[0].actionText = expectedObjectives.closed[0].actions[0].description
+expectedObjectives.closed[0].actions[1].actionText = expectedObjectives.closed[0].actions[1].description
+expectedObjectives.closed[0].actions[2].actionText = expectedObjectives.closed[0].actions[2].description
 expectedObjectives.active[0].actionsDisplay = [
   [
     {
@@ -37,6 +48,19 @@ expectedObjectives.active[0].actionsDisplay = [
     {
       format: 'numeric',
       text: 'Finished',
+    },
+  ],
+  [
+    {
+      text: 'Intervention 2',
+    },
+    {
+      format: 'numeric',
+      text: 'December 2021',
+    },
+    {
+      format: 'numeric',
+      text: 'Not started',
     },
   ],
 ]

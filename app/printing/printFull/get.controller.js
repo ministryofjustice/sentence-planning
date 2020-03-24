@@ -1,7 +1,6 @@
 const { logger } = require('../../../common/logging/logger')
 const { getCommentText } = require('../../../common/utils/getCommentText')
 const { getInterventions } = require('../../../common/data/sentencePlanningApi')
-const { catchAndReThrowError } = require('../../../common/utils/util')
 const {
   removeUrlLevels,
   groupBy,
@@ -36,9 +35,7 @@ const printFullSentencePlan = async ({ path, params: { id, planId }, tokens }, r
 
     let interventionList = []
     if (hasInterventions) {
-      interventionList = await getInterventions(tokens).catch(error =>
-        catchAndReThrowError(`Could not retrieve interventions list`, error)
-      )
+      interventionList = await getInterventions(tokens)
     }
 
     objectives.forEach(objective => {
