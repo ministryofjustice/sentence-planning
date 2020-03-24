@@ -41,10 +41,7 @@ const getObjective = async (req, res) => {
     const displayNeeds = await getSentencePlanNeeds(planId, tokens)
 
     // if there are no needs, put flag into session so we don't insist the user selects one in the validation
-    if (displayNeeds.length === 0) {
-      req.session.noNeedsAvailable = true
-      renderDetails.displayNeeds = []
-    } else {
+    if (displayNeeds.length > 0) {
       delete req.session.noNeedsAvailable
       // convert to format for display
       renderDetails.displayNeeds = displayNeeds
@@ -69,7 +66,10 @@ const getObjective = async (req, res) => {
         // display needs alphabetically
         .sort(sortObject('html'))
     }
-
+    if (displayNeeds.length === 0 || renderDetails.displayNeeds.length === 0) {
+      req.session.noNeedsAvailable = true
+      renderDetails.displayNeeds = []
+    }
     renderDetails.description = displayObjective.description
 
     return res.render(`${__dirname}/index`, { errors, errorSummary, ...renderDetails })
