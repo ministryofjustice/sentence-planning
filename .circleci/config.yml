@@ -65,7 +65,6 @@ orbs:
   aws-cli: circleci/aws-cli@0.1.18
   kubernetes: circleci/kubernetes@0.10.1
   helm: circleci/helm@0.2.3
-  snyk: snyk/snyk@0.0.9
 
 jobs:
   build:
@@ -85,11 +84,6 @@ jobs:
           paths:
             - node_modules
             - ~/.cache
-      - snyk/scan:
-          fail-on-issues: false
-          monitor-on-build: true
-          project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}'
-          organization: 'digital-probation-services'
       - run:
           name: Linter check
           command: npm run lint
@@ -151,13 +145,6 @@ jobs:
              docker push mojdigitalstudio/sentence-planning:$APP_VERSION
              docker push mojdigitalstudio/sentence-planning:latest
             fi
-      - snyk/scan:
-          docker-image-name: 'mojdigitalstudio/sentence-planning:latest'
-          target-file: 'Dockerfile'
-          fail-on-issues: false
-          monitor-on-build: true
-          project: '${CIRCLE_PROJECT_REPONAME}/latest'
-          organization: 'digital-probation-services'
 
   sonar-scan:
     executor: sonar-scanner
