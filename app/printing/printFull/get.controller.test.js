@@ -1,7 +1,6 @@
 const { printFullSentencePlan } = require('./get.controller')
-const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
+const { getSentencePlan, getInterventions } = require('../../../common/data/sentencePlanningApi')
 const { expectedObjectives } = require('./testSupportFiles/expectedObjectives')
-const { getInterventions } = require('../../../common/data/sentencePlanningApi')
 
 const sentencePlan = require('../../../mockServer/sentencePlans/6.json')
 
@@ -12,24 +11,6 @@ jest.mock('../../../common/data/sentencePlanningApi', () => ({
 
 const tokens = { authorisationToken: 'mytoken' }
 const sentencePlanEmpty = {}
-
-const interventions = [
-  {
-    longDescription: 'Long description for Intervention 1',
-    shortDescription: 'Intervention 1',
-    uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa1',
-  },
-  {
-    longDescription: 'Long description for Intervention 2',
-    shortDescription: 'Intervention 2',
-    uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa2',
-  },
-  {
-    longDescription: 'Long description for Intervention 3',
-    shortDescription: 'Intervention 3',
-    uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa3',
-  },
-]
 
 describe('printFullSentencePlan', () => {
   const req = {
@@ -45,6 +26,23 @@ describe('printFullSentencePlan', () => {
   }
 
   beforeEach(() => {
+    const interventions = [
+      {
+        longDescription: 'Long description for Intervention 1',
+        shortDescription: 'Intervention 1',
+        uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa1',
+      },
+      {
+        longDescription: 'Long description for Intervention 2',
+        shortDescription: 'Intervention 2',
+        uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa2',
+      },
+      {
+        longDescription: 'Long description for Intervention 3',
+        shortDescription: 'Intervention 3',
+        uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa3',
+      },
+    ]
     getInterventions.mockReturnValueOnce(interventions)
   })
   afterEach(() => {

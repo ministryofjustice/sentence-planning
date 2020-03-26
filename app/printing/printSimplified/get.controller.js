@@ -6,8 +6,7 @@ const {
   formatObjectiveActionsForPrintDisplay,
   getInterventionText,
 } = require('../../../common/utils/util')
-const { getInterventions } = require('../../../common/data/sentencePlanningApi')
-const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
+const { getInterventions, getSentencePlan } = require('../../../common/data/sentencePlanningApi')
 
 const printSimplifiedSentencePlan = async ({ path, params: { id, planId }, tokens }, res) => {
   try {
@@ -28,15 +27,12 @@ const printSimplifiedSentencePlan = async ({ path, params: { id, planId }, token
       return objective.actions.some(({ intervention }) => intervention)
     })
 
-    let interventionList = []
-    if (hasInterventions) {
-      interventionList = await getInterventions(tokens)
-    }
+    const interventionList = hasInterventions ? await getInterventions(tokens) : []
 
     objectives.forEach(objective => {
       const currentObjective = objective
       currentObjective.type = getObjectiveType(currentObjective)
-      objective.actions.map(action => {
+      objective.actions.forEach(action => {
         const tempAction = action
         tempAction.actionText = tempAction.intervention
           ? getInterventionText(tempAction.intervention, interventionList)
