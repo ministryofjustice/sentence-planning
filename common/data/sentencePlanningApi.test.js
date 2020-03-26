@@ -16,6 +16,7 @@ const {
 const {
   getSentencePlanSummary,
   getSentencePlan,
+  getOasysSentencePlan,
   createSentencePlan,
   getSentencePlanComments,
   setSentencePlanComment,
@@ -88,6 +89,22 @@ describe('sentencePlanningApi', () => {
     it('should throw an error if it does not receive a valid response', async () => {
       mockedEndpoint.get(sentencePlansUrl).reply(400)
       await expect(getSentencePlan(planId, tokens)).rejects.toThrowError('Bad Request')
+    })
+  })
+
+  describe('getOasysSentencePlan', () => {
+    const planId = 417
+    const individualId = 417
+    const oasysSentencePlansUrl = `/offenders/${individualId}/sentenceplans/${planId}`
+
+    it('should return a sentence plan', async () => {
+      mockedEndpoint.get(oasysSentencePlansUrl).reply(200, sentencePlan)
+      const output = await getOasysSentencePlan(individualId, planId, tokens)
+      expect(output).toEqual(sentencePlan)
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.get(oasysSentencePlansUrl).reply(400)
+      await expect(getOasysSentencePlan(individualId, planId, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 

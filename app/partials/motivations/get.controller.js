@@ -1,12 +1,10 @@
 const { getMotivations } = require('../../../common/data/sentencePlanningApi')
 const { logger } = require('../../../common/logging/logger')
 
-const getMotivation = async (
-  { motivationUUID: actionMotivationUUID = '' },
-  { motivation: bodyMotivationUUID = '' },
-  tokens
-) => {
+const getMotivation = async (action, body, tokens) => {
   try {
+    const { motivationUUID: actionMotivationUUID = '' } = action || {}
+    const { motivation: bodyMotivationUUID = '' } = body || {}
     const motivations = await getMotivations(tokens)
     const currentMotivationUUID = bodyMotivationUUID || actionMotivationUUID || ''
     return {

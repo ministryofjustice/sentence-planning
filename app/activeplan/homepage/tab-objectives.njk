@@ -7,7 +7,7 @@
     <li class="app-task-list__item">
       <span class="app-task-list__task-name">
         <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
-          {{ objective.description }}
+          {{ objective.description | safe }}
         </h3>
         <p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-3">{{ objective.actionsCompleted }} of {{ objective.actions.length }} actions completed</p>
           {% set objectiveView = "/individual-id/" + id + "/plan/" + planId + "/objective/" + objective.id%}

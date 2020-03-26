@@ -26,6 +26,9 @@ function createMockAPI() {
   app.get('/offenders/:individualid/sentenceplans', (req, res) => {
     return getFile('sentencePlanSummary', req.params.individualid, res)
   })
+  app.get('/offenders/:individualid/sentenceplans/:planId', (req, res) => {
+    return getFile('oasysSentencePlans', req.params.planId, res)
+  })
   app.post('/offenders/:individualid/sentenceplans', ({ params: { individualid } }, res) => {
     logger.info(`MockAPI creating NEW sentence plan with: ${individualid}`)
     return getFile('sentencePlans', individualid, res)

@@ -1,0 +1,138 @@
+{% extends "common/templates/print-layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% macro displayDefinition(key, value) %}
+    <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            {{ key }}
+        </dt>
+        <dd class="govuk-summary-list__value">
+            {{ value | safe }}
+        </dd>
+    </div>
+{% endmacro %}
+
+{% macro addOptionalComment(comment) %}
+    {% if comment | length %} - {{ comment }}{% endif %}
+{% endmacro %}
+
+
+{% set heading = "OASys sentence plan" %}
+
+{% block pageTitle %}
+    {{ heading }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        href: backUrl,
+        text: 'Back to plans',
+        classes: 'no-print'
+    }) }}
+
+    <a href='javascript:window.print()' class="govuk-button no-print sp-print-button">Print plan</a>
+{% endblock %}
+
+{% block content %}
+    {# {% include "common/templates/includes/print-styles.njk" %} #}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% include "common/templates/includes/moj-svg.njk" %}
+            <p class="govuk-heading-m print-header-org">HMPPS</p>
+
+            <span class="govuk-caption-l govuk-!-margin-top-5 govuk-!-margin-bottom-2">OASys Sentence plan</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-5">
+                {{ offenderDetails.fullName }}
+            </h1>
+
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+                {{ displayDefinition('Date plan created:', legacyPlan.createdDate | date('DD MMMM YYYY')) }}
+                {{ displayDefinition('Date plan completed:', legacyPlan.completedDate | date('DD MMMM YYYY')) }}
+            </dl>
+
+            {% for objective in legacyPlan.objectives %}
+                <div class="print-group">
+                    {% if not loop.first %}
+                        <hr class="govuk-section-break section-break-medium">
+                    {% endif %}
+
+                    <h3 class="govuk-heading-m govuk-!-margin-bottom-2">
+                    Objective: {{ objective.objectiveHeading | title }} - {{ objective.objectiveDescription }}
+                    </h3>
+
+                    <p>{{ objective.objectiveComment }}</p>
+
+                    <dl class="govuk-summary-list govuk-!-margin-bottom-6">
+
+                        {{ displayDefinition('Type:', objective.objectiveType.description ) }}
+                        {% set howMeasured %}
+                           {{ objective.howMeasured }}{{ addOptionalComment(objective.objectiveMeasure.comments) }}
+                        {% endset %}
+                        {{ displayDefinition('How measured:', howMeasured) }}
+                        {{ displayDefinition('Status:', objective.objectiveMeasure.status.description) }}
+
+                        {% set criminogenicNeeds %}
+                                {% for need in objective.criminogenicNeeds %}
+                                    {% if loop.first and loop.length > 1 %}<ul class="govuk-list govuk-list--bullet legacyneeds--bullet">{% endif %}
+                                    {% if loop.length > 1 %}<li class="govuk-!-margin-bottom-0">{% endif %}
+                                        {{ need.description }}
+                                    {% if loop.length > 1 %}</li>{% endif %}
+                                    {% if loop.last  and loop.length > 1 %}</ul>{% endif %}
+                                {% endfor %}
+                        {% endset %}
+
+                        {{ displayDefinition('Criminogenic needs:', criminogenicNeeds) }}
+                    </dl>
+
+                    <h3 class="govuk-heading-m / govuk-!-margin-top-6 govuk-!-margin-bottom-2">
+                        Interventions
+                </h3>
+
+                {% for intervention in objective.interventions %}
+
+                    {% set whoDoing %}
+                        {% for who in intervention.whoDoingWork %}
+                        {% if loop.first and loop.length > 1 %}<ul class="govuk-list govuk-list--bullet legacyneeds--bullet">{% endif %}
+                            {% if loop.length > 1 %}<li class="govuk-!-margin-bottom-0">{% endif %}
+                                
+                                {{ who.description }}{{ addOptionalComment(who.comments) }}
+
+                            {% if loop.length > 1 %}</li>{% endif %}
+                            {% if loop.last  and loop.length > 1 %}</ul>{% endif %}
+                        {% endfor %}
+                    {% endset %}
+                    {% set interventionMeasure %}
+                        {{ intervention.interventionMeasure.status.description }}{{ addOptionalComment(intervention.interventionMeasure.comments) }}
+                    {% endset %}
+                    <h4 class="govuk-heading-s / govuk-!-margin-top-6 govuk-!-margin-bottom-1">
+                        {{ intervention.interventionDescription }}{{ addOptionalComment(intervention.interventionComment) }}
+                    </h4>
+                    {% if intervention.interventionComment | length %}<p class="govuk-!-margin-bottom-1">{{ intervention.interventionComment }}</p>{% endif %}
+                    <dl class="govuk-summary-list govuk-!-margin-bottom-3">
+                        {{ displayDefinition('Timescale:', intervention.timescale.description ) }}
+                        {{ displayDefinition('Status:', interventionMeasure ) }}
+                        {{ displayDefinition('Who:', whoDoing | safe ) }}
+                    </dl>
+                {% endfor %}
+                </div>
+            {% endfor %}
+
+            <hr class="govuk-section-break section-break-large">
+
+            <h2 class="govuk-heading-l / govuk-!-margin-top-6 ">
+            Additional information
+        </h2>
+
+        {% for question in legacyPlan.questions | sort(attribute = "displayOrder") %}
+            {% set ans = question.answer.staticText or question.answer.freeFormText or '(no answer recorded)' %}
+            <div>
+                <p class="govuk-!-font-weight-bold govuk-!-margin-bottom-0">{{ question.questionText }}</p>
+                <p>{{ ans }}</p>
+            </div>
+        {% endfor %}
+
+        {% endblock %}
+        
