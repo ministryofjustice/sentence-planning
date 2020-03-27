@@ -16,11 +16,7 @@ $white-transparent: rgba(255, 255, 255, .25);
 }
 
 .moj-header {
-  border-bottom: 5px solid #1d70b8;
-}
-
-.moj-context-header {
-  padding-top: 5px;
+  border-bottom: 5px solid govuk-colour("blue");
 }
 
 p {
@@ -30,6 +26,7 @@ p {
 .moj-context-header {
   background-color: govuk-colour("blue");
   padding-bottom: govuk-spacing(2);
+  padding-top: 5px;
 }
 .moj-context-header dt, .moj-context-header dd{
   color: govuk-colour("white");
