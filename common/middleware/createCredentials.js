@@ -3,12 +3,10 @@
 module.exports = (req, res, next) => {
   const {
     headers: { 'x-auth-token': authorisationToken = '' },
-    session: { sessionKey = '' },
   } = req
 
   req.tokens = {
     authorisationToken,
-    sessionKey,
   }
   next()
 }
