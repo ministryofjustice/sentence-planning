@@ -15,6 +15,14 @@ $white-transparent: rgba(255, 255, 255, .25);
   }
 }
 
+.moj-header {
+  border-bottom: 5px solid #1d70b8;
+}
+
+.moj-context-header {
+  padding-top: 5px;
+}
+
 p {
   @extend .govuk-body;
 }
@@ -102,4 +110,8 @@ p {
 }
 .print-group {
   break-inside: avoid;
+}
+
+.govuk-phase-banner {
+  border-bottom: 0;
 }
