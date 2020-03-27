@@ -113,7 +113,7 @@ const endSentencePlan = (sentencePlanId, tokens) => {
   return postData(path, tokens)
 }
 
-const getData = async (path, { authorisationToken, sessionKey = '' }) => {
+const getData = async (path, { authorisationToken }) => {
   if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
   }
@@ -122,7 +122,6 @@ const getData = async (path, { authorisationToken, sessionKey = '' }) => {
     return await superagent
       .get(path)
       .auth(authorisationToken, { type: 'bearer' })
-      .set('X-Session-Id', sessionKey)
       .timeout(timeout)
       .then(response => {
         return response.body
@@ -131,7 +130,7 @@ const getData = async (path, { authorisationToken, sessionKey = '' }) => {
     return logError(error)
   }
 }
-const postData = async (path, { authorisationToken, sessionKey = '' }, data) => {
+const postData = async (path, { authorisationToken }, data) => {
   if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
   }
@@ -141,7 +140,6 @@ const postData = async (path, { authorisationToken, sessionKey = '' }, data) => 
       .post(path)
       .send(data)
       .auth(authorisationToken, { type: 'bearer' })
-      .set('X-Session-Id', sessionKey)
       .timeout(timeout)
       .then(response => {
         return response.body
@@ -151,7 +149,7 @@ const postData = async (path, { authorisationToken, sessionKey = '' }, data) => 
   }
 }
 
-const putData = async (path, { authorisationToken, sessionKey = '' }, data) => {
+const putData = async (path, { authorisationToken }, data) => {
   if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
   }
@@ -161,7 +159,6 @@ const putData = async (path, { authorisationToken, sessionKey = '' }, data) => {
       .put(path)
       .send(data)
       .auth(authorisationToken, { type: 'bearer' })
-      .set('X-Session-Id', sessionKey)
       .timeout(timeout)
       .then(response => {
         return response.body

@@ -46,7 +46,7 @@ describe('sentencePlanningApi', () => {
     nock.cleanAll()
   })
   let mockedEndpoint
-  const tokens = { authorisationToken: 'mytoken', sessionKey: 'mysessionkey' }
+  const tokens = { authorisationToken: 'mytoken' }
   const id = '123458'
 
   describe('getSentencePlanSummary', () => {
