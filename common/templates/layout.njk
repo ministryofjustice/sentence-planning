@@ -1,5 +1,6 @@
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
 {% from 'moj/components/header/macro.njk' import mojHeader %}
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 
 {% extends "govuk/template.njk" %}
 
@@ -28,6 +29,15 @@
       }]
     }
   }) }}
+  <div class="moj-header__container">
+    {{ govukPhaseBanner({
+      tag: {
+        text: "beta"
+      },
+      html: 'This is a new service – your <a class="govuk-link" href="https://www.research.net/r/9P3F9FF">feedback</a> will help us to improve it.'
+    }) }}      
+  </div>
+  
   {% if offenderDetails %}
     {% include "./partials/offenderDetails.njk" %}
   {% endif %}
