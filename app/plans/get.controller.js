@@ -9,12 +9,12 @@ const isValid = str => str !== '' && str !== undefined && str !== null
 
 const getPlan = (plans = {}) => {
   if (isEmptyObject(plans)) return {}
-  return plans.find(({ completedDate }) => !isValid(completedDate)) || {}
+  return plans.find(({ completedDate, legacy }) => !isValid(completedDate) && !legacy) || {}
 }
 
 const getCompletedPlans = plans => {
   if (isEmptyObject(plans)) return {}
-  return plans.filter(({ completedDate }) => isValid(completedDate))
+  return plans.filter(({ completedDate, legacy }) => isValid(completedDate) || legacy)
 }
 
 const getPlanType = (plan = {}) => {
