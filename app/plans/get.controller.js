@@ -32,13 +32,6 @@ const sentencePlanSummary = async ({ tokens, params: { id } }, res) => {
     const plans = await getSentencePlanSummary(id, tokens)
     const currentPlan = getPlan(plans)
 
-    console.log({
-      individualId: id,
-      currentPlan,
-      planType: getPlanType(currentPlan),
-      completedPlans: getCompletedPlans(plans),
-    })
-
     res.render(`${__dirname}/index`, {
       individualId: id,
       currentPlan,
