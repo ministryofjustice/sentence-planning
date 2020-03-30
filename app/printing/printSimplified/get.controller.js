@@ -37,7 +37,6 @@ const printSimplifiedSentencePlan = async ({ path, params: { id, planId }, token
         tempAction.actionText = tempAction.intervention
           ? getInterventionText(tempAction.intervention, interventionList)
           : action.description
-        return tempAction
       })
       currentObjective.actionsDisplay = formatObjectiveActionsForPrintDisplay(currentObjective.actions, true)
     })

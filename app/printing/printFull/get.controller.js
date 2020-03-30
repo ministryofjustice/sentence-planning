@@ -43,7 +43,6 @@ const printFullSentencePlan = async ({ path, params: { id, planId }, tokens }, r
         tempAction.actionText = tempAction.intervention
           ? getInterventionText(tempAction.intervention, interventionList)
           : action.description
-        return tempAction
       })
       currentObjective.actionsDisplay = formatObjectiveActionsForPrintDisplay(currentObjective.actions)
     })
