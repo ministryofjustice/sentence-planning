@@ -51,7 +51,7 @@
         {
           "description": "Completed action 2 description text",
           "id": "act2",
-          "intervention": "string",
+          "intervention": "",
           "motivationUUID": "string",
           "ownerOther": "string",
           "priority": 0,
@@ -59,6 +59,23 @@
           "status": "COMPLETED",
           "targetDate": "2020-04",
           "updated": "2019-12-04T15:33:28.545Z"
+        },
+        {
+          "id": "8d7b6471-13ef-4bfd-847f-c51446f9a286",
+          "owner": [
+            "SERVICE_USER",
+            "PRACTITIONER"
+          ],
+          "ownerOther": "",
+          "description": "",
+          "status": "NOT_STARTED",
+          "intervention": "3fa85f64-5717-4562-b3fc-2c963f66afa2",
+          "motivationUUID": "55f90269-1d93-4a9a-921a-7bae73f3bf07",
+          "priority": 0,
+          "created": "2020-03-18T10:41:58.091869",
+          "updated": null,
+          "targetDate": "2021-12",
+          "progress": []
         }
       ],
       "description": "This is an active objective",
@@ -86,7 +103,7 @@
         {
           "description": "Not started action 2 description text",
           "id": "act4",
-          "intervention": "string",
+          "intervention": "",
           "motivationUUID": "string",
           "ownerOther": "string",
           "priority": 0,
@@ -121,7 +138,7 @@
         {
           "description": "Partially completed action 1 description text",
           "id": "act6",
-          "intervention": "string",
+          "intervention": "",
           "motivationUUID": "string",
           "ownerOther": "string",
           "priority": 0,
@@ -133,7 +150,7 @@
         {
           "description": "Abandoned action description text",
           "id": "act7",
-          "intervention": "string",
+          "intervention": "",
           "motivationUUID": "string",
           "ownerOther": "string",
           "priority": 0,
@@ -168,7 +185,7 @@
         {
           "description": "Completed action description text",
           "id": "act9",
-          "intervention": "string",
+          "intervention": "",
           "motivationUUID": "string",
           "ownerOther": "string",
           "priority": 0,
@@ -180,7 +197,7 @@
         {
           "description": "Abandoned action description text",
           "id": "act10",
-          "intervention": "string",
+          "intervention": "",
           "motivationUUID": "string",
           "ownerOther": "string",
           "priority": 0,

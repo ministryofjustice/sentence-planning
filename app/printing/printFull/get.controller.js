@@ -1,10 +1,12 @@
 const { logger } = require('../../../common/logging/logger')
 const { getCommentText } = require('../../../common/utils/getCommentText')
+const { getInterventions } = require('../../../common/data/sentencePlanningApi')
 const {
   removeUrlLevels,
   groupBy,
   getObjectiveType,
   formatObjectiveActionsForPrintDisplay,
+  getInterventionText,
 } = require('../../../common/utils/util')
 const { getSentencePlan } = require('../../../common/data/sentencePlanningApi')
 const {
@@ -26,10 +28,22 @@ const printFullSentencePlan = async ({ path, params: { id, planId }, tokens }, r
       return res.render('app/error', { error })
     }
 
+    // only get intervention data if there is any objective with an action with an intervention
+    const hasInterventions = objectives.some(objective => {
+      return objective.actions.some(({ intervention }) => intervention)
+    })
+
+    const interventionList = hasInterventions ? await getInterventions(tokens) : []
+
     objectives.forEach(objective => {
       const currentObjective = objective
-
       currentObjective.type = getObjectiveType(currentObjective)
+      objective.actions.forEach(action => {
+        const tempAction = action
+        tempAction.actionText = tempAction.intervention
+          ? getInterventionText(tempAction.intervention, interventionList)
+          : action.description
+      })
       currentObjective.actionsDisplay = formatObjectiveActionsForPrintDisplay(currentObjective.actions)
     })
 
