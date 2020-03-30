@@ -15,6 +15,10 @@ $white-transparent: rgba(255, 255, 255, .25);
   }
 }
 
+.moj-header {
+  border-bottom: 5px solid govuk-colour("blue");
+}
+
 p {
   @extend .govuk-body;
 }
@@ -22,6 +26,7 @@ p {
 .moj-context-header {
   background-color: govuk-colour("blue");
   padding-bottom: govuk-spacing(2);
+  padding-top: 5px;
 }
 .moj-context-header dt, .moj-context-header dd{
   color: govuk-colour("white");
@@ -102,4 +107,8 @@ p {
 }
 .print-group {
   break-inside: avoid;
+}
+
+.govuk-phase-banner {
+  border-bottom: 0;
 }
