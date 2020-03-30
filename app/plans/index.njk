@@ -72,8 +72,14 @@
                         {% set planUrl = '/individual-id/' + individualId + '/plan/' + plan.planId %}
                     {% endif %}
 
+                    {% if plan.completedDate %}
+                        {% set displayText = 'Plan closed ' + plan.completedDate | date("DD MMMM YYYY") %}
+                    {% else %}
+                        {% set displayText = 'Incomplete OASys plan (created ' + plan.createdDate | date("DD MMMM YYYY") + ')' %}
+                    {% endif %}
+
                     <li>
-                        <a class="govuk-link" href="{{ planUrl }}">Plan closed {{ plan.completedDate | date("DD MMMM YYYY") }}</a>
+                        <a class="govuk-link" href="{{ planUrl }}">{{ displayText }}</a>
                     </li>
                 {% endfor %}
             </ul>

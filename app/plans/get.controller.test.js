@@ -5,6 +5,7 @@ const noActivePlan = require('../../mockServer/sentencePlanSummary/11034.json')
 const draftPlan = require('../../mockServer/sentencePlanSummary/11035.json')
 const emptyObject = require('../../mockServer/sentencePlanSummary/11032.json')
 const noCompletedPlans = require('../../mockServer/sentencePlanSummary/11036.json')
+const incompleteLegacyPlans = require('../../mockServer/sentencePlanSummary/11037.json')
 const { getSentencePlanSummary } = require('../../common/data/sentencePlanningApi')
 
 jest.mock('../../common/data/sentencePlanningApi.js', () => ({
@@ -113,6 +114,21 @@ describe('getSentencePlanSummary', () => {
         individualId: 11032,
         planType: 'none',
         completedPlans: {},
+      }
+      await sentencePlanSummary(req, res)
+      expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
+    })
+    it('should set the correct render values when there is a legacy plan with no completed date', async () => {
+      req.params.id = 11037
+      getSentencePlanSummary.mockReturnValueOnce(incompleteLegacyPlans)
+      const expected = {
+        individualId: 11037,
+        currentPlan: {},
+        planType: 'none',
+        completedPlans: [
+          { planId: '9465346', createdDate: '2020-03-06', completedDate: null, legacy: true, draft: false },
+          { planId: '2114597', createdDate: '2012-10-16', completedDate: '2012-06-13', legacy: true, draft: false },
+        ],
       }
       await sentencePlanSummary(req, res)
       expect(res.render).toHaveBeenCalledWith(`${__dirname}/index`, expected)
