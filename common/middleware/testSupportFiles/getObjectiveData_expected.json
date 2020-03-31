@@ -1,7 +1,7 @@
 {
   "actions": [
     {
-      "description": "Intervention: Intervention 4",
+      "actionText": "Intervention 4",
       "id": "1",
       "owner": "Individual, Other: Uncle Bob",
       "status": "To do",
@@ -9,7 +9,7 @@
       "targetDate": "May 2022"
     },
     {
-      "description": "This is the description of an action",
+      "actionText": "This is the description of an action",
       "id": "2",
       "owner": "Individual",
       "status": "To do",

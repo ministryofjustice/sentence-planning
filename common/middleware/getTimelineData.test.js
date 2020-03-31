@@ -149,7 +149,7 @@ describe('getTimelineData', () => {
     }
     action1 = {
       created: '2020-06-18T00:13:27.59747',
-      description: 'the action description',
+      actionText: 'the action description',
       progress: [progress1],
     }
     expectedAction1 = [
@@ -256,11 +256,11 @@ describe('getTimelineData', () => {
   })
   describe('processAction', () => {
     it('should return a timeline Array including a description', () => {
-      const timelineData = processAction(action1, motivationList)
+      const timelineData = processAction(action1, motivationList, true)
       expect(timelineData).toEqual(expectedObjectiveAction1)
     })
     it('should return an timeline Array without a description', () => {
-      const timelineData = processAction(action1, motivationList, true)
+      const timelineData = processAction(action1, motivationList)
       expect(timelineData).toEqual(expectedAction1)
     })
   })
@@ -298,7 +298,7 @@ describe('getTimelineData', () => {
           created: '2020-01-18T00:13:27.59747',
           createdBy: 'Paula Nancy Millstone Jennings',
         }
-        req = { objective, motivationList }
+        req = { renderInfo: { objective }, motivationList }
         getObjectiveTimelineData(req, {}, next)
       })
       it('should add timeline data to the renderInfo', () => {

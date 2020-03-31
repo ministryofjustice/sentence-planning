@@ -2,7 +2,7 @@ const { logger } = require('../logging/logger')
 const { getSentencePlanObjective, getSentencePlanNeeds, getInterventions } = require('../data/sentencePlanningApi')
 const { getMotivation } = require('../../app/partials/motivations/get.controller')
 
-const { catchAndReThrowError, getYearMonthFromDate, getStatusText } = require('../utils/util')
+const { catchAndReThrowError, getYearMonthFromDate, getStatusText, getActionText } = require('../utils/util')
 const { RESPONSIBLE_LIST } = require('../utils/constants')
 
 const getNeeds = async ({ needs = null }, planId, tokens) => {
@@ -36,32 +36,31 @@ const getObjectiveData = async (req, res, next) => {
     }
     // only get intervention data if there is an action with an intervention
     const hasInterventions = !objective.actions.every(({ intervention }) => !intervention)
-    let interventions = []
-    if (hasInterventions) {
-      interventions = await getInterventions(tokens).catch(error =>
-        catchAndReThrowError(`Could not retrieve objective ${objectiveId} for sentence plan ${planId}`, error)
-      )
-    }
+    const interventionList = hasInterventions
+      ? await getInterventions(tokens).catch(error =>
+          catchAndReThrowError(`Could not retrieve objective ${objectiveId} for sentence plan ${planId}`, error)
+        )
+      : []
     displayObjective.actions = objective.actions.map(action => {
-      const { id, description, intervention, motivationUUID, owner, ownerOther, targetDate, status } = action
-      const interventionText =
-        intervention && `Intervention: ${interventions.find(({ uuid }) => uuid === intervention).shortDescription}`
+      const { id, motivationUUID, owner, ownerOther, targetDate, status, progress } = action
       const { monthName, year } = getYearMonthFromDate(targetDate)
       const ownerText = owner
         .map(ownerType => RESPONSIBLE_LIST.find(({ value }) => value === ownerType).text)
         .join(', ')
+
       const ownerOtherText = ownerOther ? `: ${ownerOther}` : ''
       return {
         id,
-        description: interventionText || description,
+        actionText: getActionText(action, interventionList),
         motivation: motivationList.find(({ value }) => value === motivationUUID).text,
         targetDate: `${monthName} ${year}`,
         owner: `${ownerText}${ownerOtherText}`,
         status: getStatusText(status),
+        progress,
       }
     })
     Object.assign(renderInfo, { errors, errorSummary, objective: displayObjective })
-    Object.assign(req, { objective, motivationList, interventions, renderInfo })
+    Object.assign(req, { objective, motivationList, interventionList, renderInfo })
     return next()
   } catch (error) {
     const newError = new Error(`An error occurred whilst trying to retrieve your objective. ${error}`)

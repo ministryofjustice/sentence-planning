@@ -1,6 +1,6 @@
 const { logger } = require('../../common/logging/logger')
 const { getSentencePlanObjectiveAction, getInterventions } = require('../../common/data/sentencePlanningApi')
-const { catchAndReThrowError } = require('../../common/utils/util')
+const { catchAndReThrowError, getActionText } = require('../../common/utils/util')
 const { getMotivation } = require('../../app/partials/motivations/get.controller')
 
 const getActionData = async (req, res, next) => {
@@ -17,9 +17,10 @@ const getActionData = async (req, res, next) => {
       )
     )
     const [interventionList, { motivationList }] = await Promise.all([
-      await getInterventions(tokens),
+      action.intervention ? await getInterventions(tokens) : [],
       await getMotivation(action, body, tokens),
     ])
+    action.actionText = getActionText(action, interventionList)
     Object.assign(req, { action, interventionList, motivationList })
     return next()
   } catch (error) {
