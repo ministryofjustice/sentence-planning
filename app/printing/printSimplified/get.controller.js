@@ -4,7 +4,7 @@ const {
   groupBy,
   getObjectiveType,
   formatObjectiveActionsForPrintDisplay,
-  getInterventionText,
+  getActionText,
 } = require('../../../common/utils/util')
 const { getInterventions, getSentencePlan } = require('../../../common/data/sentencePlanningApi')
 
@@ -34,9 +34,7 @@ const printSimplifiedSentencePlan = async ({ path, params: { id, planId }, token
       currentObjective.type = getObjectiveType(currentObjective)
       objective.actions.forEach(action => {
         const tempAction = action
-        tempAction.actionText = tempAction.intervention
-          ? getInterventionText(tempAction.intervention, interventionList)
-          : action.description
+        tempAction.actionText = getActionText(action, interventionList)
       })
       currentObjective.actionsDisplay = formatObjectiveActionsForPrintDisplay(currentObjective.actions, true)
     })
