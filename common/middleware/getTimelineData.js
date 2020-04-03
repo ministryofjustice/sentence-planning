@@ -45,10 +45,10 @@ const processProgress = (progress = [], motivationList, description = '') => {
     .reverse()
 }
 
-const processAction = ({ progress, created, description = '' }, motivationList, hideActionDescription = false) => {
-  const descriptionText = hideActionDescription ? '' : description
-  const timelineData = processProgress(progress, motivationList, descriptionText)
-  appendActionCreated(timelineData, created, descriptionText)
+const processAction = ({ progress, created, actionText }, motivationList, showDescription = false) => {
+  const actionTextToDisplay = showDescription ? actionText : ''
+  const timelineData = processProgress(progress, motivationList, actionTextToDisplay) || []
+  appendActionCreated(timelineData, created, actionTextToDisplay)
   return timelineData
 }
 
@@ -65,19 +65,21 @@ const processStatusChanges = statusChanges =>
 
 const getActionTimelineData = (req, _res, next) => {
   const { action, renderInfo = {}, motivationList } = req
-  req.renderInfo = Object.assign(renderInfo, { timelineData: processAction(action, motivationList, true) })
+  req.renderInfo = Object.assign(renderInfo, { timelineData: processAction(action, motivationList) })
   next()
 }
 
 const getObjectiveTimelineData = (req, res, next) => {
+  const { renderInfo = {}, motivationList } = req
   const {
-    objective: { actions, statusChanges, created, createdBy },
-    renderInfo = {},
-    motivationList,
-  } = req
-  const timelineData = actions.reduce((timeline, action) => timeline.concat(processAction(action, motivationList)), [])
+    objective: { actions, statusChanges = [], created, createdBy },
+  } = renderInfo
+  const timelineData = actions.reduce(
+    (timeline, action) => timeline.concat(processAction(action, motivationList, true)),
+    []
+  )
   timelineData.push({ type: 'Objective Created', created, createdBy }, ...processStatusChanges(statusChanges))
-  timelineData.sort(({ created: createdA = 0 }, { created: createdB = 0 }) => new Date(createdA) < new Date(createdB))
+  timelineData.sort(({ created: createdA = 0 }, { created: createdB = 0 }) => new Date(createdB) - new Date(createdA))
   req.renderInfo = Object.assign(renderInfo, { timelineData })
   next()
 }

@@ -105,10 +105,16 @@ describe('getObjectiveData', () => {
         intervention: '',
         description: 'an action',
       }))
-      objectiveExpectedData.actions = objectiveExpectedData.actions.map(action => ({
-        ...action,
-        description: 'an action',
-      }))
+      objectiveExpectedData.actions = objectiveExpectedData.actions.map(
+        ({ id, motivation, targetDate, owner, status }) => ({
+          id,
+          motivation,
+          targetDate,
+          owner,
+          status,
+          actionText: 'an action',
+        })
+      )
       await getObjectiveData(req, res, next)
     })
     it('it should request the sentence plan objective', async () => {

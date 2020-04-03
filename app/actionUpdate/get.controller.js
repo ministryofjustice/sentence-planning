@@ -1,22 +1,18 @@
 const { logger } = require('../../common/logging/logger')
-const { removeUrlLevels, getInterventionText } = require('../../common/utils/util')
+const { removeUrlLevels } = require('../../common/utils/util')
 const { getTargetDate } = require('../partials/targetDate/get.controller')
 const { getResponsibility } = require('../partials/responsibility/get.controller')
 const { getStatus } = require('../partials/status/get.controller')
 
-const getActionUpdate = (
-  { action, interventionList, motivationList, path, errors, errorSummary, body, renderInfo },
-  res
-) => {
+const getActionUpdate = ({ action, motivationList, path, errors, errorSummary, body, renderInfo }, res) => {
   try {
     const backUrl = `${removeUrlLevels(path, 2)}`
-    const { intervention, description } = action
     return res.render(`${__dirname}/index`, {
       ...body,
       ...renderInfo,
       errors,
       errorSummary,
-      actionText: intervention ? getInterventionText(intervention, interventionList) : description,
+      actionText: action.actionText,
       ...getTargetDate(action, body),
       motivationList,
       ...getResponsibility(action, body),

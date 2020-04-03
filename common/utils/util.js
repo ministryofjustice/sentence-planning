@@ -121,8 +121,10 @@ const formatObjectiveActionsForPrintDisplay = (actions, useSimplifiedText = fals
   })
 }
 
-const getInterventionText = (intervention, interventionList) =>
-  interventionList.find(({ uuid }) => uuid === intervention).shortDescription
+const getActionText = ({ description = '', intervention }, interventionList) =>
+  intervention && interventionList
+    ? interventionList.find(({ uuid }) => uuid === intervention).shortDescription
+    : description
 
 module.exports = {
   formatObjectiveActionsForPrintDisplay,
@@ -138,5 +140,5 @@ module.exports = {
   groupBy,
   isValidDate,
   catchAndReThrowError,
-  getInterventionText,
+  getActionText,
 }
