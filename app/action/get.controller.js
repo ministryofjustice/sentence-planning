@@ -17,7 +17,7 @@ const getAction = async (
       action = await getSentencePlanObjectiveAction(planId, objectiveId, actionId, tokens)
     }
     const nexturl = path.substring(0, path.lastIndexOf('/'))
-    const backurl = `${removeUrlLevels(path, 2)}/review`
+    const backurl = `${removeUrlLevels(path, 2)}${path.indexOf('edit-plan') !== -1 ? '/review' : ''}`
     const actionDescriptionIntervention = await getActionDescriptionIntervention(action, body, tokens)
     const { motivationList } = await getMotivation(action, body, tokens)
     return res.render(`${__dirname}/index`, {

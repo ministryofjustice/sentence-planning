@@ -41,35 +41,35 @@ const getObjective = async (req, res) => {
     const displayNeeds = await getSentencePlanNeeds(planId, tokens)
 
     // if there are no needs, put flag into session so we don't insist the user selects one in the validation
-    if (displayNeeds.length === 0) {
-      req.session.noNeedsAvailable = true
-    } else {
+    if (displayNeeds.length > 0) {
       delete req.session.noNeedsAvailable
+      // convert to format for display
+      renderDetails.displayNeeds = displayNeeds
+        .map(({ id: value, name: html, active, riskOfHarm = false }) => {
+          const returnNeed = {
+            value,
+            html,
+            active,
+          }
+          if (riskOfHarm) {
+            returnNeed.html += ' - <span class="risk"> Risk of serious harm</span>'
+          }
+
+          if (displayObjective.needs.includes(returnNeed.value)) {
+            returnNeed.active = true
+            returnNeed.checked = true
+          }
+          return returnNeed
+        })
+        // don't display inactive needs
+        .filter(need => need.active === true)
+        // display needs alphabetically
+        .sort(sortObject('html'))
     }
-
-    // convert to format for display
-    renderDetails.displayNeeds = displayNeeds
-      .map(({ id: value, name: html, active, riskOfHarm = false }) => {
-        const returnNeed = {
-          value,
-          html,
-          active,
-        }
-        if (riskOfHarm) {
-          returnNeed.html += ' - <span class="risk"> Risk of serious harm</span>'
-        }
-
-        if (displayObjective.needs.includes(returnNeed.value)) {
-          returnNeed.active = true
-          returnNeed.checked = true
-        }
-        return returnNeed
-      })
-      // don't display inactive needs
-      .filter(need => need.active === true)
-      // display needs alphabetically
-      .sort(sortObject('html'))
-
+    if (displayNeeds.length === 0 || renderDetails.displayNeeds.length === 0) {
+      req.session.noNeedsAvailable = true
+      renderDetails.displayNeeds = []
+    }
     renderDetails.description = displayObjective.description
 
     return res.render(`${__dirname}/index`, { errors, errorSummary, ...renderDetails })

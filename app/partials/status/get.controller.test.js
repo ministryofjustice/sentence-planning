@@ -1,6 +1,6 @@
 const { getStatus } = require('./get.controller')
 
-jest.mock('../../../common/utils/util', () => ({
+jest.mock('../../../common/utils/constants', () => ({
   STATUS_LIST: [
     { text: 'AT', value: 'AV', initialStatus: true },
     { text: 'BT', value: 'BV', initialStatus: true },

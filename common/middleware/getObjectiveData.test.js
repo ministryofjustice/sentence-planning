@@ -8,7 +8,8 @@ const {
 const interventionsMockData = require('../../mockServer/interventions/interventions.json')
 const motivationsMockData = require('../../mockServer/motivations/motivations.json')
 const needsMock = require('../../mockServer/sentencePlanNeeds/1.json')
-const objectiveMockDataJSON = JSON.stringify(require('../../mockServer/sentencePlanObjectives/1.json'))
+const objectiveSourceJSON = JSON.stringify(require('./testSupportFiles/getObjectiveData_source.json'))
+const objectiveExpectedJSON = JSON.stringify(require('./testSupportFiles/getObjectiveData_expected.json'))
 
 jest.mock('../../common/data/sentencePlanningApi', () => ({
   getSentencePlanObjective: jest.fn(),
@@ -35,8 +36,10 @@ describe('getObjectiveData', () => {
   const mockPromise = (data, error) => () => new Promise((resolve, reject) => (error ? reject(error) : resolve(data)))
 
   let objectiveMockData
+  let objectiveExpectedData
   beforeEach(() => {
-    objectiveMockData = JSON.parse(objectiveMockDataJSON)
+    objectiveMockData = JSON.parse(objectiveSourceJSON)
+    objectiveExpectedData = JSON.parse(objectiveExpectedJSON)
     getSentencePlanObjective.mockImplementation(mockPromise(objectiveMockData))
     getInterventions.mockImplementation(mockPromise(interventionsMockData))
     getMotivations.mockImplementation(mockPromise(motivationsMockData))
@@ -72,7 +75,7 @@ describe('getObjectiveData', () => {
       const expectedRenderDetails = {
         errors: null,
         errorSummary: null,
-        objective: objectiveMockData,
+        objective: objectiveExpectedData,
       }
       expect(req.renderInfo).toMatchObject(expectedRenderDetails)
     })
@@ -102,6 +105,16 @@ describe('getObjectiveData', () => {
         intervention: '',
         description: 'an action',
       }))
+      objectiveExpectedData.actions = objectiveExpectedData.actions.map(
+        ({ id, motivation, targetDate, owner, status }) => ({
+          id,
+          motivation,
+          targetDate,
+          owner,
+          status,
+          actionText: 'an action',
+        })
+      )
       await getObjectiveData(req, res, next)
     })
     it('it should request the sentence plan objective', async () => {
@@ -120,8 +133,9 @@ describe('getObjectiveData', () => {
       const expectedRenderDetails = {
         errors: null,
         errorSummary: null,
-        objective: objectiveMockData,
+        objective: objectiveExpectedData,
       }
+      objectiveExpectedData.needs = []
       expect(req.renderInfo).toMatchObject(expectedRenderDetails)
     })
     it('it should move on to the next middleware', async () => {

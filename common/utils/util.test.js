@@ -8,6 +8,7 @@ const {
   hasClosedStatus,
   getObjectiveType,
   formatObjectiveActionsForPrintDisplay,
+  getActionText,
 } = require('./util')
 const {
   ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, PAUSED, IN_PROGRESS, ABANDONED },
@@ -238,5 +239,18 @@ describe('should format actions so they can be displayed by the print template',
       ],
     ]
     expect(formatObjectiveActionsForPrintDisplay(actions, true)).toEqual(expected)
+  })
+})
+
+describe('getActionText', () => {
+  it('should return the intervention text if a UUID is present', () => {
+    const uuid = '11111111-1111-1111-1111-111111111111'
+    const shortDescription = 'Spoon'
+    const interventionList = [{ uuid, shortDescription }]
+    expect(getActionText({ intervention: uuid }, interventionList)).toEqual(shortDescription)
+  })
+  it('should return the description text if present', () => {
+    const description = 'Dish'
+    expect(getActionText({ description }, [])).toEqual(description)
   })
 })

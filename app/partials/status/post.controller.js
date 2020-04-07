@@ -1,5 +1,5 @@
 const { body } = require('express-validator')
-const { STATUS_LIST } = require('../../../common/utils/util')
+const { STATUS_LIST } = require('../../../common/utils/constants')
 
 const validationRules = initial => {
   const statusList = STATUS_LIST.filter(({ initialStatus }) => !initial || initialStatus).map(({ value }) => value)

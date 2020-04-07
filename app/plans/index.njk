@@ -65,16 +65,21 @@
             </h2>
             
             <ul class="govuk-list">
-                {% for plan in completedPlans %}
-
+                {% for plan in completedPlans | sort(reverse=true, attribute="completedDate") %}
                     {% if plan.legacy %}
-                        {% set planUrl = 'previous-plan/' + plan.planId %}
+                        {% set planUrl = '/individual-id/' + individualId + '/previous-plan/' + plan.planId %}
                     {% else %}
-                        {% set planUrl = 'plan/' + plan.planId %}
+                        {% set planUrl = '/individual-id/' + individualId + '/plan/' + plan.planId %}
+                    {% endif %}
+
+                    {% if plan.completedDate %}
+                        {% set displayText = 'Plan closed ' + plan.completedDate | date("DD MMMM YYYY") %}
+                    {% else %}
+                        {% set displayText = 'Incomplete OASys plan (created ' + plan.createdDate | date("DD MMMM YYYY") + ')' %}
                     {% endif %}
 
                     <li>
-                        <a class="govuk-link" href="{{ planUrl }}">Plan closed {{ plan.completedDate | date("DD MMMM YYYY") }}</a>
+                        <a class="govuk-link" href="{{ planUrl }}">{{ displayText }}</a>
                     </li>
                 {% endfor %}
             </ul>

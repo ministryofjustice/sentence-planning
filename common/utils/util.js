@@ -2,7 +2,6 @@ const { logger } = require('../logging/logger')
 const {
   ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, ABANDONED },
   STATUS_LIST,
-  RESPONSIBLE_LIST,
   OBJECTIVE_TYPES: { ACTIVE, CLOSED, FUTURE },
 } = require('./constants')
 
@@ -111,16 +110,21 @@ const getObjectiveType = ({ actions }) => {
 }
 
 const formatObjectiveActionsForPrintDisplay = (actions, useSimplifiedText = false) => {
-  return actions.map(({ description, status, targetDate }) => {
+  return actions.map(({ description = '', actionText, status, targetDate }) => {
     const { monthName, year } = getYearMonthFromDate(targetDate)
     const statusText = useSimplifiedText ? getSimplifiedStatusText(status) : getStatusText(status)
     return [
-      { text: description },
+      { text: actionText || description },
       { text: `${monthName} ${year}`, format: 'numeric' },
       { text: statusText, format: 'numeric' },
     ]
   })
 }
+
+const getActionText = ({ description = '', intervention }, interventionList) =>
+  intervention && interventionList
+    ? interventionList.find(({ uuid }) => uuid === intervention).shortDescription
+    : description
 
 module.exports = {
   formatObjectiveActionsForPrintDisplay,
@@ -136,6 +140,5 @@ module.exports = {
   groupBy,
   isValidDate,
   catchAndReThrowError,
-  STATUS_LIST,
-  RESPONSIBLE_LIST,
+  getActionText,
 }

@@ -1,5 +1,5 @@
 const { body } = require('express-validator')
-const { RESPONSIBLE_LIST } = require('../../../common/utils/util')
+const { RESPONSIBLE_LIST } = require('../../../common/utils/constants')
 
 const errorMessage = 'Select the person responsible'
 const otherMaxChars = 250

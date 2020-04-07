@@ -21,7 +21,6 @@ const router = require('./app/router')
 const noCache = require('./common/utils/no-cache')
 const correlationHeader = require('./common/middleware/correlation-header')
 const addUserInformation = require('./common/middleware/add-user-information')
-const storeOasysSessionKey = require('./common/middleware/storeOasysSessionKey')
 const createCredentials = require('./common/middleware/createCredentials')
 const { mdcSetup } = require('./common/logging/logger-mdc')
 const { createMockAPI } = require('./mockServer/app')
@@ -101,7 +100,6 @@ function initialiseGlobalMiddleware(app) {
   app.use(allGateKeeperPages, correlationHeader)
   // app.use(allGateKeeperPages, keycloakHeader)
   app.use(allGateKeeperPages, addUserInformation)
-  app.use(allGateKeeperPages, storeOasysSessionKey)
   app.use(allGateKeeperPages, createCredentials)
 
   // must be after session since we need session

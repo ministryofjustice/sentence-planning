@@ -2,6 +2,8 @@
 const healthCheckFactory = require('../common/services/healthcheck')
 const getOffenderDetails = require('../common/middleware/getOffenderDetails')
 const { getObjectiveData } = require('../common/middleware/getObjectiveData')
+const { getActionData } = require('../common/middleware/getActionData')
+const { getActionTimelineData, getObjectiveTimelineData } = require('../common/middleware/getTimelineData')
 const {
   apis: { oauth2, offenderAssessment, sentencePlanning, elite2 },
 } = require('../common/config')
@@ -65,6 +67,7 @@ const {
 } = require('./activeplan/homepage/contactArrangements/post.controller')
 const { printFullSentencePlan } = require('./printing/printFull/get.controller')
 const { printSimplifiedSentencePlan } = require('./printing/printSimplified/get.controller')
+const { printLegacySentencePlan } = require('./printing/printLegacy/get.controller')
 
 const { getActionUpdate } = require('./actionUpdate/get.controller')
 const { postActionUpdate, actionUpdateValidationRules } = require('./actionUpdate/post.controller')
@@ -115,14 +118,14 @@ module.exports = app => {
   app.get(`${editObjectiveRoute}/review`, getObjectiveData, getObjectiveReview)
   app.get(activePlanCloseObjectiveRoute, getObjectiveData, getCloseObjective)
   app.post(activePlanCloseObjectiveRoute, closeObjectiveValidationRules(), validate, postCloseObjective)
-  app.get(activePlanObjectiveRoute, getObjectiveData, getObjectiveView)
+  app.get(activePlanObjectiveRoute, getObjectiveData, getObjectiveTimelineData, getObjectiveView)
 
   // actions
   app.get([editActionRoute, activePlanNewActionRoute], getAction)
   app.post([editActionRoute, activePlanNewActionRoute], actionValidationRules(), validate, postAction)
 
   // action update
-  app.get(activePlanUpdateActionRoute, getActionUpdate)
+  app.get(activePlanUpdateActionRoute, getActionData, getActionTimelineData, getActionUpdate)
   app.post(activePlanUpdateActionRoute, actionUpdateValidationRules(), validate, postActionUpdate)
 
   // active plan homepage
@@ -162,9 +165,7 @@ module.exports = app => {
   // printing
   app.get(`${activePlanRoute}/print-full-plan`, printFullSentencePlan)
   app.get(`${activePlanRoute}/print-plan`, printSimplifiedSentencePlan)
-
-  // outstanding pages still to be developed
-  app.get([`${offenderRoute}/previous-plan/*`], (req, res) => res.send('Functionality still to be developed'))
+  app.get(`${offenderRoute}/previous-plan/:planId(${uuid})`, printLegacySentencePlan)
 
   app.get('*', (req, res) => res.render('app/error', { error: '404, Page Not Found' }))
 }

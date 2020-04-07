@@ -1,0 +1,27 @@
+{
+  "actions": [
+    {
+      "actionText": "Intervention 4",
+      "id": "1",
+      "owner": "Individual, Other: Uncle Bob",
+      "status": "To do",
+      "motivation":"Getting ready",
+      "targetDate": "May 2022"
+    },
+    {
+      "actionText": "This is the description of an action",
+      "id": "2",
+      "owner": "Individual",
+      "status": "To do",
+      "motivation":"Off track",
+      "targetDate": "April 2021"
+    }
+  ],
+  "description": "newly created objective",
+  "id": 1,
+  "needs": [
+    "Accommodation",
+    "Inactive need description",
+    "Inactive but previously selected need description"
+  ]
+}
