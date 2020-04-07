@@ -16,8 +16,8 @@ module.exports = {
   sessionSecret: get('SESSION_SECRET', 'app-insecure-default-session', { requireInProduction: true }),
   apis: {
     oauth2: {
-      url: get('NOMIS_AUTH_URL', 'http://localhost:9090/auth', true),
-      externalUrl: get('NOMIS_AUTH_EXTERNAL_URL', get('NOMIS_AUTH_URL', 'http://localhost:9090/auth'), true),
+      url: get('NOMIS_AUTH_URL', 'http://oauth:9090/auth', true),
+      externalUrl: get('NOMIS_AUTH_EXTERNAL_URL', get('NOMIS_AUTH_URL', 'http://oauth:9090/auth'), true),
       timeout: {
         response: get('AUTH_ENDPOINT_TIMEOUT_RESPONSE', 10000, true),
         deadline: get('AUTH_ENDPOINT_TIMEOUT_DEADLINE', 10000, true),

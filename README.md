@@ -17,11 +17,19 @@ To get started clone the repo and run
 
 ``` bash
 $ npm install
-$ npm start
+$ npm run start:local
 ```
 (`npm install` might error about Snyk if it’s not set up but ignore for now)
 
-Then go to [http://localhost:3000/](http://localhost:3000/) to see it in action.
+Then go to [http://localhost:3000/individual-id/1](http://localhost:3000/individual-id/1) to see it in action.
+
+### Prerequisites
+
+Run the requried backend services using the supplied docker-compose config. Before starting you must add the following line to your `/etc/hosts` file to allow the authentication service to function:
+
+```
+127.0.0.1 oauth
+```
 
 ### Using nvm (optional)
 If you work across multiple Node.js projects there's a good chance they require different Node.js and npm versions.
