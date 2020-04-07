@@ -41,6 +41,7 @@ services:
 
   offender-assessment-api:
     image: mojdigitalstudio/offender-assessments-api:latest
+    restart: always
     networks:
       - hmpps
     container_name: offender-assessment-api
