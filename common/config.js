@@ -71,4 +71,8 @@ module.exports = {
   https: production,
   loggingLevel: get('LOGGING_LEVEL', 'info'),
   correlationHeader: get('CORRELATION_HEADER_NAME', 'x-request-id'),
+  applicationInsights: {
+    instrumentationKey: get("APPINSIGHTS_INSTRUMENTATIONKEY", ""),
+    internalLogging: get("APPINSIGHTS_LOGGING", "false"),
+  },
 }
