@@ -3,3 +3,5 @@ const { initAll } = require('govuk-frontend')
 
 window.initAll = initAll
 window.accessibleAutocomplete = require('accessible-autocomplete')
+
+window.initReorderList = require('../templates/components/reorder-list/reorder-list.js')

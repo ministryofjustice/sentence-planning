@@ -9,7 +9,7 @@
           "SERVICE_USER", "OTHER"
       ],
       "ownerOther": "Uncle Bob",
-      "priority": 0,
+      "priority": 1,
       "progress": [],
       "status": "NOT_STARTED",
       "targetDate": "2022-05",
@@ -24,7 +24,7 @@
           "SERVICE_USER"
       ],
       "ownerOther": "",
-      "priority": 0,
+      "priority": 2,
       "progress": [],
       "status": "NOT_STARTED",
       "targetDate": "2021-04",

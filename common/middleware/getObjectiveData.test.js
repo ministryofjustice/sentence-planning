@@ -142,6 +142,41 @@ describe('getObjectiveData', () => {
       expect(next).toHaveBeenCalled()
     })
   })
+  describe('With data that requires ordering', () => {
+    it('Should re-order the actions based on priority', async () => {
+      objectiveMockData.needs = null
+      objectiveMockData.actions.unshift({
+        description: 'This is the description of another action',
+        id: '4',
+        intervention: '',
+        motivationUUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        owner: ['SERVICE_USER'],
+        ownerOther: '',
+        priority: 3,
+        progress: [],
+        status: 'NOT_STARTED',
+        targetDate: '2021-04',
+        updated: '2019-12-16T11:51:29.032Z',
+      })
+      objectiveExpectedData.actions.push({
+        actionText: 'This is the description of another action',
+        id: '4',
+        owner: 'Individual',
+        status: 'To do',
+        motivation: 'Off track',
+        targetDate: 'April 2021',
+        priority: 3,
+      })
+      const expectedRenderDetails = {
+        errors: null,
+        errorSummary: null,
+        objective: objectiveExpectedData,
+      }
+      objectiveExpectedData.needs = []
+      await getObjectiveData(req, res, next)
+      expect(req.renderInfo).toMatchObject(expectedRenderDetails)
+    })
+  })
   describe('With services throwing errors', () => {
     const error = new Error("Don't Panic")
     describe('errors being thrown when retrieving the objective', () => {
