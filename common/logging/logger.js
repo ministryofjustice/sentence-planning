@@ -1,5 +1,4 @@
 const winston = require('winston')
-const { AzureApplicationInsightsLogger } = require('winston-azure-application-insights')
 let { loggingLevel, env } = require('../config')
 const { applicationInsights } = require('../config')
 const MDCAwareLogger = require('./mdc-aware-logger')
@@ -31,6 +30,9 @@ const consoleLog = new winston.transports.Console({
 loggingTransports.push(consoleLog)
 
 if (!applicationInsights.disabled && applicationInsights.instrumentationKey !== '') {
+  // we need to defer this import to avoid weird patching errors when running tests
+  const { AzureApplicationInsightsLogger } = require('winston-azure-application-insights') // eslint-disable-line global-require
+
   const aiLog = new AzureApplicationInsightsLogger({
     key: applicationInsights.instrumentationKey,
   })
