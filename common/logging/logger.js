@@ -1,6 +1,7 @@
 const winston = require('winston')
-const { AzureApplicationInsightsLogger } = require('winston-azure-application-insights');
-let { loggingLevel, env, applicationInsights } = require('../config')
+const { AzureApplicationInsightsLogger } = require('winston-azure-application-insights')
+let { loggingLevel, env } = require('../config')
+const { applicationInsights } = require('../config')
 const MDCAwareLogger = require('./mdc-aware-logger')
 
 if (!loggingLevel) {
@@ -29,11 +30,11 @@ const consoleLog = new winston.transports.Console({
 
 loggingTransports.push(consoleLog)
 
-if (!applicationInsights.disabled && applicationInsights.instrumentationKey !== "") {
+if (!applicationInsights.disabled && applicationInsights.instrumentationKey !== '') {
   const aiLog = new AzureApplicationInsightsLogger({
-    key: applicationInsights.instrumentationKey
-  });
-  loggingTransports.push(aiLog);
+    key: applicationInsights.instrumentationKey,
+  })
+  loggingTransports.push(aiLog)
 }
 
 exceptionTransports.push(

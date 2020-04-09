@@ -3,14 +3,14 @@ require('dotenv').config()
 const production = process.env.NODE_ENV === 'production'
 
 function bool(v) {
-  return v in ["true", "1", "on", "yes"]
+  return v in ['true', '1', 'on', 'yes']
 }
 
 function get(name, fallback, options = {}) {
-  const value = process.env[name];
+  const value = process.env[name]
   if (value) {
-    const parser = options.parser;
-    return parser ? parser(value) : value;
+    const { parser } = options
+    return parser ? parser(value) : value
   }
   if (fallback !== undefined && (!production || !options.requireInProduction)) {
     return fallback
@@ -78,8 +78,8 @@ module.exports = {
   loggingLevel: get('LOGGING_LEVEL', 'info'),
   correlationHeader: get('CORRELATION_HEADER_NAME', 'x-request-id'),
   applicationInsights: {
-    disabled: get("APPINSIGHTS_DISABLE", false, bool),
-    instrumentationKey: get("APPINSIGHTS_INSTRUMENTATIONKEY", ""),
-    internalLogging: get("APPINSIGHTS_LOGGING", false, bool),
+    instrumentationKey: get('APPINSIGHTS_INSTRUMENTATIONKEY', ''),
+    disabled: get('APPINSIGHTS_DISABLE', false, { parser: bool }),
+    internalLogging: get('APPINSIGHTS_LOGGING', false, { parser: bool }),
   },
 }

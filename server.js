@@ -1,6 +1,7 @@
 // Always load Application Insights before anything else
 const { initApplicationInsights } = require('./common/utils/appinsights')
-initApplicationInsights();
+
+initApplicationInsights()
 
 // Node.js core dependencies
 const { join } = require('path')
