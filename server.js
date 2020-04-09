@@ -47,7 +47,7 @@ const APP_VIEWS = [
   __dirname,
 ]
 
-function initialiseApplicationInsights(app) {
+function initialiseApplicationInsights() {
   if (applicationInsights.disabled) {
     logger.info('Application Insights disabled; disable flag set')
     return
@@ -197,7 +197,7 @@ function listen() {
 function initialise() {
   const app = unconfiguredApp
   app.disable('x-powered-by')
-  initialiseApplicationInsights(app)
+  initialiseApplicationInsights()
   initialiseProxy(app)
   initialiseGlobalMiddleware(app)
   initialiseTemplateEngine(app)
