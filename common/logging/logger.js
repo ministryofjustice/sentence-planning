@@ -29,7 +29,7 @@ const consoleLog = new winston.transports.Console({
 
 loggingTransports.push(consoleLog)
 
-if (applicationInsights.instrumentationKey !== "") {
+if (!applicationInsights.disabled && applicationInsights.instrumentationKey !== "") {
   const aiLog = new AzureApplicationInsightsLogger({
     key: applicationInsights.instrumentationKey
   });

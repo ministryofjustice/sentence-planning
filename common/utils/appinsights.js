@@ -2,15 +2,19 @@ const appInsights = require("applicationinsights")
 const { applicationInsights } = require("../config")
 
 const initApplicationInsights = () => {
+    if (applicationInsights.disabled) {
+        console.log("Application Insights disabled; disable flag set");
+        return 
+    } 
+
     if (applicationInsights.instrumentationKey === "") {
         console.log("Applciation Insights disabled; no instrumentation key set");
         return;
     }
 
-    const debugLogging = applicationInsights.internalLogging in ["true", "1", "yes", "on"];
     appInsights.setup(applicationInsights.instrumentationKey)
             .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
-            .setInternalLogging(debugLogging, true)
+            .setInternalLogging(applicationInsights.internalLogging, true)
             .start();
 
     const roleName = process.env.npm_package_name;
