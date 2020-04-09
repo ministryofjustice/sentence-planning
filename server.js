@@ -1,7 +1,5 @@
 // Always load Application Insights before anything else
-const { initApplicationInsights } = require('./common/utils/appinsights')
-
-initApplicationInsights()
+const appInsights = require('applicationinsights')
 
 // Node.js core dependencies
 const { join } = require('path')
@@ -29,6 +27,7 @@ const addUserInformation = require('./common/middleware/add-user-information')
 const createCredentials = require('./common/middleware/createCredentials')
 const { mdcSetup } = require('./common/logging/logger-mdc')
 const { createMockAPI } = require('./mockServer/app')
+const { applicationInsights } = require('./common/config')
 
 // Global constants
 const { static: _static } = express
@@ -47,6 +46,29 @@ const APP_VIEWS = [
   join(__dirname, 'node_modules/@ministryofjustice/frontend/'),
   __dirname,
 ]
+
+function initialiseApplicationInsights(app) {
+  if (applicationInsights.disabled) {
+    logger.info('Application Insights disabled; disable flag set')
+    return
+  }
+
+  if (applicationInsights.instrumentationKey === '') {
+    logger.info('Applciation Insights disabled; no instrumentation key set')
+    return
+  }
+
+  appInsights
+    .setup(applicationInsights.instrumentationKey)
+    .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
+    .setInternalLogging(applicationInsights.internalLogging, true)
+    .start()
+
+  const roleName = process.env.npm_package_name
+  appInsights.defaultClient.context.tags['ai.cloud.role'] = roleName
+
+  logger.info(`Application Insights enabled with role name '${roleName}'`)
+}
 
 function initialiseGlobalMiddleware(app) {
   app.set('settings', { getVersionedPath: staticify.getVersionedPath })
@@ -175,6 +197,7 @@ function listen() {
 function initialise() {
   const app = unconfiguredApp
   app.disable('x-powered-by')
+  initialiseApplicationInsights(app)
   initialiseProxy(app)
   initialiseGlobalMiddleware(app)
   initialiseTemplateEngine(app)
