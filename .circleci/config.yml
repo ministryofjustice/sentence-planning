@@ -285,8 +285,8 @@ workflows:
             - test
       - deploy_dev:
           requires:
-            - build_docker
             - validate_helm_charts
+            - build_docker
       - request-preprod-approval:
           type: approval
           requires:
