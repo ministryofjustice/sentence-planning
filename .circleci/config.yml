@@ -26,6 +26,9 @@ commands:
     parameters:
       env:
         type: string
+      extra-helm-args:
+        type: string
+        default: ''
     steps:
       - setup
       - checkout:
@@ -43,7 +46,8 @@ commands:
               --namespace=${KUBE_ENV_NAMESPACE} \
               --values ~/git/helm_deploy/values-<< parameters.env >>.yaml \
               --values - \
-              --set image.tag="${APP_VERSION}"
+              --set image.tag="${APP_VERSION}" \
+              << parameters.extra-helm-args >>
 executors:
   deployer:
     docker:
@@ -199,6 +203,12 @@ jobs:
             export SONAR_USER_HOME="$PROJECT_BASE_DIR/.sonar"
             sonar-scanner "${args[@]}"
 
+  deploy_dry_run:
+    executor: deployer
+    steps:
+      - deploy_to_env:
+          env: 'dry_run'
+          extra-helm-args: '--dry-run --debug'
   deploy_dev:
     executor: deployer
     steps:
@@ -242,6 +252,9 @@ workflows:
             tags:
               ignore: /.*/
       - test:
+          requires:
+            - build
+      - deploy_dry_run:
           requires:
             - build
       - build_docker:
