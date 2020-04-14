@@ -40,11 +40,11 @@ describe('getOffenderDetails middleware', () => {
       })
     })
     it('should call the data service once and pass the id', () => {
-      expect(getOffenderData).toHaveBeenCalled()
+      expect(getOffenderData).toHaveBeenCalledTimes(1)
       expect(getOffenderData).toHaveBeenCalledWith(id, tokens)
     })
     it('should call the next function', () => {
-      expect(next).toHaveBeenCalled()
+      expect(next).toHaveBeenCalledTimes(1)
       expect(render).not.toHaveBeenCalled()
     })
   })
@@ -62,7 +62,7 @@ describe('getOffenderDetails middleware', () => {
       })
     })
     it('should call the next function', () => {
-      expect(next).toHaveBeenCalled()
+      expect(next).toHaveBeenCalledTimes(1)
       expect(render).not.toHaveBeenCalled()
     })
   })
