@@ -26,6 +26,9 @@ commands:
     parameters:
       env:
         type: string
+      extra-helm-args:
+        type: string
+        default: ''
     steps:
       - setup
       - checkout:
@@ -43,7 +46,23 @@ commands:
               --namespace=${KUBE_ENV_NAMESPACE} \
               --values ~/git/helm_deploy/values-<< parameters.env >>.yaml \
               --values - \
-              --set image.tag="${APP_VERSION}"
+              --set image.tag="${APP_VERSION}" \
+              << parameters.extra-helm-args >>
+  validate_helm_chart:
+    description: 'Validate a helm chart by rendering the templates locally'
+    parameters:
+      env:
+        type: string
+    steps:
+      - run:
+          name: parse << parameters.env >> template
+          command: |
+             helm template helm_deploy/sentence-planning \
+             --values helm_deploy/values-<< parameters.env >>.yaml \
+             --values helm_deploy/secrets-example.yaml > MANIFEST-<< parameters.env >>.yaml
+      - store_artifacts:
+          path: MANIFEST-<< parameters.env >>.yaml
+
 executors:
   deployer:
     docker:
@@ -116,6 +135,19 @@ jobs:
           path: test-results
       - store_artifacts:
           path: test-results/unit-test-reports.html
+
+  validate_helm_charts:
+    executor: deployer
+    steps:
+      - checkout
+      - helm/install-helm-client:
+          version: v3.0.2
+      - validate_helm_chart:
+          env: 'development'
+      - validate_helm_chart:
+          env: 'preprod'
+      - validate_helm_chart:
+          env: 'prod'
 
   build_docker:
     executor: deployer
@@ -244,6 +276,7 @@ workflows:
       - test:
           requires:
             - build
+      - validate_helm_charts
       - build_docker:
           filters:
             branches:
@@ -251,7 +284,11 @@ workflows:
           requires:
             - test
       - deploy_dev:
+          filters:
+            branches:
+              only: master
           requires:
+            - validate_helm_charts
             - build_docker
       - request-preprod-approval:
           type: approval
