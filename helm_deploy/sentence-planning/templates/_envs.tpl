@@ -23,8 +23,8 @@ env:
     valueFrom:
       secretKeyRef:
         name: {{ template "sentence-planning.name" . }}
-        key APPINSIGHTS_INSTRUMENTATIONKEY
-  
+        key: APPINSIGHTS_INSTRUMENTATIONKEY
+
   - name: NOMIS_AUTH_URL
     value: {{ .Values.env.NOMIS_AUTH_URL | quote }}
   - name: NOMIS_OAUTH_PUBLIC_KEY
