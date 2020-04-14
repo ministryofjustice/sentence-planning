@@ -6,6 +6,11 @@ const {
   },
 } = require('../config')
 
+const getOffenderData = (individualId, tokens) => {
+  const path = `${url}/offenders/oasysOffenderId/${individualId}`
+  return getData(path, tokens)
+}
+
 const createSentencePlan = (individualId, tokens) => {
   const path = `${url}/offenders/${individualId}/sentenceplans`
   return postData(path, tokens)
@@ -175,6 +180,7 @@ const logError = error => {
 }
 
 module.exports = {
+  getOffenderData,
   createSentencePlan,
   getSentencePlan,
   getOasysSentencePlan,

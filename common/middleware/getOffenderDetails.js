@@ -1,12 +1,17 @@
 const logger = require('../logging/logger')
-const offenderDetailsServices = require('../services/offenderDetails')
-const offenderAssessmentData = require('../data/offenderAssessment')
+const { getOffenderData } = require('../data/sentencePlanningApi')
 
-module.exports = async ({ params: { id } }, res, next) => {
+const capitalizeName = name => `${name.charAt().toUpperCase()}${name.slice(1).toLowerCase()}`
+
+module.exports = async ({ tokens, params: { id } }, res, next) => {
   try {
-    const offenderDetailsService = offenderDetailsServices(offenderAssessmentData)
-    res.locals.offenderDetails = await offenderDetailsService.getOffenderDetails(id)
-    logger.debug(JSON.stringify(res.locals.offenderDetails))
+    const { familyName, forename1, crn = null, nomisId: noms = null } = await getOffenderData(id, tokens)
+    if (!familyName || !forename1) throw new Error('Required offender details could not be found')
+    res.locals.offenderDetails = {
+      fullName: `${capitalizeName(forename1)} ${capitalizeName(familyName)}`,
+      crn,
+      noms,
+    }
     return next()
   } catch (error) {
     logger.error(`Could not retrieve offender details for ${id}, error: ${error}`)
