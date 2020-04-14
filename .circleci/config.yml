@@ -284,6 +284,9 @@ workflows:
           requires:
             - test
       - deploy_dev:
+          filters:
+            branches:
+              only: master
           requires:
             - validate_helm_charts
             - build_docker
