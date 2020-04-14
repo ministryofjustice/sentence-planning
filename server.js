@@ -62,6 +62,7 @@ function initialiseApplicationInsights() {
     .setup(applicationInsights.instrumentationKey)
     .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
     .setInternalLogging(applicationInsights.internalLogging, true)
+    .setAutoCollectConsole(false) // see common/logging/logger.js for app insights logging instrumentation
     .start()
 
   const roleName = process.env.npm_package_name
