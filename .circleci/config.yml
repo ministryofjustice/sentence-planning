@@ -208,7 +208,7 @@ jobs:
     steps:
       - deploy_to_env:
           env: 'development'
-          extra-helm-args: '--dry-run'
+          extra-helm-args: '--dry-run --debug'
   deploy_dev:
     executor: deployer
     steps:
