@@ -48,20 +48,6 @@ commands:
               --values - \
               --set image.tag="${APP_VERSION}" \
               << parameters.extra-helm-args >>
-  validate_helm_chart:
-    description: 'Validate a helm chart by rendering the templates locally'
-    parameters:
-      env:
-        type: string
-    steps:
-      - run:
-          name: parse << parameters.env >> template
-          command: |
-             helm template helm_deploy/sentence-planning \
-             --values helm_deploy/values-<< parameters.env >>.yaml \
-             --values helm_deploy/secrets-example.yaml > MANIFEST-<< parameters.env >>.yaml
-      - store_artifacts:
-          path: MANIFEST-<< parameters.env >>.yaml
 
 executors:
   deployer:
@@ -82,6 +68,7 @@ executors:
 
 orbs:
   aws-cli: circleci/aws-cli@0.1.18
+  dps: ministryofjustice/dps@1.2.1
   kubernetes: circleci/kubernetes@0.10.1
   helm: circleci/helm@0.2.3
   snyk: snyk/snyk@0.0.10
@@ -135,19 +122,6 @@ jobs:
           path: test-results
       - store_artifacts:
           path: test-results/unit-test-reports.html
-
-  validate_helm_charts:
-    executor: deployer
-    steps:
-      - checkout
-      - helm/install-helm-client:
-          version: v3.0.2
-      - validate_helm_chart:
-          env: 'development'
-      - validate_helm_chart:
-          env: 'preprod'
-      - validate_helm_chart:
-          env: 'prod'
 
   build_docker:
     executor: deployer
@@ -276,7 +250,10 @@ workflows:
       - test:
           requires:
             - build
-      - validate_helm_charts
+      - dps/helm_lint:
+          name: helm_lint_dev
+          env: development
+          chart_name: sentence-planning
       - build_docker:
           filters:
             branches:
@@ -288,7 +265,7 @@ workflows:
             branches:
               only: master
           requires:
-            - validate_helm_charts
+            - helm_lint_dev
             - build_docker
       - request-preprod-approval:
           type: approval
