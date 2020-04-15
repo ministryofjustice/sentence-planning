@@ -8,8 +8,8 @@ const service = (name, url) => {
       .catch(err => ({ name, status: 'ERROR', message: err }))
 }
 
-module.exports = (auth, sentencePlanning, elite2) => {
-  const checks = [service('auth', auth), service('sentencePlanning', sentencePlanning), service('elite2', elite2)]
+module.exports = (auth, sentencePlanning) => {
+  const checks = [service('auth', auth), service('sentencePlanning', sentencePlanning)]
 
   return callback =>
     Promise.all(checks.map(fn => fn())).then(checkResults => {

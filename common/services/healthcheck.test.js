@@ -36,10 +36,9 @@ describe.only('service healthcheck', () => {
       expect(typeof healthcheckService).toBe('function')
     })
     it('should call each required service', () => {
-      expect(serviceCheckFactory).toHaveBeenCalledTimes(3)
+      expect(serviceCheckFactory).toHaveBeenCalledTimes(2)
       expect(serviceCheckFactory).toHaveBeenCalledWith('auth', healthyCheck)
       expect(serviceCheckFactory).toHaveBeenCalledWith('sentencePlanning', healthyCheck)
-      expect(serviceCheckFactory).toHaveBeenCalledWith('elite2', healthyCheck)
     })
     it('should call the callback when it has completed', () => {
       expect(healthcheckServiceCallback).toHaveBeenCalled()
@@ -53,7 +52,6 @@ describe.only('service healthcheck', () => {
     it('should return a JSON result object with a details of the checks', () => {
       expect(healthcheckServiceCallback.mock.calls[0][1].checks).toEqual({
         auth: 'OK',
-        elite2: 'OK',
         sentencePlanning: 'OK',
       })
     })
@@ -93,7 +91,6 @@ describe.only('service healthcheck', () => {
     it('should return a JSON result object with a details of the checks', () => {
       expect(healthcheckServiceCallback.mock.calls[0][1].checks).toEqual({
         auth: 'OK',
-        elite2: 'OK',
         sentencePlanning: new Error(404),
       })
     })

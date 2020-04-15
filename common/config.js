@@ -36,18 +36,6 @@ module.exports = {
       apiClientId: get('API_CLIENT_ID', 'sentence-plan-api-client', true),
       apiClientSecret: get('API_CLIENT_CREDENTIALS_SECRET', 'clientsecret'),
     },
-    elite2: {
-      url: get('ELITE2API_ENDPOINT_URL', 'http://localhost:8085', true),
-      timeout: {
-        response: get('ELITE2API_ENDPOINT_TIMEOUT_RESPONSE', 10000, true),
-        deadline: get('ELITE2API_ENDPOINT_TIMEOUT_DEADLINE', 10000, true),
-      },
-      agent: {
-        maxSockets: 100,
-        maxFreeSockets: 10,
-        freeSocketTimeout: 30000,
-      },
-    },
     offenderAssessment: {
       url: get('OASYSAPI_ENDPOINT_URL', 'http://localhost:8081', true),
       timeout: {
