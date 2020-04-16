@@ -157,7 +157,6 @@ workflows:
             branches:
               only:
                 - master
-                - dps-orb 
       - dps/deploy_env:
           name: deploy_dev
           env: "development"
@@ -165,7 +164,6 @@ workflows:
             branches:
               only:
                 - master
-                - dps-orb 
           requires:
             - helm_lint
             - test
