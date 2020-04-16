@@ -1,56 +1,11 @@
 version: 2.1
-commands:
-  setup:
-    description: 'Install tools and configure kubectl'
-    steps:
-      - aws-cli/install
-      - kubernetes/install
-      - helm/install-helm-client:
-          version: v3.0.2
-      - run:
-          name: Setup kubectl
-          command: |
-            echo -n "${KUBE_ENV_CACERT}" | base64 -d > /tmp/cluster_ca.crt
-            kubectl config set-cluster "${KUBE_ENV_NAME}" \
-              --certificate-authority="/tmp/cluster_ca.crt" \
-              --server="https://api.${KUBE_ENV_NAME}"
-            kubectl config set-credentials circleci \
-              --token="${KUBE_ENV_TOKEN}"
-            kubectl config set-context circleci \
-              --cluster="${KUBE_ENV_NAME}" \
-              --user="circleci" \
-              --namespace="${KUBE_ENV_NAMESPACE}"
-            # confirm setup is ok
-            kubectl config use-context circleci
-  deploy_to_env:
-    parameters:
-      env:
-        type: string
-      extra-helm-args:
-        type: string
-        default: ''
-    steps:
-      - setup
-      - checkout:
-          path: ~/git
-      - attach_workspace:
-          at: ~/app
-      - deploy:
-          name: Deploy to << parameters.env >>
-          command: |
-            APP_VERSION=$(egrep buildNumber build-info.json  | awk -F"\"" '{print $4}')
-            sed -i "s/appVersion: \".*\"/appVersion: \"${APP_VERSION}\"/g" ~/git/helm_deploy/sentence-planning/Chart.yaml
-            aws secretsmanager --region ${AWS_DEFAULT_REGION} get-secret-value --secret-id ${KUBE_ENV_NAMESPACE} | jq -r .SecretString | \
-            helm upgrade sentence-planning ~/git/helm_deploy/sentence-planning/. \
-              --install --wait --reset-values --timeout 5m --history-max 10 \
-              --namespace=${KUBE_ENV_NAMESPACE} \
-              --values ~/git/helm_deploy/values-<< parameters.env >>.yaml \
-              --values - \
-              --set image.tag="${APP_VERSION}" \
-              << parameters.extra-helm-args >>
+
+orbs:
+  dps: ministryofjustice/dps@1.2.1
+  snyk: snyk/snyk@0.0.10
 
 executors:
-  deployer:
+  image-scan:
     docker:
       - image: circleci/python:3
     working_directory: ~/app
@@ -65,13 +20,6 @@ executors:
           SONAR_HOST_URL: https://pcs-sonarqube.apps.live-1.cloud-platform.service.justice.gov.uk/
           SONAR_PROJECT_KEY: sentence-planning
     working_directory: ~/app
-
-orbs:
-  aws-cli: circleci/aws-cli@0.1.18
-  dps: ministryofjustice/dps@1.2.1
-  kubernetes: circleci/kubernetes@0.10.1
-  helm: circleci/helm@0.2.3
-  snyk: snyk/snyk@0.0.10
 
 jobs:
   build:
@@ -97,15 +45,10 @@ jobs:
       - run:
           command: |
             npm run build
-            DATE=$(date '+%Y-%m-%d')
-            export BUILD_NUMBER=${DATE}.${CIRCLE_BUILD_NUM}
-            export GIT_REF="$CIRCLE_SHA1"
-            npm run record-build-info
       - persist_to_workspace:
           root: .
           paths:
             - node_modules
-            - build-info.json
             - assets/stylesheets
             - .cache/Cypress
 
@@ -123,36 +66,6 @@ jobs:
       - store_artifacts:
           path: test-results/unit-test-reports.html
 
-  build_docker:
-    executor: deployer
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/app
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: Build container and publish to docker hub
-          command: |
-            APP_VERSION=$(egrep buildNumber build-info.json  | awk -F"\"" '{print $4}')
-            docker build --rm=false . \
-              --build-arg BUILD_NUMBER=$APP_VERSION \
-              --build-arg GIT_REF=$CIRCLE_SHA1 \
-              --tag "mojdigitalstudio/sentence-planning:$APP_VERSION" \
-              --label "maintainer=oasys@digital.justice.gov.uk" \
-              --label "app.version=$APP_VERSION" \
-              --label "build.version=$APP_VERSION" \
-              --label "build.number=$CIRCLE_BUILD_NUM" \
-              --label "build.url=$CIRCLE_BUILD_URL" \
-              --label "build.gitref=$CIRCLE_SHA1"
-            if [[ "${CIRCLE_BRANCH}" == "master" ]]; then
-              # publish to docker hub as the tag
-             docker login -u $DOCKER_USER -p $DOCKER_PASS
-             docker tag mojdigitalstudio/sentence-planning:$APP_VERSION mojdigitalstudio/sentence-planning:latest
-             docker push mojdigitalstudio/sentence-planning:$APP_VERSION
-             docker push mojdigitalstudio/sentence-planning:latest
-            fi
-
   app-scan:
     executor: builder
     steps:
@@ -164,13 +77,13 @@ jobs:
           organization: 'digital-probation-services'
 
   image-scan:
-    executor: deployer
+    executor: image-scan
     steps:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
       - snyk/scan:
-          docker-image-name: 'mojdigitalstudio/sentence-planning:latest'
+          docker-image-name: 'quay.io/hmpps/sentence-planning:latest'
           target-file: 'Dockerfile'
           fail-on-issues: false
           monitor-on-build: true
@@ -205,22 +118,6 @@ jobs:
             export SONAR_USER_HOME="$PROJECT_BASE_DIR/.sonar"
             sonar-scanner "${args[@]}"
 
-  deploy_dev:
-    executor: deployer
-    steps:
-      - deploy_to_env:
-          env: 'development'
-  deploy_preprod:
-    executor: deployer
-    steps:
-      - deploy_to_env:
-          env: 'preprod'
-  deploy_prod:
-    executor: deployer
-    steps:
-      - deploy_to_env:
-          env: 'prod'
-
 workflows:
   version: 2
   scheduled:
@@ -251,27 +148,35 @@ workflows:
           requires:
             - build
       - dps/helm_lint:
-          name: helm_lint_dev
+          name: helm_lint
           env: development
           chart_name: sentence-planning
-      - build_docker:
+      - dps/build_docker:
+          name: build_docker
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - dps-orb 
+      - dps/deploy_env:
+          name: deploy_dev
+          env: "development"
+          filters:
+            branches:
+              only:
+                - master
+                - dps-orb 
           requires:
+            - helm_lint
             - test
-      - deploy_dev:
-          filters:
-            branches:
-              only: master
-          requires:
-            - helm_lint_dev
             - build_docker
       - request-preprod-approval:
           type: approval
           requires:
             - deploy_dev
-      - deploy_preprod:
+      - dps/deploy_env:
+          name: deploy_preprod
+          env: "preprod"
           context: sentence-planning-preprod
           requires:
             - request-preprod-approval
@@ -279,7 +184,11 @@ workflows:
           type: approval
           requires:
             - deploy_preprod
-      - deploy_prod:
+      - dps/deploy_env:
+          name: deploy_prod
+          env: "prod"
+          slack_notification: true
           context: sentence-planning-prod
           requires:
             - request-prod-approval
+
