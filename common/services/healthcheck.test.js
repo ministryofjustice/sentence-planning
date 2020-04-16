@@ -9,8 +9,8 @@ jest.mock('../data/healthcheck', () => ({
 }))
 
 describe.only('service healthcheck', () => {
-  const healthyCheck = {name: 'healthyCheck', config: { url: 'healthy' }}
-  const unhealthyCheck = {name: 'unhealthyCheck', config: { url: 'unhealthy' }}
+  const healthyCheck = { name: 'healthyCheck', config: { url: 'healthy' } }
+  const unhealthyCheck = { name: 'unhealthyCheck', config: { url: 'unhealthy' } }
   let healthcheckService
   let healthcheckServiceCallback
 
@@ -37,7 +37,7 @@ describe.only('service healthcheck', () => {
     })
     it('should call each required service', () => {
       expect(serviceCheckFactory).toHaveBeenCalledTimes(4)
-      expect(serviceCheckFactory).toHaveBeenCalledWith('healthyCheck', {url: 'healthy'})
+      expect(serviceCheckFactory).toHaveBeenCalledWith('healthyCheck', { url: 'healthy' })
     })
     it('should call the callback when it has completed', () => {
       expect(healthcheckServiceCallback).toHaveBeenCalled()
