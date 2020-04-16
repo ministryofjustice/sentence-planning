@@ -20,33 +20,6 @@ function get(name, fallback, options = {}) {
 
 module.exports = {
   apis: {
-    oauth2: {
-      url: get('NOMIS_AUTH_URL', 'http://oauth:9090/auth', true),
-      externalUrl: get('NOMIS_AUTH_EXTERNAL_URL', get('NOMIS_AUTH_URL', 'http://oauth:9090/auth'), true),
-      timeout: {
-        response: get('AUTH_ENDPOINT_TIMEOUT_RESPONSE', 10000, true),
-        deadline: get('AUTH_ENDPOINT_TIMEOUT_DEADLINE', 10000, true),
-      },
-      agent: {
-        maxSockets: 100,
-        maxFreeSockets: 10,
-        freeSocketTimeout: 30000,
-      },
-      apiClientId: get('API_CLIENT_ID', 'sentence-plan-api-client', true),
-      apiClientSecret: get('API_CLIENT_CREDENTIALS_SECRET', 'clientsecret'),
-    },
-    offenderAssessment: {
-      url: get('OASYSAPI_ENDPOINT_URL', 'http://localhost:8081', true),
-      timeout: {
-        response: get('OASYSAPI_ENDPOINT_TIMEOUT_RESPONSE', 30000, true),
-        deadline: get('OASYSAPI_ENDPOINT_TIMEOUT_DEADLINE', 35000, true),
-      },
-      agent: {
-        maxSockets: 100,
-        maxFreeSockets: 10,
-        freeSocketTimeout: 30000,
-      },
-    },
     sentencePlanning: {
       url: get('SENTENCEPLANNINGAPI_ENDPOINT_URL', 'http://localhost:8080', true),
       timeout: {

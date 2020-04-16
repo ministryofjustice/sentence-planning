@@ -9,7 +9,7 @@ const service = (name, config) => {
 }
 
 module.exports = (...services) => {
-  const checks = services.map(s => service(s.name, s.config))
+  const checks = services.map(({ name, config }) => service(name, config))
 
   return callback =>
     Promise.all(checks.map(fn => fn())).then(checkResults => {
