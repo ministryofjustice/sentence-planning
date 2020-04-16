@@ -7,7 +7,7 @@ maxSurge: 100%
 maxUnavailable: 50%
 
 image:
-  repository: docker.io/mojdigitalstudio/sentence-planning
+  repository: quay.io/hmpps/sentence-planning
   tag: latest
   pullPolicy: Always
 
