@@ -77,7 +77,10 @@ const { getObjectiveView } = require('./objectiveView/get.controller')
 // Export
 module.exports = app => {
   app.get('/health', (req, res, next) => {
-    const healthService = healthCheckFactory(offenderAssessment, sentencePlanning)
+    const healthService = healthCheckFactory(
+      {name: 'offenderAssessment', config: offenderAssessment},
+      {name: 'sentencePlanning', config: sentencePlanning},
+    )
     healthService((err, result) => {
       if (err) {
         return next(err)

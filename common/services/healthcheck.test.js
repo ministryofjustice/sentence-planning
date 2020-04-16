@@ -9,8 +9,8 @@ jest.mock('../data/healthcheck', () => ({
 }))
 
 describe.only('service healthcheck', () => {
-  const healthyCheck = { url: 'healthy' }
-  const unhealthyCheck = { url: 'unhealthy' }
+  const healthyCheck = {name: 'healthyCheck', config: { url: 'healthy' }}
+  const unhealthyCheck = {name: 'unhealthyCheck', config: { url: 'unhealthy' }}
   let healthcheckService
   let healthcheckServiceCallback
 
@@ -36,9 +36,8 @@ describe.only('service healthcheck', () => {
       expect(typeof healthcheckService).toBe('function')
     })
     it('should call each required service', () => {
-      expect(serviceCheckFactory).toHaveBeenCalledTimes(2)
-      expect(serviceCheckFactory).toHaveBeenCalledWith('auth', healthyCheck)
-      expect(serviceCheckFactory).toHaveBeenCalledWith('sentencePlanning', healthyCheck)
+      expect(serviceCheckFactory).toHaveBeenCalledTimes(4)
+      expect(serviceCheckFactory).toHaveBeenCalledWith('healthyCheck', {url: 'healthy'})
     })
     it('should call the callback when it has completed', () => {
       expect(healthcheckServiceCallback).toHaveBeenCalled()
@@ -51,8 +50,7 @@ describe.only('service healthcheck', () => {
     })
     it('should return a JSON result object with a details of the checks', () => {
       expect(healthcheckServiceCallback.mock.calls[0][1].checks).toEqual({
-        auth: 'OK',
-        sentencePlanning: 'OK',
+        healthyCheck: 'OK',
       })
     })
     it('should return a JSON result object reportng uptime', () => {
@@ -90,8 +88,8 @@ describe.only('service healthcheck', () => {
     })
     it('should return a JSON result object with a details of the checks', () => {
       expect(healthcheckServiceCallback.mock.calls[0][1].checks).toEqual({
-        auth: 'OK',
-        sentencePlanning: new Error(404),
+        healthyCheck: 'OK',
+        unhealthyCheck: new Error(404),
       })
     })
   })

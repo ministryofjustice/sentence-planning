@@ -19,7 +19,6 @@ function get(name, fallback, options = {}) {
 }
 
 module.exports = {
-  sessionSecret: get('SESSION_SECRET', 'app-insecure-default-session', { requireInProduction: true }),
   apis: {
     oauth2: {
       url: get('NOMIS_AUTH_URL', 'http://oauth:9090/auth', true),
