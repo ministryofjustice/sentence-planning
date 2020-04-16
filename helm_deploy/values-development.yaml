@@ -26,6 +26,7 @@ ingress:
   cert_secret: sentence-planning-cert
 
 env:
+  SENTENCEPLANNING_API_URL: http://sentence-planning-api.sentence-planning-development.svc.cluster.local
   KEYCLOAK_REALM: https://development.oasys-auth.service.justice.gov.uk/auth/realms/sentence-planning
   KEYCLOAK_UPSTREAM_URL: http://127.0.0.1:3000
   KEYCLOAK_REDIRECTION_URL: https://development.sentence-planning.service.justice.gov.uk
