@@ -18,6 +18,7 @@ describe('data service healthcheck', () => {
   })
 
   afterEach(() => {
+    nock.abortPendingRequests()
     nock.cleanAll()
   })
 
