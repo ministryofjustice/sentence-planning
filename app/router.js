@@ -5,7 +5,7 @@ const { getObjectiveData } = require('../common/middleware/getObjectiveData')
 const { getActionData } = require('../common/middleware/getActionData')
 const { getActionTimelineData, getObjectiveTimelineData } = require('../common/middleware/getTimelineData')
 const {
-  apis: { oauth2, offenderAssessment, sentencePlanning, elite2 },
+  apis: { sentencePlanning },
 } = require('../common/config')
 
 const uuid = '[0-9a-f-]{1,}'
@@ -77,7 +77,7 @@ const { getObjectiveView } = require('./objectiveView/get.controller')
 // Export
 module.exports = app => {
   app.get('/health', (req, res, next) => {
-    const healthService = healthCheckFactory(oauth2, offenderAssessment, sentencePlanning, elite2)
+    const healthService = healthCheckFactory({ name: 'sentencePlanning', config: sentencePlanning })
     healthService((err, result) => {
       if (err) {
         return next(err)
