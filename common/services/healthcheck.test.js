@@ -14,6 +14,10 @@ describe.only('service healthcheck', () => {
   let healthcheckService
   let healthcheckServiceCallback
 
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
   describe('with healthy dependencies', () => {
     beforeEach(done => {
       serviceCheckFactory.mockReset()
@@ -32,9 +36,8 @@ describe.only('service healthcheck', () => {
       expect(typeof healthcheckService).toBe('function')
     })
     it('should call each required service', () => {
-      expect(serviceCheckFactory).toHaveBeenCalledTimes(4)
+      expect(serviceCheckFactory).toHaveBeenCalledTimes(3)
       expect(serviceCheckFactory).toHaveBeenCalledWith('auth', healthyCheck)
-      expect(serviceCheckFactory).toHaveBeenCalledWith('offenderAssessment', healthyCheck)
       expect(serviceCheckFactory).toHaveBeenCalledWith('sentencePlanning', healthyCheck)
       expect(serviceCheckFactory).toHaveBeenCalledWith('elite2', healthyCheck)
     })
@@ -51,7 +54,6 @@ describe.only('service healthcheck', () => {
       expect(healthcheckServiceCallback.mock.calls[0][1].checks).toEqual({
         auth: 'OK',
         elite2: 'OK',
-        offenderAssessment: 'OK',
         sentencePlanning: 'OK',
       })
     })
@@ -76,7 +78,7 @@ describe.only('service healthcheck', () => {
           return new Promise((resolve, reject) => (url === 'unhealthy' ? reject(new Error(404)) : resolve('OK')))
         }
       })
-      healthcheckService = healthcheck(healthyCheck, unhealthyCheck, healthyCheck, healthyCheck)
+      healthcheckService = healthcheck(healthyCheck, unhealthyCheck, healthyCheck)
       healthcheckServiceCallback = jest.fn((err, result) => {
         done()
       })
@@ -92,8 +94,7 @@ describe.only('service healthcheck', () => {
       expect(healthcheckServiceCallback.mock.calls[0][1].checks).toEqual({
         auth: 'OK',
         elite2: 'OK',
-        offenderAssessment: new Error(404),
-        sentencePlanning: 'OK',
+        sentencePlanning: new Error(404),
       })
     })
   })

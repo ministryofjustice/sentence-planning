@@ -14,6 +14,7 @@ const {
   },
 } = require('../config')
 const {
+  getOffenderData,
   getSentencePlanSummary,
   getSentencePlan,
   getOasysSentencePlan,
@@ -48,6 +49,26 @@ describe('sentencePlanningApi', () => {
   let mockedEndpoint
   const tokens = { authorisationToken: 'mytoken' }
   const id = '123458'
+
+  describe('getOffenderData', () => {
+    const offenderAssessmentUrl = `/offenders/oasysOffenderId/${id}`
+    it('should return offender details from api', async () => {
+      const offenderData = {
+        oasysOffenderId: 11032,
+        familyName: 'Shakey',
+        forename1: 'Bernard',
+        crn: 'S000001',
+        nomisId: 'A0000AB',
+      }
+      mockedEndpoint.get(offenderAssessmentUrl).reply(200, offenderData)
+      const output = await getOffenderData(id, tokens)
+      expect(output).toEqual(offenderData)
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.get(offenderAssessmentUrl).reply(400)
+      await expect(getOffenderData(id, tokens)).rejects.toThrowError('Bad Request')
+    })
+  })
 
   describe('getSentencePlanSummary', () => {
     const sentencePlansUrl = `/offenders/${id}/sentenceplans`
