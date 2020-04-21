@@ -18,6 +18,7 @@ describe('getOffenderDetails middleware', () => {
       crn: 'S000001',
       nomisId: 'A0000AB',
       unnecessary: 'values',
+      riskToOthers: 'H',
     }
     req = { tokens, params: { id } }
     res = { render, locals: {} }
@@ -37,6 +38,7 @@ describe('getOffenderDetails middleware', () => {
         fullName: 'Bernard Shakey',
         crn: 'S000001',
         noms: 'A0000AB',
+        riskLevel: 'High',
       })
     })
     it('should call the data service once and pass the id', () => {
@@ -59,6 +61,7 @@ describe('getOffenderDetails middleware', () => {
         fullName: 'Bernard Shakey',
         crn: 'S000002',
         noms: null,
+        riskLevel: 'High',
       })
     })
     it('should call the next function', () => {

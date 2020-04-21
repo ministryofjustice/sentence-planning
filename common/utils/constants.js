@@ -50,6 +50,12 @@ const PLAN_TYPES = {
   NONE: 'none',
 }
 
+const RISK = {
+  L: 'Low',
+  M: 'Medium',
+  H: 'High',
+}
+
 module.exports = Object.freeze({
   COMMENT_TYPES,
   ACTION_STATUS_TYPES,
@@ -59,4 +65,5 @@ module.exports = Object.freeze({
   UUID_REGEX,
   OBJECTIVE_TYPES,
   PLAN_TYPES,
+  RISK,
 })
