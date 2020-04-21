@@ -1,0 +1,40 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% set listRows = [] %}
+{% for listItem in list %}
+  {% set moveUpAttributes = { hidden: true } if loop.first else {} %}
+  {% set moveDownAttributes = { hidden: true } if loop.last else {} %}
+  {% set id = listItem.id %}
+  {% set html = '<label for="'+id+'" hidden>Priority</label><input id="'+id+'" name="'+id+'" class="reorder-priority" type="number" value='+(loop.index)+' hidden>' %}
+  {% set listRows = (
+    listRows.push({
+      key: {
+        text: listItem.text
+      },
+      value: {
+        html: html,
+        classes: 'widthZero'
+      },
+      actions: {
+        items: [
+          {
+            href: '#',
+            text: 'Move Up',
+            classes: 'reorder-up',
+            attributes: moveUpAttributes
+          },
+          {
+            href: '#',
+            text: 'Move Down',
+            classes: 'reorder-down',
+            attributes: moveDownAttributes
+          }
+        ]
+      }
+    }), listRows) %}
+{% endfor %}
+
+{{ govukSummaryList({
+  classes: classes,
+  rows: listRows
+}) }}

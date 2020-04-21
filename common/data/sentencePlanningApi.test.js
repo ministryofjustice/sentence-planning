@@ -37,6 +37,7 @@ const {
   startSentencePlan,
   endSentencePlan,
   updateSentencePlanObjectiveClose,
+  setActionPriorities,
 } = require('./sentencePlanningApi')
 
 describe('sentencePlanningApi', () => {
@@ -448,6 +449,32 @@ describe('sentencePlanningApi', () => {
       await expect(updateSentencePlanObjectiveClose(planId, objectiveId, data, tokens)).rejects.toThrowError(
         'Bad Request'
       )
+    })
+  })
+
+  describe('setActionPriorities', () => {
+    const planId = '1'
+    const objectiveId = '2'
+    const setActionPrioritiesUrl = `/sentenceplans/${planId}/objectives/${objectiveId}/actions/priority`
+    const data = [
+      {
+        actionUUID: '11111111-1111-1111-1111-111111111111',
+        priority: 1,
+      },
+      {
+        actionUUID: '22222222-2222-2222-2222-222222222222',
+        priority: 2,
+      },
+    ]
+
+    it('should set the action priorities', async () => {
+      mockedEndpoint.post(setActionPrioritiesUrl).reply(200, {})
+      const output = await setActionPriorities(planId, objectiveId, data, tokens)
+      expect(output).toEqual({})
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.post(setActionPrioritiesUrl).reply(400)
+      await expect(setActionPriorities(planId, objectiveId, data, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 })

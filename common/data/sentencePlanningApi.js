@@ -118,6 +118,11 @@ const endSentencePlan = (sentencePlanId, tokens) => {
   return postData(path, tokens)
 }
 
+const setActionPriorities = (sentencePlanId, objectiveId, priorityData, tokens) => {
+  const path = `${url}/sentenceplans/${sentencePlanId}/objectives/${objectiveId}/actions/priority`
+  return postData(path, tokens, priorityData)
+}
+
 const getData = async (path, { authorisationToken }) => {
   if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
@@ -203,4 +208,5 @@ module.exports = {
   startSentencePlan,
   endSentencePlan,
   updateSentencePlanObjectiveClose,
+  setActionPriorities,
 }
