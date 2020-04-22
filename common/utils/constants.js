@@ -54,6 +54,9 @@ const RISK = {
   L: 'Low',
   M: 'Medium',
   H: 'High',
+  V: 'Very high',
+  NC: 'Not Calculated',
+  N: 'None',
 }
 
 module.exports = Object.freeze({
