@@ -10,14 +10,14 @@ const validationRules = () => {
     body()
       // Check that all the priority index values are integers
       .custom(value =>
-        getActionRowKeys(value).reduce((soFar, element) => soFar && Number.isInteger(Number(value[element])), false)
+        getActionRowKeys(value).reduce((soFar, element) => soFar && Number.isInteger(Number(value[element])), true)
       )
       .withMessage('Priority values should all be integers')
       // Check all the priority index values are unique
       .custom(value =>
         getActionRowKeys(value)
           .map(element => Number(value[element]))
-          .reduce((soFar, element, index, src) => soFar && src.lastIndexOf(element) === index, false)
+          .reduce((soFar, element, index, src) => soFar && src.lastIndexOf(element) === index, true)
       )
       .withMessage('Priority values are not unique'),
   ]
