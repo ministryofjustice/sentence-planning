@@ -22,10 +22,10 @@ const { mojDate } = require('./node_modules/@ministryofjustice/frontend/moj/filt
 const logger = require('./common/logging/logger')
 const router = require('./app/router')
 const noCache = require('./common/utils/no-cache')
-const correlationHeader = require('./common/middleware/correlation-header')
 const addUserInformation = require('./common/middleware/add-user-information')
-const createCredentials = require('./common/middleware/createCredentials')
 const { mdcSetup } = require('./common/logging/logger-mdc')
+const createCredentials = require('./common/middleware/createCredentials')
+const { updateCorrelationId } = require('./common/middleware/updateCorrelationId')
 const { createMockAPI } = require('./mockServer/app')
 const { applicationInsights } = require('./common/config')
 
@@ -54,7 +54,7 @@ function initialiseApplicationInsights() {
   }
 
   if (applicationInsights.instrumentationKey === '') {
-    logger.info('Applciation Insights disabled; no instrumentation key set')
+    logger.info('Application Insights disabled; no instrumentation key set')
     return
   }
 
@@ -125,13 +125,12 @@ function initialiseGlobalMiddleware(app) {
     createMockAPI()
   }
 
-  app.use(allGateKeeperPages, correlationHeader)
-  // app.use(allGateKeeperPages, keycloakHeader)
   app.use(allGateKeeperPages, addUserInformation)
   app.use(allGateKeeperPages, createCredentials)
 
   // must be after session since we need session
   app.use(mdcSetup)
+  app.use(updateCorrelationId)
 }
 
 function initialiseProxy(app) {

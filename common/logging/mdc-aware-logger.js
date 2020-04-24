@@ -1,5 +1,6 @@
 const _ = require('lodash')
-const { getNamespace } = require('continuation-local-storage')
+const { getNamespace } = require('cls-hooked')
+const { clsNamespace } = require('../config')
 
 module.exports = class {
   constructor(logger, MDC) {
@@ -37,7 +38,7 @@ module.exports = class {
 
   // eslint-disable-next-line class-methods-use-this
   withMDC(meta) {
-    const mdcNamespace = getNamespace('uk.gov.justice.digital.sentence-planning.mdc')
+    const mdcNamespace = getNamespace(clsNamespace)
     if (!mdcNamespace) {
       return meta
     }

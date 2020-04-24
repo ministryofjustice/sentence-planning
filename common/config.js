@@ -77,6 +77,7 @@ module.exports = {
   https: production,
   loggingLevel: get('LOGGING_LEVEL', 'info'),
   correlationHeader: get('CORRELATION_HEADER_NAME', 'x-request-id'),
+  clsNamespace: get('CLS_NAMESPACE', 'uk.gov.digital.hmpps.sentence-planning'),
   applicationInsights: {
     instrumentationKey: get('APPINSIGHTS_INSTRUMENTATIONKEY', ''),
     disabled: get('APPINSIGHTS_DISABLE', false, { parser: bool }),

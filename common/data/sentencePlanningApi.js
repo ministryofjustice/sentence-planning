@@ -1,5 +1,6 @@
 const superagent = require('superagent')
 const logger = require('../logging/logger')
+const { getCorrelationId } = require('../utils/util')
 const {
   apis: {
     sentencePlanning: { timeout, url },
@@ -117,11 +118,12 @@ const getData = async (path, { authorisationToken }) => {
   if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
   }
-  logger.info(`Calling SentencePlanningApi: ${path}`)
+  logger.info(`Calling SentencePlanningApi with GET: ${path}`)
   try {
     return await superagent
       .get(path)
       .auth(authorisationToken, { type: 'bearer' })
+      .set('x-correlation-id', getCorrelationId())
       .timeout(timeout)
       .then(response => {
         return response.body
@@ -134,12 +136,13 @@ const postData = async (path, { authorisationToken }, data) => {
   if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
   }
-  logger.info(`Calling SentencePlanningApi: ${path}`)
+  logger.info(`Calling SentencePlanningApi with POST: ${path}`)
   try {
     return await superagent
       .post(path)
       .send(data)
       .auth(authorisationToken, { type: 'bearer' })
+      .set('x-correlation-id', getCorrelationId())
       .timeout(timeout)
       .then(response => {
         return response.body
@@ -153,12 +156,13 @@ const putData = async (path, { authorisationToken }, data) => {
   if (authorisationToken === undefined) {
     return logError(`No authorisation token found when calling SentencePlanningApi: ${path}`)
   }
-  logger.info(`Calling SentencePlanningApi: ${path}`)
+  logger.info(`Calling SentencePlanningApi with PUT: ${path}`)
   try {
     return await superagent
       .put(path)
       .send(data)
       .auth(authorisationToken, { type: 'bearer' })
+      .set('x-correlation-id', getCorrelationId())
       .timeout(timeout)
       .then(response => {
         return response.body

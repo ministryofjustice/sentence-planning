@@ -14,7 +14,8 @@ const getFile = (directory, file, res) => {
 
 function createMockAPI() {
   app.use('*', (req, res, next) => {
-    logger.info(`MockAPI received for ${req.originalUrl}`)
+    logger.info(`MockAPI ${req.method} received for ${req.originalUrl}`)
+    logger.info(req.headers)
     next()
   })
   app.use(express.json())

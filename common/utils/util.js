@@ -1,4 +1,6 @@
-const { logger } = require('../logging/logger')
+const cls = require('cls-hooked')
+const logger = require('../logging/logger')
+const { clsNamespace } = require('../config')
 const {
   ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, ABANDONED },
   STATUS_LIST,
@@ -126,6 +128,16 @@ const getActionText = ({ description = '', intervention }, interventionList) =>
     ? interventionList.find(({ uuid }) => uuid === intervention).shortDescription
     : description
 
+const getCorrelationId = () => {
+  const { correlationId = '' } = cls.getNamespace(clsNamespace)
+  return correlationId
+}
+
+const updateMDC = (mdcNamespace, mdc) => {
+  const thisNamespace = cls.getNamespace(mdcNamespace)
+  thisNamespace.set('MDC', mdc)
+}
+
 module.exports = {
   formatObjectiveActionsForPrintDisplay,
   getObjectiveType,
@@ -141,4 +153,6 @@ module.exports = {
   isValidDate,
   catchAndReThrowError,
   getActionText,
+  getCorrelationId,
+  updateMDC,
 }
