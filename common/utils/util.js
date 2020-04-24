@@ -1,5 +1,5 @@
 const cls = require('cls-hooked')
-const logger = require('../logging/logger')
+const { logger } = require('../logging/logger')
 const { clsNamespace } = require('../config')
 const {
   ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, ABANDONED },
