@@ -26,26 +26,22 @@ ingress:
   cert_secret: sentence-planning-cert
 
 env:
-  NOMIS_AUTH_URL: https://gateway.t3.nomis-api.hmpps.dsd.io/auth
-  NOMIS_OAUTH_PUBLIC_KEY: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0NCk1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0NBUUVBemN4N1lidzJCQVd2N1NzRUlVR1ANCml5SlNJRGd0cUJ4MTlUd203dUkzVFg1elJjclpsVXhjRW1QSkdVZ3krRDJKSWhWbHFtZXF3R1YyQ05PcVpCZ0cNCmo4ZUpHQTU5aUlUemU4ZG1SSk5JYzdsNmxESmc5RE5KVk9pTHFVbFpGRENJcXplSTYzb3E2dWhjY2c1RFBpVE4NCnFPR1pjOHVwTit3NWRack52KzJHTGd4SzJwZXRNVS9CaFllV2YzS3ZZSU8xNnYxdXZuRk9HTzEzSG9XdTVCdGQNClN0L1RnY2xGaFZMRWRHdzdYYmlZSG5OWklkaHdhTlFpWWdtWG1qWlZkTXlDUERNbzEwTGtWMXAzVXkxNXBNTXgNClVwc2xKYU8wNlZIYXJtY3ZWYzNleHg5NlpHTjE2T2U4ZWZoeG5Rdmhzd0ZrbXlYT25sSForNDI1MnJHcHlKTG8NCmx3SURBUUFCDQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0=
-  ELITE2_API_URL: https://gateway.t3.nomis-api.hmpps.dsd.io/elite2api
-  OASYSAPI_ENDPOINT_URL: https://dev.devtest.assessment-api.hmpps.dsd.io
   SENTENCEPLANNING_API_URL: http://sentence-planning-api.sentence-planning-development.svc.cluster.local
   KEYCLOAK_REALM: https://development.oasys-auth.service.justice.gov.uk/auth/realms/sentence-planning
   KEYCLOAK_UPSTREAM_URL: http://127.0.0.1:3000
   KEYCLOAK_REDIRECTION_URL: https://development.sentence-planning.service.justice.gov.uk
 
 whitelist:
-  office: '217.33.148.210/32'
-  health-kick: '35.177.252.195/32'
-  mojvpn: '81.134.202.29/32'
-  quantum: '62.25.109.197/32'
-  quantum_alt: '212.137.36.230/32'
-  digitalprisons1: '52.56.112.98/32'
-  digitalprisons2: '52.56.118.154/32'
-  j5-phones-1: '35.177.125.252/32'
-  j5-phones-2: '35.177.137.160/32'
-  dxc-mitcheldean: 195.92.38.16/28
+  office: "217.33.148.210/32"
+  health-kick: "35.177.252.195/32"
+  mojvpn: "81.134.202.29/32"
+  quantum: "62.25.109.197/32"
+  quantum_alt: "212.137.36.230/32"
+  digitalprisons1: "52.56.112.98/32"
+  digitalprisons2: "52.56.118.154/32"
+  j5-phones-1: "35.177.125.252/32"
+  j5-phones-2: "35.177.137.160/32"
+  dxc-mitcheldean: "195.92.38.16/28"
   ark-dom1-ttp1: "195.59.75.0/24"
   ark-dom1-farnborough: "194.33.192.0/24"
   ark-dom1-farnborough-psn: "51.247.3.0/24"
@@ -56,4 +52,4 @@ whitelist:
   cloudplatform-live1-1: "35.178.209.113/32"
   cloudplatform-live1-2: "3.8.51.207/32"
   cloudplatform-live1-3: "35.177.252.54/32"
-  
+

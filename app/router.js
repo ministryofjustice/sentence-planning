@@ -5,7 +5,7 @@ const { getObjectiveData } = require('../common/middleware/getObjectiveData')
 const { getActionData } = require('../common/middleware/getActionData')
 const { getActionTimelineData, getObjectiveTimelineData } = require('../common/middleware/getTimelineData')
 const {
-  apis: { oauth2, offenderAssessment, sentencePlanning, elite2 },
+  apis: { sentencePlanning },
 } = require('../common/config')
 
 const uuid = '[0-9a-f-]{1,}'
@@ -20,6 +20,7 @@ const activePlanNewObjectiveRoute = `${activePlanRoute}/edit-objective/:objectiv
 const activePlanNewActionRoute = `${activePlanObjectiveRoute}/edit-action/:actionId(NEW)`
 const activePlanUpdateActionRoute = `${activePlanObjectiveRoute}/update-action/:actionId(${uuid})`
 const activePlanCloseObjectiveRoute = `${activePlanObjectiveRoute}/close`
+const activePlanReorderActionRoute = `${activePlanObjectiveRoute}/reorder`
 const activePlanDisplayMeetingRoute = `${activePlanRoute}/view-sentence-plan-meeting/:meetingId(${uuid})`
 const activePlanAddMeetingRoute = `${activePlanRoute}/add-sentence-plan-meeting`
 
@@ -72,12 +73,15 @@ const { printLegacySentencePlan } = require('./printing/printLegacy/get.controll
 const { getActionUpdate } = require('./actionUpdate/get.controller')
 const { postActionUpdate, actionUpdateValidationRules } = require('./actionUpdate/post.controller')
 
+const { getActionReorder } = require('./actionReorder/get.controller')
+const { postActionReorder, actionReorderValidationRules } = require('./actionReorder/post.controller')
+
 const { getObjectiveView } = require('./objectiveView/get.controller')
 
 // Export
 module.exports = app => {
   app.get('/health', (req, res, next) => {
-    const healthService = healthCheckFactory(oauth2, offenderAssessment, sentencePlanning, elite2)
+    const healthService = healthCheckFactory({ name: 'sentencePlanning', config: sentencePlanning })
     healthService((err, result) => {
       if (err) {
         return next(err)
@@ -119,6 +123,10 @@ module.exports = app => {
   app.get(activePlanCloseObjectiveRoute, getObjectiveData, getCloseObjective)
   app.post(activePlanCloseObjectiveRoute, closeObjectiveValidationRules(), validate, postCloseObjective)
   app.get(activePlanObjectiveRoute, getObjectiveData, getObjectiveTimelineData, getObjectiveView)
+
+  // action reorder
+  app.get(activePlanReorderActionRoute, getObjectiveData, getActionReorder)
+  app.post(activePlanReorderActionRoute, actionReorderValidationRules(), validate, postActionReorder)
 
   // actions
   app.get([editActionRoute, activePlanNewActionRoute], getAction)

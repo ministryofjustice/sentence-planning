@@ -41,24 +41,27 @@ const getObjectiveData = async (req, res, next) => {
           catchAndReThrowError(`Could not retrieve objective ${objectiveId} for sentence plan ${planId}`, error)
         )
       : []
-    displayObjective.actions = objective.actions.map(action => {
-      const { id, motivationUUID, owner, ownerOther, targetDate, status, progress } = action
-      const { monthName, year } = getYearMonthFromDate(targetDate)
-      const ownerText = owner
-        .map(ownerType => RESPONSIBLE_LIST.find(({ value }) => value === ownerType).text)
-        .join(', ')
+    displayObjective.actions = objective.actions
+      .map(action => {
+        const { id, motivationUUID, owner, ownerOther, targetDate, status, progress, priority } = action
+        const { monthName, year } = getYearMonthFromDate(targetDate)
+        const ownerText = owner
+          .map(ownerType => RESPONSIBLE_LIST.find(({ value }) => value === ownerType).text)
+          .join(', ')
 
-      const ownerOtherText = ownerOther ? `: ${ownerOther}` : ''
-      return {
-        id,
-        actionText: getActionText(action, interventionList),
-        motivation: motivationList.find(({ value }) => value === motivationUUID).text,
-        targetDate: `${monthName} ${year}`,
-        owner: `${ownerText}${ownerOtherText}`,
-        status: getStatusText(status),
-        progress,
-      }
-    })
+        const ownerOtherText = ownerOther ? `: ${ownerOther}` : ''
+        return {
+          id,
+          actionText: getActionText(action, interventionList),
+          motivation: motivationList.find(({ value }) => value === motivationUUID).text,
+          targetDate: `${monthName} ${year}`,
+          owner: `${ownerText}${ownerOtherText}`,
+          status: getStatusText(status),
+          progress,
+          priority,
+        }
+      })
+      .sort(({ priority: priority1 }, { priority: priority2 }) => (priority1 > priority2 ? 1 : -1))
     Object.assign(renderInfo, { errors, errorSummary, objective: displayObjective })
     Object.assign(req, { objective, motivationList, interventionList, renderInfo })
     return next()

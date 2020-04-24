@@ -31,6 +31,18 @@ Run the requried backend services using the supplied docker-compose config. Befo
 127.0.0.1 oauth
 ```
 
+### Validating the helm templates
+
+You can validate the helm configuration and template rendering locally using the helm CLI tool:
+
+```bash
+brew install helm
+helm template helm_deploy/sentence-planning --values helm_deploy/values-development.yaml \
+                                            --values helm_deploy/secrets-example.yaml
+```
+
+The output of the above command is the full manifest file for the 'development' context (with the secret keys stubbed using the values in `secrets-example.yaml`).
+
 ### Using nvm (optional)
 If you work across multiple Node.js projects there's a good chance they require different Node.js and npm versions.
 

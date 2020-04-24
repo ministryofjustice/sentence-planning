@@ -9,10 +9,14 @@ jest.mock('../data/healthcheck', () => ({
 }))
 
 describe.only('service healthcheck', () => {
-  const healthyCheck = { url: 'healthy' }
-  const unhealthyCheck = { url: 'unhealthy' }
+  const healthyCheck = { name: 'healthyCheck', config: { url: 'healthy' } }
+  const unhealthyCheck = { name: 'unhealthyCheck', config: { url: 'unhealthy' } }
   let healthcheckService
   let healthcheckServiceCallback
+
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
 
   describe('with healthy dependencies', () => {
     beforeEach(done => {
@@ -33,10 +37,7 @@ describe.only('service healthcheck', () => {
     })
     it('should call each required service', () => {
       expect(serviceCheckFactory).toHaveBeenCalledTimes(4)
-      expect(serviceCheckFactory).toHaveBeenCalledWith('auth', healthyCheck)
-      expect(serviceCheckFactory).toHaveBeenCalledWith('offenderAssessment', healthyCheck)
-      expect(serviceCheckFactory).toHaveBeenCalledWith('sentencePlanning', healthyCheck)
-      expect(serviceCheckFactory).toHaveBeenCalledWith('elite2', healthyCheck)
+      expect(serviceCheckFactory).toHaveBeenCalledWith('healthyCheck', { url: 'healthy' })
     })
     it('should call the callback when it has completed', () => {
       expect(healthcheckServiceCallback).toHaveBeenCalled()
@@ -49,10 +50,7 @@ describe.only('service healthcheck', () => {
     })
     it('should return a JSON result object with a details of the checks', () => {
       expect(healthcheckServiceCallback.mock.calls[0][1].checks).toEqual({
-        auth: 'OK',
-        elite2: 'OK',
-        offenderAssessment: 'OK',
-        sentencePlanning: 'OK',
+        healthyCheck: 'OK',
       })
     })
     it('should return a JSON result object reportng uptime', () => {
@@ -76,7 +74,7 @@ describe.only('service healthcheck', () => {
           return new Promise((resolve, reject) => (url === 'unhealthy' ? reject(new Error(404)) : resolve('OK')))
         }
       })
-      healthcheckService = healthcheck(healthyCheck, unhealthyCheck, healthyCheck, healthyCheck)
+      healthcheckService = healthcheck(healthyCheck, unhealthyCheck, healthyCheck)
       healthcheckServiceCallback = jest.fn((err, result) => {
         done()
       })
@@ -90,10 +88,8 @@ describe.only('service healthcheck', () => {
     })
     it('should return a JSON result object with a details of the checks', () => {
       expect(healthcheckServiceCallback.mock.calls[0][1].checks).toEqual({
-        auth: 'OK',
-        elite2: 'OK',
-        offenderAssessment: new Error(404),
-        sentencePlanning: 'OK',
+        healthyCheck: 'OK',
+        unhealthyCheck: new Error(404),
       })
     })
   })

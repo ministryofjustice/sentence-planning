@@ -1,20 +1,15 @@
 const { serviceCheckFactory } = require('../data/healthcheck')
 
-const service = (name, url) => {
-  const check = serviceCheckFactory(name, url)
+const service = (name, config) => {
+  const check = serviceCheckFactory(name, config)
   return () =>
     check()
       .then(result => ({ name, status: 'ok', message: result }))
       .catch(err => ({ name, status: 'ERROR', message: err }))
 }
 
-module.exports = (auth, offenderAssessment, sentencePlanning, elite2) => {
-  const checks = [
-    service('auth', auth),
-    service('offenderAssessment', offenderAssessment),
-    service('sentencePlanning', sentencePlanning),
-    service('elite2', elite2),
-  ]
+module.exports = (...services) => {
+  const checks = services.map(({ name, config }) => service(name, config))
 
   return callback =>
     Promise.all(checks.map(fn => fn())).then(checkResults => {

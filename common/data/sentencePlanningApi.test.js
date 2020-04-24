@@ -19,6 +19,7 @@ const {
   },
 } = require('../config')
 const {
+  getOffenderData,
   getSentencePlanSummary,
   getSentencePlan,
   getOasysSentencePlan,
@@ -41,6 +42,7 @@ const {
   startSentencePlan,
   endSentencePlan,
   updateSentencePlanObjectiveClose,
+  setActionPriorities,
 } = require('./sentencePlanningApi')
 
 describe('sentencePlanningApi', () => {
@@ -53,6 +55,26 @@ describe('sentencePlanningApi', () => {
   let mockedEndpoint
   const tokens = { authorisationToken: 'mytoken' }
   const id = '123458'
+
+  describe('getOffenderData', () => {
+    const offenderAssessmentUrl = `/offenders/oasysOffenderId/${id}`
+    it('should return offender details from api', async () => {
+      const offenderData = {
+        oasysOffenderId: 11032,
+        familyName: 'Shakey',
+        forename1: 'Bernard',
+        crn: 'S000001',
+        nomisId: 'A0000AB',
+      }
+      mockedEndpoint.get(offenderAssessmentUrl).reply(200, offenderData)
+      const output = await getOffenderData(id, tokens)
+      expect(output).toEqual(offenderData)
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.get(offenderAssessmentUrl).reply(400)
+      await expect(getOffenderData(id, tokens)).rejects.toThrowError('Bad Request')
+    })
+  })
 
   describe('getSentencePlanSummary', () => {
     const sentencePlansUrl = `/offenders/${id}/sentenceplans`
@@ -432,6 +454,32 @@ describe('sentencePlanningApi', () => {
       await expect(updateSentencePlanObjectiveClose(planId, objectiveId, data, tokens)).rejects.toThrowError(
         'Bad Request'
       )
+    })
+  })
+
+  describe('setActionPriorities', () => {
+    const planId = '1'
+    const objectiveId = '2'
+    const setActionPrioritiesUrl = `/sentenceplans/${planId}/objectives/${objectiveId}/actions/priority`
+    const data = [
+      {
+        actionUUID: '11111111-1111-1111-1111-111111111111',
+        priority: 1,
+      },
+      {
+        actionUUID: '22222222-2222-2222-2222-222222222222',
+        priority: 2,
+      },
+    ]
+
+    it('should set the action priorities', async () => {
+      mockedEndpoint.post(setActionPrioritiesUrl).reply(200, {})
+      const output = await setActionPriorities(planId, objectiveId, data, tokens)
+      expect(output).toEqual({})
+    })
+    it('should throw an error if it does not receive a valid response', async () => {
+      mockedEndpoint.post(setActionPrioritiesUrl).reply(400)
+      await expect(setActionPriorities(planId, objectiveId, data, tokens)).rejects.toThrowError('Bad Request')
     })
   })
 })

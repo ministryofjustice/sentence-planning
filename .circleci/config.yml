@@ -26,6 +26,9 @@ commands:
     parameters:
       env:
         type: string
+      extra-helm-args:
+        type: string
+        default: ''
     steps:
       - setup
       - checkout:
@@ -43,7 +46,9 @@ commands:
               --namespace=${KUBE_ENV_NAMESPACE} \
               --values ~/git/helm_deploy/values-<< parameters.env >>.yaml \
               --values - \
-              --set image.tag="${APP_VERSION}"
+              --set image.tag="${APP_VERSION}" \
+              << parameters.extra-helm-args >>
+
 executors:
   deployer:
     docker:
@@ -63,6 +68,7 @@ executors:
 
 orbs:
   aws-cli: circleci/aws-cli@0.1.18
+  dps: ministryofjustice/dps@1.2.1
   kubernetes: circleci/kubernetes@0.10.1
   helm: circleci/helm@0.2.3
   snyk: snyk/snyk@0.0.10
@@ -244,6 +250,10 @@ workflows:
       - test:
           requires:
             - build
+      - dps/helm_lint:
+          name: helm_lint_dev
+          env: development
+          chart_name: sentence-planning
       - build_docker:
           filters:
             branches:
@@ -251,7 +261,11 @@ workflows:
           requires:
             - test
       - deploy_dev:
+          filters:
+            branches:
+              only: master
           requires:
+            - helm_lint_dev
             - build_docker
       - request-preprod-approval:
           type: approval
