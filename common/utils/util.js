@@ -133,9 +133,9 @@ const getCorrelationId = () => {
   return correlationId
 }
 
-const updateMDC = (mdcNamespace, mdc) => {
-  const thisNamespace = cls.getNamespace(mdcNamespace)
-  thisNamespace.set('MDC', mdc)
+const updateMDC = (mdcDataKey, mdc) => {
+  const thisNamespace = cls.getNamespace(clsNamespace)
+  thisNamespace.set(mdcDataKey, mdc)
 }
 
 module.exports = {
