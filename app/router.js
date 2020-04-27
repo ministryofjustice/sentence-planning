@@ -134,7 +134,15 @@ module.exports = app => {
 
   // action update
   app.get(activePlanUpdateActionRoute, getActionData, getActionTimelineData, getActionUpdate)
-  app.post(activePlanUpdateActionRoute, actionUpdateValidationRules(), validate, postActionUpdate)
+  app.post(
+    activePlanUpdateActionRoute,
+    actionUpdateValidationRules(),
+    validate,
+    postActionUpdate,
+    getActionData,
+    getActionTimelineData,
+    getActionUpdate
+  )
 
   // active plan homepage
   app.get(activePlanRoute, getHomepage)

@@ -1,7 +1,6 @@
 const { body } = require('express-validator')
 const { logger } = require('../../common/logging/logger')
 const { addSentencePlanObjectiveActionProgress } = require('../../common/data/sentencePlanningApi')
-const { getActionUpdate } = require('./get.controller')
 const { removeUrlLevels, countWords, catchAndReThrowError } = require('../../common/utils/util')
 
 const wordsAllowed = 250
@@ -30,7 +29,7 @@ const validationRules = () => {
   ]
 }
 
-const postActionUpdate = async (req, res) => {
+const postActionUpdate = async (req, res, next) => {
   const {
     path,
     errors,
@@ -39,7 +38,7 @@ const postActionUpdate = async (req, res) => {
     tokens,
   } = req
   if (errors) {
-    return getActionUpdate(req, res)
+    return next()
   }
   try {
     // temporarily add values to the progress
