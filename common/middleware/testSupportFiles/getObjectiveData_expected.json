@@ -6,7 +6,8 @@
       "owner": "Individual, Other: Uncle Bob",
       "status": "To do",
       "motivation":"Getting ready",
-      "targetDate": "May 2022"
+      "targetDate": "May 2022",
+      "priority": 1
     },
     {
       "actionText": "This is the description of an action",
@@ -14,7 +15,8 @@
       "owner": "Individual",
       "status": "To do",
       "motivation":"Off track",
-      "targetDate": "April 2021"
+      "targetDate": "April 2021",
+      "priority": 2
     }
   ],
   "description": "newly created objective",
