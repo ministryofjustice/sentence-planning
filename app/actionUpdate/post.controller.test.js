@@ -1,6 +1,5 @@
 const { postActionUpdate } = require('./post.controller')
 const { addSentencePlanObjectiveActionProgress } = require('../../common/data/sentencePlanningApi')
-const { getActionUpdate } = require('./get.controller')
 
 const mockPromise = (data, error) => () => new Promise((resolve, reject) => (error ? reject(error) : resolve(data)))
 
@@ -11,7 +10,6 @@ jest.mock('../partials/targetDate/post.controller', () => ({
 jest.mock('../partials/responsibility/post.controller', () => ({
   postResponsibility: jest.fn(() => ({ owner: ['SERVICE_USER'], ownerOther: '' })),
 }))
-jest.mock('./get.controller')
 
 let req
 let res
@@ -30,6 +28,7 @@ const progress = {
   status: 'IN_PROGRESS',
   targetDate: '2020-09',
 }
+const next = jest.fn()
 
 beforeEach(() => {
   req = {
@@ -55,6 +54,10 @@ beforeEach(() => {
   }
 })
 
+afterEach(() => {
+  jest.resetAllMocks()
+})
+
 describe('add progress', () => {
   describe('when the user wants to progress an action', () => {
     beforeEach(() => {
@@ -62,7 +65,7 @@ describe('add progress', () => {
       req.body.addAnotherAction = ''
     })
     it('should save the new progress when there are no errors', async () => {
-      await postActionUpdate(req, res)
+      await postActionUpdate(req, res, next)
       expect(addSentencePlanObjectiveActionProgress).toHaveBeenCalledWith(
         planId,
         objectiveId,
@@ -84,9 +87,9 @@ describe('add progress', () => {
           },
         ],
       }
-      await postActionUpdate(req, res)
+      await postActionUpdate(req, res, next)
       expect(addSentencePlanObjectiveActionProgress).not.toHaveBeenCalled()
-      expect(getActionUpdate).toHaveBeenCalledWith(req, res)
+      expect(next).toHaveBeenCalled()
     })
   })
   describe('when an error occurs persisting progress', () => {
@@ -97,7 +100,7 @@ describe('add progress', () => {
       req.body.addAnotherAction = ''
     })
     it('should display an error if action saving fails', async () => {
-      await postActionUpdate(req, res)
+      await postActionUpdate(req, res, next)
       expect(addSentencePlanObjectiveActionProgress).toHaveBeenCalled()
       expect(res.render).toHaveBeenCalledWith(
         `app/error`,
