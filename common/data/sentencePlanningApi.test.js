@@ -8,6 +8,10 @@ const sentencePlan = require('../../mockServer/sentencePlans/1.json')
 const sentencePlanMeetings = require('../../mockServer/sentencePlanMeetings/summary/1.json')
 const sentencePlanMeeting = require('../../mockServer/sentencePlanMeetings/minutes/1.json')
 
+jest.mock('../utils/util', () => ({
+  getCorrelationId: jest.fn(() => 'mocked-correlation-id'),
+}))
+
 const {
   apis: {
     sentencePlanning: { url },
