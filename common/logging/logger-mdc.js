@@ -1,15 +1,15 @@
 const uuid = require('uuid')
-const cls = require('cls-hooked')
+const { createNamespace, getNamespace } = require('cls-hooked')
 const { clsNamespace } = require('../config')
 
-cls.createNamespace(clsNamespace)
+createNamespace(clsNamespace)
 
 function mdcSetup(req, res, next) {
   const MDC = {
     sessionId: req.sessionID,
     correlationId: uuid.v4(),
   }
-  const mdcNamespace = cls.getNamespace(clsNamespace)
+  const mdcNamespace = getNamespace(clsNamespace)
   mdcNamespace.bindEmitter(req)
   mdcNamespace.bindEmitter(res)
   mdcNamespace.run(() => {
@@ -19,7 +19,7 @@ function mdcSetup(req, res, next) {
 }
 
 function getMdcForHeader() {
-  const mdcNamespace = cls.getNamespace(clsNamespace)
+  const mdcNamespace = getNamespace(clsNamespace)
   if (!mdcNamespace) {
     return {}
   }

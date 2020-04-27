@@ -1,4 +1,4 @@
-const cls = require('cls-hooked')
+const { getNamespace } = require('cls-hooked')
 const { logger } = require('../logging/logger')
 const { clsNamespace } = require('../config')
 const {
@@ -128,15 +128,9 @@ const getActionText = ({ description = '', intervention }, interventionList) =>
     ? interventionList.find(({ uuid }) => uuid === intervention).shortDescription
     : description
 
-const getCorrelationId = () => {
-  const { correlationId = '' } = cls.getNamespace(clsNamespace)
-  return correlationId
-}
+const getCorrelationId = () => getNamespace(clsNamespace).correlationId || ''
 
-const updateMDC = (mdcDataKey, mdc) => {
-  const thisNamespace = cls.getNamespace(clsNamespace)
-  thisNamespace.set(mdcDataKey, mdc)
-}
+const updateMDC = (mdcDataKey, mdc) => getNamespace(clsNamespace).set(mdcDataKey, mdc)
 
 module.exports = {
   formatObjectiveActionsForPrintDisplay,
