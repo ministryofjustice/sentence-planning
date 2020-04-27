@@ -27,18 +27,6 @@ services:
       - SERVER_PORT=9090
       - SPRING_PROFILES_ACTIVE=dev
 
-  elite2-api:
-    image: mojdigitalstudio/elite2-api:latest
-    container_name: elite2-api
-    depends_on:
-    - oauth
-    ports:
-      - "8085:8080"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-    environment:
-      - SPRING_PROFILES_ACTIVE=nomis-hsqldb
-
   offender-assessment-api:
     image: mojdigitalstudio/offender-assessments-api:latest
     restart: always
