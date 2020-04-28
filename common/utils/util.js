@@ -128,7 +128,7 @@ const getActionText = ({ description = '', intervention }, interventionList) =>
     ? interventionList.find(({ uuid }) => uuid === intervention).shortDescription
     : description
 
-const getCorrelationId = () => getNamespace(clsNamespace).correlationId || ''
+const getCorrelationId = () => getNamespace(clsNamespace).get('MDC').correlationId || ''
 
 const updateMDC = (mdcDataKey, mdc) => getNamespace(clsNamespace).set(mdcDataKey, mdc)
 
