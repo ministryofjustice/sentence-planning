@@ -1,15 +1,13 @@
-# GDS Node.js boilerplate
+# Sentence Planning UI
 
-This is a skeleton Node.js app running on [Express] with [Nunjucks] as a template engine.
+This is a Node.js app running on [Express] with [Nunjucks] as a template engine.
 
 It includes:
-- Grunt for compliation of sass/js
 - [GOV.UK Frontend]
 - [Browserify] with babelify and Nunjucksify
-- Mocha for testing
+- Jest for testing
 - Middleware to set correlation headers
 - i18n language support
-- [Snyk]
 - [StandardJS] for linting
 - [nvm] (optional) for nodejs version
 
@@ -19,13 +17,14 @@ To get started clone the repo and run
 $ npm install
 $ npm run start:local
 ```
-(`npm install` might error about Snyk if it’s not set up but ignore for now)
 
 Then go to [http://localhost:3000/individual-id/1](http://localhost:3000/individual-id/1) to see it in action.
 
+Use `docker-compose up` to run the associated back end services the UI needs to link to. There is also a mock server included to make local development more straightforward. To use this, edit `common\config.js` and change the `apis.sentenceplanning.url` to `http://localhost:18081`
+
 ### Prerequisites
 
-Run the requried backend services using the supplied docker-compose config. Before starting you must add the following line to your `/etc/hosts` file to allow the authentication service to function:
+Run the required backend services using the supplied docker-compose config. Before starting you must add the following line to your `/etc/hosts` file to allow the authentication service to function:
 
 ```
 127.0.0.1 oauth
