@@ -27,12 +27,12 @@
     {
       name: "Month",
       classes: "govuk-input--width-2",
-      value: targetDateMonth
+      value: targetDateMonth | encodeHtml | safe
     },
     {
       name: "Year",
       classes: "govuk-input--width-4",
-      value: targetDateYear
+      value: targetDateYear | encodeHtml | safe
     }
   ],
   errorMessage: targetDateError

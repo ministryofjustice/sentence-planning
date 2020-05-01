@@ -33,7 +33,7 @@
             {{  govukTextarea({
                 id: 'comments',
                 name: 'comments',
-                value: comments | safe,
+                value: comments | encodeHtml | safe,
                 label: {
                     classes: 'govuk-label--l',
                     text: heading,

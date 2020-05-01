@@ -9,7 +9,7 @@
     {{  govukCharacterCount({
         id: 'description',
         name: 'description',
-        value: description,
+        value: description | encodeHtml | safe,
         label: {
             text: 'What action are they going to take?',
             isPageHeading: true

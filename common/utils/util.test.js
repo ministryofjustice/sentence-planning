@@ -9,6 +9,7 @@ const {
   getObjectiveType,
   formatObjectiveActionsForPrintDisplay,
   getActionText,
+  encodeHTML,
 } = require('./util')
 const {
   ACTION_STATUS_TYPES: { COMPLETED, PARTIALLY_COMPLETED, NOT_STARTED, PAUSED, IN_PROGRESS, ABANDONED },
@@ -252,5 +253,17 @@ describe('getActionText', () => {
   it('should return the description text if present', () => {
     const description = 'Dish'
     expect(getActionText({ description }, [])).toEqual(description)
+  })
+})
+
+describe('encodeHTML', () => {
+  it('should convert < > and quote characters to HTML encoded equivalents', () => {
+    const inputString = '< > " \''
+    expect(encodeHTML(inputString)).toEqual('&lt; &gt; &quot; &#039;')
+  })
+
+  it('should leave other text and existing encoded characters unchanged', () => {
+    const inputString = '</textarea>&lt;&#x2F;textarea&gt;&lt;'
+    expect(encodeHTML(inputString)).toEqual('&lt;/textarea&gt;&lt;&#x2F;textarea&gt;&lt;')
   })
 })
