@@ -160,9 +160,7 @@ function initialiseTemplateEngine(app) {
 
   // for textarea or input components we can add an extra filter to encode any raw HTML characters
   // that might cause security issues otherwise
-  nunjucksEnvironment.addFilter('encodeHtml', str => {
-    return encodeHTML(str)
-  })
+  nunjucksEnvironment.addFilter('encodeHtml', str => encodeHTML(str))
 
   // Set view engine
   app.set('view engine', 'njk')
