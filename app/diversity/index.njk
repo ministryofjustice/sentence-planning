@@ -33,7 +33,7 @@
             {{  govukTextarea({
                 id: 'diversity',
                 name: 'diversity',
-                value: diversity | safe,
+                value: diversity | encodeHtml | safe,
                 label: {
                     classes: 'govuk-label--l',
                     text: heading,

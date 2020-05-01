@@ -33,7 +33,7 @@
             {{  govukTextarea({
                 id: 'needtoknow',
                 name: 'needtoknow',
-                value: needtoknow | safe,
+                value: needtoknow | encodeHtml | safe,
                 label: {
                     classes: 'govuk-label--l',
                     text: heading,

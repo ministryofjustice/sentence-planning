@@ -28,6 +28,7 @@ const createCredentials = require('./common/middleware/createCredentials')
 const { updateCorrelationId } = require('./common/middleware/updateCorrelationId')
 const { createMockAPI } = require('./mockServer/app')
 const { applicationInsights } = require('./common/config')
+const { encodeHTML } = require('./common/utils/util')
 
 // Global constants
 const { static: _static } = express
@@ -156,6 +157,12 @@ function initialiseTemplateEngine(app) {
   // add custom nunjucks filters
   nunjucksEnvironment.addFilter('date', dateFilter)
   nunjucksEnvironment.addFilter('mojDate', mojDate)
+
+  // for textarea or input components we can add an extra filter to encode any raw HTML characters
+  // that might cause security issues otherwise
+  nunjucksEnvironment.addFilter('encodeHtml', str => {
+    return encodeHTML(str)
+  })
 
   // Set view engine
   app.set('view engine', 'njk')

@@ -132,6 +132,14 @@ const getCorrelationId = () => getNamespace(clsNamespace).get('MDC').correlation
 
 const updateMDC = (mdcDataKey, mdc) => getNamespace(clsNamespace).set(mdcDataKey, mdc)
 
+const encodeHTML = str => {
+  return str
+    .replace(/>/g, '&gt;')
+    .replace(/</g, '&lt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
 module.exports = {
   formatObjectiveActionsForPrintDisplay,
   getObjectiveType,
@@ -149,4 +157,5 @@ module.exports = {
   getActionText,
   getCorrelationId,
   updateMDC,
+  encodeHTML,
 }

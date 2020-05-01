@@ -38,7 +38,7 @@
       {{  govukCharacterCount({
         id: 'closeReason',
         name: 'closeReason',
-        value: body.closeReason | safe,
+        value: body.closeReason | encodeHtml | safe,
         label: {
             classes: 'govuk-label--m',
             text: 'Explain why the objective can be closed'

@@ -38,7 +38,7 @@
                       text: "Action"
                     },
                     value: {
-                      text: actionText | safe
+                      text: actionText | encodeHtml | safe
                     }
                   ]
                 }
@@ -53,7 +53,7 @@
             {{  govukCharacterCount({
                 id: 'comment',
                 name: 'comment',
-                value: comment,
+                value: comment | encodeHtml | safe,
                 label: {
                   classes: 'govuk-label--s',
                   text: 'Comment'

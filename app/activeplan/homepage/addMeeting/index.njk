@@ -62,7 +62,7 @@
             {{  govukTextarea({
                 id: 'comments',
                 name: 'comments',
-                value: comments | safe,
+                value: comments | encodeHtml | safe,
                 label: {
                     classes: 'govuk-label--m',
                     text: 'Comments',
@@ -74,7 +74,7 @@
             {{  govukTextarea({
                 id: 'attendees',
                 name: 'attendees',
-                value: attendees | safe,
+                value: attendees | encodeHtml | safe,
                 label: {
                     classes: 'govuk-label--m',
                     text: 'Attendees',
@@ -97,17 +97,17 @@
                     {
                         name: "Day",
                         classes: "govuk-input--width-2",
-                        value: meetingDateDay
+                        value: meetingDateDay | encodeHtml | safe
                     },
                     {
                         name: "Month",
                         classes: "govuk-input--width-2",
-                        value: meetingDateMonth
+                        value: meetingDateMonth | encodeHtml | safe
                     },
                     {
                         name: "Year",
                         classes: "govuk-input--width-4",
-                        value: meetingDateYear
+                        value: meetingDateYear | encodeHtml | safe
                     }
                 ],
                 errorMessage: meetingDateError
