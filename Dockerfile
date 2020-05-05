@@ -4,6 +4,7 @@ ARG BUILD_NUMBER
 ARG GIT_REF
 
 RUN apt-get update && apt-get install -y make python
+RUN apt-get install -y curl
 
 ENV TZ=Europe/London
 RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
