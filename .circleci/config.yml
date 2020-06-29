@@ -13,13 +13,6 @@ executors:
     docker:
       - image: circleci/node:10.15.3-browsers
     working_directory: ~/app
-  sonar-scanner:
-    docker:
-      - image: sonarsource/sonar-scanner-cli:4.2
-        environment:
-          SONAR_HOST_URL: https://pcs-sonarqube.apps.live-1.cloud-platform.service.justice.gov.uk/
-          SONAR_PROJECT_KEY: sentence-planning
-    working_directory: ~/app
 
 jobs:
   build:
@@ -90,54 +83,8 @@ jobs:
           project: '${CIRCLE_PROJECT_REPONAME}/latest'
           organization: 'digital-probation-services'
 
-  sonar-scan:
-    executor: sonar-scanner
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/app
-      - run:
-          name: Run sonar scan
-          command: |
-            set -euo pipefail
-            declare -a args
-            add_env_var_as_env_prop() {
-              if [ "$1" ]; then
-                args+=("-D$2=$1")
-              fi
-            }
-            add_env_var_as_env_prop "${SONAR_LOGIN:-}" "sonar.login"
-            add_env_var_as_env_prop "${SONAR_PASSWORD:-}" "sonar.password"
-            add_env_var_as_env_prop "${SONAR_USER_HOME:-}" "sonar.userHome"
-            add_env_var_as_env_prop "${SONAR_PROJECT_BASE_DIR:-}" "sonar.projectBaseDir"
-            add_env_var_as_env_prop "${SONAR_PROJECT_KEY:-}" "sonar.projectKey"
-            PROJECT_BASE_DIR="$PWD"
-            if [ "${SONAR_PROJECT_BASE_DIR:-}" ]; then
-              PROJECT_BASE_DIR="${SONAR_PROJECT_BASE_DIR}"
-            fi
-            export SONAR_USER_HOME="$PROJECT_BASE_DIR/.sonar"
-            sonar-scanner "${args[@]}"
-
 workflows:
   version: 2
-  scheduled:
-    triggers:
-      - schedule:
-          cron: "0 7 * * 1-5"
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - build:
-          filters:
-            tags:
-              ignore: /.*/
-      - app-scan
-      - image-scan
-      - sonar-scan:
-          requires:
-            - build
   build-test-and-deploy:
     jobs:
       - build:
