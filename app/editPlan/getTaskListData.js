@@ -94,7 +94,7 @@ const getFinalInformation = ({ comments }, stub, hasObjective) => {
     items: [
       {
         text: 'Decisions and comments',
-        href: hasObjective ? `${stub}/decisions` : '',
+        href: hasObjective ? `${stub}/decisions` : `${stub}/decisions`,
         ...itemOptions,
       },
     ],

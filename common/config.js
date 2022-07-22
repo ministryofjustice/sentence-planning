@@ -21,7 +21,7 @@ function get(name, fallback, options = {}) {
 module.exports = {
   apis: {
     sentencePlanning: {
-      url: get('SENTENCEPLANNINGAPI_ENDPOINT_URL', 'http://localhost:8080', true),
+      url: get('SENTENCEPLANNINGAPI_ENDPOINT_URL', 'http://localhost:18081', true),
       timeout: {
         response: get('SENTENCEPLANNINGAPI_ENDPOINT_TIMEOUT_RESPONSE', 10000, true),
         deadline: get('SENTENCEPLANNINGAPI_TIMEOUT_DEADLINE', 10000, true),

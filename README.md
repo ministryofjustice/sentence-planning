@@ -11,7 +11,7 @@ It includes:
 - [StandardJS] for linting
 - [nvm] (optional) for nodejs version
 
-To get started clone the repo and run
+To get started clone the repo, ensure you are using the correct version of Node by using `nvm use` and run
 
 ``` bash
 $ npm install

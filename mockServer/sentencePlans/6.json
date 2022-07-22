@@ -79,7 +79,7 @@
         }
       ],
       "description": "This is an active objective",
-      "id": "obj1",
+      "id": "1",
       "needs": [
         "care"
       ],
@@ -114,7 +114,7 @@
         }
       ],
       "description": "This is a future objective",
-      "id": "obj2",
+      "id": "2",
       "needs": [
         "care"
       ],
@@ -161,7 +161,7 @@
         }
       ],
       "description": "This is a completed objective",
-      "id": "obj3",
+      "id": "3",
       "needs": [
         "care"
       ],
@@ -208,7 +208,7 @@
         }
       ],
       "description": "This should default to active",
-      "id": "obj4",
+      "id": "4",
       "needs": [
         "care"
       ],

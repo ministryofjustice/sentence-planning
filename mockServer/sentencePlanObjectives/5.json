@@ -1,0 +1,26 @@
+{
+  "id": "8af35dad-79fc-4462-b352-122db4d9b771",
+  "description": "",
+  "needs": [
+    "needsid_accommodation"
+  ],
+  "actions": [
+    {
+      "id": "36536eb8-9f40-4097-9928-e02ebf38cffa",
+      "owner": [
+        "SERVICE_USER"
+      ],
+      "ownerOther": "",
+      "description": "",
+      "status": "NOT_STARTED",
+      "targetDate": "2025-01",
+      "intervention": "29348eac-0034-4fc4-b045-fb3be9c7a28f",
+      "motivationUUID": "42de6207-7a3a-4ffb-9b45-c3ee4ea514fa",
+      "priority": 0,
+      "updated": null,
+      "progress": []
+    }
+  ],
+  "priority": 0,
+  "meetsChildSafeguarding": false
+}

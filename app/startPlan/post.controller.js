@@ -7,8 +7,9 @@ const postStartPlan = async (req, res) => {
     tokens,
   } = req
   try {
-    await startSentencePlan(planId, tokens)
+    // await startSentencePlan(planId, tokens)
     req.session.planStarted = true
+    // return res.redirect(`/individual-id/${id}/plan/${planId}`)
     return res.redirect(`/individual-id/${id}/plan/${planId}`)
   } catch (error) {
     logger.error(`Could not start sentence plan ${planId} for individual ${id}, error: ${error}`)

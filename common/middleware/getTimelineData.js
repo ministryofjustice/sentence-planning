@@ -74,11 +74,20 @@ const getObjectiveTimelineData = (req, res, next) => {
   const {
     objective: { actions, statusChanges = [], created, createdBy },
   } = renderInfo
-  const timelineData = actions.reduce(
-    (timeline, action) => timeline.concat(processAction(action, motivationList, true)),
-    []
-  )
-  timelineData.push({ type: 'Objective Created', created, createdBy }, ...processStatusChanges(statusChanges))
+  const timelineData = [{
+    status: 'CLOSED',
+    comment: 'Its completed',
+    created: '2020-04-25T16:24:27.59747',
+    createdBy: 'Robert McKenna',
+    description: 'Added new action',
+  },{
+    status: 'OPEN',
+    comment: 'It is not you know',
+    created: '2020-07-19T11:56:27.59747',
+    createdBy: 'Stavro Mueller',
+    description: 'Updated action description',
+  }]
+  timelineData.push({ type: 'Objective Created', created:'2020-01-19T09:13:27.59747', createdBy:'Chris Sanderson' }, ...processStatusChanges(statusChanges))
   timelineData.sort(({ created: createdA = 0 }, { created: createdB = 0 }) => new Date(createdB) - new Date(createdA))
   req.renderInfo = Object.assign(renderInfo, { timelineData })
   next()

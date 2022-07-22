@@ -257,6 +257,7 @@ describe('getTimelineData', () => {
   describe('processAction', () => {
     it('should return a timeline Array including a description', () => {
       const timelineData = processAction(action1, motivationList, true)
+
       expect(timelineData).toEqual(expectedObjectiveAction1)
     })
     it('should return an timeline Array without a description', () => {

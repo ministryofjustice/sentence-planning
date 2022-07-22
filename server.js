@@ -121,6 +121,8 @@ function initialiseGlobalMiddleware(app) {
       keycloakHeaders.forEach(headerName => {
         req.headers[headerName] = `Test ${headerName}`
       })
+
+      req.headers['x-auth-name'] = `Chris Sanderson`
       next()
     })
     createMockAPI()

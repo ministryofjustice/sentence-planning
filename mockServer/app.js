@@ -126,6 +126,11 @@ function createMockAPI() {
     return res.sendStatus(200)
   })
 
+  app.post('/sentenceplans/:planid/objectives/:objectiveId/actions/priority', (req, res) => {
+    logger.debug(`MockAPI saving new actions order ${JSON.stringify(req.body)}`)
+    return res.sendStatus(200)
+  })
+
   app.post('/sentenceplans/:planid/start', (req, res) => {
     logger.debug(`MockAPI starting plan ${req.params.planid}`)
     return res.sendStatus(200)
