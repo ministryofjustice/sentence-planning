@@ -59,7 +59,6 @@ typings/
 
 # App specific
 govuk_modules/
-public/
 
 
 .DS_Store

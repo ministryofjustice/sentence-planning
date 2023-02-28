@@ -141,6 +141,7 @@ function createMockAPI() {
     return res.sendStatus(200)
   })
 
-  app.listen(18081)
+  app.listen(3000)
+  console.log('listening on port 18081')
 }
 module.exports = { createMockAPI }

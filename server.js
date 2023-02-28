@@ -1,5 +1,5 @@
 // Always load Application Insights before anything else
-const appInsights = require('applicationinsights')
+// const appInsights = require('applicationinsights')
 
 // Node.js core dependencies
 const { join } = require('path')
@@ -48,29 +48,29 @@ const APP_VIEWS = [
   __dirname,
 ]
 
-function initialiseApplicationInsights() {
-  if (applicationInsights.disabled) {
-    logger.info('Application Insights disabled; disable flag set')
-    return
-  }
-
-  if (applicationInsights.instrumentationKey === '') {
-    logger.info('Application Insights disabled; no instrumentation key set')
-    return
-  }
-
-  appInsights
-    .setup(applicationInsights.instrumentationKey)
-    .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
-    .setInternalLogging(applicationInsights.internalLogging, true)
-    .setAutoCollectConsole(false) // see common/logging/logger.js for app insights logging instrumentation
-    .start()
-
-  const roleName = process.env.npm_package_name
-  appInsights.defaultClient.context.tags['ai.cloud.role'] = roleName
-
-  logger.info(`Application Insights enabled with role name '${roleName}'`)
-}
+// function initialiseApplicationInsights() {
+//   if (applicationInsights.disabled) {
+//     logger.info('Application Insights disabled; disable flag set')
+//     return
+//   }
+//
+//   if (applicationInsights.instrumentationKey === '') {
+//     logger.info('Application Insights disabled; no instrumentation key set')
+//     return
+//   }
+//
+//   appInsights
+//     .setup(applicationInsights.instrumentationKey)
+//     .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
+//     .setInternalLogging(applicationInsights.internalLogging, true)
+//     .setAutoCollectConsole(false) // see common/logging/logger.js for app insights logging instrumentation
+//     .start()
+//
+//   const roleName = process.env.npm_package_name
+//   appInsights.defaultClient.context.tags['ai.cloud.role'] = roleName
+//
+//   logger.info(`Application Insights enabled with role name '${roleName}'`)
+// }
 
 function initialiseGlobalMiddleware(app) {
   app.set('settings', { getVersionedPath: staticify.getVersionedPath })
@@ -106,27 +106,25 @@ function initialiseGlobalMiddleware(app) {
     })
   )
 
-  if (process.env.NODE_ENV === 'local') {
-    app.use(allGateKeeperPages, (req, res, next) => {
-      const keycloakHeaders = [
-        'x-auth-name',
-        'x-auth-username',
-        'x-auth-given-name',
-        'x-auth-family-name',
-        'x-auth-email',
-        'x-auth-locations',
-        'x-auth-token',
-      ]
-      logger.info(`Running locally: setting default headers for ${keycloakHeaders}`)
-      keycloakHeaders.forEach(headerName => {
-        req.headers[headerName] = `Test ${headerName}`
-      })
-
-      req.headers['x-auth-name'] = `Chris Sanderson`
-      next()
+  app.use(allGateKeeperPages, (req, res, next) => {
+    const keycloakHeaders = [
+      'x-auth-name',
+      'x-auth-username',
+      'x-auth-given-name',
+      'x-auth-family-name',
+      'x-auth-email',
+      'x-auth-locations',
+      'x-auth-token',
+    ]
+    logger.info(`Running locally: setting default headers for ${keycloakHeaders}`)
+    keycloakHeaders.forEach(headerName => {
+      req.headers[headerName] = `Test ${headerName}`
     })
-    createMockAPI()
-  }
+
+    req.headers['x-auth-name'] = `Chris Sanderson`
+    next()
+  })
+  // createMockAPI()
 
   app.use(allGateKeeperPages, addUserInformation)
   app.use(allGateKeeperPages, createCredentials)
@@ -204,7 +202,7 @@ function listen() {
 function initialise() {
   const app = unconfiguredApp
   app.disable('x-powered-by')
-  initialiseApplicationInsights()
+  // initialiseApplicationInsights()
   initialiseProxy(app)
   initialiseGlobalMiddleware(app)
   initialiseTemplateEngine(app)
