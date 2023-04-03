@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {}
+  labels:
+    app: sentence-plan-demo
+  name: sentence-plan-demo
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+  selector:
+    app: sentence-plan-demo
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
+    external-dns.alpha.kubernetes.io/set-identifier: sentence-plan-demo-hmpps-assessments-dev-green
+    nginx.ingress.kubernetes.io/custom-http-errors: "418"
+    nginx.ingress.kubernetes.io/whitelist-source-range: 35.178.209.113/32,3.8.51.207/32,35.177.252.54/32,35.176.93.186/32,35.177.252.195/32,81.134.202.29/32,217.33.148.210/32,213.121.161.112/28
+  labels:
+    app: sentence-plan-demo
+  name: sentence-plan-demo
+spec:
+  ingressClassName: default
+  rules:
+    - host: sentence-plan-demo.hmpps.service.justice.gov.uk
+      http:
+        paths:
+          - backend:
+              service:
+                name: sentence-plan-demo
+                port:
+                  number: 80
+            path: /
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - sentence-plan-demo.hmpps.service.justice.gov.uk
+      secretName: sentence-plan-demo-cert
+

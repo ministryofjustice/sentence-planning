@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentence-plan-demo
+spec:
+  selector:
+    matchLabels:
+      app: sentence-plan-demo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sentence-plan-demo
+    spec:
+      containers:
+        - name: sentence-plan-demo
+          image: quay.io/coupey/sentence-plan-demo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              name: http
+
+      imagePullSecrets:
+        - name: coupey-pull-secret

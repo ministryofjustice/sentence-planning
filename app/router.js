@@ -98,6 +98,11 @@ module.exports = app => {
   })
 
   app.use(offenderRoute, getOffenderDetails)
+
+  app.get('/', function(req, res) {
+    res.redirect('/individual-id/1/')
+  })
+
   app.get(`${offenderRoute}/plans`, (req, res) => sentencePlanSummary(req, res))
 
   // sentence plans summary
